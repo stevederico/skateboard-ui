@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from '@/context.jsx';
 import constants from "@/constants.json";
-import { getCurrentUser, getCookie } from '@/skateboard-ui/Utilities.js'
 
 export default function SuccessView() {
   const navigate = useNavigate();

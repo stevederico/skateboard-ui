@@ -9,7 +9,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   useSidebar,
-} from "@/shadcn/ui/sidebar";
+} from "./sidebar";
 
 // Fallback DynamicIcon implementation if not already defined
 const DynamicIconFallback = ({ name, size = 24, ...props }) => {
