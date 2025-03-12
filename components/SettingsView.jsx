@@ -3,7 +3,7 @@ import { getState } from '@/context.jsx';
 import { useEffect, useState } from 'react';
 import { DynamicIcon } from "lucide-react/dynamic";
 import constants from "@/constants.json";
-import pkg from '../../package.json';
+import pkg from '@package';
 import { showCheckout } from '../utilities.js';
 
 export default function SettingsView() {
