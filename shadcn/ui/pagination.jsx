@@ -6,7 +6,7 @@ import {
 } from "lucide-react"
 
 import { cn } from "@/shadcn/ui/lib/utils"
-import { buttonVariants } from "@/shadcn/ui/components/ui/button";
+import { buttonVariants } from "@/shadcn/ui/button";
 
 function Pagination({
   className,

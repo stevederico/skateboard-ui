@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
 
 import { cn } from "@/shadcn/ui/lib/utils"
-import { buttonVariants } from "@/shadcn/ui/components/ui/button"
+import { buttonVariants } from "@/shadcn/ui/button"
 
 function Calendar({
   className,
