@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DynamicIcon } from "lucide-react/dynamic";
 import constants from "@/constants.json";
 import pkg from '../../package.json';
-import { showCheckout } from './Utilities';
+import { showCheckout } from '../utilities.js';
 
 export default function SettingsView() {
   const navigate = useNavigate();
