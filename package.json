@@ -1,11 +1,11 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "exports": {
     "./AppSidebar": "./AppSidebar.jsx",
-    "./Header": ".//Header.jsx",
+    "./Header": "./Header.jsx",
     "./LandingView": "./LandingView.jsx",
     "./Layout": "./Layout.jsx",
     "./NotFound": "./NotFound.jsx",
