@@ -1,21 +1,61 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "exports": {
-    "./AppSidebar": "./AppSidebar.jsx",
-    "./Header": "./Header.jsx",
-    "./LandingView": "./LandingView.jsx",
-    "./Layout": "./Layout.jsx",
-    "./NotFound": "./NotFound.jsx",
-    "./SettingsView": "./SettingsView.jsx",
-    "./Sheet": "./Sheet.jsx",
-    "./SignInView": "./SignInView.jsx",
-    "./SignUpView": "./SignUpView.jsx",
-    "./StripeView": "./StripeView.jsx",
-    "./TabBar": "./TabBar.jsx",
-    "./TextView": "./TextView.jsx"
+    "./AppSidebar": {
+      "import": "./AppSidebar.jsx",
+      "default": "./AppSidebar.jsx"
+    },
+    "./Header": {
+      "import": "./Header.jsx",
+      "default": "./Header.jsx"
+    },
+    "./LandingView": {
+      "import": "./LandingView.jsx",
+      "default": "./LandingView.jsx"
+    },
+    "./Layout": {
+      "import": "./Layout.jsx",
+      "default": "./Layout.jsx"
+    },
+    "./NotFound": {
+      "import": "./NotFound.jsx",
+      "default": "./NotFound.jsx"
+    },
+    "./SettingsView": {
+      "import": "./SettingsView.jsx",
+      "default": "./SettingsView.jsx"
+    },
+    "./Sheet": {
+      "import": "./Sheet.jsx",
+      "default": "./Sheet.jsx"
+    },
+    "./SignInView": {
+      "import": "./SignInView.jsx",
+      "default": "./SignInView.jsx"
+    },
+    "./SignUpView": {
+      "import": "./SignUpView.jsx",
+      "default": "./SignUpView.jsx"
+    },
+    "./StripeView": {
+      "import": "./StripeView.jsx",
+      "default": "./StripeView.jsx"
+    },
+    "./TabBar": {
+      "import": "./TabBar.jsx",
+      "default": "./TabBar.jsx"
+    },
+    "./TextView": {
+      "import": "./TextView.jsx",
+      "default": "./TextView.jsx"
+    },
+    "./Utilities": {
+      "import": "./Utilities.js",
+      "default": "./Utilities.js"
+    }
   },
   "scripts": {
     "prod": "npm publish"
