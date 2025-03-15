@@ -1,8 +1,22 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
+  "exports": {
+    "./AppSidebar": "./src/AppSidebar.jsx",
+    "./Header": "./src/Header.jsx",
+    "./LandingView": "./src/LandingView.jsx",
+    "./Layout": "./src/Layout.jsx",
+    "./NotFound": "./src/NotFound.jsx",
+    "./SettingsView": "./src/SettingsView.jsx",
+    "./Sheet": "./src/Sheet.jsx",
+    "./SignInView": "./src/SignInView.jsx",
+    "./SignUpView": "./src/SignUpView.jsx",
+    "./StripeView": "./src/StripeView.jsx",
+    "./TabBar": "./src/TabBar.jsx",
+    "./TextView": "./src/TextView.jsx"
+  },
   "scripts": {
     "prod": "npm publish"
   },

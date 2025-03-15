@@ -21,7 +21,7 @@ const DynamicIconFallback = ({ name, size = 24, ...props }) => {
 // Use this if your DynamicIcon import isn't working
 const DynamicIconComponent = DynamicIcon || DynamicIconFallback;
 
-export function AppSidebar() {
+export default function AppSidebar() {
   const { open, setOpen } = useSidebar();
   const navigate = useNavigate();
   const location = useLocation();
