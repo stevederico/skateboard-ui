@@ -1,17 +1,18 @@
-import { cn } from "@/shadcn/ui/lib/utils"
-import { Button } from "@/shadcn/ui/components/ui/button"
+import { cn } from "./shadcn/ui/lib/utils"
+import { Button } from "./shadcn/ui/components/ui/button"
 import {
   Card,
   CardContent,
   CardHeader,
-} from "@/shadcn/ui/components/ui/card"
-import { Input } from "@/shadcn/ui/components/ui/input"
-import { Label } from "@/shadcn/ui/components/ui/label"
+} from "./shadcn/ui/components/ui/card"
+import { Input } from "./shadcn/ui/components/ui/input"
+import { Label } from "./shadcn/ui/components/ui/label"
 import { DynamicIcon } from "lucide-react/dynamic";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import constants from "@/constants.json";
 import { getState } from '@/context.jsx';
+
 export default function LoginForm({
   className,
   ...props

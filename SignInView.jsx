@@ -1,14 +1,14 @@
-import { cn } from "@/shadcn/ui/lib/utils"
-import { Button } from "@/shadcn/ui/components/ui/button"
+import { cn } from "./shadcn/ui/lib/utils"
+import { Button } from "./shadcn/ui/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/shadcn/ui/components/ui/card"
-import { Input } from "@/shadcn/ui/components/ui/input"
-import { Label } from "@/shadcn/ui/components/ui/label"
+} from "./shadcn/ui/components/ui/card"
+import { Input } from "./shadcn/ui/components/ui/input"
+import { Label } from "./shadcn/ui/components/ui/label"
 import { DynamicIcon } from "lucide-react/dynamic";
 
 import { useState } from 'react';
