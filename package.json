@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -80,7 +80,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "peerDependencies": {
-    "react": "^19.0.0-beta",
-    "react-dom": "^19.0.0-beta"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
