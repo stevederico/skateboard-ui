@@ -1,21 +1,21 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "exports": {
-    "./AppSidebar": "./src/AppSidebar.jsx",
-    "./Header": "./src/Header.jsx",
-    "./LandingView": "./src/LandingView.jsx",
-    "./Layout": "./src/Layout.jsx",
-    "./NotFound": "./src/NotFound.jsx",
-    "./SettingsView": "./src/SettingsView.jsx",
-    "./Sheet": "./src/Sheet.jsx",
-    "./SignInView": "./src/SignInView.jsx",
-    "./SignUpView": "./src/SignUpView.jsx",
-    "./StripeView": "./src/StripeView.jsx",
-    "./TabBar": "./src/TabBar.jsx",
-    "./TextView": "./src/TextView.jsx"
+    "./AppSidebar": "./AppSidebar.jsx",
+    "./Header": ".//Header.jsx",
+    "./LandingView": "./LandingView.jsx",
+    "./Layout": "./Layout.jsx",
+    "./NotFound": "./NotFound.jsx",
+    "./SettingsView": "./SettingsView.jsx",
+    "./Sheet": "./Sheet.jsx",
+    "./SignInView": "./SignInView.jsx",
+    "./SignUpView": "./SignUpView.jsx",
+    "./StripeView": "./StripeView.jsx",
+    "./TabBar": "./TabBar.jsx",
+    "./TextView": "./TextView.jsx"
   },
   "scripts": {
     "prod": "npm publish"
