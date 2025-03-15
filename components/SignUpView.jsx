@@ -1,12 +1,12 @@
-import { cn } from "../shadcn/ui/lib/utils"
-import { Button } from "../shadcn/ui/button"
+import { cn } from "@/shadcn/ui/lib/utils"
+import { Button } from "@/shadcn/ui/components/ui/button"
 import {
   Card,
   CardContent,
   CardHeader,
-} from "../shadcn/ui/card"
-import { Input } from "../shadcn/ui/input"
-import { Label } from "../shadcn/ui/label"
+} from "@/shadcn/ui/components/ui/card"
+import { Input } from "@/shadcn/ui/components/ui/input"
+import { Label } from "@/shadcn/ui/components/ui/label"
 import { DynamicIcon } from "lucide-react/dynamic";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -25,9 +25,9 @@ export default function LoginForm({
 
   async function signUpClicked() {
     try {
-      console.log(`${constants.backendURL}/signup`);
+      console.log(`${getBackendURL()}/signup`);
       console.log(`name: ${name}`);
-      const response = await fetch(`${constants.backendURL}/signup`, {
+      const response = await fetch(`${getBackendURL()}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name })
