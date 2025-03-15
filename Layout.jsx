@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import TabBar from './TabBar.jsx'
-import { SidebarProvider, SidebarTrigger } from "@/shadcn/ui/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "./shadcn/ui/sidebar"
 import AppSidebar from "./AppSidebar"
 import { useEffect } from 'react';
 
