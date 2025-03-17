@@ -11,10 +11,6 @@ export default function SettingsView() {
   const navigate = useNavigate();
   const { state, dispatch } = getState();
 
-  useEffect(() => {
-    // let a = isAppMode()
-  }, []);
-
   function signOutClicked() {
     dispatch({ type: 'CLEAR_USER', payload: null });
     navigate('/signin');
