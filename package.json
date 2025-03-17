@@ -55,7 +55,8 @@
     "./Utilities": {
       "import": "./Utilities.js",
       "default": "./Utilities.js"
-    }
+    },
+    "./shadcn/ui/*": "./shadcn/ui/*.jsx"
   },
   "scripts": {
     "prod": "npm publish"
