@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetClose,
-} from "@/components/ui/sheet"
+} from "./shadcn/ui/sheet"
 
 const MySheet = forwardRef(function MySheet(props, ref) {
   const { triggerText, title, description, children, showCloseButton } = props;
