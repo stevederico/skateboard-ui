@@ -44,9 +44,7 @@ export default function LoginForm({
 
       if (response.ok) {
         const data = await response.json();
-        const expireDate = new Date();
-        expireDate.setTime(expireDate.getTime() + 24 * 60 * 60 * 1000);
-        document.cookie = `token=${data.token}; path=/; expires=${expireDate.toUTCString()}; Secure; SameSite=Strict;`;
+        document.cookie = `token=${data.token}; path=/; Secure; SameSite=Strict;`;
         delete data.token;
         dispatch({ type: 'SET_USER', payload: data });
         navigate('/app');
