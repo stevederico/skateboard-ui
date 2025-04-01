@@ -20,9 +20,9 @@ const MySheet = forwardRef(function MySheet(props, ref) {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="bg-background w-full" side="bottom">
+      <SheetContent className="bg-background w-full overflow-y-auto" side="bottom">
         <SheetHeader className={"mb-0"}>
-          {title && <SheetTitle>{title}</SheetTitle>}
+          <SheetTitle>{title}</SheetTitle>
         </SheetHeader>
         <span className="mx-4 mb-4">{children}</span>
 

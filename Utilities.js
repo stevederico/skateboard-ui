@@ -22,6 +22,11 @@ export function isAppMode() {
 }
 
 export async function getCurrentUser() {
+
+    if (constants.noLogin == true) {
+        return {}
+    }
+
     const token = getCookie('token');
     if (!token) {
         console.error('No token found in cookie');
@@ -50,6 +55,9 @@ export async function getCurrentUser() {
 }
 
 export async function isSubscriber() {
+    if (constants.noLogin == true) {
+        return false
+    }
     const token = getCookie('token');
     if (!token) {
         console.error('No token found in cookie');
