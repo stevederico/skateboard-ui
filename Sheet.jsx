@@ -7,7 +7,7 @@ import {
 } from "./shadcn/ui/sheet"
 
 const MySheet = forwardRef(function MySheet(props, ref) {
-  const { title = "", children } = props;
+  const { title = "", minHeight = "auto", children } = props;
   const [isOpen, setIsOpen] = useState(false);
   
   useImperativeHandle(ref, () => ({
@@ -20,7 +20,7 @@ const MySheet = forwardRef(function MySheet(props, ref) {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="bg-background w-full overflow-y-auto" side="bottom">
+      <SheetContent className="bg-background w-full overflow-y-auto" side="bottom" style={{ minHeight }}>
         <SheetHeader className={"mb-0"}>
           <SheetTitle>{title}</SheetTitle>
         </SheetHeader>
