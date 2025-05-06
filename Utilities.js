@@ -139,7 +139,7 @@ export async function showCheckout(email, productIndex = 0) {
 
 
         const params = {
-            lookup_key: constants.default.stripeProducts[productIndex].lookup_key,
+            lookup_key: constants.stripeProducts[productIndex].lookup_key,
             email: email
         };
 
@@ -149,7 +149,6 @@ export async function showCheckout(email, productIndex = 0) {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-
             },
             body: JSON.stringify(params),
         });
