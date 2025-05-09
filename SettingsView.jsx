@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DynamicIcon } from "lucide-react/dynamic";
 import constants from "@/constants.json";
 import pkg from '@package';
-import { showCheckout, isAppMode } from './Utilities';
+import { showCheckout } from './Utilities';
 import Header from './Header.jsx';
 
 export default function SettingsView() {
@@ -78,14 +78,14 @@ export default function SettingsView() {
                   }
                 </div>
               </div>
-              {isAppMode() === false &&
+              
                 <div className="ml-auto">
                   {state.user?.stripeID ? (
                     <div onClick={() => { showManage(state.user?.stripeID) }} className="bg-sidebar-background border-foreground border ml-2 px-3 py-2 rounded text-sm whitespace-nowrap cursor-pointer text-center">Manage</div>
                   ) : (
                     <div onClick={() => { showCheckout(state.user?.email) }} className="bg-app text-white border-app border ml-2 px-3 py-2 rounded text-sm whitespace-nowrap cursor-pointer">Subscribe</div>
                   )}
-                </div>}
+                </div>
 
             </div>
           </div>

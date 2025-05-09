@@ -5,3 +5,5 @@
 0.3.9
 - fixed stripe showCheckout
 0.4.0
+- fixed subscribe on Settings
+0.4.1
