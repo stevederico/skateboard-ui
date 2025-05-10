@@ -32,7 +32,8 @@ export default function SettingsView() {
 
       {/* Main content */}
       <div className="flex flex-col flex-1 items-center p-4 gap-6">
-        {/* PROFILE */}
+               {(constants.noLogin == false  || typeof constants.noLogin === 'undefined') && (
+
         <div className="w-full bg-accent p-6 rounded flex items-center justify-between">
           <div className="w-10 h-10 bg-app dark:text-black text-white flex justify-center items-center rounded-full">
             <span className="uppercase">{state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}</span>
@@ -47,6 +48,7 @@ export default function SettingsView() {
             }}>Sign Out</button>
           </div>
         </div>
+               )}
 
         {/* SUPPORT */}
         <div className="flex gap-6 w-full">
@@ -64,21 +66,22 @@ export default function SettingsView() {
         </div>
 
         {/* BILLING */}
-        <div className="flex gap-6 mb-10 w-full">
-          <div className="bg-accent p-6 rounded flex-1">
-            <div className="flex items-center">
-              <div>
-                <div className="mb-2 font-medium">Billing</div>
-                <div className="text-sm text-gray-500">
-                  {state.user?.subStatus === null || typeof state.user?.subStatus === 'undefined'
-                    ? "Your plan is free"
-                    : ["active", "canceled"].includes(state.user?.subStatus)
-                      ? `Your plan ${state.user?.subStatus === "active" ? "renews" : "ends"} ${new Date(state.user.expires * 1000).toLocaleDateString('en-US')}`
-                      : `Your plan is ${state.user?.subStatus}`
-                  }
+        {(constants.noLogin == false  || typeof constants.noLogin === 'undefined') && (
+          <div className="flex gap-6 mb-10 w-full">
+            <div className="bg-accent p-6 rounded flex-1">
+              <div className="flex items-center">
+                <div>
+                  <div className="mb-2 font-medium">Billing</div>
+                  <div className="text-sm text-gray-500">
+                    {state.user?.subStatus === null || typeof state.user?.subStatus === 'undefined'
+                      ? "Your plan is free"
+                      : ["active", "canceled"].includes(state.user?.subStatus)
+                        ? `Your plan ${state.user?.subStatus === "active" ? "renews" : "ends"} ${new Date(state.user.expires * 1000).toLocaleDateString('en-US')}`
+                        : `Your plan is ${state.user?.subStatus}`
+                    }
+                  </div>
                 </div>
-              </div>
-              
+
                 <div className="ml-auto">
                   {state.user?.stripeID ? (
                     <div onClick={() => { showManage(state.user?.stripeID) }} className="bg-sidebar-background border-foreground border ml-2 px-3 py-2 rounded text-sm whitespace-nowrap cursor-pointer text-center">Manage</div>
@@ -87,9 +90,10 @@ export default function SettingsView() {
                   )}
                 </div>
 
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Footer Links */}
