@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import constants from "@/constants.json";
-import { DynamicIcon } from "lucide-react/dynamic"; // Verify this import
+import { DynamicIcon } from "@stevederico/lucide-react/dynamic"; // Verify this import
 import {
   Sidebar,
   SidebarContent,
@@ -12,14 +12,15 @@ import {
 } from "./shadcn/ui/sidebar";
 
 // Fallback DynamicIcon implementation if not already defined
-const DynamicIconFallback = ({ name, size = 24, ...props }) => {
-  const icons = require('lucide-react');
-  const IconComponent = icons[name];
-  return IconComponent ? <IconComponent size={size} {...props} /> : null;
-};
+// const DynamicIconFallback = ({ name, size = 24, ...props }) => {
+//   const icons = require('@stevederico/lucide-react');
+//   const IconComponent = icons[name];
+//   return IconComponent ? <IconComponent size={size} {...props} /> : null;
+// };
 
 // Use this if your DynamicIcon import isn't working
-const DynamicIconComponent = DynamicIcon || DynamicIconFallback;
+// const DynamicIconComponent = DynamicIcon || DynamicIconFallback;
+const DynamicIconComponent = DynamicIcon
 
 export default function AppSidebar() {
   const { open, setOpen } = useSidebar();

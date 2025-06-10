@@ -1,6 +1,6 @@
 import constants from "@/constants.json";
 import { Link, useLocation } from 'react-router-dom';
-import { DynamicIcon } from 'lucide-react/dynamic';
+import { DynamicIcon } from "@stevederico/lucide-react/dynamic"; // Verify this import
 
 export default function TabBar() {
   const location = useLocation();

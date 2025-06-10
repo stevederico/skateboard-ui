@@ -1,6 +1,7 @@
 import constants from "@/constants.json";
 
-import { DynamicIcon } from "lucide-react/dynamic";
+import { DynamicIcon } from "@stevederico/lucide-react/dynamic"; // Verify this import
+
 export default function LandingView() {
   return (
     <div className="flex flex-col bg-white h-screen">
