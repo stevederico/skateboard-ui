@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { getState } from '@/context.jsx';
 import { useEffect, useState } from 'react';
-import { DynamicIcon } from "@stevederico/lucide-react/dynamic"; // Verify this import
+import { DynamicIcon } from "./lucide-react/dynamic"; // Verify this import
 import constants from "@/constants.json";
 import pkg from '@package';
 import { showCheckout } from './Utilities';

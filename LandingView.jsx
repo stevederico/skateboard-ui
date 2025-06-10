@@ -1,6 +1,6 @@
 import constants from "@/constants.json";
 
-import { DynamicIcon } from "@stevederico/lucide-react/dynamic"; // Verify this import
+import { DynamicIcon } from "./lucide-react/dynamic"; // Verify this import
 
 export default function LandingView() {
   return (

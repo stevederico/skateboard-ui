@@ -9,7 +9,7 @@ import {
 } from "./shadcn/ui/card"
 import { Input } from "./shadcn/ui/input"
 import { Label } from "./shadcn/ui/label"
-import { DynamicIcon } from "@stevederico/lucide-react/dynamic"; // Verify this import
+import { DynamicIcon } from "./lucide-react/dynamic"; // Verify this import
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
