@@ -1,6 +1,6 @@
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import { X } from "../../lucide-react/dist/esm/lucide-react.js"
 
 
 import { cn } from "../lib/utils"
