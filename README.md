@@ -1,8 +1,9 @@
 # skateboard-ui
 
-skateboard-ui is the component library for the @stevederico/skateboard react boilerplate. 
+skateboard-ui is the component library with custom components made with tailwindCSS & shadcn/ui 
 
-
+0.5.1
+* import fixes
 0.5.0
 * added lucide-react
 0.4.2
