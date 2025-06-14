@@ -61,9 +61,10 @@
   "scripts": {
     "prod": "npm publish"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
+ "publishConfig": {
+  "access": "public",
+  "registry": "https://registry.npmjs.org/"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stevederico/skateboard-ui.git"

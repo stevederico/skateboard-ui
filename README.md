@@ -1,6 +1,6 @@
 # skateboard-ui
 
-skateboard-ui is the component library for the @stevederico/skatebaord react boilerplate. 
+skateboard-ui is the component library for the @stevederico/skateboard react boilerplate. 
 
 
 0.5.0
