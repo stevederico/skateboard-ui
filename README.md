@@ -1,6 +1,10 @@
 # skateboard-ui
 
+skateboard-ui is the component library for the @stevederico/skatebaord react boilerplate. 
 
+
+0.5.0
+* added lucide-react
 0.4.2
 * removed sign out and billing from noLogin apps
 0.4.1
