@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarTrigger } from "./shadcn/ui/sidebar"
 import AppSidebar from "./AppSidebar"
 import { useEffect } from 'react';
 
+
 export default function Layout({ children }) {
 
   useEffect(() => {
