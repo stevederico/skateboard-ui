@@ -80,22 +80,6 @@ export default function AppSidebar() {
         <ul className={`flex flex-col gap-1  ${open ? "" : "items-center"}`}>
           <li>
             <div
-              className={`cursor-pointer flex w-full p-2 ${open ? "h-10" : "h-10 w-8"}`}
-              onClick={() => setOpen(!open)}
-            >
-              <span className="flex w-full items-center">
-                <DynamicIconComponent
-                  name="panel-left-close"
-                  size={18}
-                  strokeWidth={1.5}
-                  className={"!size-5"}
-                />
-                {open && <span className="ml-2 text-sm">Collapse</span>}
-              </span>
-            </div>
-          </li>
-          <li>
-            <div
               className={`cursor-pointer items-center rounded-lg flex w-full p-2 ${open ? "h-10" : "h-10 w-8"} 
               ${location.pathname.toLowerCase().includes("settings") ? "bg-sidebar-accent text-sidebar-accent-foreground" : "hover:bg-sidebar-accent  hover:text-sidebar-accent-foreground"}`}
               onClick={() => handleNavigation("/app/settings")}
