@@ -1,15 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import constants from "@/constants.json";
-import * as LucideIcons from "lucide-react";
-
-// Dynamic Icon Component
-const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
-  const toPascalCase = (str) => str.split(/[-_\s]/).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
-  const possibleNames = [name, toPascalCase(name), name.charAt(0).toUpperCase() + name.slice(1)];
-  const LucideIcon = possibleNames.find(n => LucideIcons[n]) ? LucideIcons[possibleNames.find(n => LucideIcons[n])] : null;
-  return LucideIcon ? React.createElement(LucideIcon, { size, color, strokeWidth, ...props }) : null;
-};
+import DynamicIcon from "./DynamicIcon.jsx";
 import {
   Sidebar,
   SidebarContent,
@@ -78,6 +70,14 @@ export default function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <ul className={`flex flex-col gap-1  ${open ? "" : "items-center"}`}>
+          <li>
+            <div
+              className={`cursor-pointer flex w-full p-2 ${open ? "h-10" : "h-10 w-8"}`}
+              onClick={() => setOpen(!open)}
+            >
+         
+            </div>
+          </li>
           <li>
             <div
               className={`cursor-pointer items-center rounded-lg flex w-full p-2 ${open ? "h-10" : "h-10 w-8"} 
