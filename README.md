@@ -1,7 +1,8 @@
 # skateboard-ui
 
 skateboard-ui is the component library with custom components made with tailwindCSS & shadcn/ui 
-
+0.5.9
+* sidebar adjustment
 0.5.8
 * removed collapse button from sidebar, double click border to open and close
 0.5.1
