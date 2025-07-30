@@ -1,6 +1,8 @@
 # skateboard-ui
 
 skateboard-ui is the component library with custom components made with tailwindCSS & shadcn/ui 
+0.6.0
+* added dynamicIcon
 0.5.9
 * sidebar adjustment
 0.5.8
