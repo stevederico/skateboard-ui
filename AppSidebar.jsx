@@ -38,7 +38,7 @@ export default function AppSidebar() {
     <Sidebar collapsible="icon" className="min-w-[40px]">
       <SidebarHeader className="p-0">
         <SidebarMenu>
-          <div className={`flex flex-row m-2 mt-8 mb-8 items-center  ${open ? "ml-4" : "justify-center ml-2"}`}>
+          <div className={`flex flex-row m-2 mt-4 mb-4 items-center  ${open ? "ml-4" : "justify-center ml-2"}`}>
             <div className="bg-app dark:border rounded-lg flex aspect-square size-10 items-center justify-center">
               <DynamicIconComponent
                 name={constants.appIcon}
