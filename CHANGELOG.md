@@ -1,5 +1,9 @@
 # CHANGELOG
 
+0.6.3
+
+  Update dependencies
+
 0.6.2
 header size
 0.6.1
