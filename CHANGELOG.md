@@ -1,5 +1,7 @@
 # CHANGELOG
 
+0.6.2
+header size
 0.6.1
 sidebar adjustment
 0.6.0
