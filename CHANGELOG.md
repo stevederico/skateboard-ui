@@ -1,5 +1,11 @@
 # CHANGELOG
 
+0.7.0
+
+  Update shadcn components
+  Add missing components
+  Fix dependency conflicts
+
 0.6.3
 
   Update dependencies
