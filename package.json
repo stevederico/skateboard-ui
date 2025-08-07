@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.7.0",
+  "version": "0.7.1",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -60,7 +60,15 @@
       "import": "./Utilities.js",
       "default": "./Utilities.js"
     },
-    "./shadcn/ui/*": "./shadcn/ui/*.jsx"
+    "./shadcn/ui/*": "./shadcn/ui/*.jsx",
+    "./shadcn/lib/utils": {
+      "import": "./shadcn/lib/utils.js",
+      "default": "./shadcn/lib/utils.js"
+    },
+    "./shadcn/hooks/use-mobile": {
+      "import": "./shadcn/hooks/use-mobile.js",
+      "default": "./shadcn/hooks/use-mobile.js"
+    }
   },
   "scripts": {
     "prod": "npm publish"
