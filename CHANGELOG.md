@@ -1,5 +1,11 @@
 # CHANGELOG
 
+0.7.1
+
+  Fix import paths
+  Add utils exports
+  Update component imports
+
 0.7.0
 
   Update shadcn components
