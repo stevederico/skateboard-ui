@@ -1,5 +1,12 @@
 # CHANGELOG
 
+0.7.4
+
+  Enhanced landing page design
+  Add dark mode toggle
+  Implement modern hero section
+  Add features pricing sections
+
 0.7.3
  auth improvements
 
