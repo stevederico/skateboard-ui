@@ -1,5 +1,9 @@
 # CHANGELOG
 
+0.7.6
+
+  Reduce sidebar width
+
 0.7.5
 
   Use constants for features
