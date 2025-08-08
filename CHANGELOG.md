@@ -1,5 +1,11 @@
 # CHANGELOG
 
+0.7.5
+
+  Use constants for features
+  Update pricing section text
+  Simplify feature rendering
+
 0.7.4
 
   Enhanced landing page design
