@@ -14,7 +14,6 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
 import constants from "@/constants.json";
 import pkg from '@package';
 import { showCheckout } from './Utilities';
-import Header from './Header.jsx';
 
 export default function SettingsView() {
   const navigate = useNavigate();
@@ -28,13 +27,9 @@ export default function SettingsView() {
   return (
     <div className="h-full min-h-screen flex flex-col">
       {/* Navbar */}
-      <div className="flex w-full items-center">
-        <Header
-          buttonClass=""
-          title={"Settings"}
-        >
-        </Header>
-        <div className="ml-auto mr-5 pt-1">
+      <div className="flex w-full items-center bg-background pb-4 pt-5 px-4 border-b">
+        <span className="font-semibold text-2xl">Settings</span>
+        <div className="ml-auto">
           <ThemeToggle />
         </div>
       </div>

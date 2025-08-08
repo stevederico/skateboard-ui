@@ -1,5 +1,10 @@
 # CHANGELOG
 
+0.7.9
+
+  Remove header component
+  Simplify settings layout
+
 0.7.8
 
   Update accent classes
