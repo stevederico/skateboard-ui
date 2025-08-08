@@ -28,7 +28,7 @@ export default function SettingsView() {
   return (
     <div className="h-full min-h-screen flex flex-col">
       {/* Navbar */}
-      <div className="flex border-b w-full items-center">
+      <div className="flex w-full items-center">
         <Header
           buttonClass=""
           title={"Settings"}
