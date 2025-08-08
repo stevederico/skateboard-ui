@@ -1,5 +1,9 @@
 # CHANGELOG
 
+0.7.7
+
+  Override sidebar width
+
 0.7.6
 
   Reduce sidebar width

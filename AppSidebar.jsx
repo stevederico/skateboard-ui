@@ -27,7 +27,11 @@ export default function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="min-w-[40px]">
+    <Sidebar 
+      collapsible="icon" 
+      className="min-w-[40px]"
+      style={{ '--sidebar-width': '12rem' }}
+    >
       <SidebarHeader className="p-0">
         <SidebarMenu>
           <div className={`flex flex-row m-2 mt-4 mb-4 items-center  ${open ? "ml-3" : "justify-center ml-2"}`}>
