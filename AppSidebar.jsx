@@ -54,7 +54,7 @@ export default function AppSidebar() {
             return (
               <li key={item.title}>
                 <div
-                  className={`cursor-pointer items-center flex w-full p-2 rounded-lg ${open ? "h-10" : "h-10 w-8"} ${isActive ? "bg-sidebar-accent text-sidebar-accent-foreground" : "hover:bg-sidebar-accent  hover:text-sidebar-accent-foreground"}`}
+                  className={`cursor-pointer items-center flex w-full p-2 rounded-lg ${open ? "h-10" : "h-10 w-8"} ${isActive ? "bg-accent text-accent-foreground" : "hover:bg-accent  hover:text-accent-foreground"}`}
                   onClick={() => handleNavigation(`/app/${item.url.toLowerCase()}`)}
                 >
                   <span className="flex  w-full">
@@ -85,7 +85,7 @@ export default function AppSidebar() {
           <li>
             <div
               className={`cursor-pointer items-center rounded-lg flex w-full p-2 ${open ? "h-10" : "h-10 w-8"} 
-              ${location.pathname.toLowerCase().includes("settings") ? "bg-sidebar-accent text-sidebar-accent-foreground" : "hover:bg-sidebar-accent  hover:text-sidebar-accent-foreground"}`}
+              ${location.pathname.toLowerCase().includes("settings") ? "bg-accent text-accent-foreground" : "hover:bg-accent  hover:text-accent-foreground"}`}
               onClick={() => handleNavigation("/app/settings")}
             >
               <span className="flex  w-full items-center">

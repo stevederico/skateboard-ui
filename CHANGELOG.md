@@ -1,5 +1,10 @@
 # CHANGELOG
 
+0.7.8
+
+  Update accent classes
+  Remove header border
+
 0.7.7
 
   Override sidebar width
