@@ -50,8 +50,10 @@ export default function LoginForm({
         const expireDate = new Date();
         expireDate.setTime(expireDate.getTime() + 24 * 60 * 60 * 1000);
         const tokenValue = encodeURIComponent(data.token);
-        const hostname = window.location.hostname; 
-        document.cookie = `token=${tokenValue}; path=/; domain=${hostname}; expires=${expireDate.toUTCString()}`;
+        const hostname = window.location.hostname;
+        const appName = constants.appName || 'skateboard';
+        const cookieName = `${appName.toLowerCase().replace(/\s+/g, '-')}_token`;
+        document.cookie = `${cookieName}=${tokenValue}; path=/; domain=${hostname}; expires=${expireDate.toUTCString()}`;
         
         delete data.token
         dispatch({ type: 'SET_USER', payload: data });

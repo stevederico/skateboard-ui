@@ -1,8 +1,15 @@
 import constants from "@/constants.json";
 
 export function getCookie(name) {
+    // For token cookies, use app-specific name
+    let cookieName = name;
+    if (name === 'token') {
+        const appName = constants.appName || 'skateboard';
+        cookieName = `${appName.toLowerCase().replace(/\s+/g, '-')}_token`;
+    }
+    
     const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
+    const parts = value.split(`; ${cookieName}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
     return null;
 }
