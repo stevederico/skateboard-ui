@@ -1,6 +1,6 @@
 # CHANGELOG
 
-0.7.2
+0.7.3
  auth improvements
 
 0.7.1
