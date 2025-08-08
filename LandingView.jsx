@@ -277,27 +277,17 @@ export default function LandingView() {
         {/* Features Section */}
         <section id="features" className="bg-slate-100 dark:bg-gray-800 py-12 md:py-20 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">Everything You Need</h2>
+            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">{constants.features.title}</h2>
             
             {/* Feature Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg text-center transition-colors duration-300">
-                <div className="text-4xl mb-6">🔐</div>
-                <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Authentication</h3>
-                <p className="text-gray-600 dark:text-gray-300">Complete user management with JWT tokens and secure sessions</p>
-              </div>
-              
-              <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg text-center transition-colors duration-300">
-                <div className="text-4xl mb-6">💳</div>
-                <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Stripe Payments</h3>
-                <p className="text-gray-600 dark:text-gray-300">Ready-to-use checkout flows and subscription management</p>
-              </div>
-              
-              <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg text-center transition-colors duration-300">
-                <div className="text-4xl mb-6">🎨</div>
-                <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Beautiful UI</h3>
-                <p className="text-gray-600 dark:text-gray-300">50+ Shadcn components with dark mode support</p>
-              </div>
+              {constants.features.items.map((feature, index) => (
+                <div key={index} className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg text-center transition-colors duration-300">
+                  <div className="text-4xl mb-6">{feature.icon}</div>
+                  <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -313,7 +303,7 @@ export default function LandingView() {
           }}
         >
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">Simple Pricing</h2>
+            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">Pricing</h2>
             <div className="max-w-md mx-auto">
               <div 
                 className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg border-2 transition-colors duration-300"
@@ -331,20 +321,16 @@ export default function LandingView() {
                   >{constants.stripeProducts[0]?.price || '$5.00'}</div>
                   <p className="text-gray-600 dark:text-gray-300 mb-8">per month</p>
                   <ul className="text-left space-y-4 mb-8">
+                    {constants.features.items.map((feature, index) => (
+                      <li key={index} className="flex items-center">
+                        ✅ {feature.title}
+                      </li>
+                    ))}
                     <li className="flex items-center">
-                      ✅ Full source code access
+                      ✅ Priority Customer Support
                     </li>
                     <li className="flex items-center">
-                      ✅ Authentication system
-                    </li>
-                    <li className="flex items-center">
-                      ✅ Stripe integration
-                    </li>
-                    <li className="flex items-center">
-                      ✅ 50+ UI components
-                    </li>
-                    <li className="flex items-center">
-                      ✅ Free updates
+                      ✅ Cancel anytime
                     </li>
                   </ul>
                   <button 
