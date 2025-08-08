@@ -53,7 +53,9 @@ export default function LoginForm({
 
       if (response.ok) {
         const data = await response.json();
-        document.cookie = `token=${data.token}; path=/; Secure; SameSite=Strict; expires=${new Date(data.tokenExpires * 1000).toUTCString()}`;
+        const appName = constants.appName || 'skateboard';
+        const cookieName = `${appName.toLowerCase().replace(/\s+/g, '-')}_token`;
+        document.cookie = `${cookieName}=${data.token}; path=/; Secure; SameSite=Strict; expires=${new Date(data.tokenExpires * 1000).toUTCString()}`;
         delete data.token;
         dispatch({ type: 'SET_USER', payload: data });
         navigate('/app');

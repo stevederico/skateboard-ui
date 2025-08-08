@@ -1,5 +1,8 @@
 # CHANGELOG
 
+0.7.2
+ auth improvements
+
 0.7.1
 
   Fix import paths
