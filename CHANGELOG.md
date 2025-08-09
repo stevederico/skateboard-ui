@@ -1,4 +1,6 @@
 # CHANGELOG
+0.8.0
+  more settings improvements
 
 0.7.9
 
