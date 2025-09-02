@@ -1,4 +1,8 @@
 # CHANGELOG
+0.8.2
+
+  Add sheet cursor pointer
+
 0.8.1
 
   Add cursor pointer buttons

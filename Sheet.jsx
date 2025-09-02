@@ -20,7 +20,7 @@ const MySheet = forwardRef(function MySheet(props, ref) {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="bg-background w-full overflow-y-auto" side="bottom" style={{ minHeight }}>
+      <SheetContent className="bg-background w-full overflow-y-auto [&_button]:cursor-pointer [&_[role=button]]:cursor-pointer" side="bottom" style={{ minHeight }}>
         <SheetHeader className={"mb-0"}>
           <SheetTitle>{title}</SheetTitle>
         </SheetHeader>
