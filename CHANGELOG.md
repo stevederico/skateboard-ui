@@ -1,4 +1,8 @@
 # CHANGELOG
+0.8.1
+
+  Add cursor pointer buttons
+
 0.8.0
   more settings improvements
 
