@@ -84,7 +84,7 @@ export default function LandingView() {
           </div>
         </div>
 
-        <style jsx>{`
+        <style>{`
           @keyframes springOutLong {
             0% { 
               opacity: 0;

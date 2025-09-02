@@ -1,4 +1,8 @@
 # CHANGELOG
+0.8.3
+
+  Fix jsx attribute warning
+
 0.8.2
 
   Add sheet cursor pointer
