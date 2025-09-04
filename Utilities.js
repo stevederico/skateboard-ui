@@ -232,7 +232,13 @@ export function trackUsage(action) {
     localStorage.setItem(usageKey, JSON.stringify(usage));
 }
 
-export function showUpgradeSheet() {
+export async function showUpgradeSheet() {
+    // Check if user is already a subscriber
+    const subscriber = await isSubscriber();
+    if (subscriber) {
+        return; // Don't show upgrade sheet for subscribers
+    }
+    
     // Navigate to subscription page
     window.location.href = '/app/stripe';
 }

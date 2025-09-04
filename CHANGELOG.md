@@ -1,4 +1,8 @@
 # CHANGELOG
+0.8.8
+
+  Update Utilities component
+
 0.8.7
 
   Update UpgradeSheet component again
