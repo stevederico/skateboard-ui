@@ -42,27 +42,29 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent className="bg-background w-full overflow-y-auto [&_button]:cursor-pointer [&_[role=button]]:cursor-pointer" side="bottom" style={{ minHeight: "70vh" }}>
-        <div className="h-full flex flex-col px-6 pt-8">
-          <div className="flex flex-col items-center text-center space-y-12 flex-1">
-            
-            {/* Product information */}
-            <div className="space-y-4">
-              <div className="text-8xl font-bold text-app relative">
-                <span className="absolute top-2 -left-2 text-4xl">$</span>{roundedPrice}
+        <div className="h-full flex flex-col">
+          <div className="flex-1 overflow-y-auto px-6 pt-8 pb-32">
+            <div className="flex flex-col items-center text-center space-y-8 md:space-y-16">
+              
+              {/* Product information */}
+              <div className="space-y-4">
+                <div className="text-[8rem] md:text-[14rem] font-bold text-app relative leading-none">
+                  <span className="absolute top-3 -left-2 text-3xl md:top-6 md:-left-6 md:text-5xl">$</span>{roundedPrice}
+                </div>
+                <div className="text-2xl md:text-4xl opacity-70">per month</div>
               </div>
-              <div className="text-xl opacity-70">per month</div>
-            </div>
 
-            {/* Benefits */}
-            <div className="space-y-8">
-              <div className="text-2xl font-semibold">{product.title} Includes:</div>
-              <div className="space-y-6 text-left max-w-xs">
-                {product.features?.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="w-8 h-8 bg-app text-white rounded-full flex items-center justify-center text-lg font-bold">✓</div>
-                    <span className="text-xl">{feature}</span>
-                  </div>
-                ))}
+              {/* Benefits */}
+              <div className="space-y-8">
+                <div className="text-2xl font-semibold">{product.title} Includes:</div>
+                <div className="space-y-6 text-left max-w-xs">
+                  {product.features?.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="w-8 h-8 bg-app text-white rounded-full flex items-center justify-center text-lg font-bold">✓</div>
+                      <span className="text-xl">{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
