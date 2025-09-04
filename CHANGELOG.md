@@ -1,4 +1,8 @@
 # CHANGELOG
+0.8.9
+
+  Update Utilities component again
+
 0.8.8
 
   Update Utilities component
