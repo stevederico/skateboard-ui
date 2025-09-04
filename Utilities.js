@@ -232,15 +232,20 @@ export function trackUsage(action) {
     localStorage.setItem(usageKey, JSON.stringify(usage));
 }
 
-export async function showUpgradeSheet() {
+export async function showUpgradeSheet(upgradeSheetRef) {
     // Check if user is already a subscriber
     const subscriber = await isSubscriber();
     if (subscriber) {
         return; // Don't show upgrade sheet for subscribers
     }
     
-    // Navigate to subscription page
-    window.location.href = '/app/stripe';
+    // Show the upgrade sheet using the ref
+    if (upgradeSheetRef?.current) {
+        upgradeSheetRef.current.show();
+    } else {
+        // Fallback to navigation if ref is not available
+        window.location.href = '/app/stripe';
+    }
 }
 
 export function timestampToString(input, format = "DOB") {
