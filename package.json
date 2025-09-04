@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.8.4",
+  "version": "0.8.5",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -55,6 +55,10 @@
     "./TextView": {
       "import": "./TextView.jsx",
       "default": "./TextView.jsx"
+    },
+    "./UpgradeSheet": {
+      "import": "./UpgradeSheet.jsx",
+      "default": "./UpgradeSheet.jsx"
     },
     "./Utilities": {
       "import": "./Utilities.js",

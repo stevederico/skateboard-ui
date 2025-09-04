@@ -1,4 +1,8 @@
 # CHANGELOG
+0.8.5
+
+  Add UpgradeSheet export
+
 0.8.4
 
   Fix theme initialization bug
