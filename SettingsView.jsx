@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getState } from '@/context.jsx';
 import { useEffect, useState } from 'react';
 import * as LucideIcons from "lucide-react";
+import ThemeToggle from './ThemeToggle.jsx';
 
 // Dynamic Icon Component
 const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
@@ -111,38 +112,3 @@ export default function SettingsView() {
 }
 
 
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light';
-  });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
-  };
-
-  return (
-    <button onClick={toggleTheme} className="cursor-pointer">
-      {theme === 'dark' &&
-        <span className="text-gray-500">
-          <DynamicIcon name={'sun'} size={24} />
-        </span>
-      }
-      {theme !== 'dark' &&
-        <span className="text-gray-500">
-          <DynamicIcon name={'moon'} size={24} />
-        </span>
-      }
-    </button>
-  );
-};

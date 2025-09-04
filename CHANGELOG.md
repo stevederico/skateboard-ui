@@ -1,4 +1,10 @@
 # CHANGELOG
+0.8.4
+
+  Fix theme initialization bug
+  Create shared ThemeToggle component
+  Consolidate duplicate theme storage
+
 0.8.3
 
   Fix jsx attribute warning

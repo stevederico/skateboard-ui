@@ -9,7 +9,13 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    let theme = localStorage.getItem('theme')
+    let theme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (!theme) {
+      theme = systemPrefersDark ? 'dark' : 'light';
+    }
+    
     if (theme === 'dark') {
       root.classList.add('dark');
     } else {
