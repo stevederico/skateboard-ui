@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import constants from "@/constants.json";
 import * as LucideIcons from "lucide-react";
+import ThemeToggle from './ThemeToggle.jsx';
 
 // Dynamic Icon Component
 const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
@@ -17,29 +18,15 @@ export default function LandingView() {
 
   // Initialize dark mode from localStorage or system preference
   useEffect(() => {
-    const savedMode = localStorage.getItem('darkMode');
+    const savedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedMode !== null) {
-      setIsDarkMode(savedMode === 'true');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
     } else {
       setIsDarkMode(systemPrefersDark);
     }
   }, []);
-
-  // Apply dark mode to document
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('darkMode', isDarkMode.toString());
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const renderHeroContent = () => {
     return (
@@ -198,19 +185,7 @@ export default function LandingView() {
           
           <div className="flex gap-3 items-center">
             {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer"
-              aria-label="Toggle dark mode"
-            >
-              <DynamicIcon 
-                name={isDarkMode ? "sun" : "moon"} 
-                size={18} 
-                color="currentColor" 
-                strokeWidth={2}
-                className="text-gray-600 dark:text-gray-300"
-              />
-            </button>
+            <ThemeToggle variant="landing" iconSize={18} />
             
             <button 
               onClick={() => navigate('/app')}
