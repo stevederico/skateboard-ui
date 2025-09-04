@@ -182,6 +182,61 @@ export async function showCheckout(email, productIndex = 0) {
     }
 }
 
+// Usage Limits Configuration
+const FREE_LIMITS = {
+    todos: 3,
+    messages: 10
+};
+
+export async function getRemainingUsage(action) {
+    if (constants.noLogin === true) {
+        return { remaining: -1, total: -1, unlimited: true };
+    }
+
+    try {
+        const subscriber = await isSubscriber();
+        
+        if (subscriber) {
+            return { remaining: -1, total: -1, unlimited: true };
+        }
+
+        // For free users, get current usage from localStorage
+        const appName = constants.appName || 'skateboard';
+        const usageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_usage`;
+        const usage = JSON.parse(localStorage.getItem(usageKey) || '{}');
+        
+        const limit = FREE_LIMITS[action] || 0;
+        const used = usage[action] || 0;
+        const remaining = Math.max(0, limit - used);
+        
+        return {
+            remaining,
+            total: limit,
+            unlimited: false,
+            used
+        };
+    } catch (error) {
+        console.error('Error checking usage:', error);
+        return { remaining: 0, total: 0, unlimited: false };
+    }
+}
+
+export function trackUsage(action) {
+    if (constants.noLogin === true) return;
+
+    const appName = constants.appName || 'skateboard';
+    const usageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_usage`;
+    const usage = JSON.parse(localStorage.getItem(usageKey) || '{}');
+    
+    usage[action] = (usage[action] || 0) + 1;
+    localStorage.setItem(usageKey, JSON.stringify(usage));
+}
+
+export function showUpgradeSheet() {
+    // Navigate to subscription page
+    window.location.href = '/app/stripe';
+}
+
 export function timestampToString(input, format = "DOB") {
 
     let seconds = 0
