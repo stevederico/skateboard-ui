@@ -1,4 +1,8 @@
 # CHANGELOG
+0.9.0
+
+  Export ThemeToggle component
+
 0.8.9
 
   Update Utilities component again
