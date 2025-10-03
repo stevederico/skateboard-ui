@@ -7,11 +7,22 @@ export function getCookie(name) {
         const appName = constants.appName || 'skateboard';
         cookieName = `${appName.toLowerCase().replace(/\s+/g, '-')}_token`;
     }
-    
+
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${cookieName}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
     return null;
+}
+
+function getCSRFToken() {
+    const appName = constants.appName || 'skateboard';
+    const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
+    return localStorage.getItem(csrfKey);
+}
+
+function getAppKey(suffix) {
+    const appName = constants.appName || 'skateboard';
+    return `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
 }
 
 export function getBackendURL() {
@@ -34,18 +45,14 @@ export async function getCurrentUser() {
         return {}
     }
 
-    const token = getCookie('token');
-    if (!token) {
-        console.error('No token found in cookie');
-        return;
-    }
-
     try {
+        const csrfToken = getCSRFToken();
         const response = await fetch(`${getBackendURL()}/me`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
+                ...(csrfToken && { 'X-CSRF-Token': csrfToken })
             },
         });
 
@@ -65,18 +72,15 @@ export async function isSubscriber() {
     if (constants.noLogin == true) {
         return false
     }
-    const token = getCookie('token');
-    if (!token) {
-        console.error('No token found in cookie');
-        return false;
-    }
 
     try {
+        const csrfToken = getCSRFToken();
         const response = await fetch(`${getBackendURL()}/isSubscriber`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
+                ...(csrfToken && { 'X-CSRF-Token': csrfToken })
             },
         });
 
@@ -100,18 +104,15 @@ export async function logEvent(event) {
 }
 
 export async function showManage(stripeID) {
-    const token = getCookie('token');
-    if (!token) {
-        console.error('No token found in cookie');
-        return false;
-    }
     try {
+        const csrfToken = getCSRFToken();
         const uri = `${getBackendURL()}/create-portal-session`;
         const response = await fetch(uri, {
             method: "POST",
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                ...(csrfToken && { 'X-CSRF-Token': csrfToken })
             },
             body: JSON.stringify({ customerID: stripeID }),
         });
@@ -121,7 +122,7 @@ export async function showManage(stripeID) {
             console.log("/create-portal-session response: ", data);
             if (data.url) {
 
-                localStorage.setItem("beforeManageURL", window.location.href);
+                localStorage.setItem(getAppKey("beforeManageURL"), window.location.href);
 
                 window.location.href = data.url; // Redirect to Stripe billing portal
             } else {
@@ -136,14 +137,8 @@ export async function showManage(stripeID) {
 }
 
 export async function showCheckout(email, productIndex = 0) {
-    const token = getCookie('token');
-    if (!token) {
-        console.error('No token found in cookie');
-        return false;
-    }
-
     try {
-
+        const csrfToken = getCSRFToken();
 
         const params = {
             lookup_key: constants.stripeProducts[productIndex].lookup_key,
@@ -153,9 +148,10 @@ export async function showCheckout(email, productIndex = 0) {
         const uri = `${getBackendURL()}/create-checkout-session`;
         const response = await fetch(uri, {
             method: "POST",
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                ...(csrfToken && { 'X-CSRF-Token': csrfToken })
             },
             body: JSON.stringify(params),
         });
@@ -164,7 +160,7 @@ export async function showCheckout(email, productIndex = 0) {
             const data = await response.json();
             if (data.url) {
                 // Save the current URL in localStorage before redirecting
-                localStorage.setItem("beforeCheckoutURL", window.location.href);
+                localStorage.setItem(getAppKey("beforeCheckoutURL"), window.location.href);
                 // Redirect to Stripe Checkout
                 window.location.href = data.url;
                 return true;
