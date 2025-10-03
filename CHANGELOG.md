@@ -1,4 +1,8 @@
 # CHANGELOG
+0.9.5
+
+  Export PaymentView component
+
 0.9.4
 
   Add PaymentView component
