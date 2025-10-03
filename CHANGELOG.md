@@ -1,4 +1,10 @@
 # CHANGELOG
+0.9.3
+
+  Add input autofocus
+  Enhance button styling
+  Improve dark mode
+
 0.9.2
 
   Simplify auth form layout
