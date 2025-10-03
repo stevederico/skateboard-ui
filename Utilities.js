@@ -106,7 +106,7 @@ export async function logEvent(event) {
 export async function showManage(stripeID) {
     try {
         const csrfToken = getCSRFToken();
-        const uri = `${getBackendURL()}/create-portal-session`;
+        const uri = `${getBackendURL()}/portal`;
         const response = await fetch(uri, {
             method: "POST",
             credentials: 'include',
@@ -119,7 +119,7 @@ export async function showManage(stripeID) {
 
         if (response.ok) {
             const data = await response.json();
-            console.log("/create-portal-session response: ", data);
+            console.log("/portal response: ", data);
             if (data.url) {
 
                 localStorage.setItem(getAppKey("beforeManageURL"), window.location.href);
@@ -129,7 +129,7 @@ export async function showManage(stripeID) {
                 console.error("No URL returned from server");
             }
         } else {
-            console.error("Error with /create-portal-session. Status:", response.status);
+            console.error("Error with /portal. Status:", response.status);
         }
     } catch (error) {
         console.error("Request failed:", error);
@@ -145,7 +145,7 @@ export async function showCheckout(email, productIndex = 0) {
             email: email
         };
 
-        const uri = `${getBackendURL()}/create-checkout-session`;
+        const uri = `${getBackendURL()}/checkout`;
         const response = await fetch(uri, {
             method: "POST",
             credentials: 'include',
@@ -161,7 +161,7 @@ export async function showCheckout(email, productIndex = 0) {
             if (data.url) {
                 // Save the current URL in localStorage before redirecting
                 localStorage.setItem(getAppKey("beforeCheckoutURL"), window.location.href);
-                // Redirect to Stripe Checkout
+                // Redirect to payment checkout
                 window.location.href = data.url;
                 return true;
             } else {
@@ -169,7 +169,7 @@ export async function showCheckout(email, productIndex = 0) {
                 return false;
             }
         } else {
-            console.error("Error with /create-checkout-session. Status:", response.status);
+            console.error("Error with /checkout. Status:", response.status);
             return false;
         }
     } catch (error) {
@@ -186,55 +186,85 @@ const FREE_LIMITS = {
 
 export async function getRemainingUsage(action) {
     if (constants.noLogin === true) {
-        return { remaining: -1, total: -1, unlimited: true };
+        return { remaining: -1, total: -1, isSubscriber: true };
     }
 
     try {
-        const subscriber = await isSubscriber();
-        
-        if (subscriber) {
-            return { remaining: -1, total: -1, unlimited: true };
+        const csrfToken = getCSRFToken();
+        const response = await fetch(`${getBackendURL()}/usage`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(csrfToken && { 'X-CSRF-Token': csrfToken })
+            },
+            body: JSON.stringify({ operation: 'check' })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // For free users, get current usage from localStorage
-        const appName = constants.appName || 'skateboard';
-        const usageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_usage`;
-        const usage = JSON.parse(localStorage.getItem(usageKey) || '{}');
-        
-        const limit = FREE_LIMITS[action] || 0;
-        const used = usage[action] || 0;
-        const remaining = Math.max(0, limit - used);
-        
-        return {
-            remaining,
-            total: limit,
-            unlimited: false,
-            used
-        };
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error('Error checking usage:', error);
-        return { remaining: 0, total: 0, unlimited: false };
+        return { remaining: 0, total: 0, isSubscriber: false };
     }
 }
 
-export function trackUsage(action) {
-    if (constants.noLogin === true) return;
+export async function trackUsage(action) {
+    if (constants.noLogin === true) {
+        return { remaining: -1, total: -1, isSubscriber: true };
+    }
 
-    const appName = constants.appName || 'skateboard';
-    const usageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_usage`;
-    const usage = JSON.parse(localStorage.getItem(usageKey) || '{}');
-    
-    usage[action] = (usage[action] || 0) + 1;
-    localStorage.setItem(usageKey, JSON.stringify(usage));
+    try {
+        const csrfToken = getCSRFToken();
+        const response = await fetch(`${getBackendURL()}/usage`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(csrfToken && { 'X-CSRF-Token': csrfToken })
+            },
+            body: JSON.stringify({ operation: 'track' })
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            if (response.status === 429) {
+                // Usage limit reached
+                console.warn('Usage limit reached:', data.error);
+                return data; // Return the usage data even when limit reached
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data; // Return full usage data
+    } catch (error) {
+        console.error('Error tracking usage:', error);
+        return { remaining: 0, total: 0, isSubscriber: false };
+    }
 }
 
 export async function showUpgradeSheet(upgradeSheetRef) {
-    // Check if user is already a subscriber
-    const subscriber = await isSubscriber();
+    // Check subscription from user data in localStorage instead of API call
+    const appName = constants.appName || 'skateboard';
+    const storageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_user`;
+    const storedUser = localStorage.getItem(storageKey);
+
+    let subscriber = false;
+    if (storedUser && storedUser !== "undefined") {
+        const user = JSON.parse(storedUser);
+        subscriber = user?.subscription?.status === 'active' &&
+            (!user?.subscription?.expires || user?.subscription?.expires > Math.floor(Date.now() / 1000));
+    }
+
     if (subscriber) {
         return; // Don't show upgrade sheet for subscribers
     }
-    
+
     // Show the upgrade sheet using the ref
     if (upgradeSheetRef?.current) {
         upgradeSheetRef.current.show();

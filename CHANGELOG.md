@@ -1,4 +1,10 @@
 # CHANGELOG
+0.9.4
+
+  Add PaymentView component
+  Update usage tracking
+  Refactor endpoint paths
+
 0.9.3
 
   Add input autofocus
