@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from '@/context.jsx';
 import { getCurrentUser } from './Utilities.js'
+import constants from "@/constants.json";
 
 export default function SuccessView() {
   const navigate = useNavigate();
@@ -9,40 +10,44 @@ export default function SuccessView() {
   const [searchParams] = useSearchParams(); // Hook to access query params
 
   useEffect(() => {
+    // Get app-specific localStorage keys
+    const appName = constants.appName || 'skateboard';
+    const getAppKey = (suffix) => `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
+
     // Get query parameters
     const success = searchParams.get('success') === 'true';
     const canceled = searchParams.get('canceled') === 'true';
     const portal = searchParams.get('portal') === 'return';
-  
+
     // Default redirect path
     let redirectPath = '/app/home'; // Fallback if no URL is stored
-  
+
     async function getUser() {
       let data = await getCurrentUser();
       dispatch({ type: 'SET_USER', payload: data });
     }
-  
+
     // Handle different cases
     switch (true) {
       case success:
         console.log("Checkout was successful!");
-        redirectPath = localStorage.getItem('beforeCheckoutURL') || redirectPath;
+        redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
         getUser();
         break;
       case canceled:
         console.log("Checkout was canceled!");
-        redirectPath = localStorage.getItem('beforeCheckoutURL') || redirectPath;
+        redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
         break;
       case portal:
         console.log("Returned from billing portal!");
-        redirectPath = localStorage.getItem('beforeManageURL') || redirectPath;
+        redirectPath = localStorage.getItem(getAppKey('beforeManageURL')) || redirectPath;
         break;
       default:
         console.log("No specific query param detected, using default redirect.");
-        redirectPath = localStorage.getItem('beforeCheckoutURL') || redirectPath;
+        redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
         break;
     }
-  
+
     // Normalize redirectPath: Strip any full URL to just the pathname
     if (redirectPath.startsWith('http://') || redirectPath.startsWith('https://')) {
       try {
@@ -53,18 +58,18 @@ export default function SuccessView() {
         redirectPath = '/app/home'; // Fallback to default if parsing fails
       }
     }
-  
+
     // Ensure it starts with a '/'
     if (!redirectPath.startsWith('/')) {
       redirectPath = `/${redirectPath}`;
     }
-  
+
     // Debug the redirectPath
     console.log('Redirecting to path:', redirectPath);
-  
+
     // Clear the stored URLs
-    localStorage.removeItem('beforeCheckoutURL');
-    localStorage.removeItem('beforeManageURL');
+    localStorage.removeItem(getAppKey('beforeCheckoutURL'));
+    localStorage.removeItem(getAppKey('beforeManageURL'));
   
     // Redirect after a delay
     const timeoutId = setTimeout(() => {

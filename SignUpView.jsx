@@ -47,15 +47,13 @@ export default function LoginForm({
       if (response.ok) {
         const data = await response.json();
 
-        const expireDate = new Date();
-        expireDate.setTime(expireDate.getTime() + 24 * 60 * 60 * 1000);
-        const tokenValue = encodeURIComponent(data.token);
-        const hostname = window.location.hostname;
-        const appName = constants.appName || 'skateboard';
-        const cookieName = `${appName.toLowerCase().replace(/\s+/g, '-')}_token`;
-        document.cookie = `${cookieName}=${tokenValue}; path=/; domain=${hostname}; expires=${expireDate.toUTCString()}`;
-        
-        delete data.token
+        // Store CSRF token in localStorage with app-specific key
+        if (data.csrfToken) {
+          const appName = constants.appName || 'skateboard';
+          const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
+          localStorage.setItem(csrfKey, data.csrfToken);
+        }
+
         dispatch({ type: 'SET_USER', payload: data });
         navigate('/app');
       } else {
