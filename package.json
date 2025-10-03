@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.9.4",
+  "version": "0.9.5",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -44,9 +44,9 @@
       "import": "./SignUpView.jsx",
       "default": "./SignUpView.jsx"
     },
-    "./StripeView": {
-      "import": "./StripeView.jsx",
-      "default": "./StripeView.jsx"
+    "./PaymentView": {
+      "import": "./PaymentView.jsx",
+      "default": "./PaymentView.jsx"
     },
     "./TabBar": {
       "import": "./TabBar.jsx",
