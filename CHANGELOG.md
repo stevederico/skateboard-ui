@@ -1,4 +1,7 @@
 # CHANGELOG
+0.9.1
+  updated login token processing
+
 0.9.0
 
   Export ThemeToggle component
