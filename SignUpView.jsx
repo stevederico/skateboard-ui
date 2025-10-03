@@ -67,75 +67,86 @@ export default function LoginForm({
   }
 
   return (
-    (<div className={cn("flex flex-col gap-6 p-4 md:max-w-[50%] mx-auto", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <div className="flex flex-row items-center m-2 mx-auto">
-            <div className="bg-app dark:border rounded-lg flex aspect-square size-10 items-center justify-center">
-              <DynamicIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
-            </div>
-            <div className="font-semibold ml-2 text-4xl">{constants.appName}</div>
-          </div>
-          {errorMessage !== '' && (
-            <div className=" text-red-500 text-center font-semibold  rounded-xl py-2">
-              {errorMessage}
-            </div>
-          )}
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="John Smith" required value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    setErrorMessage('');
-                  }} />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="mcfly@example.com" required value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setErrorMessage('');
-                  }} />
-              </div>
-              <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input id="password" type="password" placeholder="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Button onClick={(e) => { e.preventDefault(); signUpClicked() }} className="w-full cursor-pointer py-6">
-                  Sign Up
-                </Button>
-              </div>
-            </div>
-            <div className="mt-6 text-center text-sm">
-              Already have an account?{" "}
-              <span onClick={(e) => { e.preventDefault(); navigate('/signin'); }} className="underline underline-offset-4 cursor-pointer">
-                Sign In
-              </span>
-            </div>
+    <div className={cn("flex flex-col gap-6 p-4 max-w-lg mx-auto mt-20", className)} {...props}>
+      <div className="flex flex-row items-center justify-center mb-4">
+        <div className="bg-app dark:border rounded-2xl flex aspect-square size-16 items-center justify-center">
+          <DynamicIcon name={constants.appIcon} size={32} color="white" strokeWidth={2} />
+        </div>
+        <div className="font-bold ml-3 text-5xl">{constants.appName}</div>
+      </div>
 
-          </form>
-        </CardContent>
-      </Card>
+      {errorMessage !== '' && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm text-center">
+          {errorMessage}
+        </div>
+      )}
 
-      <div className="mt-6 text-center text-sm">
+      <form className="flex flex-col gap-4">
+        <Input
+          id="name"
+          placeholder="Name"
+          className="py-7 px-4 placeholder:text-gray-400 rounded-lg"
+          style={{ fontSize: '20px' }}
+          required
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            setErrorMessage('');
+          }}
+        />
+
+        <Input
+          id="email"
+          type="email"
+          placeholder="Email"
+          className="py-7 px-4 placeholder:text-gray-400 rounded-lg"
+          style={{ fontSize: '20px' }}
+          required
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setErrorMessage('');
+          }}
+        />
+
+        <Input
+          id="password"
+          type="password"
+          placeholder="Password"
+          className="py-7 px-4 placeholder:text-gray-400 rounded-lg"
+          style={{ fontSize: '20px' }}
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Button
+          onClick={(e) => { e.preventDefault(); signUpClicked() }}
+          className="w-full cursor-pointer py-6 text-base font-medium rounded-lg"
+        >
+          Sign Up
+        </Button>
+
+        <div className="mt-4 text-center text-base">
+          <span className="text-gray-600 italic">Already have an account?</span>{" "}
+          <span onClick={(e) => { e.preventDefault(); navigate('/signin'); }} className="cursor-pointer hover:underline">
+            Sign In
+          </span>
+        </div>
+      </form>
+
+      <div className="mt-6 text-center text-sm max-w-none">
         By registering you agree to our
-        <span onClick={(e) => { e.preventDefault(); navigate('/terms'); }} className="ml-1 underline underline-offset-4 cursor-pointer">
+        <span onClick={(e) => { e.preventDefault(); navigate('/terms'); }} className="ml-1 underline underline-offset-4 cursor-pointer whitespace-nowrap">
           Terms of Service
         </span>,
-        <span onClick={(e) => { e.preventDefault(); navigate('/eula'); }} className="ml-1 underline underline-offset-4 cursor-pointer">
+        <span onClick={(e) => { e.preventDefault(); navigate('/eula'); }} className="ml-1 underline underline-offset-4 cursor-pointer whitespace-nowrap">
           EULA
         </span>,
-        <span onClick={(e) => { e.preventDefault(); navigate('/privacy'); }} className="ml-1 underline underline-offset-4 cursor-pointer">
+        <span onClick={(e) => { e.preventDefault(); navigate('/privacy'); }} className="ml-1 underline underline-offset-4 cursor-pointer whitespace-nowrap">
           Privacy Policy
         </span>
       </div>
-    </div>)
+    </div>
   );
 }

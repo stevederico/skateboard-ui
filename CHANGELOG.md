@@ -1,4 +1,10 @@
 # CHANGELOG
+0.9.2
+
+  Simplify auth form layout
+  Remove card wrapper components
+  Increase input field sizes
+
 0.9.1
   updated login token processing
 
