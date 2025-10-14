@@ -1,4 +1,9 @@
 # CHANGELOG
+0.9.7
+
+  Export getCSRFToken utility
+  Export getAppKey utility
+
 0.9.6
 
   Add SignOutView component
