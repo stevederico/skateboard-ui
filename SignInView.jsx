@@ -55,6 +55,7 @@ export default function LoginForm({
       console.log("URI ", uri)
       const response = await fetch(uri, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });

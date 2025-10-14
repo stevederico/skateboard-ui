@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.9.5",
+  "version": "0.9.6",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -43,6 +43,10 @@
     "./SignUpView": {
       "import": "./SignUpView.jsx",
       "default": "./SignUpView.jsx"
+    },
+    "./SignOutView": {
+      "import": "./SignOutView.jsx",
+      "default": "./SignOutView.jsx"
     },
     "./PaymentView": {
       "import": "./PaymentView.jsx",
