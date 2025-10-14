@@ -1,4 +1,10 @@
 # CHANGELOG
+0.9.6
+
+  Add SignOutView component
+  Fix auth credentials include
+  Remove duplicate StripeView
+
 0.9.5
 
   Export PaymentView component

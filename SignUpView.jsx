@@ -48,6 +48,7 @@ export default function LoginForm({
       console.log(`name: ${name}`);
       const response = await fetch(`${getBackendURL()}/signup`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name })
       });
