@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.9.7",
+  "version": "0.9.8",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -72,6 +72,10 @@
       "import": "./Utilities.js",
       "default": "./Utilities.js"
     },
+    "./ProtectedRoute": {
+      "import": "./ProtectedRoute.jsx",
+      "default": "./ProtectedRoute.jsx"
+    },
     "./shadcn/ui/*": "./shadcn/ui/*.jsx",
     "./shadcn/lib/utils": {
       "import": "./shadcn/lib/utils.js",
@@ -136,7 +140,8 @@
   },
   "peerDependencies": {
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^6.0.0"
   },
   "overrides": {
     "@radix-ui/react-slot": "^1.2.3"

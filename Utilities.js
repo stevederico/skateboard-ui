@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import constants from "@/constants.json";
 
 export function getCookie(name) {
@@ -23,6 +24,14 @@ export function getCSRFToken() {
 export function getAppKey(suffix) {
     const appName = constants.appName || 'skateboard';
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
+}
+
+export function isAuthenticated() {
+    if (constants.noLogin === true) {
+        return true;
+    }
+    const csrfKey = getAppKey('csrf');
+    return Boolean(localStorage.getItem(csrfKey));
 }
 
 export function getBackendURL() {
@@ -373,4 +382,13 @@ export function timestampToString(input, format = "DOB") {
     }
 }
 
+export function useAppSetup(location) {
+    useEffect(() => {
+        document.title = constants.appName;
+        if (!location.pathname.toLowerCase().includes('app')) {
+            document.documentElement.classList.remove('dark');
+            document.body.classList.remove('dark');
+        }
+    }, [location.pathname]);
+}
 

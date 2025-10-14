@@ -45,6 +45,13 @@ import { ThemeToggle } from '@stevederico/skateboard-ui/ThemeToggle'
 ```javascript
 import { cn } from '@stevederico/skateboard-ui/shadcn/lib/utils'
 import { useMobile } from '@stevederico/skateboard-ui/shadcn/hooks/use-mobile'
+import { isAuthenticated, getAppKey, useAppSetup } from '@stevederico/skateboard-ui/Utilities'
+```
+
+## Routing
+
+```javascript
+import ProtectedRoute from '@stevederico/skateboard-ui/ProtectedRoute'
 ```
 
 ## Dependencies
