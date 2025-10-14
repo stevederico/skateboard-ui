@@ -1,4 +1,11 @@
 # CHANGELOG
+0.9.8
+
+  Add ProtectedRoute component
+  Add useAppSetup hook
+  Export isAuthenticated utility
+  Add react-router-dom peer dependency
+
 0.9.7
 
   Export getCSRFToken utility
