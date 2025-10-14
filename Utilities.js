@@ -14,13 +14,13 @@ export function getCookie(name) {
     return null;
 }
 
-function getCSRFToken() {
+export function getCSRFToken() {
     const appName = constants.appName || 'skateboard';
     const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
     return localStorage.getItem(csrfKey);
 }
 
-function getAppKey(suffix) {
+export function getAppKey(suffix) {
     const appName = constants.appName || 'skateboard';
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
 }
