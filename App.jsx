@@ -18,7 +18,7 @@ import PaymentView from './PaymentView.jsx';
 import SettingsView from './SettingsView.jsx';
 import NotFound from './NotFound.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
-import { useAppSetup } from './Utilities.js';
+import { useAppSetup, initializeUtilities } from './Utilities.js';
 import { ContextProvider, getState } from './Context.jsx';
 
 function App({ constants, appRoutes, defaultRoute }) {
@@ -59,6 +59,9 @@ function App({ constants, appRoutes, defaultRoute }) {
 }
 
 export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home' }) {
+  // Initialize utilities with constants
+  initializeUtilities(constants);
+
   const container = document.getElementById('root');
   const root = createRoot(container);
 
