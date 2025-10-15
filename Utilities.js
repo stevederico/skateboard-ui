@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import constants from "@/constants.json";
 
 export function getCookie(name) {
@@ -390,5 +390,440 @@ export function useAppSetup(location) {
             document.body.classList.remove('dark');
         }
     }, [location.pathname]);
+}
+
+// ===== API REQUEST UTILITIES =====
+
+/**
+ * Unified API request utility
+ * Handles credentials, CSRF tokens, 401 redirects, and error handling
+ *
+ * @param {string} endpoint - API endpoint (e.g., '/deals')
+ * @param {RequestInit} options - Fetch options (method, body, headers, etc.)
+ * @returns {Promise<any>} - Parsed JSON response
+ */
+export async function apiRequest(endpoint, options = {}) {
+    const csrfToken = getCSRFToken();
+    const needsCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(
+        (options.method || 'GET').toUpperCase()
+    );
+
+    const response = await fetch(`${getBackendURL()}${endpoint}`, {
+        ...options,
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(needsCSRF && csrfToken && { 'X-CSRF-Token': csrfToken }),
+            ...options.headers
+        }
+    });
+
+    // Handle 401 (redirect to signout)
+    if (response.status === 401) {
+        window.location.href = '/signout';
+        throw new Error('Unauthorized - Redirecting to Sign Out');
+    }
+
+    // Handle other errors
+    if (!response.ok) {
+        throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+}
+
+/**
+ * API request with query parameters
+ *
+ * @param {string} endpoint - API endpoint
+ * @param {object} params - Query parameters
+ * @param {RequestInit} options - Fetch options
+ * @returns {Promise<any>}
+ */
+export async function apiRequestWithParams(endpoint, params = {}, options = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    const url = queryString ? `${endpoint}?${queryString}` : endpoint;
+    return apiRequest(url, options);
+}
+
+// ===== CONSTANTS VALIDATION =====
+
+/**
+ * Validate constants.json has all required fields
+ * @param {object} constants - Constants object to validate
+ * @returns {object} - Same constants if valid
+ * @throws {Error} - If required fields are missing
+ */
+export function validateConstants(constants) {
+    const required = [
+        'appName',
+        'appIcon',
+        'tagline',
+        'cta',
+        'backendURL',
+        'devBackendURL',
+        'features.title',
+        'features.items',
+        'companyName',
+        'companyWebsite',
+        'companyEmail',
+    ];
+
+    const missing = required.filter(key => {
+        const value = key.split('.').reduce((obj, k) => obj?.[k], constants);
+        return !value;
+    });
+
+    if (missing.length > 0) {
+        throw new Error(`Missing required constants: ${missing.join(', ')}`);
+    }
+
+    return constants;
+}
+
+// ===== VITE BUILD CONFIG UTILITIES =====
+// These are used in vite.config.js - they need Node.js imports which only work at build time
+// Import these only in your vite.config.js file
+
+/**
+ * Custom logger plugin for Vite
+ * Shows simplified console output
+ */
+export const customLoggerPlugin = () => {
+    return {
+        name: 'custom-logger',
+        configureServer(server) {
+            server.printUrls = () => {
+                console.log(`🖥️  React is running on http://localhost:${server.config.server.port || 5173}`);
+            };
+        }
+    };
+};
+
+/**
+ * HTML replacement plugin
+ * Replaces {{APP_NAME}}, {{TAGLINE}}, {{COMPANY_WEBSITE}} in index.html
+ */
+export const htmlReplacePlugin = () => {
+    return {
+        name: 'html-replace',
+        transformIndexHtml(html) {
+            // Note: This requires fs which only works at build time
+            const { readFileSync } = await import('node:fs');
+            const constants = JSON.parse(readFileSync('src/constants.json', 'utf8'));
+
+            return html
+                .replace(/{{APP_NAME}}/g, constants.appName)
+                .replace(/{{TAGLINE}}/g, constants.tagline)
+                .replace(/{{COMPANY_WEBSITE}}/g, constants.companyWebsite);
+        }
+    };
+};
+
+/**
+ * Dynamic robots.txt plugin
+ * Generates robots.txt from constants.json
+ */
+export const dynamicRobotsPlugin = () => {
+    return {
+        name: 'dynamic-robots',
+        generateBundle() {
+            const { readFileSync } = require('fs');
+            const constants = JSON.parse(readFileSync('src/constants.json', 'utf8'));
+            const website = constants.companyWebsite.startsWith('http')
+                ? constants.companyWebsite
+                : `https://${constants.companyWebsite}`;
+
+            const robotsContent = `User-agent: Googlebot
+Disallow: /app/
+Disallow: /console/
+Disallow: /signin/
+Disallow: /signup/
+
+User-agent: Bingbot
+Disallow: /app/
+Disallow: /console/
+Disallow: /signin/
+Disallow: /signup/
+
+User-agent: Applebot
+Disallow: /app/
+Disallow: /console/
+Disallow: /signin/
+Disallow: /signup/
+
+User-agent: facebookexternalhit
+Disallow: /app/
+Disallow: /console/
+Disallow: /signin/
+Disallow: /signup/
+
+User-agent: Facebot
+Disallow: /app/
+Disallow: /console/
+Disallow: /signin/
+Disallow: /signup/
+
+User-agent: Twitterbot
+Disallow: /app/
+Disallow: /console/
+Disallow: /signin/
+Disallow: /signup/
+
+User-agent: *
+Disallow: /
+
+Sitemap: ${website}/sitemap.xml
+`;
+
+            this.emitFile({
+                type: 'asset',
+                fileName: 'robots.txt',
+                source: robotsContent
+            });
+        }
+    };
+};
+
+/**
+ * Dynamic sitemap.xml plugin
+ * Generates sitemap.xml from constants.json
+ */
+export const dynamicSitemapPlugin = () => {
+    return {
+        name: 'dynamic-sitemap',
+        generateBundle() {
+            const { readFileSync } = require('fs');
+            const constants = JSON.parse(readFileSync('src/constants.json', 'utf8'));
+            const website = constants.companyWebsite.startsWith('http')
+                ? constants.companyWebsite
+                : `https://${constants.companyWebsite}`;
+
+            const currentDate = new Date().toISOString().split('T')[0];
+
+            const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${website}/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${website}/terms</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${website}/privacy</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${website}/subs</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${website}/eula</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>`;
+
+            this.emitFile({
+                type: 'asset',
+                fileName: 'sitemap.xml',
+                source: sitemapContent
+            });
+        }
+    };
+};
+
+/**
+ * Dynamic manifest.json plugin
+ * Generates manifest.json from constants.json
+ */
+export const dynamicManifestPlugin = () => {
+    return {
+        name: 'dynamic-manifest',
+        generateBundle() {
+            const { readFileSync } = require('fs');
+            const constants = JSON.parse(readFileSync('src/constants.json', 'utf8'));
+
+            const manifestContent = {
+                short_name: constants.appName,
+                name: constants.appName,
+                description: constants.tagline,
+                icons: [
+                    {
+                        src: "/icons/icon.svg",
+                        sizes: "192x192",
+                        type: "image/svg+xml"
+                    }
+                ],
+                start_url: "./app",
+                display: "standalone",
+                theme_color: "#000000",
+                background_color: "#ffffff"
+            };
+
+            this.emitFile({
+                type: 'asset',
+                fileName: 'manifest.json',
+                source: JSON.stringify(manifestContent, null, 2)
+            });
+        }
+    };
+};
+
+/**
+ * Complete Vite config generator
+ * Returns standard skateboard config with optional overrides
+ *
+ * @param {object} customConfig - Custom config to merge/override
+ * @returns {object} - Complete Vite config object
+ *
+ * Usage in vite.config.js:
+ * import { defineConfig } from 'vite'
+ * import { getSkateboardViteConfig } from '@stevederico/skateboard-ui/Utilities'
+ *
+ * export default defineConfig(getSkateboardViteConfig({
+ *   server: {
+ *     proxy: { '/api': { target: 'http://localhost:3000' } }
+ *   }
+ * }))
+ */
+export const getSkateboardViteConfig = (customConfig = {}) => {
+    // These imports only work at build time in vite.config.js
+    const react = require('@vitejs/plugin-react-swc');
+    const tailwindcss = require('@tailwindcss/vite');
+    const { resolve } = require('node:path');
+    const { fileURLToPath } = require('node:url');
+    const path = require('node:path');
+
+    const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+    return {
+        plugins: [
+            react(),
+            tailwindcss(),
+            customLoggerPlugin(),
+            htmlReplacePlugin(),
+            dynamicRobotsPlugin(),
+            dynamicSitemapPlugin(),
+            dynamicManifestPlugin(),
+            ...(customConfig.plugins || [])
+        ],
+        esbuild: {
+            drop: []
+        },
+        resolve: {
+            alias: {
+                '@': resolve(process.cwd(), './src'),
+                '@package': path.resolve(process.cwd(), 'package.json'),
+                '@root': path.resolve(process.cwd()),
+                'react/jsx-runtime': path.resolve(process.cwd(), 'node_modules/react/jsx-runtime.js'),
+                ...(customConfig.resolve?.alias || {})
+            }
+        },
+        optimizeDeps: {
+            include: ['react-dom', '@radix-ui/react-slot'],
+            esbuildOptions: {
+                define: {
+                    global: 'globalThis',
+                },
+            },
+        },
+        server: {
+            host: 'localhost',
+            open: false,
+            port: 5173,
+            strictPort: false,
+            hmr: {
+                port: 5173,
+                overlay: false,
+            },
+            watch: {
+                usePolling: false,
+                ignored: ['**/node_modules/**', '**/.git/**']
+            },
+            ...(customConfig.server || {})
+        },
+        logLevel: 'error',
+        ...customConfig
+    };
+};
+
+// ===== REACT HOOKS =====
+
+/**
+ * Standard list data fetcher with optional sorting
+ * @param {string} endpoint - API endpoint to fetch from
+ * @param {function} sortFn - Optional sort function for results
+ * @returns {object} - { data, loading, error, refetch }
+ */
+export function useListData(endpoint, sortFn = null) {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await apiRequest(endpoint);
+            const sorted = sortFn ? result.sort(sortFn) : result;
+            setData(sorted);
+            setError(null);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [endpoint]);
+
+    return { data, loading, error, refetch: fetchData };
+}
+
+/**
+ * Standard form state management
+ * @param {object} initialValues - Initial form values
+ * @param {function} onSubmit - Submit handler function
+ * @returns {object} - { values, handleChange, handleSubmit, reset, submitting, error }
+ */
+export function useForm(initialValues, onSubmit) {
+    const [values, setValues] = useState(initialValues);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleChange = (field) => (e) => {
+        setValues(prev => ({ ...prev, [field]: e.target.value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e?.preventDefault();
+        setSubmitting(true);
+        setError(null);
+        try {
+            await onSubmit(values);
+            setValues(initialValues);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const reset = () => setValues(initialValues);
+
+    return { values, handleChange, handleSubmit, reset, submitting, error };
 }
 
