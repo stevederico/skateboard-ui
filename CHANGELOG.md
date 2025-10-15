@@ -1,4 +1,9 @@
 # CHANGELOG
+0.9.9
+
+  Add optional chaining safeguards
+  Fix features rendering logic
+
 0.9.8
 
   Add ProtectedRoute component
