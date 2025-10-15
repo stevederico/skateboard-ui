@@ -252,11 +252,11 @@ export default function LandingView() {
         {/* Features Section */}
         <section id="features" className="bg-slate-100 dark:bg-gray-800 py-12 md:py-20 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">{constants.features.title}</h2>
-            
+            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">{constants.features?.title || 'Features'}</h2>
+
             {/* Feature Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {constants.features.items.map((feature, index) => (
+              {(constants.features?.items || []).map((feature, index) => (
                 <div key={index} className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg text-center transition-colors duration-300">
                   <div className="text-4xl mb-6">{feature.icon}</div>
                   <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">{feature.title}</h3>
@@ -296,7 +296,7 @@ export default function LandingView() {
                   >{constants.stripeProducts[0]?.price || '$5.00'}</div>
                   <p className="text-gray-600 dark:text-gray-300 mb-8">per month</p>
                   <ul className="text-left space-y-4 mb-8">
-                    {constants.features.items.map((feature, index) => (
+                    {(constants.features?.items || []).map((feature, index) => (
                       <li key={index} className="flex items-center">
                         ✅ {feature.title}
                       </li>
