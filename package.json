@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "0.9.9",
+  "version": "1.0.0",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -75,6 +75,18 @@
     "./ProtectedRoute": {
       "import": "./ProtectedRoute.jsx",
       "default": "./ProtectedRoute.jsx"
+    },
+    "./styles.css": {
+      "import": "./styles.css",
+      "default": "./styles.css"
+    },
+    "./Context": {
+      "import": "./Context.jsx",
+      "default": "./Context.jsx"
+    },
+    "./App": {
+      "import": "./App.jsx",
+      "default": "./App.jsx"
     },
     "./shadcn/ui/*": "./shadcn/ui/*.jsx",
     "./shadcn/lib/utils": {

@@ -1,4 +1,14 @@
 # CHANGELOG
+1.0.0
+
+  Add API request utilities
+  Add constants validation
+  Add Vite build plugins
+  Add React hooks
+  Export App component
+  Export Context component
+  Export styles.css
+
 0.9.9
 
   Add optional chaining safeguards
