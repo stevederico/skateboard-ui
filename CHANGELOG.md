@@ -1,9 +1,12 @@
 # CHANGELOG
+1.0.1
+
+  Remove Vite build plugins
+
 1.0.0
 
   Add API request utilities
   Add constants validation
-  Add Vite build plugins
   Add React hooks
   Export App component
   Export Context component
