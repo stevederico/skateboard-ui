@@ -1,4 +1,9 @@
 # CHANGELOG
+1.0.9
+
+  Add cookie exclusions
+  Exclude set-cookie-parser
+
 1.0.8
 
   Remove cookie dependencies
