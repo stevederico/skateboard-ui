@@ -1,7 +1,17 @@
 # CHANGELOG
-1.0.1
+1.0.4
+
+  Update Vite optimizeDeps
+  Add exclude dependencies
+  Improve build config
+
+1.0.3
 
   Remove Vite build plugins
+
+1.0.2
+
+1.0.1
 
 1.0.0
 
