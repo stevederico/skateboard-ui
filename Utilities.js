@@ -792,12 +792,32 @@ export async function getSkateboardViteConfig(customConfig = {}) {
             }
         },
         optimizeDeps: {
-            include: ['react-dom', '@radix-ui/react-slot'],
+            include: [
+                'react',
+                'react-dom',
+                'react-dom/client',
+                '@radix-ui/react-slot',
+                'cookie',
+                'set-cookie-parser',
+                ...(customConfig.optimizeDeps?.include || [])
+            ],
+            exclude: [
+                '@swc/core',
+                '@swc/core-darwin-arm64',
+                '@swc/wasm',
+                '@tailwindcss/oxide',
+                '@tailwindcss/oxide-darwin-arm64',
+                'lightningcss',
+                'fsevents',
+                ...(customConfig.optimizeDeps?.exclude || [])
+            ],
             esbuildOptions: {
+                target: 'esnext',
                 define: {
-                    global: 'globalThis',
+                    global: 'globalThis'
                 },
-            },
+                ...(customConfig.optimizeDeps?.esbuildOptions || {})
+            }
         },
         server: {
             host: 'localhost',
