@@ -22,7 +22,7 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getState } from '@/context.jsx';
+import { getState } from './Context.jsx';
 import constants from "@/constants.json";
 import { getBackendURL } from './Utilities'
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getState } from '@/context.jsx';
+import { getState } from './Context.jsx';
 import { useEffect, useState } from 'react';
 import * as LucideIcons from "lucide-react";
 import ThemeToggle from './ThemeToggle.jsx';

@@ -1,4 +1,11 @@
 # CHANGELOG
+1.0.5
+
+  Update PaymentView component
+  Update SettingsView component
+  Update SignInView component
+  Update SignUpView component
+
 1.0.4
 
   Update Vite optimizeDeps
