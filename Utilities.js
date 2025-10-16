@@ -807,6 +807,8 @@ export async function getSkateboardViteConfig(customConfig = {}) {
                 '@tailwindcss/oxide-darwin-arm64',
                 'lightningcss',
                 'fsevents',
+                'cookie',
+                'set-cookie-parser',
                 ...(customConfig.optimizeDeps?.exclude || [])
             ],
             esbuildOptions: {
