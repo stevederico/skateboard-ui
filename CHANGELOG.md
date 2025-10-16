@@ -1,4 +1,8 @@
 # CHANGELOG
+1.0.6
+
+  Add wrapper support
+
 1.0.5
 
   Update PaymentView component
