@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
 // Constants will be initialized by the app shell
+// Use window object to avoid module duplication issues with Vite
 let _constants = null;
+if (typeof window !== 'undefined') {
+    window.__SKATEBOARD_CONSTANTS__ = window.__SKATEBOARD_CONSTANTS__ || null;
+}
 
 // Check if localStorage is available (respects private mode, etc.)
 let _localStorageAvailable = null;
@@ -66,11 +70,20 @@ export function initializeUtilities(constants) {
         throw new Error('initializeUtilities called with null/undefined constants');
     }
     console.log('[Utilities] Initializing with app:', constants.appName);
+    // Store in both module and window to handle module duplication
     _constants = constants;
+    if (typeof window !== 'undefined') {
+        window.__SKATEBOARD_CONSTANTS__ = constants;
+    }
     console.log('[Utilities] Initialization complete. _constants set:', !!_constants);
 }
 
 function getConstants() {
+    // Check window object first (handles module duplication)
+    if (typeof window !== 'undefined' && window.__SKATEBOARD_CONSTANTS__) {
+        return window.__SKATEBOARD_CONSTANTS__;
+    }
+
     if (!_constants) {
         console.error('[Utilities] getConstants called but _constants is null!');
         console.trace('[Utilities] Call stack:');
