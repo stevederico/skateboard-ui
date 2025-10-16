@@ -3,6 +3,63 @@ import { useEffect, useState } from 'react';
 // Constants will be initialized by the app shell
 let _constants = null;
 
+// Check if localStorage is available (respects private mode, etc.)
+let _localStorageAvailable = null;
+function isLocalStorageAvailable() {
+    if (_localStorageAvailable !== null) return _localStorageAvailable;
+    try {
+        const test = '__storage_test__';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        _localStorageAvailable = true;
+        return true;
+    } catch (e) {
+        console.warn('localStorage not available (private mode or quota exceeded):', e.message);
+        _localStorageAvailable = false;
+        return false;
+    }
+}
+
+// Safe localStorage wrapper with error handling
+function safeSetItem(key, value) {
+    if (!isLocalStorageAvailable()) {
+        console.warn(`Could not save to localStorage: ${key} (storage unavailable)`);
+        return false;
+    }
+    try {
+        localStorage.setItem(key, value);
+        return true;
+    } catch (error) {
+        if (error.name === 'QuotaExceededError') {
+            console.error('localStorage quota exceeded - data not persisted');
+        } else {
+            console.error('localStorage setItem error:', error.message);
+        }
+        return false;
+    }
+}
+
+function safeGetItem(key) {
+    if (!isLocalStorageAvailable()) return null;
+    try {
+        return localStorage.getItem(key);
+    } catch (error) {
+        console.error('localStorage getItem error:', error.message);
+        return null;
+    }
+}
+
+function safeRemoveItem(key) {
+    if (!isLocalStorageAvailable()) return false;
+    try {
+        localStorage.removeItem(key);
+        return true;
+    } catch (error) {
+        console.error('localStorage removeItem error:', error.message);
+        return false;
+    }
+}
+
 export function initializeUtilities(constants) {
     _constants = constants;
 }
@@ -31,7 +88,7 @@ export function getCookie(name) {
 export function getCSRFToken() {
     const appName = getConstants().appName || 'skateboard';
     const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
-    return localStorage.getItem(csrfKey);
+    return safeGetItem(csrfKey);
 }
 
 export function getAppKey(suffix) {
@@ -44,7 +101,7 @@ export function isAuthenticated() {
         return true;
     }
     const csrfKey = getAppKey('csrf');
-    return Boolean(localStorage.getItem(csrfKey));
+    return Boolean(safeGetItem(csrfKey));
 }
 
 export function getBackendURL() {
@@ -143,9 +200,7 @@ export async function showManage(stripeID) {
             const data = await response.json();
             console.log("/portal response: ", data);
             if (data.url) {
-
-                localStorage.setItem(getAppKey("beforeManageURL"), window.location.href);
-
+                safeSetItem(getAppKey("beforeManageURL"), window.location.href);
                 window.location.href = data.url; // Redirect to Stripe billing portal
             } else {
                 console.error("No URL returned from server");
@@ -182,7 +237,7 @@ export async function showCheckout(email, productIndex = 0) {
             const data = await response.json();
             if (data.url) {
                 // Save the current URL in localStorage before redirecting
-                localStorage.setItem(getAppKey("beforeCheckoutURL"), window.location.href);
+                safeSetItem(getAppKey("beforeCheckoutURL"), window.location.href);
                 // Redirect to payment checkout
                 window.location.href = data.url;
                 return true;
@@ -274,13 +329,18 @@ export async function showUpgradeSheet(upgradeSheetRef) {
     // Check subscription from user data in localStorage instead of API call
     const appName = getConstants().appName || 'skateboard';
     const storageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_user`;
-    const storedUser = localStorage.getItem(storageKey);
+    const storedUser = safeGetItem(storageKey);
 
     let subscriber = false;
     if (storedUser && storedUser !== "undefined") {
-        const user = JSON.parse(storedUser);
-        subscriber = user?.subscription?.status === 'active' &&
-            (!user?.subscription?.expires || user?.subscription?.expires > Math.floor(Date.now() / 1000));
+        try {
+            const user = JSON.parse(storedUser);
+            subscriber = user?.subscription?.status === 'active' &&
+                (!user?.subscription?.expires || user?.subscription?.expires > Math.floor(Date.now() / 1000));
+        } catch (error) {
+            console.error('Error parsing user data from storage:', error.message);
+            subscriber = false;
+        }
     }
 
     if (subscriber) {
@@ -421,15 +481,20 @@ export async function apiRequest(endpoint, options = {}) {
         (options.method || 'GET').toUpperCase()
     );
 
-    const response = await fetch(`${getBackendURL()}${endpoint}`, {
-        ...options,
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            ...(needsCSRF && csrfToken && { 'X-CSRF-Token': csrfToken }),
-            ...options.headers
-        }
-    });
+    let response;
+    try {
+        response = await fetch(`${getBackendURL()}${endpoint}`, {
+            ...options,
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(needsCSRF && csrfToken && { 'X-CSRF-Token': csrfToken }),
+                ...options.headers
+            }
+        });
+    } catch (error) {
+        throw new Error(`Network error: ${error.message}`);
+    }
 
     // Handle 401 (redirect to signout)
     if (response.status === 401) {
@@ -442,7 +507,12 @@ export async function apiRequest(endpoint, options = {}) {
         throw new Error(`Request failed: ${response.status} ${response.statusText}`);
     }
 
-    return response.json();
+    // Parse JSON with error handling
+    try {
+        return await response.json();
+    } catch (error) {
+        throw new Error(`Invalid JSON response from server: ${error.message}`);
+    }
 }
 
 /**
@@ -462,33 +532,41 @@ export async function apiRequestWithParams(endpoint, params = {}, options = {}) 
 // ===== CONSTANTS VALIDATION =====
 
 /**
- * Validate constants.json has all required fields
+ * Validate constants.json has all required fields with proper values
  * @param {object} constants - Constants object to validate
  * @returns {object} - Same constants if valid
- * @throws {Error} - If required fields are missing
+ * @throws {Error} - If required fields are missing or invalid
  */
 export function validateConstants(constants) {
     const required = [
-        'appName',
-        'appIcon',
-        'tagline',
-        'cta',
-        'backendURL',
-        'devBackendURL',
-        'features.title',
-        'features.items',
-        'companyName',
-        'companyWebsite',
-        'companyEmail',
+        { key: 'appName', type: 'string' },
+        { key: 'appIcon', type: 'string' },
+        { key: 'tagline', type: 'string' },
+        { key: 'cta', type: 'string' },
+        { key: 'backendURL', type: 'string' },
+        { key: 'devBackendURL', type: 'string' },
+        { key: 'features.title', type: 'string' },
+        { key: 'features.items', type: 'array' },
+        { key: 'companyName', type: 'string' },
+        { key: 'companyWebsite', type: 'string' },
+        { key: 'companyEmail', type: 'string' },
     ];
 
-    const missing = required.filter(key => {
+    const errors = required.filter(({ key, type }) => {
         const value = key.split('.').reduce((obj, k) => obj?.[k], constants);
-        return !value;
-    });
 
-    if (missing.length > 0) {
-        throw new Error(`Missing required constants: ${missing.join(', ')}`);
+        if (type === 'string') {
+            // Must be non-empty string
+            return !value || typeof value !== 'string' || value.trim().length === 0;
+        } else if (type === 'array') {
+            // Must be non-empty array
+            return !Array.isArray(value) || value.length === 0;
+        }
+        return !value;
+    }).map(({ key }) => key);
+
+    if (errors.length > 0) {
+        throw new Error(`Invalid constants configuration: ${errors.join(', ')} (must be non-empty strings/arrays)`);
     }
 
     return constants;

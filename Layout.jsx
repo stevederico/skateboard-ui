@@ -9,19 +9,35 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    let theme = localStorage.getItem('theme');
+    let theme;
+
+    // Safely get theme from localStorage
+    try {
+      theme = localStorage.getItem('theme');
+    } catch (error) {
+      console.warn('Could not read theme from localStorage:', error.message);
+      theme = null;
+    }
+
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (!theme) {
       theme = systemPrefersDark ? 'dark' : 'light';
     }
-    
+
     if (theme === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-    localStorage.setItem('theme', theme);
+
+    // Safely save theme to localStorage
+    try {
+      localStorage.setItem('theme', theme);
+    } catch (error) {
+      console.warn('Could not save theme to localStorage:', error.message);
+      // Theme will still be applied visually even if not persisted
+    }
   }, []);
 
   return (

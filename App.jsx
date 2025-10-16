@@ -18,7 +18,8 @@ import PaymentView from './PaymentView.jsx';
 import SettingsView from './SettingsView.jsx';
 import NotFound from './NotFound.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
-import { useAppSetup, initializeUtilities } from './Utilities.js';
+import ErrorBoundary from './ErrorBoundary.jsx';
+import { useAppSetup, initializeUtilities, validateConstants } from './Utilities.js';
 import { ContextProvider, getState } from './Context.jsx';
 
 function App({ constants, appRoutes, defaultRoute }) {
@@ -59,6 +60,9 @@ function App({ constants, appRoutes, defaultRoute }) {
 }
 
 export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', wrapper: Wrapper }) {
+  // Validate constants before initialization
+  validateConstants(constants);
+
   // Initialize utilities with constants
   initializeUtilities(constants);
 
@@ -66,18 +70,20 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   const root = createRoot(container);
 
   root.render(
-    <ContextProvider constants={constants}>
-      {Wrapper ? (
-        <Wrapper>
+    <ErrorBoundary>
+      <ContextProvider constants={constants}>
+        {Wrapper ? (
+          <Wrapper>
+            <Router>
+              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
+            </Router>
+          </Wrapper>
+        ) : (
           <Router>
             <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
           </Router>
-        </Wrapper>
-      ) : (
-        <Router>
-          <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
-        </Router>
-      )}
-    </ContextProvider>
+        )}
+      </ContextProvider>
+    </ErrorBoundary>
   );
 }
