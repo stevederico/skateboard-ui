@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getState } from '@/context.jsx';
+import { getState } from './Context.jsx';
 import { getCurrentUser } from './Utilities.js'
 import constants from "@/constants.json";
 
