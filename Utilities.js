@@ -61,11 +61,19 @@ function safeRemoveItem(key) {
 }
 
 export function initializeUtilities(constants) {
+    if (!constants) {
+        console.error('[Utilities] initializeUtilities called with null/undefined constants!');
+        throw new Error('initializeUtilities called with null/undefined constants');
+    }
+    console.log('[Utilities] Initializing with app:', constants.appName);
     _constants = constants;
+    console.log('[Utilities] Initialization complete. _constants set:', !!_constants);
 }
 
 function getConstants() {
     if (!_constants) {
+        console.error('[Utilities] getConstants called but _constants is null!');
+        console.trace('[Utilities] Call stack:');
         throw new Error('Utilities not initialized. Call initializeUtilities(constants) first.');
     }
     return _constants;
