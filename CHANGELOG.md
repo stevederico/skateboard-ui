@@ -1,4 +1,8 @@
 # CHANGELOG
+1.0.8
+
+  Remove cookie dependencies
+
 1.0.7
 
   Refactor wrapper implementation
