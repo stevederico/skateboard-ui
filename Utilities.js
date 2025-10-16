@@ -797,8 +797,6 @@ export async function getSkateboardViteConfig(customConfig = {}) {
                 'react-dom',
                 'react-dom/client',
                 '@radix-ui/react-slot',
-                'cookie',
-                'set-cookie-parser',
                 ...(customConfig.optimizeDeps?.include || [])
             ],
             exclude: [
