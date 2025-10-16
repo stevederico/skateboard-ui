@@ -58,18 +58,22 @@ function App({ constants, appRoutes, defaultRoute }) {
   );
 }
 
-export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home' }) {
+export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', wrapper: Wrapper }) {
   // Initialize utilities with constants
   initializeUtilities(constants);
 
   const container = document.getElementById('root');
   const root = createRoot(container);
 
-  root.render(
+  const AppContent = (
     <ContextProvider constants={constants}>
       <Router>
         <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
       </Router>
     </ContextProvider>
+  );
+
+  root.render(
+    Wrapper ? <Wrapper>{AppContent}</Wrapper> : AppContent
   );
 }
