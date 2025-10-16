@@ -1,4 +1,11 @@
 # CHANGELOG
+1.1.0
+
+  Remove Vite build utilities
+  Fix TailwindCSS v4 compatibility
+  Make pure component library
+  Move build config to app
+
 1.0.9
 
   Add cookie exclusions
