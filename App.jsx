@@ -65,15 +65,19 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   const container = document.getElementById('root');
   const root = createRoot(container);
 
-  const AppContent = (
-    <ContextProvider constants={constants}>
-      <Router>
-        <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
-      </Router>
-    </ContextProvider>
-  );
-
   root.render(
-    Wrapper ? <Wrapper>{AppContent}</Wrapper> : AppContent
+    <ContextProvider constants={constants}>
+      {Wrapper ? (
+        <Wrapper>
+          <Router>
+            <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
+          </Router>
+        </Wrapper>
+      ) : (
+        <Router>
+          <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
+        </Router>
+      )}
+    </ContextProvider>
   );
 }

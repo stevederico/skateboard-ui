@@ -1,4 +1,8 @@
 # CHANGELOG
+1.0.7
+
+  Refactor wrapper implementation
+
 1.0.6
 
   Add wrapper support
