@@ -1,4 +1,9 @@
 # CHANGELOG
+1.2.0
+
+  Add ViteConfig export
+  Clean Utilities formatting
+
 1.1.0
 
   Remove Vite build utilities
