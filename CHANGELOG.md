@@ -1,4 +1,10 @@
 # CHANGELOG
+1.2.1
+
+  Fix Layout scroll
+  Update SettingsView style
+  Fix button borders
+
 1.2.0
 
   Add ViteConfig export
