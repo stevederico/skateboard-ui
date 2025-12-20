@@ -1,20 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from './Context.jsx';
-import { useEffect, useState } from 'react';
-import * as LucideIcons from "lucide-react";
 import ThemeToggle from './ThemeToggle.jsx';
-
-// Dynamic Icon Component
-const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
-  const toPascalCase = (str) => str.split(/[-_\s]/).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
-  const possibleNames = [name, toPascalCase(name), name.charAt(0).toUpperCase() + name.slice(1)];
-  const LucideIcon = possibleNames.find(n => LucideIcons[n]) ? LucideIcons[possibleNames.find(n => LucideIcons[n])] : null;
-  return LucideIcon ? React.createElement(LucideIcon, { size, color, strokeWidth, ...props }) : null;
-};
 import constants from "@/constants.json";
 import pkg from '@package';
-import { showCheckout } from './Utilities';
+import { showCheckout, showManage } from './Utilities';
 
 export default function SettingsView() {
   const navigate = useNavigate();
@@ -26,89 +16,94 @@ export default function SettingsView() {
   }
 
   return (
-    <div className="h-full min-h-screen flex flex-col">
-      {/* Navbar */}
-      <div className="flex w-full items-center bg-background pb-4 pt-5 px-4 border-b">
-        <span className="font-semibold text-2xl">Settings</span>
-        <div className="ml-auto">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+          <h1 className="text-lg font-medium">Settings</h1>
           <ThemeToggle />
         </div>
-      </div>
 
-      {/* Main content */}
-      <div className="flex flex-col flex-1 items-center p-4 gap-6">
-               {(constants.noLogin == false  || typeof constants.noLogin === 'undefined') && (
-
-        <div className="w-full bg-accent p-6 rounded flex items-center justify-between">
-          <div className="w-10 h-10 bg-app dark:text-black text-white flex justify-center items-center rounded-full">
-            <span className="uppercase">{state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}</span>
-          </div>
-          <div className="ml-4">
-            <div className="text font-medium block mb-1 capitalize">{state.user?.name || "No User"}</div>
-            <div className="text-sm text-gray-500">{state.user?.email || "no@user.com"}</div>
-          </div>
-          <div className="ml-auto">
-            <button className="bg-sidebar-background text-center border-foreground border ml-2 px-3 py-2 rounded text-sm border cursor-pointer" onClick={() => {
-              signOutClicked()
-            }}>Sign Out</button>
-          </div>
-        </div>
-               )}
-
-        {/* SUPPORT */}
-        <div className="flex gap-6 w-full">
-          <div className="bg-accent p-6 rounded flex-1">
-            <div className="flex items-center">
-              <div>
-                <div className="mb-2 font-medium">Contact Support</div>
-                <div className="text-sm text-gray-500">How can we help you?</div>
-              </div>
-              <div className="ml-auto">
-                <div onClick={() => { window.location.href = `mailto:${constants.companyEmail}`; }} className="bg-sidebar-background text-center border-foreground border ml-2 px-3 py-2 rounded text-sm whitespace-nowrap cursor-pointer">Support</div>
+        {/* Main content */}
+        <div className="flex flex-col items-center p-4 gap-4">
+          {/* User Card */}
+          {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
+            <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-app dark:text-black text-white flex justify-center items-center rounded-full font-medium">
+                  <span className="uppercase">{state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium truncate capitalize">{state.user?.name || "No User"}</div>
+                  <div className="text-sm text-muted-foreground">{state.user?.email || "no@user.com"}</div>
+                </div>
+                <button
+                  onClick={signOutClicked}
+                  className="px-4 py-2 rounded-full text-sm bg-sidebar-background border border-foreground/30 hover:border-foreground transition-all cursor-pointer"
+                >
+                  Sign Out
+                </button>
               </div>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* BILLING */}
-        {(constants.noLogin == false  || typeof constants.noLogin === 'undefined') && (
-          <div className="flex gap-6 mb-10 w-full">
-            <div className="bg-accent p-6 rounded flex-1">
-              <div className="flex items-center">
+          {/* Support */}
+          <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="mb-1 font-medium">Support</div>
+                <div className="text-sm text-muted-foreground">How can we help?</div>
+              </div>
+              <button
+                onClick={() => { window.location.href = `mailto:${constants.companyEmail}`; }}
+                className="px-4 py-2 rounded-full text-sm bg-sidebar-background border border-foreground/30 hover:border-foreground transition-all cursor-pointer"
+              >
+                Contact
+              </button>
+            </div>
+          </div>
+
+          {/* Billing */}
+          {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
+            <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
+              <div className="flex items-center justify-between">
                 <div>
-                  <div className="mb-2 font-medium">Billing</div>
-                  <div className="text-sm text-gray-500">
+                  <div className="mb-1 font-medium">Billing</div>
+                  <div className="text-sm text-muted-foreground">
                     {state.user?.subStatus === null || typeof state.user?.subStatus === 'undefined'
-                      ? "Your plan is free"
+                      ? "Free plan"
                       : ["active", "canceled"].includes(state.user?.subStatus)
-                        ? `Your plan ${state.user?.subStatus === "active" ? "renews" : "ends"} ${new Date(state.user.expires * 1000).toLocaleDateString('en-US')}`
-                        : `Your plan is ${state.user?.subStatus}`
+                        ? `${state.user?.subStatus === "active" ? "Renews" : "Ends"} ${new Date(state.user.expires * 1000).toLocaleDateString('en-US')}`
+                        : `Plan ${state.user?.subStatus}`
                     }
                   </div>
                 </div>
-
-                <div className="ml-auto">
-                  {state.user?.stripeID ? (
-                    <div onClick={() => { showManage(state.user?.stripeID) }} className="bg-sidebar-background border-foreground border ml-2 px-3 py-2 rounded text-sm whitespace-nowrap cursor-pointer text-center">Manage</div>
-                  ) : (
-                    <div onClick={() => { showCheckout(state.user?.email) }} className="bg-app text-white border-app border ml-2 px-3 py-2 rounded text-sm whitespace-nowrap cursor-pointer">Subscribe</div>
-                  )}
-                </div>
-
+                {state.user?.stripeID ? (
+                  <button
+                    onClick={() => { showManage(state.user?.stripeID) }}
+                    className="px-4 py-2 rounded-full text-sm bg-sidebar-background border border-foreground/30 hover:border-foreground transition-all cursor-pointer"
+                  >
+                    Manage
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => { showCheckout(state.user?.email) }}
+                    className="px-5 py-2 bg-app text-white dark:text-black rounded-full text-sm font-medium hover:opacity-90 transition-all cursor-pointer"
+                  >
+                    Subscribe
+                  </button>
+                )}
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* Footer Links */}
-      <div className="mt-auto text-center">
-        <div className="m-2 mb-4 block text-sm text-gray-500 pb-24 md:pb-0">v{pkg.version}</div>
+        {/* Footer */}
+        <div className="mt-8 text-center pb-24 md:pb-8">
+          <div className="text-xs text-muted-foreground">v{pkg.version}</div>
+        </div>
       </div>
     </div>
-
-
   );
 }
-
-
