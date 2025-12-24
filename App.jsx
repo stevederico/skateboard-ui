@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
   useLocation,
 } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -20,18 +19,16 @@ import NotFound from './NotFound.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import { useAppSetup, initializeUtilities, validateConstants } from './Utilities.js';
-import { ContextProvider, getState } from './Context.jsx';
+import { ContextProvider } from './Context.jsx';
 
 function App({ constants, appRoutes, defaultRoute }) {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { dispatch } = getState();
 
   useEffect(() => {
     document.title = constants.appName;
   }, [constants.appName]);
 
-  useAppSetup(location, navigate, dispatch);
+  useAppSetup(location);
 
   return (
     <Routes>

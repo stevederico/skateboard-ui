@@ -71,17 +71,17 @@ export default function SettingsView() {
                 <div>
                   <div className="mb-1 font-medium">Billing</div>
                   <div className="text-sm text-muted-foreground">
-                    {state.user?.subStatus === null || typeof state.user?.subStatus === 'undefined'
+                    {state.user?.subscription?.status === null || typeof state.user?.subscription?.status === 'undefined'
                       ? "Free plan"
-                      : ["active", "canceled"].includes(state.user?.subStatus)
-                        ? `${state.user?.subStatus === "active" ? "Renews" : "Ends"} ${new Date(state.user.expires * 1000).toLocaleDateString('en-US')}`
-                        : `Plan ${state.user?.subStatus}`
+                      : ["active", "canceled"].includes(state.user?.subscription?.status)
+                        ? `${state.user?.subscription?.status === "active" ? "Renews" : "Ends"} ${new Date(state.user?.subscription?.expires * 1000).toLocaleDateString('en-US')}`
+                        : `Plan ${state.user?.subscription?.status}`
                     }
                   </div>
                 </div>
-                {state.user?.stripeID ? (
+                {state.user?.subscription?.stripeID ? (
                   <button
-                    onClick={() => { showManage(state.user?.stripeID) }}
+                    onClick={() => { showManage(state.user?.subscription?.stripeID) }}
                     className="px-4 py-2 rounded-full text-sm bg-sidebar-background border border-foreground/30 hover:border-foreground transition-all cursor-pointer"
                   >
                     Manage

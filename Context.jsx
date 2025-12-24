@@ -57,11 +57,6 @@ export function ContextProvider({ children, constants }) {
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_user`;
   };
 
-  const getCSRFKey = () => {
-    const appName = constants.appName || 'skateboard';
-    return `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
-  };
-
   const getInitialUser = () => {
     try {
       const storageKey = getStorageKey();
@@ -78,7 +73,6 @@ export function ContextProvider({ children, constants }) {
 
   function reducer(state, action) {
     const storageKey = getStorageKey();
-    const csrfKey = getCSRFKey();
 
     switch (action.type) {
       case 'SET_USER': {
@@ -93,9 +87,8 @@ export function ContextProvider({ children, constants }) {
         return { ...state, user: action.payload };
       }
       case 'CLEAR_USER': {
-        // Clean up both user and CSRF token
+        // Clean up user data (CSRF cookie is cleared by backend)
         safeLSRemoveItem(storageKey);
-        safeLSRemoveItem(csrfKey);
         return { ...state, user: null };
       }
       default:

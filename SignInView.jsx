@@ -24,7 +24,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from './Context.jsx';
 import constants from "@/constants.json";
-import { getBackendURL, getAppKey } from './Utilities'
+import { getBackendURL } from './Utilities'
 
 export default function LoginForm({
   className,
@@ -62,36 +62,13 @@ export default function LoginForm({
 
       if (response.ok) {
         const data = await response.json();
-        // Store CSRF token in localStorage with app-specific key
-        if (data.csrfToken) {
-          const csrfKey = getAppKey('csrf');
-          try {
-            localStorage.setItem(csrfKey, data.csrfToken);
-          } catch (storageError) {
-            console.error('Failed to store CSRF token:', storageError.message);
-            // Continue even if storage fails
-          }
-        }
+        // CSRF token is set as cookie by backend, no localStorage needed
         dispatch({ type: 'SET_USER', payload: data });
         navigate('/app');
       } else {
-        // Clean up stale CSRF token on failed sign-in
-        try {
-          const csrfKey = getAppKey('csrf');
-          localStorage.removeItem(csrfKey);
-        } catch (cleanupError) {
-          console.warn('Could not clean up CSRF token:', cleanupError.message);
-        }
         setErrorMessage('Invalid Credentials');
       }
     } catch (error) {
-      // Clean up stale CSRF token on error
-      try {
-        const csrfKey = getAppKey('csrf');
-        localStorage.removeItem(csrfKey);
-      } catch (cleanupError) {
-        console.warn('Could not clean up CSRF token:', cleanupError.message);
-      }
       setErrorMessage('Server Error');
     } finally {
       setIsSubmitting(false);
