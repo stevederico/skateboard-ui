@@ -199,12 +199,12 @@ export const dynamicManifestPlugin = () => {
  * Returns standard skateboard config with optional overrides
  */
 export async function getSkateboardViteConfig(customConfig = {}) {
-    const [react, tailwindcss, { resolve }, path] = await Promise.all([
+    const [react, tailwindcss, path] = await Promise.all([
         import('@vitejs/plugin-react-swc').then(m => m.default),
         import('@tailwindcss/vite').then(m => m.default),
-        import('node:path'),
         import('node:path')
     ]);
+    const { resolve } = path;
 
     return {
         plugins: [

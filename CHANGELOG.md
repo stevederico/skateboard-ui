@@ -1,4 +1,19 @@
 # CHANGELOG
+1.2.5
+
+  Add sidebar visibility control
+  Add tabbar visibility control
+  Add hideTabBar constant support
+  Add programmatic UI functions
+  Fix broken Button export
+  Fix SignOutView import path
+  Add LandingViewSimple export
+  Consolidate DynamicIcon usage
+  Remove unused FREE_LIMITS
+  Fix ViteConfig duplicate import
+  Relax peer dependency versions
+  Update README documentation
+
 1.2.4
 
   Fix react-router cookie import

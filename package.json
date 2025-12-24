@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "1.2.4",
+  "version": "1.2.5",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -23,6 +23,10 @@
     "./LandingView": {
       "import": "./LandingView.jsx",
       "default": "./LandingView.jsx"
+    },
+    "./LandingViewSimple": {
+      "import": "./LandingViewSimple.jsx",
+      "default": "./LandingViewSimple.jsx"
     },
     "./Layout": {
       "import": "./Layout.jsx",
@@ -161,7 +165,7 @@
   "peerDependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.1"
+    "react-router-dom": "^7.0.0"
   },
   "overrides": {
     "@radix-ui/react-slot": "^1.2.3"
