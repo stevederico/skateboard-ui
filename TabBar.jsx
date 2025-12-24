@@ -7,13 +7,10 @@ export default function TabBar() {
   const location = useLocation();
 
   return (
-    <div style={{
-      overflow: "hidden",
-      overscrollBehavior: "none"
-    }} className="fixed flex md:hidden pt-2 pb-4 bottom-0 inset-x-0 justify-around text-center border-t shadow-lg bg-background">
+    <div className="fixed flex md:hidden pt-2 pb-4 bottom-0 inset-x-0 justify-around text-center border-t shadow-lg bg-background">
       {constants?.pages?.map((item) => (
         <span className="px-3" key={item.title}>
-          <Link to={`/app/${item.url.toLowerCase()}`} >
+          <Link to={`/app/${item.url.toLowerCase()}`} className="cursor-pointer">
             {
               location.pathname.includes(item.url.toLowerCase())
                 ? (
@@ -31,7 +28,7 @@ export default function TabBar() {
         </span>
       ))}
       <span className="px-3">
-        <Link to={`/app/settings`}>
+        <Link to={`/app/settings`} className="cursor-pointer">
           {
             location.pathname.includes('Settings'.toLowerCase())
               ? (
