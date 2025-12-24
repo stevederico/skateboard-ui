@@ -1,4 +1,9 @@
 # CHANGELOG
+1.2.3
+
+  Fix cookie ESM import
+  Add cookie to optimizeDeps
+
 1.2.2
 
   Fix CSRF cookie-only handling
