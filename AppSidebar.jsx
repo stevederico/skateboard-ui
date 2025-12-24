@@ -32,39 +32,40 @@ export default function AppSidebar() {
       className="min-w-[40px]"
       style={{ '--sidebar-width': '12rem' }}
     >
-      <SidebarHeader className="p-0">
-        <SidebarMenu>
-          <div className={`flex flex-row m-2 mt-4 mb-4 items-center  ${open ? "ml-3" : "justify-center ml-2"}`}>
-            <div className="bg-app dark:border rounded-lg flex aspect-square size-10 items-center justify-center">
-              <DynamicIconComponent
-                name={constants.appIcon}
-                size={28}
-                color="white"
-                strokeWidth={2}
-              />
+      {!constants.hideSidebarHeader && (
+        <SidebarHeader className="p-0">
+          <SidebarMenu>
+            <div className={`flex flex-row m-2 mt-4 mb-4 items-center  ${open ? "ml-3" : "justify-center ml-2"}`}>
+              <div className="bg-app dark:border rounded-lg flex aspect-square size-10 items-center justify-center">
+                <DynamicIconComponent
+                  name={constants.appIcon}
+                  size={28}
+                  color="white"
+                  strokeWidth={2}
+                />
+              </div>
+              {open && <div className="font-semibold ml-2 text-xl">{constants.appName}</div>}
             </div>
-            {open && <div className="font-semibold ml-2 text-xl">{constants.appName}</div>}
-          </div>
-        </SidebarMenu>
-      </SidebarHeader>
+          </SidebarMenu>
+        </SidebarHeader>
+      )}
       <SidebarContent>
-        <ul className={`flex flex-col gap-2 p-2 ${open ? "" : "items-center"}`}>
+        <ul className={`flex flex-col gap-1 p-2 ${open ? "" : "items-center"}`}>
           {constants.pages.map((item) => {
             const isActive = currentPage === item.url.toLowerCase();
             return (
               <li key={item.title}>
                 <div
-                  className={`cursor-pointer items-center flex w-full p-2 rounded-lg ${open ? "h-10" : "h-10 w-8"} ${isActive ? "bg-accent text-accent-foreground" : "hover:bg-accent  hover:text-accent-foreground"}`}
+                  className={`cursor-pointer items-center flex w-full px-4 py-3 rounded-lg ${open ? "h-14" : "h-12 w-12"} ${isActive ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
                   onClick={() => handleNavigation(`/app/${item.url.toLowerCase()}`)}
                 >
-                  <span className="flex  w-full">
+                  <span className="flex w-full items-center">
                     <DynamicIconComponent
                       name={item.icon}
-                      size={24}
+                      size={20}
                       strokeWidth={1.5}
-                      className={"!size-6"}
                     />
-                    {open && <span className="ml-2">{item.title}</span>}
+                    {open && <span className="ml-3">{item.title}</span>}
                   </span>
                 </div>
               </li>
@@ -73,29 +74,20 @@ export default function AppSidebar() {
         </ul>
       </SidebarContent>
       <SidebarFooter>
-        <ul className={`flex flex-col gap-1  ${open ? "" : "items-center"}`}>
+        <ul className={`flex flex-col gap-1 ${open ? "" : "items-center"}`}>
           <li>
             <div
-              className={`cursor-pointer flex w-full p-2 ${open ? "h-10" : "h-10 w-8"}`}
-              onClick={() => setOpen(!open)}
-            >
-         
-            </div>
-          </li>
-          <li>
-            <div
-              className={`cursor-pointer items-center rounded-lg flex w-full p-2 ${open ? "h-10" : "h-10 w-8"} 
-              ${location.pathname.toLowerCase().includes("settings") ? "bg-accent text-accent-foreground" : "hover:bg-accent  hover:text-accent-foreground"}`}
+              className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
+              ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
               onClick={() => handleNavigation("/app/settings")}
             >
-              <span className="flex  w-full items-center">
+              <span className="flex w-full items-center">
                 <DynamicIconComponent
                   name="settings"
-                  size={18}
+                  size={20}
                   strokeWidth={1.5}
-                  className={"!size-5 "}
                 />
-                {open && <span className="ml-2 text-sm">Settings</span>}
+                {open && <span className="ml-3">Settings</span>}
               </span>
             </div>
           </li>
