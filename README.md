@@ -22,12 +22,15 @@ npm install @stevederico/skateboard-ui
 
 ### View Components
 - **LandingView** - Landing page template
+- **LandingViewSimple** - Simplified landing page template
 - **SettingsView** - Settings page template
 - **SignInView** - Authentication sign-in page
 - **SignUpView** - Authentication sign-up page
-- **StripeView** - Stripe payment integration
+- **SignOutView** - Sign out handler
+- **PaymentView** - Stripe payment integration
 - **TextView** - Text display view
 - **NotFound** - 404 error page
+- **ErrorBoundary** - React error boundary wrapper
 
 ### shadcn/ui Components
 Full set of shadcn/ui primitives available at `@stevederico/skateboard-ui/shadcn/ui/*`
@@ -52,6 +55,36 @@ import { isAuthenticated, getAppKey, useAppSetup } from '@stevederico/skateboard
 
 ```javascript
 import ProtectedRoute from '@stevederico/skateboard-ui/ProtectedRoute'
+```
+
+## UI Visibility Control
+
+### Static Configuration (constants.json)
+```json
+{
+  "hideSidebar": true,
+  "hideTabBar": true
+}
+```
+
+### Programmatic Control
+```javascript
+import {
+  showSidebar,
+  hideSidebar,
+  showTabBar,
+  hideTabBar,
+  setUIVisibility
+} from '@stevederico/skateboard-ui/Utilities'
+
+// Individual controls
+hideSidebar()
+showSidebar()
+hideTabBar()
+showTabBar()
+
+// Batch control
+setUIVisibility({ sidebar: false, tabBar: false })
 ```
 
 ## Dependencies

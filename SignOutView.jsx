@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getBackendURL } from '@stevederico/skateboard-ui/Utilities';
+import { getBackendURL } from './Utilities';
 
 function SignOutView() {
   const navigate = useNavigate();

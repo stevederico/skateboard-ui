@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getDispatch } from './Context.jsx';
 
 // Constants will be initialized by the app shell
 // Use window object to avoid module duplication issues with Vite
@@ -275,12 +276,6 @@ export async function showCheckout(email, productIndex = 0) {
         return false;
     }
 }
-
-// Usage Limits Configuration
-const FREE_LIMITS = {
-    todos: 3,
-    messages: 10
-};
 
 export async function getRemainingUsage(action) {
     if (getConstants().noLogin === true) {
@@ -663,4 +658,74 @@ export function useForm(initialValues, onSubmit) {
 }
 
 
+// ===== UI VISIBILITY CONTROLS =====
 
+/**
+ * Programmatically show/hide the sidebar
+ * @param {boolean} visible - Whether sidebar should be visible
+ */
+export function setSidebarVisible(visible) {
+    const dispatch = getDispatch();
+    if (dispatch) {
+        dispatch({ type: 'SET_SIDEBAR_VISIBLE', payload: visible });
+    } else {
+        console.warn('setSidebarVisible: Context not initialized');
+    }
+}
+
+/**
+ * Programmatically show/hide the tab bar
+ * @param {boolean} visible - Whether tab bar should be visible
+ */
+export function setTabBarVisible(visible) {
+    const dispatch = getDispatch();
+    if (dispatch) {
+        dispatch({ type: 'SET_TABBAR_VISIBLE', payload: visible });
+    } else {
+        console.warn('setTabBarVisible: Context not initialized');
+    }
+}
+
+/**
+ * Show the sidebar
+ */
+export function showSidebar() {
+    setSidebarVisible(true);
+}
+
+/**
+ * Hide the sidebar
+ */
+export function hideSidebar() {
+    setSidebarVisible(false);
+}
+
+/**
+ * Show the tab bar
+ */
+export function showTabBar() {
+    setTabBarVisible(true);
+}
+
+/**
+ * Hide the tab bar
+ */
+export function hideTabBar() {
+    setTabBarVisible(false);
+}
+
+/**
+ * Set visibility for both sidebar and tab bar at once
+ * @param {object} options - { sidebar: boolean, tabBar: boolean }
+ */
+export function setUIVisibility({ sidebar, tabBar }) {
+    const dispatch = getDispatch();
+    if (dispatch) {
+        const payload = {};
+        if (sidebar !== undefined) payload.sidebarVisible = sidebar;
+        if (tabBar !== undefined) payload.tabBarVisible = tabBar;
+        dispatch({ type: 'SET_UI_VISIBILITY', payload });
+    } else {
+        console.warn('setUIVisibility: Context not initialized');
+    }
+}

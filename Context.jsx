@@ -1,6 +1,13 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 const context = createContext();
+
+// Store dispatch reference for programmatic access outside components
+let _dispatch = null;
+
+export function getDispatch() {
+  return _dispatch;
+}
 
 // Check if localStorage is available
 function isLocalStorageAvailable() {
@@ -69,7 +76,13 @@ export function ContextProvider({ children, constants }) {
     }
   };
 
-  const initialState = { user: getInitialUser() };
+  const initialState = {
+    user: getInitialUser(),
+    ui: {
+      sidebarVisible: true,
+      tabBarVisible: true
+    }
+  };
 
   function reducer(state, action) {
     const storageKey = getStorageKey();
@@ -91,12 +104,27 @@ export function ContextProvider({ children, constants }) {
         safeLSRemoveItem(storageKey);
         return { ...state, user: null };
       }
+      case 'SET_SIDEBAR_VISIBLE': {
+        return { ...state, ui: { ...state.ui, sidebarVisible: action.payload } };
+      }
+      case 'SET_TABBAR_VISIBLE': {
+        return { ...state, ui: { ...state.ui, tabBarVisible: action.payload } };
+      }
+      case 'SET_UI_VISIBILITY': {
+        return { ...state, ui: { ...state.ui, ...action.payload } };
+      }
       default:
         return state;
     }
   }
 
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // Store dispatch reference for programmatic access
+  useEffect(() => {
+    _dispatch = dispatch;
+    return () => { _dispatch = null; };
+  }, [dispatch]);
 
   return (
     <context.Provider value={{ state, dispatch }}>

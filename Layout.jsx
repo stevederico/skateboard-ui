@@ -4,8 +4,15 @@ import { SidebarProvider, SidebarTrigger } from "./shadcn/ui/sidebar"
 import AppSidebar from "./AppSidebar"
 import { useEffect } from 'react';
 import constants from "@/constants.json";
+import { getState } from './Context.jsx';
 
 export default function Layout({ children }) {
+  const { state } = getState();
+  const { sidebarVisible, tabBarVisible } = state.ui;
+
+  // Combine constants (static config) with context state (programmatic control)
+  const showSidebar = !constants.hideSidebar && sidebarVisible;
+  const showTabBar = !constants.hideTabBar && tabBarVisible;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -43,12 +50,12 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
       <SidebarProvider>
-        {!constants.hideSidebar && <AppSidebar />}
+        {showSidebar && <AppSidebar />}
         <main className="flex-1">
           <Outlet />
         </main>
       </SidebarProvider>
-      <TabBar className="md:hidden" />
+      {showTabBar && <TabBar className="md:hidden" />}
     </div>
   );
 }
