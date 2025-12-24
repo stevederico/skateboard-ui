@@ -1,4 +1,13 @@
 # CHANGELOG
+1.2.2
+
+  Fix CSRF cookie-only handling
+  Remove localStorage CSRF storage
+  Fix SettingsView subscription data
+  Fix SignOutView CSRF cleanup
+  Fix App.jsx useAppSetup params
+  Remove Context.jsx CSRF code
+
 1.2.1
 
   Fix Layout scroll
