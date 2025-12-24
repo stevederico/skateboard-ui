@@ -235,6 +235,8 @@ export async function getSkateboardViteConfig(customConfig = {}) {
                 'react-dom',
                 'react-dom/client',
                 '@radix-ui/react-slot',
+                'cookie',
+                'set-cookie-parser',
                 ...(customConfig.optimizeDeps?.include || [])
             ],
             exclude: [
@@ -243,8 +245,6 @@ export async function getSkateboardViteConfig(customConfig = {}) {
                 '@swc/wasm',
                 'lightningcss',
                 'fsevents',
-                'cookie',
-                'set-cookie-parser',
                 ...(customConfig.optimizeDeps?.exclude || [])
             ],
             esbuildOptions: {
