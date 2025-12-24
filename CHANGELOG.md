@@ -1,4 +1,10 @@
 # CHANGELOG
+1.2.4
+
+  Fix react-router cookie import
+  Add force optimization
+  Add react-router-dom include
+
 1.2.3
 
   Fix cookie ESM import
