@@ -1,13 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from './Context.jsx';
 import { getCurrentUser } from './Utilities.js'
 import constants from "@/constants.json";
 
+// Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
+const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
+const DEFAULT_REDIRECT = '/app/home';
+
+function isAllowedRedirect(path) {
+  // Must start with allowed prefix and not contain protocol
+  if (path.includes('://') || path.includes('//')) return false;
+  return ALLOWED_REDIRECT_PREFIXES.some(prefix => path.startsWith(prefix));
+}
+
 export default function PaymentView() {
   const navigate = useNavigate();
-  const { state, dispatch } = getState();
-  const [searchParams] = useSearchParams(); // Hook to access query params
+  const { dispatch } = getState();
+  const [searchParams] = useSearchParams();
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const data = await getCurrentUser();
+      if (data) {
+        dispatch({ type: 'SET_USER', payload: data });
+      }
+    } catch (error) {
+      console.error('Failed to fetch user after payment:', error);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     // Get app-specific localStorage keys
@@ -20,30 +41,21 @@ export default function PaymentView() {
     const portal = searchParams.get('portal') === 'return';
 
     // Default redirect path
-    let redirectPath = '/app/home'; // Fallback if no URL is stored
-
-    async function getUser() {
-      let data = await getCurrentUser();
-      dispatch({ type: 'SET_USER', payload: data });
-    }
+    let redirectPath = DEFAULT_REDIRECT;
 
     // Handle different cases
     switch (true) {
       case success:
-        console.log("Checkout was successful!");
         redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
-        getUser();
+        fetchUser();
         break;
       case canceled:
-        console.log("Checkout was canceled!");
         redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
         break;
       case portal:
-        console.log("Returned from billing portal!");
         redirectPath = localStorage.getItem(getAppKey('beforeManageURL')) || redirectPath;
         break;
       default:
-        console.log("No specific query param detected, using default redirect.");
         redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
         break;
     }
@@ -52,10 +64,9 @@ export default function PaymentView() {
     if (redirectPath.startsWith('http://') || redirectPath.startsWith('https://')) {
       try {
         const url = new URL(redirectPath);
-        redirectPath = url.pathname; // Extract just the path (e.g., '/app/settings')
+        redirectPath = url.pathname;
       } catch (e) {
-        console.error('Invalid URL in redirectPath:', redirectPath);
-        redirectPath = '/app/home'; // Fallback to default if parsing fails
+        redirectPath = DEFAULT_REDIRECT;
       }
     }
 
@@ -64,21 +75,23 @@ export default function PaymentView() {
       redirectPath = `/${redirectPath}`;
     }
 
-    // Debug the redirectPath
-    console.log('Redirecting to path:', redirectPath);
+    // Validate redirect path to prevent open redirect
+    if (!isAllowedRedirect(redirectPath)) {
+      redirectPath = DEFAULT_REDIRECT;
+    }
 
     // Clear the stored URLs
     localStorage.removeItem(getAppKey('beforeCheckoutURL'));
     localStorage.removeItem(getAppKey('beforeManageURL'));
-  
+
     // Redirect after a delay
     const timeoutId = setTimeout(() => {
       navigate(redirectPath, { replace: true });
     }, 1500);
-  
+
     // Cleanup timeout
     return () => clearTimeout(timeoutId);
-  }, [navigate, searchParams]);
+  }, [navigate, searchParams, fetchUser]);
 
 
 

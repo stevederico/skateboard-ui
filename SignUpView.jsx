@@ -35,9 +35,16 @@ export default function LoginForm({
   }, [])
 
   async function signUpClicked() {
+    // Client-side password validation (matches backend: 6-72 chars)
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters');
+      return;
+    }
+    if (password.length > 72) {
+      setErrorMessage('Password must be 72 characters or less');
+      return;
+    }
     try {
-      console.log(`${getBackendURL()}/signup`);
-      console.log(`name: ${name}`);
       const response = await fetch(`${getBackendURL()}/signup`, {
         method: 'POST',
         credentials: 'include',
@@ -52,7 +59,6 @@ export default function LoginForm({
         navigate('/app');
       } else {
         setErrorMessage('Invalid Credentials')
-        console.log("error with /signup")
       }
     } catch (error) {
       console.error('Signup failed:', error);
@@ -105,16 +111,24 @@ export default function LoginForm({
           }}
         />
 
-        <Input
-          id="password"
-          type="password"
-          placeholder="Password"
-          className="py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary"
-          style={{ fontSize: '20px' }}
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="flex flex-col gap-1">
+          <Input
+            id="password"
+            type="password"
+            placeholder="Password"
+            className="py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary"
+            style={{ fontSize: '20px' }}
+            required
+            minLength={6}
+            maxLength={72}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+          <p className="text-xs text-gray-500 dark:text-gray-400 ml-1">Minimum 6 characters</p>
+        </div>
 
         <button
           onClick={(e) => { e.preventDefault(); signUpClicked() }}

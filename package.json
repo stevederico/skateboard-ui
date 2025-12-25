@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "1.2.10",
+  "version": "1.2.11",
   "type": "module",
   "exports": {
     "./AppSidebar": {
@@ -79,10 +79,6 @@
     "./Utilities": {
       "import": "./Utilities.js",
       "default": "./Utilities.js"
-    },
-    "./ViteConfig": {
-      "import": "./ViteConfig.js",
-      "default": "./ViteConfig.js"
     },
     "./ProtectedRoute": {
       "import": "./ProtectedRoute.jsx",

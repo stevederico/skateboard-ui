@@ -1,4 +1,17 @@
 # CHANGELOG
+1.2.11
+
+  Add navigation aria labels
+  Add sidebar button semantics
+  Add TabBar accessibility
+  Add password validation
+  Add open redirect prevention
+  Add API request timeout
+  Fix useListData abort handling
+  Remove console.log statements
+  Optimize ThemeToggle storage
+  Remove ViteConfig export
+
 1.2.5
 
   Add sidebar visibility control

@@ -67,16 +67,13 @@ function safeRemoveItem(key) {
 
 export function initializeUtilities(constants) {
     if (!constants) {
-        console.error('[Utilities] initializeUtilities called with null/undefined constants!');
         throw new Error('initializeUtilities called with null/undefined constants');
     }
-    console.log('[Utilities] Initializing with app:', constants.appName);
     // Store in both module and window to handle module duplication
     _constants = constants;
     if (typeof window !== 'undefined') {
         window.__SKATEBOARD_CONSTANTS__ = constants;
     }
-    console.log('[Utilities] Initialization complete. _constants set:', !!_constants);
 }
 
 function getConstants() {
@@ -86,8 +83,6 @@ function getConstants() {
     }
 
     if (!_constants) {
-        console.error('[Utilities] getConstants called but _constants is null!');
-        console.trace('[Utilities] Call stack:');
         throw new Error('Utilities not initialized. Call initializeUtilities(constants) first.');
     }
     return _constants;
@@ -220,7 +215,6 @@ export async function showManage(stripeID) {
 
         if (response.ok) {
             const data = await response.json();
-            console.log("/portal response: ", data);
             if (data.url) {
                 safeSetItem(getAppKey("beforeManageURL"), window.location.href);
                 window.location.href = data.url; // Redirect to Stripe billing portal
@@ -497,11 +491,18 @@ export async function apiRequest(endpoint, options = {}) {
         (options.method || 'GET').toUpperCase()
     );
 
+    // Set up timeout (default 30 seconds)
+    const timeout = options.timeout || 30000;
+    const controller = options.signal ? null : new AbortController();
+    const signal = options.signal || controller?.signal;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), timeout) : null;
+
     let response;
     try {
         response = await fetch(`${getBackendURL()}${endpoint}`, {
             ...options,
             credentials: 'include',
+            signal,
             headers: {
                 'Content-Type': 'application/json',
                 ...(needsCSRF && csrfToken && { 'X-CSRF-Token': csrfToken }),
@@ -509,7 +510,12 @@ export async function apiRequest(endpoint, options = {}) {
             }
         });
     } catch (error) {
+        if (error.name === 'AbortError') {
+            throw error; // Re-throw abort errors for useListData to handle
+        }
         throw new Error(`Network error: ${error.message}`);
+    } finally {
+        if (timeoutId) clearTimeout(timeoutId);
     }
 
     // Handle 401 (redirect to signout)
@@ -602,14 +608,16 @@ export function useListData(endpoint, sortFn = null) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchData = async () => {
+    const fetchData = async (signal) => {
         setLoading(true);
         try {
-            const result = await apiRequest(endpoint);
+            const result = await apiRequest(endpoint, { signal });
             const sorted = sortFn ? result.sort(sortFn) : result;
             setData(sorted);
             setError(null);
         } catch (err) {
+            // Ignore abort errors
+            if (err.name === 'AbortError') return;
             setError(err.message);
         } finally {
             setLoading(false);
@@ -617,10 +625,12 @@ export function useListData(endpoint, sortFn = null) {
     };
 
     useEffect(() => {
-        fetchData();
-    }, [endpoint]);
+        const controller = new AbortController();
+        fetchData(controller.signal);
+        return () => controller.abort();
+    }, [endpoint, sortFn]);
 
-    return { data, loading, error, refetch: fetchData };
+    return { data, loading, error, refetch: () => fetchData() };
 }
 
 /**
