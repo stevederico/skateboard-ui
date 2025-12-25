@@ -118,7 +118,8 @@ export function isAuthenticated() {
         return true;
     }
     const csrfKey = getAppKey('csrf');
-    return Boolean(safeGetItem(csrfKey));
+    const userKey = getAppKey('user');
+    return Boolean(safeGetItem(csrfKey)) && Boolean(safeGetItem(userKey));
 }
 
 export function getBackendURL() {
