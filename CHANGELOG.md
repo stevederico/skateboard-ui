@@ -1,4 +1,9 @@
 # CHANGELOG
+1.2.12
+
+  Remove unused embla-carousel-react
+  Remove unused sonner
+
 1.2.11
 
   Add navigation aria labels
