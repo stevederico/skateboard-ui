@@ -1,4 +1,8 @@
 # CHANGELOG
+1.2.14
+
+  Fix isAuthenticated validation
+
 1.2.13
 
   Fix CSRF localStorage sync
