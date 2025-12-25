@@ -50,14 +50,21 @@ export default function AppSidebar() {
         </SidebarHeader>
       )}
       <SidebarContent>
-        <ul className={`flex flex-col gap-1 p-2 ${open ? "" : "items-center"}`}>
+        <ul
+          className={`flex flex-col gap-1 p-2 ${open ? "" : "items-center"}`}
+          role="navigation"
+          aria-label="Main navigation"
+        >
           {constants.pages.map((item) => {
             const isActive = currentPage === item.url.toLowerCase();
             return (
               <li key={item.title}>
-                <div
+                <button
+                  type="button"
                   className={`cursor-pointer items-center flex w-full px-4 py-3 rounded-lg ${open ? "h-14" : "h-12 w-12"} ${isActive ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
                   onClick={() => handleNavigation(`/app/${item.url.toLowerCase()}`)}
+                  aria-label={item.title}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   <span className="flex w-full items-center">
                     <DynamicIconComponent
@@ -67,7 +74,7 @@ export default function AppSidebar() {
                     />
                     {open && <span className="ml-3">{item.title}</span>}
                   </span>
-                </div>
+                </button>
               </li>
             );
           })}
@@ -76,10 +83,13 @@ export default function AppSidebar() {
       <SidebarFooter>
         <ul className={`flex flex-col gap-1 ${open ? "" : "items-center"}`}>
           <li>
-            <div
+            <button
+              type="button"
               className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
               ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
               onClick={() => handleNavigation("/app/settings")}
+              aria-label="Settings"
+              aria-current={location.pathname.toLowerCase().includes("settings") ? 'page' : undefined}
             >
               <span className="flex w-full items-center">
                 <DynamicIconComponent
@@ -89,7 +99,7 @@ export default function AppSidebar() {
                 />
                 {open && <span className="ml-3">Settings</span>}
               </span>
-            </div>
+            </button>
           </li>
         </ul>
       </SidebarFooter>

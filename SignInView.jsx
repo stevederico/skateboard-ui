@@ -43,7 +43,6 @@ export default function LoginForm({
     setIsSubmitting(true);
     try {
       const uri = `${getBackendURL()}/signin`;
-      console.log("URI ", uri)
       const response = await fetch(uri, {
         method: 'POST',
         credentials: 'include',

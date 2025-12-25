@@ -24,12 +24,19 @@ export default function ThemeToggle({ className = "", iconSize = 24, variant = "
 
   useEffect(() => {
     const root = document.documentElement;
+    const newTheme = isDarkMode ? 'dark' : 'light';
+
     if (isDarkMode) {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+
+    // Only write to localStorage if value changed
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme !== newTheme) {
+      localStorage.setItem('theme', newTheme);
+    }
   }, [isDarkMode]);
 
   const toggleTheme = () => {

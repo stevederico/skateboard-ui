@@ -7,43 +7,40 @@ export default function TabBar() {
   const location = useLocation();
 
   return (
-    <div className="fixed flex md:hidden pt-2 pb-4 bottom-0 inset-x-0 justify-around text-center border-t shadow-lg bg-background">
-      {constants?.pages?.map((item) => (
-        <span className="px-3" key={item.title}>
-          <Link to={`/app/${item.url.toLowerCase()}`} className="cursor-pointer">
-            {
-              location.pathname.includes(item.url.toLowerCase())
-                ? (
-                  <span className="text-base">
-                    <DynamicIcon name={item.icon} size={32} strokeWidth={1.5} />
-                  </span>
-                )
-                : (
-                  <span className="text-gray-500">
-                    <DynamicIcon name={item.icon} size={32} strokeWidth={1.5} />
-                  </span>
-                )
-            }
-          </Link>
-        </span>
-      ))}
+    <nav
+      className="fixed flex md:hidden pt-2 pb-4 bottom-0 inset-x-0 justify-around text-center border-t shadow-lg bg-background"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      {constants?.pages?.map((item) => {
+        const isActive = location.pathname.includes(item.url.toLowerCase());
+        return (
+          <span className="px-3" key={item.title}>
+            <Link
+              to={`/app/${item.url.toLowerCase()}`}
+              className="cursor-pointer"
+              aria-label={item.title}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              <span className={isActive ? "text-base" : "text-gray-500"}>
+                <DynamicIcon name={item.icon} size={32} strokeWidth={1.5} />
+              </span>
+            </Link>
+          </span>
+        );
+      })}
       <span className="px-3">
-        <Link to={`/app/settings`} className="cursor-pointer">
-          {
-            location.pathname.includes('Settings'.toLowerCase())
-              ? (
-
-                <span className="text-base">
-                  <DynamicIcon name={"settings"} size={32} strokeWidth={1.5} />
-                </span>
-              )
-              : (
-                <span className="text-gray-500">
-                  <DynamicIcon name={"settings"} size={32} strokeWidth={1.5} />
-                </span>
-              )
-          }
-        </Link></span>
-    </div>
+        <Link
+          to={`/app/settings`}
+          className="cursor-pointer"
+          aria-label="Settings"
+          aria-current={location.pathname.includes('settings') ? 'page' : undefined}
+        >
+          <span className={location.pathname.includes('settings') ? "text-base" : "text-gray-500"}>
+            <DynamicIcon name={"settings"} size={32} strokeWidth={1.5} />
+          </span>
+        </Link>
+      </span>
+    </nav>
   );
 };
