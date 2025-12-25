@@ -34,7 +34,8 @@ export default function LoginForm({
     }
   }, [])
 
-  async function signUpClicked() {
+  async function signUpClicked(e) {
+    e.preventDefault();
     // Client-side password validation (matches backend: 6-72 chars)
     if (password.length < 6) {
       setErrorMessage('Password must be at least 6 characters');
@@ -54,7 +55,14 @@ export default function LoginForm({
 
       if (response.ok) {
         const data = await response.json();
-        // CSRF token is set as cookie by backend, no localStorage needed
+        // Save CSRF token from cookie to localStorage for isAuthenticated() check
+        const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
+        if (csrfCookie) {
+          const csrfToken = csrfCookie.split('=')[1];
+          const appName = constants.appName || 'skateboard';
+          const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
+          localStorage.setItem(csrfKey, csrfToken);
+        }
         dispatch({ type: 'SET_USER', payload: data });
         navigate('/app');
       } else {
@@ -82,7 +90,7 @@ export default function LoginForm({
         </div>
       )}
 
-      <form className="flex flex-col gap-4">
+      <form onSubmit={signUpClicked} className="flex flex-col gap-4">
         <Input
           ref={nameInputRef}
           id="name"
@@ -131,7 +139,7 @@ export default function LoginForm({
         </div>
 
         <button
-          onClick={(e) => { e.preventDefault(); signUpClicked() }}
+          type="submit"
           className="relative group w-full text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
           style={{
             backgroundImage: `linear-gradient(to bottom right,

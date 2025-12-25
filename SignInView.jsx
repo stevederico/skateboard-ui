@@ -52,7 +52,14 @@ export default function LoginForm({
 
       if (response.ok) {
         const data = await response.json();
-        // CSRF token is set as cookie by backend, no localStorage needed
+        // Save CSRF token from cookie to localStorage for isAuthenticated() check
+        const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
+        if (csrfCookie) {
+          const csrfToken = csrfCookie.split('=')[1];
+          const appName = constants.appName || 'skateboard';
+          const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
+          localStorage.setItem(csrfKey, csrfToken);
+        }
         dispatch({ type: 'SET_USER', payload: data });
         navigate('/app');
       } else {

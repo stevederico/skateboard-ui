@@ -1,4 +1,9 @@
 # CHANGELOG
+1.2.13
+
+  Fix CSRF localStorage sync
+  Fix SignUp form submit
+
 1.2.12
 
   Remove unused embla-carousel-react
