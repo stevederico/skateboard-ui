@@ -1,4 +1,11 @@
 # CHANGELOG
+1.2.18
+
+  Add authentication documentation
+  Add JSDoc comments
+  Update README configuration
+  Create docs folder
+
 1.2.17
 
   Fix SignIn layout positioning

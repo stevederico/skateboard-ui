@@ -65,6 +65,27 @@ function safeRemoveItem(key) {
     }
 }
 
+/**
+ * Initialize skateboard-ui utilities with app constants.
+ *
+ * MUST be called before any utility functions are used, including
+ * before React components render. Stores constants in both module-level
+ * variable and window.__SKATEBOARD_CONSTANTS__ to handle Vite module
+ * duplication issues.
+ *
+ * @param {Object} constants - App configuration object
+ * @param {string} constants.appName - Application name
+ * @param {string} constants.devBackendURL - Development API base URL (include /api prefix)
+ * @param {string} constants.backendURL - Production API base URL (include /api prefix)
+ * @throws {Error} If constants is null/undefined
+ *
+ * @example
+ * initializeUtilities({
+ *   appName: "MyApp",
+ *   devBackendURL: "http://localhost:8000/api",
+ *   backendURL: "https://api.myapp.com/api"
+ * });
+ */
 export function initializeUtilities(constants) {
     if (!constants) {
         throw new Error('initializeUtilities called with null/undefined constants');
@@ -102,17 +123,66 @@ export function getCookie(name) {
     return null;
 }
 
+/**
+ * Get CSRF token from localStorage.
+ *
+ * Returns the CSRF token saved during signin/signup. This token
+ * should be sent in the X-CSRF-Token header for state-changing requests.
+ *
+ * @returns {string|null} CSRF token or null if not found
+ *
+ * @example
+ * const csrfToken = getCSRFToken();
+ * fetch('/api/endpoint', {
+ *   headers: { 'X-CSRF-Token': csrfToken }
+ * });
+ */
 export function getCSRFToken() {
     const appName = getConstants().appName || 'skateboard';
     const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
     return safeGetItem(csrfKey);
 }
 
+/**
+ * Generate app-specific localStorage key.
+ *
+ * Creates namespaced keys using app name: `{appName}_{suffix}`
+ * App name is normalized (lowercase, hyphens replace spaces)
+ *
+ * @param {string} suffix - Key suffix (e.g., 'csrf', 'user', 'theme')
+ * @returns {string} Namespaced key
+ *
+ * @example
+ * getAppKey('csrf')  // "myapp_csrf"
+ * getAppKey('user')  // "myapp_user"
+ * getAppKey('theme') // "myapp_theme"
+ */
 export function getAppKey(suffix) {
     const appName = getConstants().appName || 'skateboard';
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
 }
 
+/**
+ * Check if user is authenticated.
+ *
+ * Uses localStorage (NOT cookies) for fast client-side validation.
+ * Checks for both CSRF token and user data in localStorage.
+ * If constants.noLogin is true, always returns true.
+ *
+ * Note: This is a client-side check only. ProtectedRoute performs
+ * additional server-side validation via /me endpoint.
+ *
+ * @returns {boolean} True if authenticated or noLogin mode
+ *
+ * @see {@link ProtectedRoute} for server-side validation
+ *
+ * @example
+ * if (isAuthenticated()) {
+ *   // Show authenticated UI
+ * } else {
+ *   // Redirect to signin
+ * }
+ */
 export function isAuthenticated() {
     if (getConstants().noLogin === true) {
         return true;
@@ -122,6 +192,19 @@ export function isAuthenticated() {
     return Boolean(safeGetItem(csrfKey)) && Boolean(safeGetItem(userKey));
 }
 
+/**
+ * Get the backend API base URL based on environment.
+ *
+ * Returns devBackendURL in development mode, backendURL in production.
+ * Endpoints should be concatenated: `${getBackendURL()}/endpoint`
+ *
+ * @returns {string} Base URL including /api prefix
+ *
+ * @example
+ * const url = `${getBackendURL()}/signup`;
+ * // Dev:  "http://localhost:8000/api/signup"
+ * // Prod: "https://api.myapp.com/api/signup"
+ */
 export function getBackendURL() {
     let result = import.meta.env.DEV ? getConstants().devBackendURL : getConstants().backendURL;
     return result

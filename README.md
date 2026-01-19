@@ -25,6 +25,92 @@ createSkateboardApp({ constants, appRoutes });
 
 That's it! You get routing, auth, layout, landing page, settings, and payments.
 
+## Configuration
+
+skateboard-ui requires a `constants` object that configures your application:
+
+```javascript
+// constants.json or constants.js
+const constants = {
+  // Required: Backend URLs (include /api prefix)
+  devBackendURL: "http://localhost:8000/api",
+  backendURL: "https://api.myapp.com/api",
+
+  // Required: App identity
+  appName: "MyApp",
+  appIcon: "🛹",
+
+  // Required: Landing page content
+  tagline: "Build apps faster with skateboard-ui",
+  cta: "Get Started",
+
+  // Required: Features section
+  features: {
+    title: "Everything you need",
+    items: [
+      { icon: "Zap", title: "Fast", description: "Built for speed" },
+      { icon: "Shield", title: "Secure", description: "Authentication included" }
+    ]
+  },
+
+  // Required: Company information
+  companyName: "Your Company",
+  companyWebsite: "https://yourcompany.com",
+  companyEmail: "hello@yourcompany.com",
+
+  // Optional: Authentication
+  noLogin: false,  // Set true to disable authentication
+
+  // Optional: Payments (Stripe)
+  stripeProducts: [
+    {
+      name: "Pro Plan",
+      priceId: "price_123",
+      price: "$10/month",
+      lookup_key: "pro_plan"
+    }
+  ],
+
+  // Optional: Legal documents
+  termsOfService: "Your terms of service...",
+  privacyPolicy: "Your privacy policy...",
+
+  // Optional: UI visibility
+  hideSidebar: false,
+  hideTabBar: false
+}
+```
+
+### Backend URL Pattern
+
+The `devBackendURL` and `backendURL` should include your full API base path (including the `/api` prefix):
+
+```javascript
+const constants = {
+  devBackendURL: "http://localhost:8000/api",  // Include /api prefix
+  backendURL: "https://api.myapp.com/api",
+}
+```
+
+Endpoints are relative to this base URL:
+- `${getBackendURL()}/signup` → `http://localhost:8000/api/signup`
+- `${getBackendURL()}/me` → `http://localhost:8000/api/me`
+- `${getBackendURL()}/deals` → `http://localhost:8000/api/deals`
+
+**Tip:** Include API versioning in the base URL (e.g., `/api/v2`) rather than in each endpoint path.
+
+### Authentication Setup
+
+skateboard-ui uses a hybrid cookie + localStorage authentication system. Your backend must implement specific endpoints and cookie handling.
+
+**See [AUTHENTICATION.md](./docs/AUTHENTICATION.md) for complete backend setup requirements.**
+
+Quick overview:
+- Session token stored in HttpOnly cookie for security
+- CSRF token in localStorage for request validation
+- Backend validates cookies on protected endpoints
+- Client-side `isAuthenticated()` checks localStorage for fast validation
+
 ## Components
 
 ### Core Components
@@ -252,6 +338,10 @@ import ProtectedRoute from '@stevederico/skateboard-ui/ProtectedRoute';
 ```
 
 Used internally by createSkateboardApp. Redirects to /signin if not authenticated.
+
+## Documentation
+
+- **[Authentication Guide](./docs/AUTHENTICATION.md)** - Complete guide to the hybrid cookie + localStorage authentication system, including backend requirements, security considerations, and Express.js implementation examples
 
 ## Dependencies
 
