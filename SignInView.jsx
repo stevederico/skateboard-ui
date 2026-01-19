@@ -52,10 +52,10 @@ export default function LoginForm({
 
       if (response.ok) {
         const data = await response.json();
-        // Save CSRF token from cookie to localStorage for isAuthenticated() check
+        // Save CSRF token to localStorage for isAuthenticated() check
         const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
-        if (csrfCookie) {
-          const csrfToken = csrfCookie.split('=')[1];
+        const csrfToken = csrfCookie ? csrfCookie.split('=')[1] : data.csrfToken;
+        if (csrfToken) {
           const appName = constants.appName || 'skateboard';
           const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
           localStorage.setItem(csrfKey, csrfToken);
