@@ -5,6 +5,22 @@ const context = createContext();
 // Store dispatch reference for programmatic access outside components
 let _dispatch = null;
 
+/**
+ * Get dispatch function for programmatic state updates outside components.
+ *
+ * Useful for updating state from non-React code (event handlers, utilities).
+ * Returns null if ContextProvider hasn't mounted yet.
+ *
+ * @returns {Function|null} Dispatch function or null
+ *
+ * @example
+ * import { getDispatch } from '@stevederico/skateboard-ui/Context';
+ *
+ * const dispatch = getDispatch();
+ * if (dispatch) {
+ *   dispatch({ type: 'CLEAR_USER' });
+ * }
+ */
 export function getDispatch() {
   return _dispatch;
 }
@@ -58,6 +74,24 @@ function safeLSRemoveItem(key) {
   }
 }
 
+/**
+ * Global state provider for skateboard-ui.
+ *
+ * Manages user authentication state and UI visibility (sidebar, tabbar).
+ * Persists user data to localStorage using app-specific keys.
+ *
+ * @param {Object} props
+ * @param {Object} props.constants - App configuration
+ * @param {string} props.constants.appName - Used for localStorage key namespacing
+ * @param {React.ReactNode} props.children - Child components
+ *
+ * @example
+ * import { ContextProvider } from '@stevederico/skateboard-ui/Context';
+ *
+ * <ContextProvider constants={constants}>
+ *   <App />
+ * </ContextProvider>
+ */
 export function ContextProvider({ children, constants }) {
   const getStorageKey = () => {
     const appName = constants.appName || 'skateboard';
@@ -133,6 +167,24 @@ export function ContextProvider({ children, constants }) {
   );
 }
 
+/**
+ * Hook to access skateboard-ui state.
+ *
+ * Returns { state, dispatch } where state contains:
+ * - user: Current user object or null
+ * - ui: { sidebarVisible, tabBarVisible }
+ *
+ * @returns {{ state: Object, dispatch: Function }}
+ *
+ * @example
+ * import { getState } from '@stevederico/skateboard-ui/Context';
+ *
+ * function MyComponent() {
+ *   const { state, dispatch } = getState();
+ *   console.log(state.user);
+ *   dispatch({ type: 'SET_USER', payload: userData });
+ * }
+ */
 export function getState() {
   return useContext(context);
 }
