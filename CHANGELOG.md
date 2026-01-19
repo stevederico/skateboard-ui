@@ -1,4 +1,9 @@
 # CHANGELOG
+1.2.17
+
+  Fix SignIn layout positioning
+  Fix SignUp layout positioning
+
 1.2.14
 
   Fix isAuthenticated validation

@@ -73,7 +73,7 @@ export default function LoginForm({
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+    <div className="fixed inset-0 bg-white dark:bg-black transition-colors duration-300 overflow-auto">
       <div className={cn("flex flex-col gap-6 p-4 max-w-lg mx-auto mt-20", className)} {...props}>
       <div className="flex flex-row items-center justify-center mb-4">
         <div className="bg-app dark:bg-app dark:border dark:border-gray-700 rounded-2xl flex aspect-square size-16 items-center justify-center">
