@@ -97,7 +97,7 @@ export function initializeUtilities(constants) {
     }
 }
 
-function getConstants() {
+export function getConstants() {
     // Check window object first (handles module duplication)
     if (typeof window !== 'undefined' && window.__SKATEBOARD_CONSTANTS__) {
         return window.__SKATEBOARD_CONSTANTS__;
