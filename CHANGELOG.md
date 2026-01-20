@@ -1,4 +1,9 @@
 # CHANGELOG
+1.2.19
+
+  Skip noLogin backend validation
+  Export getConstants utility
+
 1.2.18
 
   Add authentication documentation

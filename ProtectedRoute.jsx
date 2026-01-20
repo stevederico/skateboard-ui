@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { isAuthenticated, apiRequest, getAppKey } from './Utilities';
+import { isAuthenticated, apiRequest, getAppKey, getConstants } from './Utilities';
 
 const ProtectedRoute = () => {
     const [status, setStatus] = useState('checking'); // 'checking' | 'valid' | 'invalid'
@@ -8,6 +8,12 @@ const ProtectedRoute = () => {
     useEffect(() => {
         if (!isAuthenticated()) {
             setStatus('invalid');
+            return;
+        }
+
+        // Skip backend validation for noLogin apps
+        if (getConstants().noLogin === true) {
+            setStatus('valid');
             return;
         }
 
