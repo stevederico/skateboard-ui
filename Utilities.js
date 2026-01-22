@@ -614,6 +614,46 @@ export async function apiRequest(endpoint, options = {}) {
         throw new Error('Unauthorized - Redirecting to Sign Out');
     }
 
+    // Handle 403 CSRF token failures with auto-retry
+    if (response.status === 403) {
+        const errorBody = await response.json().catch(() => ({}));
+
+        // If CSRF-related error, try to refresh session and retry once
+        if (errorBody.error && errorBody.error.includes('CSRF')) {
+            console.warn('CSRF token validation failed, attempting recovery...');
+
+            // Fetch fresh user data (triggers CSRF token regeneration on backend)
+            try {
+                await fetch(`${getBackendURL()}/me`, {
+                    credentials: 'include'
+                });
+
+                // Retry original request with fresh token
+                const newCsrfToken = getCSRFToken();
+                return fetch(`${getBackendURL()}${endpoint}`, {
+                    ...options,
+                    credentials: 'include',
+                    signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(needsCSRF && newCsrfToken && { 'X-CSRF-Token': newCsrfToken }),
+                        ...options.headers
+                    }
+                }).then(retryResponse => {
+                    if (!retryResponse.ok) {
+                        throw new Error(`Retry failed: ${retryResponse.status} ${retryResponse.statusText}`);
+                    }
+                    return retryResponse.json();
+                });
+            } catch (retryError) {
+                console.error('CSRF recovery failed:', retryError);
+                throw new Error('CSRF validation failed - please refresh the page');
+            }
+        }
+
+        throw new Error(`Forbidden: ${errorBody.error || response.statusText}`);
+    }
+
     // Handle other errors
     if (!response.ok) {
         throw new Error(`Request failed: ${response.status} ${response.statusText}`);

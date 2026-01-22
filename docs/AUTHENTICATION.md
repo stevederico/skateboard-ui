@@ -54,6 +54,27 @@ skateboard-ui uses a **hybrid cookie + localStorage authentication system** that
 - Backend validates header matches stored session CSRF token
 - Separate from session cookie to prevent cookie-based CSRF
 
+### CSRF Error Handling
+
+The `apiRequest` utility automatically handles CSRF token failures:
+
+1. **Auto-Regeneration**: Backend auto-regenerates tokens after server restart
+2. **Retry Logic**: Frontend automatically retries failed requests once after refreshing the session
+3. **User Experience**: Transparent recovery without forcing sign-out or page refresh
+
+**Error Flow**:
+```
+POST /api/keys → 403 CSRF error
+    ↓
+Fetch /me (triggers backend auto-regeneration)
+    ↓
+Retry POST /api/keys with fresh token
+    ↓
+Success
+```
+
+**Note**: The retry is automatic and transparent to users. Only if the retry fails will an error be shown.
+
 ## Backend Requirements
 
 ### Required Endpoints
