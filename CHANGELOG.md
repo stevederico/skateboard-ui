@@ -1,4 +1,10 @@
 # CHANGELOG
+1.2.20
+
+  Fix CSRF token reading
+  Read csrf_token cookie directly
+  Add localStorage fallback
+
 1.2.19
 
   Skip noLogin backend validation

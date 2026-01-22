@@ -236,7 +236,7 @@ const response = await fetch(`${getBackendURL()}/protected-endpoint`, {
   credentials: 'include',  // Automatically includes cookies
   headers: {
     'Content-Type': 'application/json',
-    'X-CSRF-Token': getCSRFToken()  // From localStorage
+    'X-CSRF-Token': getCSRFToken()  // From cookie (with localStorage fallback)
   },
   body: JSON.stringify(data)
 });
@@ -466,14 +466,15 @@ app.listen(8000, () => {
 **Symptoms:** Protected endpoints return 403 Forbidden.
 
 **Causes:**
-1. CSRF token not in localStorage
+1. CSRF token cookie missing or expired
 2. Header not being sent
 3. Token mismatch
 
 **Solutions:**
-- Check `localStorage.getItem('{appName}_csrf')` exists
-- Verify `X-CSRF-Token` header is set
-- Ensure CSRF cookie and localStorage token match
+- Verify signin/signup set `csrf_token` cookie (check browser DevTools → Application → Cookies)
+- Check `getCSRFToken()` returns a value (reads from cookie first, localStorage fallback)
+- Verify `X-CSRF-Token` header is set in request
+- Ensure CSRF cookie matches backend session token
 - Check CSRF token not expired (matches session lifetime)
 
 ### Cookies not persisting across requests
