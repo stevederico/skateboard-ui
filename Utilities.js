@@ -124,10 +124,11 @@ export function getCookie(name) {
 }
 
 /**
- * Get CSRF token from localStorage.
+ * Get CSRF token from cookie or localStorage.
  *
- * Returns the CSRF token saved during signin/signup. This token
- * should be sent in the X-CSRF-Token header for state-changing requests.
+ * Reads CSRF token from csrf_token cookie (set by backend during signin/signup).
+ * Falls back to localStorage for backwards compatibility. This token should be
+ * sent in the X-CSRF-Token header for state-changing requests.
  *
  * @returns {string|null} CSRF token or null if not found
  *
@@ -138,6 +139,11 @@ export function getCookie(name) {
  * });
  */
 export function getCSRFToken() {
+    // Try cookie first (source of truth from backend)
+    const csrfCookie = getCookie('csrf_token');
+    if (csrfCookie) return csrfCookie;
+
+    // Fallback to localStorage (for backwards compatibility)
     const appName = getConstants().appName || 'skateboard';
     const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
     return safeGetItem(csrfKey);
