@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getBackendURL } from './Utilities';
+import { getBackendURL, getCSRFToken } from './Utilities';
 
 function SignOutView() {
   const navigate = useNavigate();
@@ -8,10 +8,15 @@ function SignOutView() {
   useEffect(() => {
     const signOut = async () => {
       try {
+        const csrfToken = getCSRFToken();
         // Call backend signout endpoint
         await fetch(`${getBackendURL()}/signout`, {
           method: 'POST',
-          credentials: 'include'
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(csrfToken && { 'X-CSRF-Token': csrfToken })
+          }
         });
       } catch (error) {
         console.error('Sign out error:', error);

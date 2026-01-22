@@ -1,4 +1,26 @@
 # CHANGELOG
+
+1.2.22
+
+  Fix SignOut CSRF header
+  Add CSRF retry logic
+  Remove redundant token parsing
+  Update authentication docs
+
+## [1.2.21] - 2026-01-22
+
+### Fixed
+- **SignOut**: Added missing CSRF token header to signout request (critical bug that caused 403 errors)
+- **Error Handling**: Added automatic retry logic for 403 CSRF validation failures with session refresh
+- **Code Quality**: Removed redundant CSRF token parsing in SignInView (getCSRFToken() already handles it)
+
+### Changed
+- `apiRequest()` now automatically recovers from CSRF token failures by refreshing the session and retrying once
+- Improved error messages for CSRF-related failures
+
+### Documentation
+- Updated Authentication.md with CSRF error handling flow
+
 1.2.20
 
   Fix CSRF token reading
