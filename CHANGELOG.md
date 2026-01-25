@@ -1,5 +1,18 @@
 # CHANGELOG
 
+1.3.0
+
+  Migrate to Base UI
+  Remove date-fns dependency
+  Remove input-otp component
+  Update lucide-react icons
+  Update recharts v3
+  Update react-resizable-panels v4
+  Fix accordion animations
+  Update README dependencies
+  Add 8 new components
+  Add .gitignore file
+
 1.2.22
 
   Fix SignOut CSRF header

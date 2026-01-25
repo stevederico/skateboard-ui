@@ -5,7 +5,11 @@ React component library for rapid application development. Built with TailwindCS
 ## Installation
 
 ```bash
+# npm
 npm install @stevederico/skateboard-ui
+
+# deno
+deno install npm:@stevederico/skateboard-ui
 ```
 
 ## Quick Start
@@ -142,7 +146,7 @@ Quick overview:
 
 ### shadcn/ui Components
 
-43 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
+51 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
 
 ```javascript
 import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button'
@@ -345,11 +349,17 @@ Used internally by createSkateboardApp. Redirects to /signin if not authenticate
 
 ## Dependencies
 
+### Peer Dependencies
 - React 19.1+
+- react-dom 19.1+
 - react-router-dom 7.0+
-- Radix UI primitives
-- TailwindCSS 4.0+
-- lucide-react
+
+### Core Dependencies
+- @base-ui/react - Accessible UI primitives
+- TailwindCSS 4.0+ - Utility-first CSS framework
+- lucide-react - Icon library
+- class-variance-authority - Type-safe variant styling
+- clsx & tailwind-merge - className utilities
 
 ## Repository
 
