@@ -1,10 +1,10 @@
 "use client";
 import * as React from "react"
 import useEmblaCarousel from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react"
 
-import { cn } from "../lib/utils"
-import { Button } from "./button"
+import { cn } from "@/shadcn/lib/utils"
+import { Button } from "@/shadcn/ui/button"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 const CarouselContext = React.createContext(null)
 
@@ -75,7 +75,7 @@ function Carousel({
   }, [api, onSelect])
 
   return (
-    (<CarouselContext.Provider
+    <CarouselContext.Provider
       value={{
         carouselRef,
         api: api,
@@ -96,7 +96,7 @@ function Carousel({
         {...props}>
         {children}
       </div>
-    </CarouselContext.Provider>)
+    </CarouselContext.Provider>
   );
 }
 
@@ -107,7 +107,7 @@ function CarouselContent({
   const { carouselRef, orientation } = useCarousel()
 
   return (
-    (<div
+    <div
       ref={carouselRef}
       className="overflow-hidden"
       data-slot="carousel-content">
@@ -118,7 +118,7 @@ function CarouselContent({
           className
         )}
         {...props} />
-    </div>)
+    </div>
   );
 }
 
@@ -129,7 +129,7 @@ function CarouselItem({
   const { orientation } = useCarousel()
 
   return (
-    (<div
+    <div
       role="group"
       aria-roledescription="slide"
       data-slot="carousel-item"
@@ -138,58 +138,58 @@ function CarouselItem({
         orientation === "horizontal" ? "pl-4" : "pt-4",
         className
       )}
-      {...props} />)
+      {...props} />
   );
 }
 
 function CarouselPrevious({
   className,
   variant = "outline",
-  size = "icon",
+  size = "icon-sm",
   ...props
 }) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
   return (
-    (<Button
+    <Button
       data-slot="carousel-previous"
       variant={variant}
       size={size}
-      className={cn("absolute size-8 rounded-full", orientation === "horizontal"
+      className={cn("rounded-full absolute touch-manipulation", orientation === "horizontal"
         ? "top-1/2 -left-12 -translate-y-1/2"
         : "-top-12 left-1/2 -translate-x-1/2 rotate-90", className)}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}>
-      <ArrowLeft />
+      <ChevronLeftIcon />
       <span className="sr-only">Previous slide</span>
-    </Button>)
+    </Button>
   );
 }
 
 function CarouselNext({
   className,
   variant = "outline",
-  size = "icon",
+  size = "icon-sm",
   ...props
 }) {
   const { orientation, scrollNext, canScrollNext } = useCarousel()
 
   return (
-    (<Button
+    <Button
       data-slot="carousel-next"
       variant={variant}
       size={size}
-      className={cn("absolute size-8 rounded-full", orientation === "horizontal"
+      className={cn("rounded-full absolute touch-manipulation", orientation === "horizontal"
         ? "top-1/2 -right-12 -translate-y-1/2"
         : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90", className)}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}>
-      <ArrowRight />
+      <ChevronRightIcon />
       <span className="sr-only">Next slide</span>
-    </Button>)
+    </Button>
   );
 }
 
-export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
+export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, useCarousel };
