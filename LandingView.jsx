@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from 'next-themes';
 import constants from "@/constants.json";
 import * as LucideIcons from "lucide-react";
 import ThemeToggle from './ThemeToggle.jsx';
@@ -14,19 +15,8 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
 
 export default function LandingView() {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Initialize dark mode from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    } else {
-      setIsDarkMode(systemPrefersDark);
-    }
-  }, []);
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
   const renderHeroContent = () => {
     return (

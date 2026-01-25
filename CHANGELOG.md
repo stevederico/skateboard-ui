@@ -1,5 +1,20 @@
 # CHANGELOG
 
+1.3.1
+
+  Add Geist font
+  Add Toast notifications
+  Add SkeletonLoader component
+  Add Avatar components
+  Add Badge components
+  Add Tooltip components
+  Add Checkbox components
+  Add AlertDialog components
+  Add user profile
+  Add USAGE.md documentation
+  Update README documentation
+  Export new components
+
 1.3.0
 
   Migrate to Base UI

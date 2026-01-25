@@ -2,6 +2,9 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import constants from "@/constants.json";
 import DynamicIcon from "./DynamicIcon.jsx";
+import { getState } from "./Context.jsx";
+import { Avatar, AvatarFallback } from "./shadcn/ui/avatar.jsx";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./shadcn/ui/tooltip.jsx";
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +24,7 @@ export default function AppSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPage = (location.pathname.split("/")[2] || "").toLowerCase();
+  const { state } = getState();
 
   const handleNavigation = (url) => {
     navigate(url);
@@ -57,24 +61,39 @@ export default function AppSidebar() {
         >
           {constants.pages.map((item) => {
             const isActive = currentPage === item.url.toLowerCase();
+            const buttonElement = (
+              <button
+                type="button"
+                className={`cursor-pointer items-center flex w-full px-4 py-3 rounded-lg ${open ? "h-14" : "h-12 w-12"} ${isActive ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
+                onClick={() => handleNavigation(`/app/${item.url.toLowerCase()}`)}
+                aria-label={item.title}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <span className="flex w-full items-center">
+                  <DynamicIconComponent
+                    name={item.icon}
+                    size={20}
+                    strokeWidth={1.5}
+                  />
+                  {open && <span className="ml-3">{item.title}</span>}
+                </span>
+              </button>
+            );
+
             return (
               <li key={item.title}>
-                <button
-                  type="button"
-                  className={`cursor-pointer items-center flex w-full px-4 py-3 rounded-lg ${open ? "h-14" : "h-12 w-12"} ${isActive ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
-                  onClick={() => handleNavigation(`/app/${item.url.toLowerCase()}`)}
-                  aria-label={item.title}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  <span className="flex w-full items-center">
-                    <DynamicIconComponent
-                      name={item.icon}
-                      size={20}
-                      strokeWidth={1.5}
-                    />
-                    {open && <span className="ml-3">{item.title}</span>}
-                  </span>
-                </button>
+                {!open ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      {buttonElement}
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      {item.title}
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  buttonElement
+                )}
               </li>
             );
           })}
@@ -82,24 +101,68 @@ export default function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <ul className={`flex flex-col gap-1 ${open ? "" : "items-center"}`}>
+          {state.user && (constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
+            <li className={`px-2 pb-2 ${!open ? "flex justify-center" : ""}`}>
+              <div className={`flex items-center gap-3 ${open ? "w-full" : ""}`}>
+                <Avatar size="default">
+                  <AvatarFallback className="bg-app dark:text-black text-white uppercase text-xs font-medium">
+                    {state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}
+                  </AvatarFallback>
+                </Avatar>
+                {open && (
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate capitalize">{state.user?.name || "User"}</div>
+                    <div className="text-xs text-muted-foreground truncate">{state.user?.email}</div>
+                  </div>
+                )}
+              </div>
+            </li>
+          )}
           <li>
-            <button
-              type="button"
-              className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
-              ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
-              onClick={() => handleNavigation("/app/settings")}
-              aria-label="Settings"
-              aria-current={location.pathname.toLowerCase().includes("settings") ? 'page' : undefined}
-            >
-              <span className="flex w-full items-center">
-                <DynamicIconComponent
-                  name="settings"
-                  size={20}
-                  strokeWidth={1.5}
-                />
-                {open && <span className="ml-3">Settings</span>}
-              </span>
-            </button>
+            {!open ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
+                    ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
+                    onClick={() => handleNavigation("/app/settings")}
+                    aria-label="Settings"
+                    aria-current={location.pathname.toLowerCase().includes("settings") ? 'page' : undefined}
+                  >
+                    <span className="flex w-full items-center">
+                      <DynamicIconComponent
+                        name="settings"
+                        size={20}
+                        strokeWidth={1.5}
+                      />
+                      {open && <span className="ml-3">Settings</span>}
+                    </span>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  Settings
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <button
+                type="button"
+                className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
+                ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
+                onClick={() => handleNavigation("/app/settings")}
+                aria-label="Settings"
+                aria-current={location.pathname.toLowerCase().includes("settings") ? 'page' : undefined}
+              >
+                <span className="flex w-full items-center">
+                  <DynamicIconComponent
+                    name="settings"
+                    size={20}
+                    strokeWidth={1.5}
+                  />
+                  {open && <span className="ml-3">Settings</span>}
+                </span>
+              </button>
+            )}
           </li>
         </ul>
       </SidebarFooter>

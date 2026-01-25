@@ -1,10 +1,10 @@
 import { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "./shadcn/ui/sheet"
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "./shadcn/ui/drawer"
 import constants from "@/constants.json";
 import { showCheckout } from './Utilities.js';
 import { Sparkles } from 'lucide-react';
@@ -40,8 +40,8 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
   const roundedPrice = product.price.replace(/\.\d+/, '').replace('$', '');
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="bg-background w-full overflow-y-auto [&_button]:cursor-pointer [&_[role=button]]:cursor-pointer" side="bottom" style={{ minHeight: "70vh" }}>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+      <DrawerContent className="bg-background w-full overflow-y-auto [&_button]:cursor-pointer [&_[role=button]]:cursor-pointer" style={{ minHeight: "70vh" }}>
         <div className="h-full flex flex-col">
           <div className="flex-1 overflow-y-auto px-6 pt-8 pb-32">
             <div className="flex flex-col items-center text-center space-y-8 md:space-y-16">
@@ -107,8 +107,8 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
             </button>
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+      </DrawerContent>
+    </Drawer>
   );
 });
 

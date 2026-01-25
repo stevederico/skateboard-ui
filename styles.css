@@ -146,7 +146,10 @@
   }
   body {
     @apply bg-white dark:bg-black text-foreground;
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  }
+  code, pre, kbd {
+    font-family: 'Geist Mono', ui-monospace, monospace;
   }
 }
 
