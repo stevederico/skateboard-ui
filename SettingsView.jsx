@@ -2,6 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from './Context.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
+import { Avatar, AvatarFallback } from './shadcn/ui/avatar.jsx';
+import { Badge } from './shadcn/ui/badge.jsx';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './shadcn/ui/alert-dialog.jsx';
 import constants from "@/constants.json";
 import pkg from '@package';
 import { showCheckout, showManage } from './Utilities';
@@ -31,19 +44,41 @@ export default function SettingsView() {
           {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
             <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-app dark:text-black text-white flex justify-center items-center rounded-full font-medium">
-                  <span className="uppercase">{state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}</span>
-                </div>
+                <Avatar size="lg">
+                  <AvatarFallback className="bg-app dark:text-black text-white uppercase font-medium">
+                    {state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}
+                  </AvatarFallback>
+                </Avatar>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate capitalize">{state.user?.name || "No User"}</div>
+                  <div className="font-medium truncate capitalize flex items-center gap-2">
+                    {state.user?.name || "No User"}
+                    {state.user?.subscription?.status === "active" && (
+                      <Badge variant="default">Pro</Badge>
+                    )}
+                  </div>
                   <div className="text-sm text-muted-foreground">{state.user?.email || "no@user.com"}</div>
                 </div>
-                <button
-                  onClick={signOutClicked}
-                  className="px-4 py-2 rounded-full text-sm bg-sidebar-background border border-foreground/30 hover:border-foreground transition-all cursor-pointer"
-                >
-                  Sign Out
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button className="px-4 py-2 rounded-full text-sm bg-sidebar-background border border-foreground/30 hover:border-foreground transition-all cursor-pointer">
+                      Sign Out
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Sign Out</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to sign out? You'll need to sign in again to access your account.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={signOutClicked}>
+                        Sign Out
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           )}
@@ -69,7 +104,16 @@ export default function SettingsView() {
             <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="mb-1 font-medium">Billing</div>
+                  <div className="mb-1 font-medium flex items-center gap-2">
+                    Billing
+                    {state.user?.subscription?.status === "active" ? (
+                      <Badge variant="default">Active</Badge>
+                    ) : state.user?.subscription?.status === "canceled" ? (
+                      <Badge variant="destructive">Canceled</Badge>
+                    ) : (
+                      <Badge variant="secondary">Free</Badge>
+                    )}
+                  </div>
                   <div className="text-sm text-muted-foreground">
                     {state.user?.subscription?.status === null || typeof state.user?.subscription?.status === 'undefined'
                       ? "Free plan"

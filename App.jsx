@@ -7,6 +7,9 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { useEffect } from 'react';
+import { ThemeProvider } from 'next-themes';
+import 'geist/font/sans/style.css';
+import 'geist/font/mono/style.css';
 import Layout from './Layout.jsx';
 import LandingView from './LandingView.jsx';
 import TextView from './TextView.jsx';
@@ -20,6 +23,7 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import { useAppSetup, initializeUtilities, validateConstants } from './Utilities.js';
 import { ContextProvider } from './Context.jsx';
+import Toast from './Toast.jsx';
 
 function App({ constants, appRoutes, defaultRoute }) {
   const location = useLocation();
@@ -68,19 +72,22 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
 
   root.render(
     <ErrorBoundary>
-      <ContextProvider constants={constants}>
-        {Wrapper ? (
-          <Wrapper>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <Toast />
+        <ContextProvider constants={constants}>
+          {Wrapper ? (
+            <Wrapper>
+              <Router>
+                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
+              </Router>
+            </Wrapper>
+          ) : (
             <Router>
               <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
             </Router>
-          </Wrapper>
-        ) : (
-          <Router>
-            <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
-          </Router>
-        )}
-      </ContextProvider>
+          )}
+        </ContextProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

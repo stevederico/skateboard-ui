@@ -29,6 +29,39 @@ createSkateboardApp({ constants, appRoutes });
 
 That's it! You get routing, auth, layout, landing page, settings, and payments.
 
+## Dark Mode Setup
+
+To prevent flash of unstyled content (FOUC) when using dark mode, add this script to your `index.html` **before** your app loads:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Prevent dark mode FOUC -->
+  <script>
+    try {
+      const theme = localStorage.getItem('theme');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && systemDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  </script>
+
+  <title>Your App</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
+```
+
+This ensures the correct theme is applied before React renders, eliminating any flash between light and dark modes.
+
 ## Configuration
 
 skateboard-ui requires a `constants` object that configures your application:
@@ -144,6 +177,17 @@ Quick overview:
 | TextView | `@stevederico/skateboard-ui/TextView` | Legal pages |
 | NotFound | `@stevederico/skateboard-ui/NotFound` | 404 page |
 
+### Enhanced Components (New in v1.3.0)
+
+| Component | Import | Description |
+|-----------|--------|-------------|
+| Toast | `@stevederico/skateboard-ui/Toast` | Toast notifications (Sonner) |
+| SkeletonLoader | `@stevederico/skateboard-ui/SkeletonLoader` | Loading state patterns |
+
+**Font System:** Geist font family loaded automatically for improved typography.
+
+**See [USAGE.md](./USAGE.md) for detailed examples of Toast, Skeleton, Avatar, Badge, Tooltip, AlertDialog, Checkbox, Switch, and more.**
+
 ### shadcn/ui Components
 
 51 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
@@ -153,6 +197,10 @@ import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button'
 import { Card } from '@stevederico/skateboard-ui/shadcn/ui/card'
 import { Input } from '@stevederico/skateboard-ui/shadcn/ui/input'
 import { Dialog } from '@stevederico/skateboard-ui/shadcn/ui/dialog'
+import { Avatar } from '@stevederico/skateboard-ui/shadcn/ui/avatar'
+import { Badge } from '@stevederico/skateboard-ui/shadcn/ui/badge'
+import { Tooltip } from '@stevederico/skateboard-ui/shadcn/ui/tooltip'
+import { AlertDialog } from '@stevederico/skateboard-ui/shadcn/ui/alert-dialog'
 ```
 
 ## Usage Examples
@@ -357,9 +405,11 @@ Used internally by createSkateboardApp. Redirects to /signin if not authenticate
 ### Core Dependencies
 - @base-ui/react - Accessible UI primitives
 - TailwindCSS 4.0+ - Utility-first CSS framework
+- geist - Vercel's Geist font family (sans & mono)
 - lucide-react - Icon library
 - class-variance-authority - Type-safe variant styling
 - clsx & tailwind-merge - className utilities
+- sonner - Toast notifications
 
 ## Repository
 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useTheme } from 'next-themes';
 import * as LucideIcons from "lucide-react";
 
 const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
@@ -9,39 +10,20 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
 };
 
 export default function ThemeToggle({ className = "", iconSize = 24, variant = "settings" }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    } else {
-      setIsDarkMode(systemPrefersDark);
-    }
+  // Prevent hydration mismatch
+  React.useEffect(() => {
+    setMounted(true);
   }, []);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const newTheme = isDarkMode ? 'dark' : 'light';
+  if (!mounted) {
+    return null;
+  }
 
-    if (isDarkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-
-    // Only write to localStorage if value changed
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme !== newTheme) {
-      localStorage.setItem('theme', newTheme);
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const isDarkMode = theme === 'dark';
+  const toggleTheme = () => setTheme(isDarkMode ? 'light' : 'dark');
 
   if (variant === "landing") {
     return (
@@ -50,10 +32,10 @@ export default function ThemeToggle({ className = "", iconSize = 24, variant = "
         className={`p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer ${className}`}
         aria-label="Toggle dark mode"
       >
-        <DynamicIcon 
-          name={isDarkMode ? "sun" : "moon"} 
-          size={iconSize} 
-          color="currentColor" 
+        <DynamicIcon
+          name={isDarkMode ? "sun" : "moon"}
+          size={iconSize}
+          color="currentColor"
           strokeWidth={2}
           className="text-gray-600 dark:text-gray-300"
         />
