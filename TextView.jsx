@@ -1,7 +1,9 @@
-import constants from "@/constants.json";
+import { getState } from "./Context.jsx";
 
 
 export default function TextView({ details }) {
+  const { state } = getState();
+  const constants = state.constants;
   // Function to replace placeholders with actual values
   const replacePlaceholders = (text) => {
     return text

@@ -15,11 +15,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './shadcn/ui/alert-dialog.jsx';
-import constants from "@/constants.json";
+import { getState } from "./Context.jsx";
 import pkg from '@package';
 import { showCheckout, showManage } from './Utilities';
 
 export default function SettingsView() {
+  const { state } = getState();
+  const constants = state.constants;
   const navigate = useNavigate();
   const { state, dispatch } = getState();
 

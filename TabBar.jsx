@@ -1,10 +1,12 @@
 import React from 'react';
-import constants from "@/constants.json";
 import { Link, useLocation } from 'react-router-dom';
 import DynamicIcon from './DynamicIcon';
+import { getState } from './Context.jsx';
 
 export default function TabBar() {
   const location = useLocation();
+  const { state } = getState();
+  const constants = state.constants;
 
   return (
     <nav

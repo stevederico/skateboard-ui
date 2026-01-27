@@ -3,12 +3,12 @@ import TabBar from './TabBar.jsx'
 import { SidebarProvider, SidebarTrigger } from "./shadcn/ui/sidebar"
 import AppSidebar from "./AppSidebar"
 import { useEffect } from 'react';
-import constants from "@/constants.json";
 import { getState } from './Context.jsx';
 
 export default function Layout({ children }) {
   const { state } = getState();
   const { sidebarVisible, tabBarVisible } = state.ui;
+  const constants = state.constants;
 
   // Combine constants (static config) with context state (programmatic control)
   const showSidebar = !constants.hideSidebar && sidebarVisible;

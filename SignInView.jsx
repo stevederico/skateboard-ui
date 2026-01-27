@@ -14,10 +14,12 @@ import DynamicIcon from './DynamicIcon';
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from './Context.jsx';
-import constants from "@/constants.json";
+import { getState } from "./Context.jsx";
 import { getBackendURL } from './Utilities'
 
 export default function LoginForm({
+  const { state } = getState();
+  const constants = state.constants;
   className,
   ...props
 }) {

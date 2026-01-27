@@ -115,7 +115,8 @@ export function ContextProvider({ children, constants }) {
     ui: {
       sidebarVisible: true,
       tabBarVisible: true
-    }
+    },
+    constants
   };
 
   function reducer(state, action) {
@@ -173,6 +174,7 @@ export function ContextProvider({ children, constants }) {
  * Returns { state, dispatch } where state contains:
  * - user: Current user object or null
  * - ui: { sidebarVisible, tabBarVisible }
+ * - constants: App configuration constants
  *
  * @returns {{ state: Object, dispatch: Function }}
  *
