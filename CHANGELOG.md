@@ -1,5 +1,13 @@
 # CHANGELOG
 
+1.3.7
+
+  Fix UpgradeSheet scroll behavior
+  Move sidebar width to provider
+  Remove sidebar user avatar
+  Remove sidebar border
+  Add drawer outline-none
+
 1.3.6
 
   Fix UpgradeSheet constants error

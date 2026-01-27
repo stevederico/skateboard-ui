@@ -43,9 +43,9 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerContent className="bg-background w-full overflow-y-auto [&_button]:cursor-pointer [&_[role=button]]:cursor-pointer" style={{ minHeight: "70vh" }}>
-        <div className="h-full flex flex-col">
-          <div className="flex-1 overflow-y-auto px-6 pt-8 pb-32">
+      <DrawerContent className="bg-background w-full overflow-hidden [&_button]:cursor-pointer [&_[role=button]]:cursor-pointer" style={{ maxHeight: "85vh" }}>
+        <div className="h-full flex flex-col overflow-y-auto">
+          <div className="flex-1 px-6 pt-8 pb-28">
             <div className="flex flex-col items-center text-center space-y-8 md:space-y-16">
               
               {/* Product information */}
@@ -72,7 +72,7 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
           </div>
 
           {/* Checkout button */}
-          <div className="fixed bottom-0 left-0 right-0 bg-background p-6">
+          <div className="sticky bottom-0 left-0 right-0 bg-background p-6">
             <button
               onClick={handleUpgrade}
               className="relative group w-full bg-gradient-to-br text-white px-8 py-4 rounded-full font-semibold text-xl transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
