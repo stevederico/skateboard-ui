@@ -19,10 +19,9 @@ import pkg from '@package';
 import { showCheckout, showManage } from './Utilities';
 
 export default function SettingsView() {
-  const { state } = getState();
+  const { state, dispatch } = getState();
   const constants = state.constants;
   const navigate = useNavigate();
-  const { state, dispatch } = getState();
 
   function signOutClicked() {
     dispatch({ type: 'CLEAR_USER', payload: null });

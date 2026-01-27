@@ -1,5 +1,9 @@
 # CHANGELOG
 
+1.3.4
+
+  Fix SettingsView duplicate state declaration
+
 1.3.3
 
   Fix SignInView function signature
