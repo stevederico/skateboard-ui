@@ -154,6 +154,14 @@
   }
 }
 
+/* Sidebar rail override - use transition-colors instead of transition-all */
+button[data-sidebar="rail"] {
+  transition-property: color, background-color, border-color !important;
+}
+button[data-sidebar="rail"]::after {
+  transition-property: color, background-color, border-color !important;
+}
+
 @layer base {
   :root {
     --sidebar-background: 0 0% 98%;
