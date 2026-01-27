@@ -1,5 +1,11 @@
 # CHANGELOG
 
+1.3.8
+
+  Fix sidebar rail hover
+  Use constants.version in SettingsView
+  Remove @package import
+
 1.3.7
 
   Fix UpgradeSheet scroll behavior

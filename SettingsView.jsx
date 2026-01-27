@@ -15,7 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './shadcn/ui/alert-dialog.jsx';
-import pkg from '@package';
 import { showCheckout, showManage } from './Utilities';
 
 export default function SettingsView() {
@@ -145,7 +144,7 @@ export default function SettingsView() {
 
         {/* Footer */}
         <div className="mt-8 text-center pb-24 md:pb-8">
-          <div className="text-xs text-muted-foreground">v{pkg.version}</div>
+          <div className="text-xs text-muted-foreground">v{constants.version || '0.0.0'}</div>
         </div>
       </div>
     </div>
