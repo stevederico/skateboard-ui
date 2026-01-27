@@ -1,5 +1,10 @@
 # CHANGELOG
 
+1.3.9
+
+  Add sidebar rail CSS override
+  Revert shadcn sidebar to vanilla
+
 1.3.8
 
   Fix sidebar rail hover
