@@ -12,7 +12,9 @@ import { Sparkles } from 'lucide-react';
 const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
   const { userEmail = "" } = props;
   const [isOpen, setIsOpen] = useState(false);
-  
+  const { state } = getState();
+  const constants = state.constants;
+
   useImperativeHandle(ref, () => ({
     show: () => setIsOpen(true),
     hide: () => setIsOpen(false),
