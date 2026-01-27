@@ -1,5 +1,10 @@
 # CHANGELOG
 
+1.4.0
+
+  Remove terms checkbox
+  Remove terms validation
+
 1.3.9
 
   Add sidebar rail CSS override
