@@ -8,7 +8,6 @@ import {
 } from "./shadcn/ui/card"
 import { Input } from "./shadcn/ui/input"
 import { Label } from "./shadcn/ui/label"
-import { Checkbox } from "./shadcn/ui/checkbox.jsx"
 import DynamicIcon from './DynamicIcon';
 import { useNavigate } from 'react-router-dom';
 import { getState } from "./Context.jsx";
@@ -23,7 +22,6 @@ export default function LoginForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('')
   const nameInputRef = useRef(null);
@@ -44,10 +42,6 @@ export default function LoginForm({
     }
     if (password.length > 72) {
       setErrorMessage('Password must be 72 characters or less');
-      return;
-    }
-    if (!acceptedTerms) {
-      setErrorMessage('You must accept the Terms of Service to continue');
       return;
     }
     try {
@@ -141,41 +135,6 @@ export default function LoginForm({
             }}
           />
           <p className="text-xs text-gray-500 dark:text-gray-400 ml-1">Minimum 6 characters</p>
-        </div>
-
-        <div className="flex items-start gap-2 pt-2">
-          <Checkbox
-            id="terms"
-            checked={acceptedTerms}
-            onCheckedChange={setAcceptedTerms}
-            className="mt-0.5"
-          />
-          <label
-            htmlFor="terms"
-            className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
-          >
-            I agree to the{' '}
-            <span
-              onClick={(e) => { e.preventDefault(); navigate('/terms'); }}
-              className="underline underline-offset-4 cursor-pointer text-gray-900 dark:text-white"
-            >
-              Terms of Service
-            </span>
-            {', '}
-            <span
-              onClick={(e) => { e.preventDefault(); navigate('/eula'); }}
-              className="underline underline-offset-4 cursor-pointer text-gray-900 dark:text-white"
-            >
-              EULA
-            </span>
-            {', and '}
-            <span
-              onClick={(e) => { e.preventDefault(); navigate('/privacy'); }}
-              className="underline underline-offset-4 cursor-pointer text-gray-900 dark:text-white"
-            >
-              Privacy Policy
-            </span>
-          </label>
         </div>
 
         <button
