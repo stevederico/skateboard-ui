@@ -1,5 +1,10 @@
 # CHANGELOG
 
+1.3.5
+
+  Add use-sync-external-store dependency
+  Remove geist dependency
+
 1.3.4
 
   Fix SettingsView duplicate state declaration
