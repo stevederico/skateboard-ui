@@ -31,10 +31,9 @@ export default function AppSidebar() {
   };
 
   return (
-    <Sidebar 
-      collapsible="icon" 
+    <Sidebar
+      collapsible="icon"
       className="min-w-[40px]"
-      style={{ '--sidebar-width': '12rem' }}
     >
       {!constants.hideSidebarHeader && (
         <SidebarHeader className="p-0">
@@ -101,23 +100,6 @@ export default function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <ul className={`flex flex-col gap-1 ${open ? "" : "items-center"}`}>
-          {state.user && (constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
-            <li className={`px-2 pb-2 ${!open ? "flex justify-center" : ""}`}>
-              <div className={`flex items-center gap-3 ${open ? "w-full" : ""}`}>
-                <Avatar size="default">
-                  <AvatarFallback className="bg-app dark:text-black text-white uppercase text-xs font-medium">
-                    {state.user?.name?.split(' ').map(word => word[0]).join('') || "NA"}
-                  </AvatarFallback>
-                </Avatar>
-                {open && (
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium truncate capitalize">{state.user?.name || "User"}</div>
-                    <div className="text-xs text-muted-foreground truncate">{state.user?.email}</div>
-                  </div>
-                )}
-              </div>
-            </li>
-          )}
           <li>
             {!open ? (
               <Tooltip>
