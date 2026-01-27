@@ -1,5 +1,9 @@
 # CHANGELOG
 
+1.3.6
+
+  Fix UpgradeSheet constants error
+
 1.3.5
 
   Add use-sync-external-store dependency
