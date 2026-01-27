@@ -5,7 +5,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "./shadcn/ui/drawer"
-import constants from "@/constants.json";
+import { getState } from "./Context.jsx";
 import { showCheckout } from './Utilities.js';
 import { Sparkles } from 'lucide-react';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
-import constants from "@/constants.json";
+import { getState } from "./Context.jsx";
 import * as LucideIcons from "lucide-react";
 import ThemeToggle from './ThemeToggle.jsx';
 
@@ -14,6 +14,8 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
 };
 
 export default function LandingView() {
+  const { state } = getState();
+  const constants = state.constants;
   const navigate = useNavigate();
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';

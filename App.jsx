@@ -8,8 +8,6 @@ import {
 } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ThemeProvider } from 'next-themes';
-import 'geist/font/sans/style.css';
-import 'geist/font/mono/style.css';
 import Layout from './Layout.jsx';
 import LandingView from './LandingView.jsx';
 import TextView from './TextView.jsx';

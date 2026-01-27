@@ -1,6 +1,6 @@
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card"
 
-import { cn } from "@/shadcn/lib/utils"
+import { cn } from "../lib/utils.js"
 
 function HoverCard({
   ...props

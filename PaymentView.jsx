@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from './Context.jsx';
 import { getCurrentUser } from './Utilities.js'
-import constants from "@/constants.json";
+import { getState } from "./Context.jsx";
 
 // Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
 const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
@@ -15,6 +15,8 @@ function isAllowedRedirect(path) {
 }
 
 export default function PaymentView() {
+  const { state } = getState();
+  const constants = state.constants;
   const navigate = useNavigate();
   const { dispatch } = getState();
   const [searchParams] = useSearchParams();

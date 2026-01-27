@@ -3,10 +3,10 @@
 import * as React from "react"
 import { cva } from "class-variance-authority";
 
-import { cn } from "@/shadcn/lib/utils"
-import { Button } from "@/shadcn/ui/button"
-import { Input } from "@/shadcn/ui/input"
-import { Textarea } from "@/shadcn/ui/textarea"
+import { cn } from "../lib/utils.js"
+import { Button } from "./button.jsx"
+import { Input } from "./input.jsx"
+import { Textarea } from "./textarea.jsx"
 
 function InputGroup({
   className,

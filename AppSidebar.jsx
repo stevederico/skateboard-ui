@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import constants from "@/constants.json";
 import DynamicIcon from "./DynamicIcon.jsx";
 import { getState } from "./Context.jsx";
 import { Avatar, AvatarFallback } from "./shadcn/ui/avatar.jsx";
@@ -25,6 +24,7 @@ export default function AppSidebar() {
   const location = useLocation();
   const currentPage = (location.pathname.split("/")[2] || "").toLowerCase();
   const { state } = getState();
+  const constants = state.constants;
 
   const handleNavigation = (url) => {
     navigate(url);

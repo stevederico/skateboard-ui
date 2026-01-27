@@ -4,24 +4,24 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva } from "class-variance-authority";
 
-import { cn } from "@/shadcn/lib/utils"
-import { Button } from "@/shadcn/ui/button"
-import { Input } from "@/shadcn/ui/input"
-import { Separator } from "@/shadcn/ui/separator"
+import { cn } from "../lib/utils.js"
+import { Button } from "./button.jsx"
+import { Input } from "./input.jsx"
+import { Separator } from "./separator.jsx"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/shadcn/ui/sheet"
-import { Skeleton } from "@/shadcn/ui/skeleton"
+} from "./sheet.jsx"
+import { Skeleton } from "./skeleton.jsx"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/shadcn/ui/tooltip"
-import { useIsMobile } from "@/shadcn/hooks/use-mobile"
+} from "./tooltip.jsx"
+import { useIsMobile } from "../hooks/use-mobile.js"
 import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

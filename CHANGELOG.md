@@ -1,5 +1,11 @@
 # CHANGELOG
 
+1.3.2
+
+  Remove Geist font imports
+  Replace path aliases with relative
+  Add constants to Context state
+
 1.3.1
 
   Add Geist font
