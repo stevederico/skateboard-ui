@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { cn } from "./shadcn/lib/utils"
 import { Button } from "./shadcn/ui/button"
 import {
@@ -10,24 +10,21 @@ import { Input } from "./shadcn/ui/input"
 import { Label } from "./shadcn/ui/label"
 import { Checkbox } from "./shadcn/ui/checkbox.jsx"
 import DynamicIcon from './DynamicIcon';
-import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from "./Context.jsx";
-import { getState } from './Context.jsx';
 import { getBackendURL } from './Utilities'
 
 export default function LoginForm({
-  const { state } = getState();
-  const constants = state.constants;
   className,
   ...props
 }) {
+  const { state, dispatch } = getState();
+  const constants = state.constants;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const navigate = useNavigate();
-  const { state, dispatch } = getState();
   const [errorMessage, setErrorMessage] = useState('')
   const nameInputRef = useRef(null);
 

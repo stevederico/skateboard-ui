@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { cn } from "./shadcn/lib/utils"
 import { Button } from "./shadcn/ui/button"
 import {
@@ -11,23 +11,20 @@ import {
 import { Input } from "./shadcn/ui/input"
 import { Label } from "./shadcn/ui/label"
 import DynamicIcon from './DynamicIcon';
-import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getState } from './Context.jsx';
 import { getState } from "./Context.jsx";
 import { getBackendURL } from './Utilities'
 
 export default function LoginForm({
-  const { state } = getState();
-  const constants = state.constants;
   className,
   ...props
 }) {
+  const { state, dispatch } = getState();
+  const constants = state.constants;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const { dispatch } = getState();
   const emailInputRef = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState('')

@@ -15,7 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './shadcn/ui/alert-dialog.jsx';
-import { getState } from "./Context.jsx";
 import pkg from '@package';
 import { showCheckout, showManage } from './Utilities';
 
