@@ -1,5 +1,13 @@
 # CHANGELOG
 
+1.3.3
+
+  Fix SignInView function signature
+  Fix SignUpView function signature
+  Fix PaymentView duplicate imports
+  Fix SettingsView duplicate imports
+  Remove duplicate React imports
+
 1.3.2
 
   Remove Geist font imports
