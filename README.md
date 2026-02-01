@@ -97,6 +97,7 @@ const constants = {
 
   // Optional: Authentication
   noLogin: false,  // Set true to disable authentication
+  noProtectedRoutes: false,  // Set true to allow unauthenticated access to /app routes (use with useAuthGate)
 
   // Optional: Payments (Stripe)
   stripeProducts: [
@@ -176,6 +177,13 @@ Quick overview:
 | PaymentView | `@stevederico/skateboard-ui/PaymentView` | Stripe payment |
 | TextView | `@stevederico/skateboard-ui/TextView` | Legal pages |
 | NotFound | `@stevederico/skateboard-ui/NotFound` | 404 page |
+
+### Auth Overlay (Lazy Authentication)
+
+| Export | Import | Description |
+|--------|--------|-------------|
+| AuthOverlay | `@stevederico/skateboard-ui/AuthOverlay` | Modal sign-in/sign-up dialog |
+| useAuthGate | `@stevederico/skateboard-ui/useAuthGate` | Hook to gate actions behind auth |
 
 ### Enhanced Components (New in v1.3.0)
 
@@ -382,6 +390,53 @@ Import base theme and override as needed:
 | `--radius` | Border radius |
 
 Dark mode is automatic via CSS custom properties.
+
+## Lazy Authentication (Auth Overlay)
+
+Let users explore `/app` without signing in — prompt them only when they perform a protected action.
+
+### Setup
+
+Set `noProtectedRoutes: true` in your constants to allow unauthenticated access to `/app` routes:
+
+```json
+{
+  "noProtectedRoutes": true
+}
+```
+
+The `AuthOverlay` component is rendered automatically by `createSkateboardApp` — no additional wiring needed.
+
+### Usage
+
+```javascript
+import { useAuthGate } from '@stevederico/skateboard-ui/useAuthGate';
+
+function SaveButton() {
+  const requireAuth = useAuthGate();
+
+  function handleSave() {
+    requireAuth(() => {
+      // Only runs if user is authenticated
+      // If not signed in, auth overlay appears first
+      saveThing();
+    });
+  }
+
+  return <button onClick={handleSave}>Save</button>;
+}
+```
+
+### How it works
+
+1. User clicks a protected action (Save, Like, Post, etc.)
+2. `requireAuth()` checks if user is signed in
+3. If signed in — callback runs immediately
+4. If not — a modal dialog appears with sign-in/sign-up forms
+5. After successful auth, the original callback executes automatically
+6. User stays on the same page throughout — no navigation
+
+The dialog supports toggling between sign-in and sign-up modes inline, and can be dismissed with the X button (cancels the action).
 
 ## Protected Routes
 

@@ -22,6 +22,7 @@ import ErrorBoundary from './ErrorBoundary.jsx';
 import { useAppSetup, initializeUtilities, validateConstants } from './Utilities.js';
 import { ContextProvider } from './Context.jsx';
 import Toast from './Toast.jsx';
+import AuthOverlay from './AuthOverlay.jsx';
 
 function App({ constants, appRoutes, defaultRoute, landingPage }) {
   const location = useLocation();
@@ -81,6 +82,7 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <Toast />
         <ContextProvider constants={constants}>
+          <AuthOverlay />
           {Wrapper ? (
             <Wrapper>
               <Router>

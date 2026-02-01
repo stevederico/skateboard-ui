@@ -1,5 +1,13 @@
 # CHANGELOG
 
+1.5.0
+
+  Add AuthOverlay component
+  Add useAuthGate hook
+  Add auth overlay state
+  Add noProtectedRoutes support
+  Update README documentation
+
 1.4.1
 
   Add landingPage param

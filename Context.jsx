@@ -116,6 +116,10 @@ export function ContextProvider({ children, constants }) {
       sidebarVisible: true,
       tabBarVisible: true
     },
+    authOverlay: {
+      visible: false,
+      pendingCallback: null
+    },
     constants
   };
 
@@ -147,6 +151,18 @@ export function ContextProvider({ children, constants }) {
       }
       case 'SET_UI_VISIBILITY': {
         return { ...state, ui: { ...state.ui, ...action.payload } };
+      }
+      case 'SHOW_AUTH_OVERLAY': {
+        return { ...state, authOverlay: { visible: true, pendingCallback: action.payload || null } };
+      }
+      case 'HIDE_AUTH_OVERLAY': {
+        return { ...state, authOverlay: { visible: false, pendingCallback: null } };
+      }
+      case 'AUTH_OVERLAY_SUCCESS': {
+        if (state.authOverlay.pendingCallback) {
+          try { state.authOverlay.pendingCallback(); } catch (e) { console.error('Auth callback error:', e); }
+        }
+        return { ...state, authOverlay: { visible: false, pendingCallback: null } };
       }
       default:
         return state;

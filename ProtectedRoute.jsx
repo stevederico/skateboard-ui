@@ -3,16 +3,20 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { isAuthenticated, apiRequest, getAppKey, getConstants } from './Utilities';
 
 const ProtectedRoute = () => {
-    const [status, setStatus] = useState('checking'); // 'checking' | 'valid' | 'invalid'
+    const constants = getConstants();
+    const skipProtection = constants.noProtectedRoutes === true;
+    const [status, setStatus] = useState(skipProtection ? 'valid' : 'checking');
 
     useEffect(() => {
+        if (skipProtection) return;
+
         if (!isAuthenticated()) {
             setStatus('invalid');
             return;
         }
 
         // Skip backend validation for noLogin apps
-        if (getConstants().noLogin === true) {
+        if (constants.noLogin === true) {
             setStatus('valid');
             return;
         }
@@ -31,7 +35,7 @@ const ProtectedRoute = () => {
     }, []);
 
     if (status === 'checking') {
-        return null; // Or a loading spinner
+        return null;
     }
 
     return status === 'valid' ? <Outlet /> : <Navigate to="/signin" replace />;
