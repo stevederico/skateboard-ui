@@ -15,6 +15,21 @@ import { useNavigate } from 'react-router-dom';
 import { getState } from "./Context.jsx";
 import { getBackendURL } from './Utilities'
 
+/**
+ * Full-page sign-in form.
+ *
+ * Authenticates via POST to /signin, dispatches SET_USER on success,
+ * and navigates to /app. Shows app branding and a link to sign up.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Sign-in page
+ *
+ * @example
+ * import SignInView from '@stevederico/skateboard-ui/SignInView';
+ *
+ * <Route path="/signin" element={<SignInView />} />
+ */
 export default function LoginForm({
   className,
   ...props

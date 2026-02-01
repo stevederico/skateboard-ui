@@ -2,6 +2,23 @@ import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { isAuthenticated, apiRequest, getAppKey, getConstants } from './Utilities';
 
+/**
+ * Route guard that validates authentication before rendering child routes.
+ *
+ * Checks client-side auth via isAuthenticated(), then validates the
+ * session with the backend via /me. Redirects to /signin if invalid.
+ * Bypassed when constants.noProtectedRoutes is true (for lazy auth).
+ * Bypassed when constants.noLogin is true (no auth required).
+ *
+ * @returns {JSX.Element} Outlet if authenticated, Navigate to /signin otherwise
+ *
+ * @example
+ * import ProtectedRoute from '@stevederico/skateboard-ui/ProtectedRoute';
+ *
+ * <Route path="/app" element={<ProtectedRoute />}>
+ *   <Route path="home" element={<HomeView />} />
+ * </Route>
+ */
 const ProtectedRoute = () => {
     const constants = getConstants();
     const skipProtection = constants.noProtectedRoutes === true;

@@ -9,6 +9,24 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
   return LucideIcon ? React.createElement(LucideIcon, { size, color, strokeWidth, ...props }) : null;
 };
 
+/**
+ * Dark/light mode toggle button.
+ *
+ * Renders a sun/moon icon that toggles the theme via next-themes.
+ * Supports two visual variants: "settings" (minimal) and "landing" (boxed).
+ *
+ * @param {Object} props
+ * @param {string} [props.className=""] - Additional CSS classes
+ * @param {number} [props.iconSize=24] - Icon size in pixels
+ * @param {string} [props.variant="settings"] - Visual style ("settings" | "landing")
+ * @returns {JSX.Element|null} Toggle button or null before mount
+ *
+ * @example
+ * import ThemeToggle from '@stevederico/skateboard-ui/ThemeToggle';
+ *
+ * <ThemeToggle />
+ * <ThemeToggle variant="landing" iconSize={18} />
+ */
 export default function ThemeToggle({ className = "", iconSize = 24, variant = "settings" }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);

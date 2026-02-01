@@ -17,6 +17,20 @@ import {
 } from './shadcn/ui/alert-dialog.jsx';
 import { showCheckout, showManage } from './Utilities';
 
+/**
+ * User settings page with account info, sign out, support contact,
+ * and billing management.
+ *
+ * Shows subscription status and provides upgrade/manage buttons
+ * for Stripe billing. Hidden when constants.noLogin is true.
+ *
+ * @returns {JSX.Element} Settings page
+ *
+ * @example
+ * import SettingsView from '@stevederico/skateboard-ui/SettingsView';
+ *
+ * <Route path="settings" element={<SettingsView />} />
+ */
 export default function SettingsView() {
   const { state, dispatch } = getState();
   const constants = state.constants;

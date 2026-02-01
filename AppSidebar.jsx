@@ -18,6 +18,19 @@ import {
 // Use this if your DynamicIcon import isn't working
 const DynamicIconComponent = DynamicIcon
 
+/**
+ * Desktop navigation sidebar.
+ *
+ * Renders app pages from constants.pages with icons, tooltips when collapsed,
+ * and a settings link in the footer. Uses shadcn Sidebar primitives.
+ *
+ * @returns {JSX.Element} Sidebar navigation
+ *
+ * @example
+ * import AppSidebar from '@stevederico/skateboard-ui/AppSidebar';
+ *
+ * <AppSidebar />
+ */
 export default function AppSidebar() {
   const { open, setOpen } = useSidebar();
   const navigate = useNavigate();

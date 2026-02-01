@@ -97,6 +97,15 @@ export function initializeUtilities(constants) {
     }
 }
 
+/**
+ * Get the app constants object.
+ *
+ * Returns constants from window.__SKATEBOARD_CONSTANTS__ (handles Vite
+ * module duplication) or the module-level variable.
+ *
+ * @returns {Object} App constants
+ * @throws {Error} If initializeUtilities() hasn't been called
+ */
 export function getConstants() {
     // Check window object first (handles module duplication)
     if (typeof window !== 'undefined' && window.__SKATEBOARD_CONSTANTS__) {
@@ -109,6 +118,14 @@ export function getConstants() {
     return _constants;
 }
 
+/**
+ * Read a browser cookie by name.
+ *
+ * For the "token" cookie, automatically prefixes with the app name.
+ *
+ * @param {string} name - Cookie name
+ * @returns {string|null} Cookie value or null
+ */
 export function getCookie(name) {
     // For token cookies, use app-specific name
     let cookieName = name;
@@ -216,6 +233,11 @@ export function getBackendURL() {
     return result
 }
 
+/**
+ * Check if the app is running inside a native WebKit wrapper (iOS/macOS).
+ *
+ * @returns {boolean} True if webkit.messageHandlers is available
+ */
 export function isAppMode() {
     let a = !!(
         typeof window !== 'undefined' &&
@@ -225,6 +247,18 @@ export function isAppMode() {
     return a
 }
 
+/**
+ * Fetch the current authenticated user from the backend.
+ *
+ * Calls GET /me with credentials and CSRF token.
+ * Returns an empty object if constants.noLogin is true.
+ *
+ * @returns {Promise<Object|null>} User object or null on error
+ *
+ * @example
+ * const user = await getCurrentUser();
+ * if (user) dispatch({ type: 'SET_USER', payload: user });
+ */
 export async function getCurrentUser() {
 
     if (getConstants().noLogin == true) {
@@ -254,6 +288,14 @@ export async function getCurrentUser() {
     }
 }
 
+/**
+ * Check if the current user has an active subscription.
+ *
+ * Calls GET /isSubscriber with credentials.
+ * Returns false if constants.noLogin is true.
+ *
+ * @returns {Promise<boolean>} True if user is an active subscriber
+ */
 export async function isSubscriber() {
     if (getConstants().noLogin == true) {
         return false
@@ -285,10 +327,25 @@ export async function isSubscriber() {
     }
 }
 
+/**
+ * Log an analytics event. Stub for custom analytics integration.
+ *
+ * @param {string} event - Event name to log
+ * @returns {Promise<void>}
+ */
 export async function logEvent(event) {
     //insert analytics code here
 }
 
+/**
+ * Open the Stripe billing portal for subscription management.
+ *
+ * Saves the current URL for redirect-back after portal return,
+ * then redirects the browser to the Stripe portal URL.
+ *
+ * @param {string} stripeID - Stripe customer ID
+ * @returns {Promise<void>}
+ */
 export async function showManage(stripeID) {
     try {
         const csrfToken = getCSRFToken();
@@ -319,6 +376,16 @@ export async function showManage(stripeID) {
     }
 }
 
+/**
+ * Start a Stripe checkout session.
+ *
+ * Creates a checkout session via POST /checkout, saves the current URL
+ * for redirect-back, then redirects to the Stripe checkout page.
+ *
+ * @param {string} email - Customer email for Stripe
+ * @param {number} [productIndex=0] - Index into constants.stripeProducts
+ * @returns {Promise<boolean>} True if redirect initiated, false on error
+ */
 export async function showCheckout(email, productIndex = 0) {
     try {
         const csrfToken = getCSRFToken();
@@ -361,6 +428,15 @@ export async function showCheckout(email, productIndex = 0) {
     }
 }
 
+/**
+ * Check remaining usage quota for a given action.
+ *
+ * Calls POST /usage with operation "check".
+ * Returns unlimited usage (-1) if constants.noLogin is true.
+ *
+ * @param {string} action - Action type to check usage for
+ * @returns {Promise<{remaining: number, total: number, isSubscriber: boolean}>}
+ */
 export async function getRemainingUsage(action) {
     if (getConstants().noLogin === true) {
         return { remaining: -1, total: -1, isSubscriber: true };
@@ -390,6 +466,16 @@ export async function getRemainingUsage(action) {
     }
 }
 
+/**
+ * Track (decrement) usage for a given action.
+ *
+ * Calls POST /usage with operation "track".
+ * Returns unlimited usage (-1) if constants.noLogin is true.
+ * Returns usage data even when rate limited (HTTP 429).
+ *
+ * @param {string} action - Action type to track
+ * @returns {Promise<{remaining: number, total: number, isSubscriber: boolean}>}
+ */
 export async function trackUsage(action) {
     if (getConstants().noLogin === true) {
         return { remaining: -1, total: -1, isSubscriber: true };
@@ -425,6 +511,16 @@ export async function trackUsage(action) {
     }
 }
 
+/**
+ * Show the upgrade sheet if the user is not a subscriber.
+ *
+ * Checks subscription status from localStorage user data.
+ * Does nothing for active subscribers. Falls back to navigation
+ * if the ref is unavailable.
+ *
+ * @param {React.RefObject} upgradeSheetRef - Ref to UpgradeSheet component
+ * @returns {Promise<void>}
+ */
 export async function showUpgradeSheet(upgradeSheetRef) {
     // Check subscription from user data in localStorage instead of API call
     const appName = getConstants().appName || 'skateboard';
@@ -456,6 +552,20 @@ export async function showUpgradeSheet(upgradeSheetRef) {
     }
 }
 
+/**
+ * Convert a timestamp or Date to a formatted string.
+ *
+ * Handles both seconds and milliseconds timestamps, and Date objects.
+ *
+ * @param {number|Date} input - Unix timestamp (seconds or ms) or Date
+ * @param {string} [format="DOB"] - Format: "DOB" | "ISO" | "ago" | "day-month-time" | "day" | "time" | "full" | "DOBT"
+ * @returns {string} Formatted date string
+ *
+ * @example
+ * timestampToString(1700000000, 'ago')    // "2 months ago"
+ * timestampToString(Date.now(), 'DOBT')   // "3:45 PM"
+ * timestampToString(new Date(), 'full')   // "Monday, November 13 2023 10:00 AM"
+ */
 export function timestampToString(input, format = "DOB") {
 
     let seconds = 0
@@ -555,6 +665,11 @@ export function timestampToString(input, format = "DOB") {
     }
 }
 
+/**
+ * Hook that sets the document title and removes dark mode on non-app pages.
+ *
+ * @param {Object} location - react-router location object
+ */
 export function useAppSetup(location) {
     useEffect(() => {
         document.title = getConstants().appName;

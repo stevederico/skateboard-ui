@@ -1,3 +1,13 @@
+/**
+ * 404 page displayed for unmatched routes.
+ *
+ * @returns {JSX.Element} Not found message
+ *
+ * @example
+ * import NotFound from '@stevederico/skateboard-ui/NotFound';
+ *
+ * <Route path="*" element={<NotFound />} />
+ */
 export default function NotFound() {
 
   return (

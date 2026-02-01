@@ -9,6 +9,31 @@ import { getState } from "./Context.jsx";
 import { showCheckout } from './Utilities.js';
 import { Sparkles } from 'lucide-react';
 
+/**
+ * Premium upgrade bottom sheet with pricing and checkout button.
+ *
+ * Displays the first Stripe product from constants with price,
+ * features list, and a checkout button. Controlled via ref.
+ *
+ * @param {Object} props
+ * @param {string} [props.userEmail=""] - User email for Stripe checkout
+ * @param {React.Ref} ref - Ref exposing { show, hide, open, close, toggle }
+ * @returns {JSX.Element} Upgrade drawer
+ *
+ * @example
+ * import { useRef } from 'react';
+ * import UpgradeSheet from '@stevederico/skateboard-ui/UpgradeSheet';
+ *
+ * function MyComponent() {
+ *   const upgradeRef = useRef();
+ *   return (
+ *     <>
+ *       <button onClick={() => upgradeRef.current.show()}>Upgrade</button>
+ *       <UpgradeSheet ref={upgradeRef} userEmail={user.email} />
+ *     </>
+ *   );
+ * }
+ */
 const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
   const { userEmail = "" } = props;
   const [isOpen, setIsOpen] = useState(false);

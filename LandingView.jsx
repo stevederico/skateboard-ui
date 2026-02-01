@@ -13,6 +13,21 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
   return LucideIcon ? React.createElement(LucideIcon, { size, color, strokeWidth, ...props }) : null;
 };
 
+/**
+ * Default landing page with hero section, features grid, pricing card,
+ * CTA section, and footer.
+ *
+ * Reads app branding, tagline, features, and pricing from constants.
+ * Uses the app's --color-app CSS variable for theming.
+ *
+ * @returns {JSX.Element} Full landing page
+ *
+ * @example
+ * import LandingView from '@stevederico/skateboard-ui/LandingView';
+ *
+ * // Used automatically by createSkateboardApp, or pass as landingPage prop:
+ * createSkateboardApp({ constants, appRoutes, landingPage: <LandingView /> });
+ */
 export default function LandingView() {
   const { state } = getState();
   const constants = state.constants;

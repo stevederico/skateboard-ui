@@ -60,12 +60,26 @@ function App({ constants, appRoutes, defaultRoute, landingPage }) {
 }
 
 /**
+ * Bootstrap and render a skateboard-ui application.
+ *
+ * Sets up routing, authentication, layout, theming, and toast notifications.
+ * Mounts the app to the #root DOM element.
+ *
  * @param {Object} config
- * @param {Object} config.constants - App constants from constants.json
- * @param {Array} config.appRoutes - Array of route objects with path and element
- * @param {string} [config.defaultRoute] - Default route path under /app
- * @param {JSX.Element} [config.landingPage] - Custom landing page element for the "/" route. Defaults to built-in LandingView.
+ * @param {Object} config.constants - App constants (see README for required fields)
+ * @param {Array<{path: string, element: JSX.Element}>} config.appRoutes - Routes rendered under /app
+ * @param {string} [config.defaultRoute] - Default route path under /app (defaults to first route)
+ * @param {JSX.Element} [config.landingPage] - Custom landing page for "/". Defaults to LandingView.
  * @param {React.ComponentType} [config.wrapper] - Optional wrapper component around the router
+ *
+ * @example
+ * import { createSkateboardApp } from '@stevederico/skateboard-ui/App';
+ * import constants from './constants.json';
+ *
+ * createSkateboardApp({
+ *   constants,
+ *   appRoutes: [{ path: 'home', element: <HomeView /> }]
+ * });
  */
 export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper }) {
   // Validate constants before initialization
