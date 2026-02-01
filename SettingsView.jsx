@@ -54,7 +54,7 @@ export default function SettingsView() {
         {/* Main content */}
         <div className="flex flex-col items-center p-4 gap-4">
           {/* User Card */}
-          {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
+          {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && state.user && (
             <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
               <div className="flex items-center gap-4">
                 <Avatar size="lg">
@@ -113,7 +113,7 @@ export default function SettingsView() {
           </div>
 
           {/* Billing */}
-          {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && (
+          {(constants.noLogin === false || typeof constants.noLogin === 'undefined') && state.user && (
             <div className="w-full max-w-lg bg-accent rounded-2xl p-5">
               <div className="flex items-center justify-between">
                 <div>

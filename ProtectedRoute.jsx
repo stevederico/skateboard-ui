@@ -7,7 +7,7 @@ import { isAuthenticated, apiRequest, getAppKey, getConstants } from './Utilitie
  *
  * Checks client-side auth via isAuthenticated(), then validates the
  * session with the backend via /me. Redirects to /signin if invalid.
- * Bypassed when constants.noProtectedRoutes is true (for lazy auth).
+ * Bypassed when constants.authOverlay is true (for lazy auth).
  * Bypassed when constants.noLogin is true (no auth required).
  *
  * @returns {JSX.Element} Outlet if authenticated, Navigate to /signin otherwise
@@ -21,7 +21,7 @@ import { isAuthenticated, apiRequest, getAppKey, getConstants } from './Utilitie
  */
 const ProtectedRoute = () => {
     const constants = getConstants();
-    const skipProtection = constants.noProtectedRoutes === true;
+    const skipProtection = constants.authOverlay === true;
     const [status, setStatus] = useState(skipProtection ? 'valid' : 'checking');
 
     useEffect(() => {
