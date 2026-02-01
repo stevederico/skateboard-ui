@@ -97,7 +97,7 @@ const constants = {
 
   // Optional: Authentication
   noLogin: false,  // Set true to disable authentication
-  noProtectedRoutes: false,  // Set true to allow unauthenticated access to /app routes (use with useAuthGate)
+  authOverlay: false,  // Set true to allow unauthenticated access to /app routes (use with useAuthGate)
 
   // Optional: Payments (Stripe)
   stripeProducts: [
@@ -397,11 +397,11 @@ Let users explore `/app` without signing in — prompt them only when they perfo
 
 ### Setup
 
-Set `noProtectedRoutes: true` in your constants to allow unauthenticated access to `/app` routes:
+Set `authOverlay: true` in your constants to allow unauthenticated access to `/app` routes:
 
 ```json
 {
-  "noProtectedRoutes": true
+  "authOverlay": true
 }
 ```
 

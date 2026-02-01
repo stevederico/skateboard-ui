@@ -723,10 +723,12 @@ export async function apiRequest(endpoint, options = {}) {
         if (timeoutId) clearTimeout(timeoutId);
     }
 
-    // Handle 401 (redirect to signout)
+    // Handle 401 (redirect to signout, unless authOverlay mode)
     if (response.status === 401) {
-        window.location.href = '/signout';
-        throw new Error('Unauthorized - Redirecting to Sign Out');
+        if (getConstants().authOverlay !== true) {
+            window.location.href = '/signout';
+        }
+        throw new Error('Unauthorized');
     }
 
     // Handle 403 CSRF token failures with auto-retry

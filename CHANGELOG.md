@@ -1,11 +1,17 @@
 # CHANGELOG
 
+1.5.1
+
+  Rename noProtectedRoutes to authOverlay
+  Guard unauthenticated Settings UI
+  Skip 401 redirect in authOverlay mode
+
 1.5.0
 
   Add AuthOverlay component
   Add useAuthGate hook
   Add auth overlay state
-  Add noProtectedRoutes support
+  Add authOverlay support
   Add JSDoc comments
   Update README documentation
 
