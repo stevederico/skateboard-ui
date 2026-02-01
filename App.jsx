@@ -23,7 +23,7 @@ import { useAppSetup, initializeUtilities, validateConstants } from './Utilities
 import { ContextProvider } from './Context.jsx';
 import Toast from './Toast.jsx';
 
-function App({ constants, appRoutes, defaultRoute }) {
+function App({ constants, appRoutes, defaultRoute, landingPage }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function App({ constants, appRoutes, defaultRoute }) {
           <Route path="payment" element={<PaymentView />} />
         </Route>
       </Route>
-      <Route path="/" element={<LandingView />} />
+      <Route path="/" element={landingPage || <LandingView />} />
       <Route path="/signin" element={<SignInView />} />
       <Route path="/signup" element={<SignUpView />} />
       <Route path="/signout" element={<SignOutView />} />
@@ -58,7 +58,15 @@ function App({ constants, appRoutes, defaultRoute }) {
   );
 }
 
-export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', wrapper: Wrapper }) {
+/**
+ * @param {Object} config
+ * @param {Object} config.constants - App constants from constants.json
+ * @param {Array} config.appRoutes - Array of route objects with path and element
+ * @param {string} [config.defaultRoute] - Default route path under /app
+ * @param {JSX.Element} [config.landingPage] - Custom landing page element for the "/" route. Defaults to built-in LandingView.
+ * @param {React.ComponentType} [config.wrapper] - Optional wrapper component around the router
+ */
+export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper }) {
   // Validate constants before initialization
   validateConstants(constants);
 
@@ -76,12 +84,12 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
           {Wrapper ? (
             <Wrapper>
               <Router>
-                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
+                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} />
               </Router>
             </Wrapper>
           ) : (
             <Router>
-              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} />
+              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} />
             </Router>
           )}
         </ContextProvider>

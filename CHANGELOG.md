@@ -1,5 +1,9 @@
 # CHANGELOG
 
+1.4.1
+
+  Add landingPage param
+
 1.4.0
 
   Remove terms checkbox
