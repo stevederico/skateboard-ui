@@ -5,6 +5,25 @@ import AppSidebar from "./AppSidebar"
 import { useEffect } from 'react';
 import { getState } from './Context.jsx';
 
+/**
+ * Page layout wrapper with sidebar and tab bar.
+ *
+ * Renders AppSidebar (desktop) and TabBar (mobile) based on constants
+ * configuration and programmatic visibility state. Wraps child routes
+ * via react-router Outlet.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} [props.children] - Child content (unused, Outlet renders routes)
+ * @returns {JSX.Element} Layout with sidebar, main content, and tab bar
+ *
+ * @example
+ * import Layout from '@stevederico/skateboard-ui/Layout';
+ *
+ * // Used internally by createSkateboardApp route config
+ * <Route element={<Layout />}>
+ *   <Route path="home" element={<HomeView />} />
+ * </Route>
+ */
 export default function Layout({ children }) {
   const { state } = getState();
   const { sidebarVisible, tabBarVisible } = state.ui;

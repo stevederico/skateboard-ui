@@ -13,6 +13,19 @@ function isAllowedRedirect(path) {
   return ALLOWED_REDIRECT_PREFIXES.some(prefix => path.startsWith(prefix));
 }
 
+/**
+ * Post-payment redirect handler.
+ *
+ * Processes Stripe checkout success/cancel/portal return query params,
+ * refreshes user data on successful payment, then redirects back to
+ * the page the user was on before checkout.
+ *
+ * @returns {JSX.Element} Redirect loading screen
+ *
+ * @example
+ * // Used internally by createSkateboardApp at /app/payment
+ * <Route path="payment" element={<PaymentView />} />
+ */
 export default function PaymentView() {
   const { state, dispatch } = getState();
   const constants = state.constants;

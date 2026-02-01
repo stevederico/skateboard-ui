@@ -2,6 +2,19 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getBackendURL, getCSRFToken } from './Utilities';
 
+/**
+ * Sign-out handler page.
+ *
+ * Calls POST /signout on mount to clear the server session,
+ * then redirects to /signin.
+ *
+ * @returns {JSX.Element} Sign-out loading screen
+ *
+ * @example
+ * import SignOutView from '@stevederico/skateboard-ui/SignOutView';
+ *
+ * <Route path="/signout" element={<SignOutView />} />
+ */
 function SignOutView() {
   const navigate = useNavigate();
 

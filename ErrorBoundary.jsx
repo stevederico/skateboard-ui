@@ -1,5 +1,23 @@
 import React from 'react';
 
+/**
+ * Top-level error boundary that catches render errors, unhandled promise
+ * rejections, and global errors.
+ *
+ * Displays a fallback UI with "Try Again" and "Reload Page" buttons.
+ * Wrap your app root with this component.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Child components to protect
+ * @returns {JSX.Element} Children or error fallback UI
+ *
+ * @example
+ * import ErrorBoundary from '@stevederico/skateboard-ui/ErrorBoundary';
+ *
+ * <ErrorBoundary>
+ *   <App />
+ * </ErrorBoundary>
+ */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);

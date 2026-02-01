@@ -3,6 +3,20 @@ import { Link, useLocation } from 'react-router-dom';
 import DynamicIcon from './DynamicIcon';
 import { getState } from './Context.jsx';
 
+/**
+ * Mobile bottom tab bar navigation.
+ *
+ * Renders page icons from constants.pages plus a settings tab.
+ * Only visible on mobile (hidden on md+ screens via Layout).
+ *
+ * @returns {JSX.Element} Bottom tab bar
+ *
+ * @example
+ * import TabBar from '@stevederico/skateboard-ui/TabBar';
+ *
+ * // Used internally by Layout component
+ * <TabBar />
+ */
 export default function TabBar() {
   const location = useLocation();
   const { state } = getState();

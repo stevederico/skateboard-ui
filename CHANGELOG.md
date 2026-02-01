@@ -6,6 +6,7 @@
   Add useAuthGate hook
   Add auth overlay state
   Add noProtectedRoutes support
+  Add JSDoc comments
   Update README documentation
 
 1.4.1

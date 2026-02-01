@@ -13,6 +13,22 @@ import { useNavigate } from 'react-router-dom';
 import { getState } from "./Context.jsx";
 import { getBackendURL } from './Utilities'
 
+/**
+ * Full-page sign-up form.
+ *
+ * Creates account via POST to /signup with name, email, and password.
+ * Validates password length (6-72 chars), dispatches SET_USER on success,
+ * and navigates to /app. Includes legal agreement links.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Sign-up page
+ *
+ * @example
+ * import SignUpView from '@stevederico/skateboard-ui/SignUpView';
+ *
+ * <Route path="/signup" element={<SignUpView />} />
+ */
 export default function LoginForm({
   className,
   ...props

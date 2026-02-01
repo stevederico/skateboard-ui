@@ -5,6 +5,21 @@ import DynamicIcon from './DynamicIcon.jsx';
 import { getState } from './Context.jsx';
 import { getBackendURL } from './Utilities.js';
 
+/**
+ * Modal authentication overlay with sign-in and sign-up forms.
+ *
+ * Rendered at the app root and controlled via context state.
+ * Opens when SHOW_AUTH_OVERLAY is dispatched (typically via useAuthGate).
+ * On successful auth, runs the pending callback and closes.
+ *
+ * @returns {JSX.Element} Auth dialog overlay
+ *
+ * @example
+ * import AuthOverlay from '@stevederico/skateboard-ui/AuthOverlay';
+ *
+ * // Rendered automatically by createSkateboardApp
+ * <AuthOverlay />
+ */
 export default function AuthOverlay() {
   const { state, dispatch } = getState();
   const constants = state.constants;
