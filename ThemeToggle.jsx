@@ -1,13 +1,8 @@
 import React from 'react';
 import { useTheme } from 'next-themes';
-import * as LucideIcons from "lucide-react";
-
-const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
-  const toPascalCase = (str) => str.split(/[-_\s]/).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
-  const possibleNames = [name, toPascalCase(name), name.charAt(0).toUpperCase() + name.slice(1)];
-  const LucideIcon = possibleNames.find(n => LucideIcons[n]) ? LucideIcons[possibleNames.find(n => LucideIcons[n])] : null;
-  return LucideIcon ? React.createElement(LucideIcon, { size, color, strokeWidth, ...props }) : null;
-};
+import DynamicIcon from './DynamicIcon.jsx';
+import { Button } from './shadcn/ui/button.jsx';
+import { cn } from './shadcn/lib/utils.js';
 
 /**
  * Dark/light mode toggle button.
@@ -27,7 +22,7 @@ const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2,
  * <ThemeToggle />
  * <ThemeToggle variant="landing" iconSize={18} />
  */
-export default function ThemeToggle({ className = "", iconSize = 24, variant = "settings" }) {
+export default function ThemeToggle({ className = "", iconSize = 24, variant = "settings", ...props }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -45,33 +40,34 @@ export default function ThemeToggle({ className = "", iconSize = 24, variant = "
 
   if (variant === "landing") {
     return (
-      <button
+      <Button
+        variant="outline"
+        size="icon"
         onClick={toggleTheme}
-        className={`p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer ${className}`}
+        className={cn("cursor-pointer", className)}
         aria-label="Toggle dark mode"
+        {...props}
       >
         <DynamicIcon
           name={isDarkMode ? "sun" : "moon"}
           size={iconSize}
           color="currentColor"
           strokeWidth={2}
-          className="text-gray-600 dark:text-gray-300"
         />
-      </button>
+      </Button>
     );
   }
 
   return (
-    <button onClick={toggleTheme} className={`cursor-pointer ${className}`}>
-      {isDarkMode ? (
-        <span className="text-gray-500">
-          <DynamicIcon name="sun" size={iconSize} />
-        </span>
-      ) : (
-        <span className="text-gray-500">
-          <DynamicIcon name="moon" size={iconSize} />
-        </span>
-      )}
-    </button>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      className={cn("cursor-pointer text-muted-foreground", className)}
+      aria-label="Toggle dark mode"
+      {...props}
+    >
+      <DynamicIcon name={isDarkMode ? "sun" : "moon"} size={iconSize} />
+    </Button>
   );
 }

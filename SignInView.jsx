@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { cn } from "./shadcn/lib/utils"
 import { Button } from "./shadcn/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./shadcn/ui/card"
 import { Input } from "./shadcn/ui/input"
-import { Label } from "./shadcn/ui/label"
+import { Alert, AlertDescription } from "./shadcn/ui/alert"
 import DynamicIcon from './DynamicIcon';
 import { useNavigate } from 'react-router-dom';
 import { getState } from "./Context.jsx";
@@ -79,19 +72,19 @@ export default function LoginForm({
   }
 
   return (
-    <div className="fixed inset-0 bg-white dark:bg-black transition-colors duration-300 overflow-auto">
+    <div className="fixed inset-0 bg-background transition-colors duration-300 overflow-auto">
       <div className={cn("flex flex-col gap-6 p-4 max-w-lg mx-auto mt-20", className)} {...props}>
       <div className="flex flex-row items-center justify-center mb-4">
         <div className="bg-app dark:bg-app dark:border dark:border-gray-700 rounded-2xl flex aspect-square size-16 items-center justify-center">
           <DynamicIcon name={constants.appIcon} size={32} color="white" strokeWidth={2} />
         </div>
-        <div className="font-bold ml-3 text-5xl text-gray-900 dark:text-white">{constants.appName}</div>
+        <div className="font-bold ml-3 text-5xl text-foreground">{constants.appName}</div>
       </div>
 
       {errorMessage && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm text-center">
-          {errorMessage}
-        </div>
+        <Alert variant="destructive">
+          <AlertDescription className="text-center">{errorMessage}</AlertDescription>
+        </Alert>
       )}
 
       <form onSubmit={signInClicked} className="flex flex-col gap-4">
@@ -121,51 +114,24 @@ export default function LoginForm({
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button
+        <Button
           type="submit"
-          className="relative group w-full text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
+          variant="gradient"
+          size="cta"
+          className="w-full"
           disabled={isSubmitting}
-          style={{
-            backgroundImage: `linear-gradient(to bottom right,
-              var(--color-app),
-              oklch(from var(--color-app) calc(l - 0.05) c h),
-              oklch(from var(--color-app) calc(l - 0.08) c h),
-              oklch(from var(--color-app) calc(l - 0.12) c h))`,
-            boxShadow: `0 25px 50px -12px color-mix(in srgb, var(--color-app) 40%, transparent 60%)`
-          }}
-          onMouseEnter={(e) => {
-            if (!isSubmitting) {
-              e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right,
-                oklch(from var(--color-app) calc(l - 0.05) c h),
-                oklch(from var(--color-app) calc(l - 0.08) c h),
-                oklch(from var(--color-app) calc(l - 0.12) c h),
-                oklch(from var(--color-app) calc(l - 0.16) c h))`;
-              e.currentTarget.style.boxShadow = '0 25px 50px -12px color-mix(in srgb, var(--color-app) 40%, transparent 60%)'
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isSubmitting) {
-              e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right,
-                var(--color-app),
-                oklch(from var(--color-app) calc(l - 0.05) c h),
-                oklch(from var(--color-app) calc(l - 0.08) c h),
-                oklch(from var(--color-app) calc(l - 0.12) c h))`;
-              e.currentTarget.style.boxShadow = '0 25px 50px -12px color-mix(in srgb, var(--color-app) 40%, transparent 60%)'
-            }
-          }}
         >
           <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
             <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
             {isSubmitting ? "Signing in..." : "Sign In"}
           </span>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-        </button>
+        </Button>
 
         <div className="mt-4 text-center text-base">
-          <span className="text-gray-600 dark:text-gray-400 italic">Don't have an account?</span>{" "}
-          <span onClick={() => navigate('/signup')} className="cursor-pointer hover:underline text-gray-900 dark:text-white">
+          <span className="text-muted-foreground italic">Don't have an account?</span>{" "}
+          <Button variant="link" className="p-0 text-base h-auto" onClick={() => navigate('/signup')}>
             Sign Up
-          </span>
+          </Button>
         </div>
       </form>
       </div>

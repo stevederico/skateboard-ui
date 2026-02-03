@@ -18,12 +18,13 @@ import { Toaster } from './shadcn/ui/sonner.jsx';
  * import { toast } from 'sonner';
  * toast.success('Saved!');
  */
-export default function Toast() {
+export default function Toast(props) {
   return (
     <Toaster
       position="top-right"
       richColors
       closeButton
+      {...props}
     />
   );
 }

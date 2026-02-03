@@ -1,5 +1,29 @@
 # CHANGELOG
 
+2.0.0
+
+  Add gradient Button variant
+  Add cta Button size
+  Add gradient-btn CSS shimmer
+  Fix body bg-background token
+  Add className props passthrough
+  Update ThemeToggle shadcn Button
+  Update ErrorBoundary shadcn Card
+  Update SignInView gradient Button
+  Update SignUpView gradient Button
+  Update AuthOverlay gradient Button
+  Update SettingsView shadcn Card
+  Update UpgradeSheet gradient Button
+  Update LandingView shadcn Card
+  Remove inline hover handlers
+  Remove duplicate DynamicIcon
+  Remove Quick Create header
+  Update TabBar semantic tokens
+  Update NotFound text-foreground
+  Add TextView ScrollArea
+  Add Alert error messages
+  Add Button link variants
+
 1.5.2
 
   Fix isAuthenticated cookie check

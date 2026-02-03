@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent } from './shadcn/ui/dialog.jsx';
 import { Input } from './shadcn/ui/input.jsx';
+import { Button } from './shadcn/ui/button.jsx';
+import { Alert, AlertDescription } from './shadcn/ui/alert.jsx';
 import DynamicIcon from './DynamicIcon.jsx';
 import { getState } from './Context.jsx';
 import { getBackendURL } from './Utilities.js';
@@ -129,20 +131,6 @@ export default function AuthOverlay() {
   const inputClass = "py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary";
   const inputStyle = { fontSize: '20px' };
 
-  const buttonGradient = `linear-gradient(to bottom right,
-    var(--color-app),
-    oklch(from var(--color-app) calc(l - 0.05) c h),
-    oklch(from var(--color-app) calc(l - 0.08) c h),
-    oklch(from var(--color-app) calc(l - 0.12) c h))`;
-
-  const buttonGradientHover = `linear-gradient(to bottom right,
-    oklch(from var(--color-app) calc(l - 0.05) c h),
-    oklch(from var(--color-app) calc(l - 0.08) c h),
-    oklch(from var(--color-app) calc(l - 0.12) c h),
-    oklch(from var(--color-app) calc(l - 0.16) c h))`;
-
-  const buttonShadow = '0 25px 50px -12px color-mix(in srgb, var(--color-app) 40%, transparent 60%)';
-
   return (
     <Dialog open={visible} onOpenChange={(open) => { if (!open) handleClose(); }}>
       <DialogContent className="sm:max-w-lg p-6 overflow-auto max-h-[90vh]">
@@ -152,13 +140,13 @@ export default function AuthOverlay() {
             <div className="bg-app dark:bg-app dark:border dark:border-gray-700 rounded-2xl flex aspect-square size-12 items-center justify-center">
               <DynamicIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
             </div>
-            <div className="font-bold ml-3 text-3xl text-gray-900 dark:text-white">{constants.appName}</div>
+            <div className="font-bold ml-3 text-3xl text-foreground">{constants.appName}</div>
           </div>
 
           {errorMessage && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm text-center">
-              {errorMessage}
-            </div>
+            <Alert variant="destructive">
+              <AlertDescription className="text-center">{errorMessage}</AlertDescription>
+            </Alert>
           )}
 
           {mode === 'signin' ? (
@@ -185,28 +173,27 @@ export default function AuthOverlay() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button
+              <Button
                 type="submit"
-                className="relative group w-full text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
+                variant="gradient"
+                size="cta"
+                className="w-full"
                 disabled={isSubmitting}
-                style={{ backgroundImage: buttonGradient, boxShadow: buttonShadow }}
-                onMouseEnter={(e) => { if (!isSubmitting) { e.currentTarget.style.backgroundImage = buttonGradientHover; } }}
-                onMouseLeave={(e) => { if (!isSubmitting) { e.currentTarget.style.backgroundImage = buttonGradient; } }}
               >
                 <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
                   <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
                   {isSubmitting ? 'Signing in...' : 'Sign In'}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-              </button>
+              </Button>
               <div className="mt-2 text-center text-base">
-                <span className="text-gray-600 dark:text-gray-400 italic">Don't have an account?</span>{' '}
-                <span
+                <span className="text-muted-foreground italic">Don't have an account?</span>{' '}
+                <Button
+                  variant="link"
+                  className="p-0 text-base h-auto"
                   onClick={() => { setMode('signup'); setErrorMessage(''); }}
-                  className="cursor-pointer hover:underline text-gray-900 dark:text-white"
                 >
                   Sign Up
-                </span>
+                </Button>
               </div>
             </form>
           ) : (
@@ -245,40 +232,39 @@ export default function AuthOverlay() {
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 ml-1">Minimum 6 characters</p>
+                <p className="text-xs text-muted-foreground ml-1">Minimum 6 characters</p>
               </div>
-              <button
+              <Button
                 type="submit"
-                className="relative group w-full text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
+                variant="gradient"
+                size="cta"
+                className="w-full"
                 disabled={isSubmitting}
-                style={{ backgroundImage: buttonGradient, boxShadow: buttonShadow }}
-                onMouseEnter={(e) => { if (!isSubmitting) { e.currentTarget.style.backgroundImage = buttonGradientHover; } }}
-                onMouseLeave={(e) => { if (!isSubmitting) { e.currentTarget.style.backgroundImage = buttonGradient; } }}
               >
                 <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
                   <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
                   {isSubmitting ? 'Signing up...' : 'Sign Up'}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-              </button>
+              </Button>
               <div className="mt-2 text-center text-base">
-                <span className="text-gray-600 dark:text-gray-400 italic">Already have an account?</span>{' '}
-                <span
+                <span className="text-muted-foreground italic">Already have an account?</span>{' '}
+                <Button
+                  variant="link"
+                  className="p-0 text-base h-auto"
                   onClick={() => { setMode('signin'); setErrorMessage(''); }}
-                  className="cursor-pointer hover:underline text-gray-900 dark:text-white"
                 >
                   Sign In
-                </span>
+                </Button>
               </div>
-              <div className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+              <div className="mt-2 text-center text-sm text-muted-foreground">
                 By registering you agree to our
-                <a href="/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-gray-900 dark:text-white">
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-foreground">
                   Terms of Service
                 </a>,
-                <a href="/eula" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-gray-900 dark:text-white">
+                <a href="/eula" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-foreground">
                   EULA
                 </a>,
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-gray-900 dark:text-white">
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-foreground">
                   Privacy Policy
                 </a>
               </div>
