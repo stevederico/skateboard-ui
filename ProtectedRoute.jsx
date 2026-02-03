@@ -52,7 +52,7 @@ const ProtectedRoute = () => {
     }, []);
 
     if (status === 'checking') {
-        return null;
+        return <div className="min-h-screen bg-background" />;
     }
 
     return status === 'valid' ? <Outlet /> : <Navigate to="/signin" replace />;

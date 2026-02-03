@@ -3,26 +3,37 @@ import { useNavigate, useLocation } from "react-router-dom";
 import DynamicIcon from "./DynamicIcon.jsx";
 import { getState } from "./Context.jsx";
 import { Avatar, AvatarFallback } from "./shadcn/ui/avatar.jsx";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./shadcn/ui/tooltip.jsx";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./shadcn/ui/dropdown-menu.jsx";
 import {
   Sidebar,
   SidebarContent,
-  SidebarMenu,
-  SidebarRail,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
   useSidebar,
 } from "./shadcn/ui/sidebar";
-
-
-// Use this if your DynamicIcon import isn't working
-const DynamicIconComponent = DynamicIcon
+import { ChevronsUpDown, LogOut, Settings, CreditCard, Bell } from "lucide-react";
 
 /**
- * Desktop navigation sidebar.
+ * Desktop navigation sidebar using shadcn primitives.
  *
- * Renders app pages from constants.pages with icons, tooltips when collapsed,
- * and a settings link in the footer. Uses shadcn Sidebar primitives.
+ * Renders app pages from constants.pages with DynamicIcon icons,
+ * tooltip support when collapsed, settings pushed to bottom,
+ * and a NavUser dropdown footer with avatar, account, billing, and logout.
  *
  * @returns {JSX.Element} Sidebar navigation
  *
@@ -31,136 +42,187 @@ const DynamicIconComponent = DynamicIcon
  *
  * <AppSidebar />
  */
-export default function AppSidebar() {
-  const { open, setOpen } = useSidebar();
+export default function AppSidebar({ variant = "inset", ...props }) {
+  const { open } = useSidebar();
   const navigate = useNavigate();
   const location = useLocation();
   const currentPage = (location.pathname.split("/")[2] || "").toLowerCase();
   const { state } = getState();
   const constants = state.constants;
+  const user = state.user;
 
-  const handleNavigation = (url) => {
-    navigate(url);
-  };
+  const initials = user?.name
+    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : user?.email
+      ? user.email[0].toUpperCase()
+      : "U";
 
   return (
-    <Sidebar
-      collapsible="icon"
-      className="min-w-[40px]"
-    >
+    <Sidebar collapsible="icon" variant={variant} {...props}>
+      {/* Header: App icon + name */}
       {!constants.hideSidebarHeader && (
-        <SidebarHeader className="p-0">
+        <SidebarHeader>
           <SidebarMenu>
-            <div className={`flex flex-row m-2 mt-4 mb-4 items-center  ${open ? "ml-3" : "justify-center ml-2"}`}>
-              <div className="bg-app dark:border rounded-lg flex aspect-square size-10 items-center justify-center">
-                <DynamicIconComponent
-                  name={constants.appIcon}
-                  size={28}
-                  color="white"
-                  strokeWidth={2}
-                />
-              </div>
-              {open && <div className="font-semibold ml-2 text-xl">{constants.appName}</div>}
-            </div>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                size="lg"
+                onClick={() => navigate("/app")}
+                tooltip={constants.appName}
+              >
+                <div className="bg-app dark:border rounded-lg flex aspect-square size-8 items-center justify-center">
+                  <DynamicIcon
+                    name={constants.appIcon}
+                    size={20}
+                    color="white"
+                    strokeWidth={2}
+                  />
+                </div>
+                <span className="font-semibold text-lg truncate">
+                  {constants.appName}
+                </span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
       )}
-      <SidebarContent>
-        <ul
-          className={`flex flex-col gap-1 p-2 ${open ? "" : "items-center"}`}
-          role="navigation"
-          aria-label="Main navigation"
-        >
-          {constants.pages.map((item) => {
-            const isActive = currentPage === item.url.toLowerCase();
-            const buttonElement = (
-              <button
-                type="button"
-                className={`cursor-pointer items-center flex w-full px-4 py-3 rounded-lg ${open ? "h-14" : "h-12 w-12"} ${isActive ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
-                onClick={() => handleNavigation(`/app/${item.url.toLowerCase()}`)}
-                aria-label={item.title}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                <span className="flex w-full items-center">
-                  <DynamicIconComponent
-                    name={item.icon}
-                    size={20}
-                    strokeWidth={1.5}
-                  />
-                  {open && <span className="ml-3">{item.title}</span>}
-                </span>
-              </button>
-            );
 
-            return (
-              <li key={item.title}>
-                {!open ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      {buttonElement}
-                    </TooltipTrigger>
-                    <TooltipContent side="right">
-                      {item.title}
-                    </TooltipContent>
-                  </Tooltip>
-                ) : (
-                  buttonElement
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </SidebarContent>
-      <SidebarFooter>
-        <ul className={`flex flex-col gap-1 ${open ? "" : "items-center"}`}>
-          <li>
-            {!open ? (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
-                    ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
-                    onClick={() => handleNavigation("/app/settings")}
-                    aria-label="Settings"
-                    aria-current={location.pathname.toLowerCase().includes("settings") ? 'page' : undefined}
-                  >
-                    <span className="flex w-full items-center">
-                      <DynamicIconComponent
-                        name="settings"
-                        size={20}
+      {/* Main navigation from constants.pages */}
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>{constants.appName}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {constants.pages.map((item) => {
+                const isActive = currentPage === item.url.toLowerCase();
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      isActive={isActive}
+                      tooltip={item.title}
+                      onClick={() =>
+                        navigate(`/app/${item.url.toLowerCase()}`)
+                      }
+                    >
+                      <DynamicIcon
+                        name={item.icon}
+                        size={18}
                         strokeWidth={1.5}
                       />
-                      {open && <span className="ml-3">Settings</span>}
-                    </span>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  Settings
-                </TooltipContent>
-              </Tooltip>
-            ) : (
-              <button
-                type="button"
-                className={`cursor-pointer items-center rounded-lg flex w-full px-4 py-3 ${open ? "h-14" : "h-12 w-12"}
-                ${location.pathname.toLowerCase().includes("settings") ? "bg-accent/80 text-accent-foreground" : "hover:bg-accent/50 hover:text-accent-foreground"}`}
-                onClick={() => handleNavigation("/app/settings")}
-                aria-label="Settings"
-                aria-current={location.pathname.toLowerCase().includes("settings") ? 'page' : undefined}
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Settings pushed to bottom */}
+        <SidebarGroup className="mt-auto">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={location.pathname.toLowerCase().includes("settings")}
+                tooltip="Settings"
+                onClick={() => navigate("/app/settings")}
               >
-                <span className="flex w-full items-center">
-                  <DynamicIconComponent
-                    name="settings"
-                    size={20}
-                    strokeWidth={1.5}
-                  />
-                  {open && <span className="ml-3">Settings</span>}
-                </span>
-              </button>
-            )}
-          </li>
-        </ul>
+                <Settings size={18} strokeWidth={1.5} />
+                <span>Settings</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+
+      {/* Footer: NavUser dropdown */}
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="w-full rounded-md outline-none ring-sidebar-ring focus-visible:ring-2 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <SidebarMenuButton
+                  size="lg"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarFallback className="rounded-lg bg-app text-white text-xs">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">
+                      {user?.name || "User"}
+                    </span>
+                    <span className="truncate text-xs text-muted-foreground">
+                      {user?.email || ""}
+                    </span>
+                  </div>
+                  <ChevronsUpDown className="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                side="bottom"
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarFallback className="rounded-lg bg-app text-white text-xs">
+                        {initials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {user?.name || "User"}
+                      </span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {user?.email || ""}
+                      </span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => navigate("/app/settings")}
+                  >
+                    <Settings />
+                    Account
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => navigate("/app/settings?tab=billing")}
+                  >
+                    <CreditCard />
+                    Billing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => navigate("/app/settings?tab=notifications")}
+                  >
+                    <Bell />
+                    Notifications
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => navigate("/signout")}
+                >
+                  <LogOut />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );
