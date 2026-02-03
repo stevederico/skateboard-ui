@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.2.1
+
+  Fix Sidebar import path
+
 2.2.0
 
   Reorganize into folders
