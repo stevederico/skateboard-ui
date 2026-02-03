@@ -210,9 +210,8 @@ export function isAuthenticated() {
     if (getConstants().noLogin === true) {
         return true;
     }
-    const csrfKey = getAppKey('csrf');
     const userKey = getAppKey('user');
-    return Boolean(safeGetItem(csrfKey)) && Boolean(safeGetItem(userKey));
+    return Boolean(getCSRFToken()) && Boolean(safeGetItem(userKey));
 }
 
 /**
