@@ -6,16 +6,16 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-} from "./shadcn/ui/drawer"
+} from "../shadcn/ui/drawer"
 import {
   Card,
   CardContent,
-} from "./shadcn/ui/card"
-import { Badge } from "./shadcn/ui/badge"
-import { Separator } from "./shadcn/ui/separator"
-import { Button } from "./shadcn/ui/button"
-import { getState } from "./Context.jsx";
-import { showCheckout } from './Utilities.js';
+} from "../shadcn/ui/card"
+import { Badge } from "../shadcn/ui/badge"
+import { Separator } from "../shadcn/ui/separator"
+import { Button } from "../shadcn/ui/button"
+import { getState } from "../core/Context.jsx";
+import { showCheckout } from '../core/Utilities.js';
 import { Sparkles, CircleCheck } from 'lucide-react';
 
 /**

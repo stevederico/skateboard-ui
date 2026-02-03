@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getBackendURL, getCSRFToken } from './Utilities';
-import { Spinner } from './shadcn/ui/spinner.jsx';
+import { getBackendURL, getCSRFToken } from '../core/Utilities';
+import { Spinner } from '../shadcn/ui/spinner.jsx';
 
 /**
  * Sign-out handler page.

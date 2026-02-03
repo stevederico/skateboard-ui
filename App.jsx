@@ -8,23 +8,23 @@ import {
 } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ThemeProvider } from 'next-themes';
-import Layout from './Layout.jsx';
-import LandingView from './LandingView.jsx';
-import TextView from './TextView.jsx';
-import SignUpView from './SignUpView.jsx';
-import SignInView from './SignInView.jsx';
-import SignOutView from './SignOutView.jsx';
-import PaymentView from './PaymentView.jsx';
-import SettingsView from './SettingsView.jsx';
-import NotFound from './NotFound.jsx';
-import ProtectedRoute from './ProtectedRoute.jsx';
-import ErrorBoundary from './ErrorBoundary.jsx';
-import { useAppSetup, initializeUtilities, validateConstants } from './Utilities.js';
-import { ContextProvider } from './Context.jsx';
+import Layout from './layout/Layout.jsx';
+import LandingView from './views/LandingView.jsx';
+import TextView from './views/TextView.jsx';
+import SignUpView from './views/SignUpView.jsx';
+import SignInView from './views/SignInView.jsx';
+import SignOutView from './views/SignOutView.jsx';
+import PaymentView from './views/PaymentView.jsx';
+import SettingsView from './views/SettingsView.jsx';
+import NotFound from './views/NotFound.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import { useAppSetup, initializeUtilities, validateConstants } from './core/Utilities.js';
+import { ContextProvider } from './core/Context.jsx';
 import { Toaster } from './shadcn/ui/sonner.jsx';
-import AuthOverlay from './AuthOverlay.jsx';
+import AuthOverlay from './components/AuthOverlay.jsx';
 
-function App({ constants, appRoutes, defaultRoute, landingPage }) {
+function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -33,28 +33,36 @@ function App({ constants, appRoutes, defaultRoute, landingPage }) {
 
   useAppSetup(location);
 
+  const LayoutComponent = overrides.layout || Layout;
+  const SettingsComponent = overrides.settings || SettingsView;
+  const PaymentComponent = overrides.payment || PaymentView;
+  const SignInComponent = overrides.signIn || SignInView;
+  const SignUpComponent = overrides.signUp || SignUpView;
+  const SignOutComponent = overrides.signOut || SignOutView;
+  const NotFoundComponent = overrides.notFound || NotFound;
+
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route element={<LayoutComponent />}>
         <Route path="/console" element={<Navigate to="/app" replace />} />
         <Route path="/app" element={<ProtectedRoute />}>
           <Route index element={<Navigate to={defaultRoute} replace />} />
           {appRoutes.map(({ path, element }) => (
             <Route key={path} path={path} element={element} />
           ))}
-          <Route path="settings" element={<SettingsView />} />
-          <Route path="payment" element={<PaymentView />} />
+          <Route path="settings" element={<SettingsComponent />} />
+          <Route path="payment" element={<PaymentComponent />} />
         </Route>
       </Route>
       <Route path="/" element={landingPage || <LandingView />} />
-      <Route path="/signin" element={<SignInView />} />
-      <Route path="/signup" element={<SignUpView />} />
-      <Route path="/signout" element={<SignOutView />} />
+      <Route path="/signin" element={<SignInComponent />} />
+      <Route path="/signup" element={<SignUpComponent />} />
+      <Route path="/signout" element={<SignOutComponent />} />
       <Route path="/terms" element={<TextView details={constants.termsOfService} />} />
       <Route path="/privacy" element={<TextView details={constants.privacyPolicy} />} />
       <Route path="/eula" element={<TextView details={constants.EULA} />} />
       <Route path="/subs" element={<TextView details={constants.subscriptionDetails} />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<NotFoundComponent />} />
     </Routes>
   );
 }
@@ -71,6 +79,14 @@ function App({ constants, appRoutes, defaultRoute, landingPage }) {
  * @param {string} [config.defaultRoute] - Default route path under /app (defaults to first route)
  * @param {JSX.Element} [config.landingPage] - Custom landing page for "/". Defaults to LandingView.
  * @param {React.ComponentType} [config.wrapper] - Optional wrapper component around the router
+ * @param {Object} [config.overrides] - Override built-in view components
+ * @param {React.ComponentType} [config.overrides.layout] - Replace Layout
+ * @param {React.ComponentType} [config.overrides.settings] - Replace SettingsView
+ * @param {React.ComponentType} [config.overrides.payment] - Replace PaymentView
+ * @param {React.ComponentType} [config.overrides.signIn] - Replace SignInView
+ * @param {React.ComponentType} [config.overrides.signUp] - Replace SignUpView
+ * @param {React.ComponentType} [config.overrides.signOut] - Replace SignOutView
+ * @param {React.ComponentType} [config.overrides.notFound] - Replace NotFound
  *
  * @example
  * import { createSkateboardApp } from '@stevederico/skateboard-ui/App';
@@ -80,8 +96,19 @@ function App({ constants, appRoutes, defaultRoute, landingPage }) {
  *   constants,
  *   appRoutes: [{ path: 'home', element: <HomeView /> }]
  * });
+ *
+ * @example
+ * // Override built-in views
+ * createSkateboardApp({
+ *   constants,
+ *   appRoutes: [{ path: 'home', element: <HomeView /> }],
+ *   overrides: {
+ *     settings: MySettingsView,
+ *     signIn: MySignInView,
+ *   }
+ * });
  */
-export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper }) {
+export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper, overrides }) {
   // Validate constants before initialization
   validateConstants(constants);
 
@@ -100,12 +127,12 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
           {Wrapper ? (
             <Wrapper>
               <Router>
-                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} />
+                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
               </Router>
             </Wrapper>
           ) : (
             <Router>
-              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} />
+              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
             </Router>
           )}
         </ContextProvider>

@@ -1,108 +1,104 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "exports": {
     "./Sidebar": {
-      "import": "./Sidebar.jsx",
-      "default": "./Sidebar.jsx"
+      "import": "./layout/Sidebar.jsx",
+      "default": "./layout/Sidebar.jsx"
     },
     "./DynamicIcon": {
-      "import": "./DynamicIcon.jsx",
-      "default": "./DynamicIcon.jsx"
+      "import": "./core/DynamicIcon.jsx",
+      "default": "./core/DynamicIcon.jsx"
     },
     "./ErrorBoundary": {
-      "import": "./ErrorBoundary.jsx",
-      "default": "./ErrorBoundary.jsx"
+      "import": "./components/ErrorBoundary.jsx",
+      "default": "./components/ErrorBoundary.jsx"
     },
     "./Header": {
-      "import": "./Header.jsx",
-      "default": "./Header.jsx"
+      "import": "./layout/Header.jsx",
+      "default": "./layout/Header.jsx"
     },
     "./LandingView": {
-      "import": "./LandingView.jsx",
-      "default": "./LandingView.jsx"
-    },
-    "./LandingViewSimple": {
-      "import": "./LandingViewSimple.jsx",
-      "default": "./LandingViewSimple.jsx"
+      "import": "./views/LandingView.jsx",
+      "default": "./views/LandingView.jsx"
     },
     "./Layout": {
-      "import": "./Layout.jsx",
-      "default": "./Layout.jsx"
+      "import": "./layout/Layout.jsx",
+      "default": "./layout/Layout.jsx"
     },
     "./NotFound": {
-      "import": "./NotFound.jsx",
-      "default": "./NotFound.jsx"
+      "import": "./views/NotFound.jsx",
+      "default": "./views/NotFound.jsx"
     },
     "./SettingsView": {
-      "import": "./SettingsView.jsx",
-      "default": "./SettingsView.jsx"
+      "import": "./views/SettingsView.jsx",
+      "default": "./views/SettingsView.jsx"
     },
     "./Sheet": {
-      "import": "./Sheet.jsx",
-      "default": "./Sheet.jsx"
+      "import": "./components/Sheet.jsx",
+      "default": "./components/Sheet.jsx"
     },
     "./SignInView": {
-      "import": "./SignInView.jsx",
-      "default": "./SignInView.jsx"
+      "import": "./views/SignInView.jsx",
+      "default": "./views/SignInView.jsx"
     },
     "./SignUpView": {
-      "import": "./SignUpView.jsx",
-      "default": "./SignUpView.jsx"
+      "import": "./views/SignUpView.jsx",
+      "default": "./views/SignUpView.jsx"
     },
     "./SignOutView": {
-      "import": "./SignOutView.jsx",
-      "default": "./SignOutView.jsx"
+      "import": "./views/SignOutView.jsx",
+      "default": "./views/SignOutView.jsx"
     },
     "./PaymentView": {
-      "import": "./PaymentView.jsx",
-      "default": "./PaymentView.jsx"
+      "import": "./views/PaymentView.jsx",
+      "default": "./views/PaymentView.jsx"
     },
     "./TabBar": {
-      "import": "./TabBar.jsx",
-      "default": "./TabBar.jsx"
+      "import": "./layout/TabBar.jsx",
+      "default": "./layout/TabBar.jsx"
     },
     "./TextView": {
-      "import": "./TextView.jsx",
-      "default": "./TextView.jsx"
+      "import": "./views/TextView.jsx",
+      "default": "./views/TextView.jsx"
     },
     "./ThemeToggle": {
-      "import": "./ThemeToggle.jsx",
-      "default": "./ThemeToggle.jsx"
+      "import": "./components/ThemeToggle.jsx",
+      "default": "./components/ThemeToggle.jsx"
     },
     "./UpgradeSheet": {
-      "import": "./UpgradeSheet.jsx",
-      "default": "./UpgradeSheet.jsx"
+      "import": "./components/UpgradeSheet.jsx",
+      "default": "./components/UpgradeSheet.jsx"
     },
     "./Utilities": {
-      "import": "./Utilities.js",
-      "default": "./Utilities.js"
+      "import": "./core/Utilities.js",
+      "default": "./core/Utilities.js"
     },
     "./ProtectedRoute": {
-      "import": "./ProtectedRoute.jsx",
-      "default": "./ProtectedRoute.jsx"
+      "import": "./components/ProtectedRoute.jsx",
+      "default": "./components/ProtectedRoute.jsx"
     },
     "./styles.css": {
       "import": "./styles.css",
       "default": "./styles.css"
     },
     "./Context": {
-      "import": "./Context.jsx",
-      "default": "./Context.jsx"
+      "import": "./core/Context.jsx",
+      "default": "./core/Context.jsx"
     },
     "./App": {
       "import": "./App.jsx",
       "default": "./App.jsx"
     },
     "./AuthOverlay": {
-      "import": "./AuthOverlay.jsx",
-      "default": "./AuthOverlay.jsx"
+      "import": "./components/AuthOverlay.jsx",
+      "default": "./components/AuthOverlay.jsx"
     },
     "./useAuthGate": {
-      "import": "./useAuthGate.js",
-      "default": "./useAuthGate.js"
+      "import": "./hooks/useAuthGate.js",
+      "default": "./hooks/useAuthGate.js"
     },
     "./shadcn/ui/*": "./shadcn/ui/*.jsx",
     "./shadcn/lib/utils": {

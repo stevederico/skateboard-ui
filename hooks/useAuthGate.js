@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { getState } from './Context.jsx';
+import { getState } from '../core/Context.jsx';
 
 /**
  * Hook that gates actions behind authentication.

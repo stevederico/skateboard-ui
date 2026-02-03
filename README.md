@@ -75,7 +75,7 @@ const constants = {
 
   // Required: App identity
   appName: "MyApp",
-  appIcon: "🛹",
+  appIcon: "sparkles",  // Lucide icon name
 
   // Required: Landing page content
   tagline: "Build apps faster with skateboard-ui",
@@ -95,9 +95,20 @@ const constants = {
   companyWebsite: "https://yourcompany.com",
   companyEmail: "hello@yourcompany.com",
 
+  // Optional: Navigation pages (sidebar + tabbar)
+  pages: [
+    { title: "Home", icon: "home", url: "home" },
+    { title: "Search", icon: "search", url: "search" }
+  ],
+
   // Optional: Authentication
-  noLogin: false,  // Set true to disable authentication
-  authOverlay: false,  // Set true to allow unauthenticated access to /app routes (use with useAuthGate)
+  noLogin: false,      // Set true to disable authentication entirely
+  authOverlay: false,  // Set true to allow unauthenticated /app access (use with useAuthGate)
+
+  // Optional: UI visibility
+  hideSidebar: false,
+  hideTabBar: false,
+  hideSidebarHeader: false,
 
   // Optional: Payments (Stripe)
   stripeProducts: [
@@ -105,17 +116,21 @@ const constants = {
       name: "Pro Plan",
       priceId: "price_123",
       price: "$10/month",
-      lookup_key: "pro_plan"
+      lookup_key: "pro_plan",
+      title: "Go Pro",
+      interval: "month",
+      features: ["Unlimited usage", "Priority support", "Advanced features"]
     }
   ],
 
-  // Optional: Legal documents
-  termsOfService: "Your terms of service...",
-  privacyPolicy: "Your privacy policy...",
+  // Optional: Legal documents (plain text, supports _COMPANY_, _WEBSITE_, _EMAIL_ placeholders)
+  termsOfService: "Terms of Service for _COMPANY_...",
+  privacyPolicy: "Privacy Policy for _COMPANY_...",
+  EULA: "End User License Agreement...",
+  subscriptionDetails: "Subscription details...",
 
-  // Optional: UI visibility
-  hideSidebar: false,
-  hideTabBar: false
+  // Optional: App metadata
+  version: "1.0.0"
 }
 ```
 
@@ -137,15 +152,55 @@ Endpoints are relative to this base URL:
 
 **Tip:** Include API versioning in the base URL (e.g., `/api/v2`) rather than in each endpoint path.
 
-### Authentication Setup
+## createSkateboardApp
+
+The bootstrap function that sets up routing, auth, theming, state, toasts, and error handling.
+
+```javascript
+import { createSkateboardApp } from '@stevederico/skateboard-ui/App';
+
+createSkateboardApp({
+  constants,       // Required: App configuration object
+  appRoutes,       // Required: [{ path: string, element: JSX.Element }]
+  defaultRoute,    // Optional: Default route path (defaults to first appRoute path)
+  landingPage,     // Optional: Custom landing page JSX element
+  wrapper,         // Optional: React component to wrap the router (e.g., for providers)
+});
+```
+
+### What It Sets Up
+
+- **Routes:** Landing, signin, signup, signout, app routes, settings, payment, legal pages (terms, privacy, EULA, subscription)
+- **Authentication:** ProtectedRoute wrapping `/app/*`, AuthOverlay for lazy auth
+- **Theming:** next-themes ThemeProvider with system theme support
+- **State:** ContextProvider with user, UI, and auth overlay state
+- **Toasts:** Sonner Toaster (top-right, rich colors, close button)
+- **Error Boundary:** Catches render errors, unhandled rejections, and global errors
+
+### Generated Routes
+
+| Route | Component | Protected |
+|-------|-----------|-----------|
+| `/` | LandingView (or custom `landingPage`) | No |
+| `/signin` | SignInView | No |
+| `/signup` | SignUpView | No |
+| `/signout` | SignOutView | No |
+| `/app/:path` | Your appRoutes | Yes |
+| `/app/settings` | SettingsView | Yes |
+| `/app/payment` | PaymentView | Yes |
+| `/terms` | TextView | No |
+| `/privacy` | TextView | No |
+| `/eula` | TextView | No |
+| `/subscription` | TextView | No |
+| `*` | NotFound | No |
+
+## Authentication
+
+### Overview
 
 skateboard-ui uses a **hybrid cookie + localStorage authentication system** that combines security with performance:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Authentication Flow                      │
-└─────────────────────────────────────────────────────────────────┘
-
   Frontend                    Backend                   Storage
   ────────                    ───────                   ───────
 
@@ -171,25 +226,25 @@ skateboard-ui uses a **hybrid cookie + localStorage authentication system** that
    + X-CSRF-Token header     Validate CSRF header
 ```
 
-#### Cookie-Based Session Management
+### Cookie-Based Session Management
 - **Session token** stored in `{appName}_token` cookie (HttpOnly, Secure, SameSite=Strict)
 - Automatically sent with every request via browser
 - Cannot be accessed by JavaScript (XSS protection)
 - Backend validates cookie on each protected endpoint
 
-#### localStorage for Client-Side Validation
+### localStorage for Client-Side Validation
 - **CSRF token** and **user data** stored in localStorage
 - Enables instant `isAuthenticated()` checks without network calls
 - Used by client-side routing logic (ProtectedRoute initial check)
 - Not used for actual authentication (cookies handle that)
 
-#### CSRF Protection
+### CSRF Protection
 - Dual-token system prevents CSRF attacks
 - **CSRF token** sent in `X-CSRF-Token` header with state-changing requests
 - Backend validates header matches stored session CSRF token
 - Separate from session cookie to prevent cookie-based CSRF
 
-#### CSRF Error Handling
+### CSRF Error Handling
 
 The `apiRequest` utility automatically handles CSRF token failures:
 
@@ -208,16 +263,17 @@ Retry POST /api/keys with fresh token
 Success
 ```
 
-#### Required Backend Endpoints
+### Required Backend Endpoints
 
-##### POST /signup
+#### POST /signup
 Create new user account.
 
 **Request:**
 ```json
 {
   "email": "user@example.com",
-  "password": "securePassword123"
+  "password": "securePassword123",
+  "name": "John Doe"
 }
 ```
 
@@ -238,7 +294,7 @@ Create new user account.
 }
 ```
 
-##### POST /signin
+#### POST /signin
 Authenticate existing user.
 
 **Request:**
@@ -254,7 +310,7 @@ Authenticate existing user.
 - Headers: Same as /signup
 - Body: Same as /signup
 
-##### GET /me
+#### GET /me
 Validate current session and return user data.
 
 **Request:**
@@ -268,7 +324,12 @@ Validate current session and return user data.
   "user": {
     "id": "user123",
     "email": "user@example.com",
-    "name": "John Doe"
+    "name": "John Doe",
+    "subscription": {
+      "status": "active",
+      "expires": 1735689600,
+      "stripeID": "cus_abc123"
+    }
   }
 }
 ```
@@ -276,7 +337,7 @@ Validate current session and return user data.
 **Response (not authenticated):**
 - Status: 401 Unauthorized
 
-##### POST /signout
+#### POST /signout
 End current session.
 
 **Request:**
@@ -290,7 +351,60 @@ End current session.
   - `Set-Cookie: {appName}_token=; Max-Age=0; Path=/` (clear cookie)
   - `Set-Cookie: csrf_token=; Max-Age=0; Path=/` (clear cookie)
 
-#### Cookie Configuration
+### Optional Backend Endpoints
+
+#### POST /usage
+Track and check feature usage limits.
+
+**Request:**
+```json
+{ "operation": "check" }
+```
+or
+```json
+{ "operation": "track" }
+```
+
+**Response:**
+```json
+{ "remaining": 15, "total": 20, "isSubscriber": false }
+```
+
+#### GET /isSubscriber
+Check subscription status.
+
+**Response:**
+```json
+{ "isSubscriber": true }
+```
+
+#### POST /checkout (Stripe)
+Create a Stripe checkout session.
+
+**Request:**
+```json
+{ "lookup_key": "pro_plan", "email": "user@example.com" }
+```
+
+**Response:**
+```json
+{ "url": "https://checkout.stripe.com/..." }
+```
+
+#### POST /portal (Stripe)
+Open Stripe billing portal.
+
+**Request:**
+```json
+{ "customerID": "cus_abc123" }
+```
+
+**Response:**
+```json
+{ "url": "https://billing.stripe.com/..." }
+```
+
+### Cookie Configuration
 
 **Session Token Cookie:**
 ```javascript
@@ -316,14 +430,14 @@ End current session.
 }
 ```
 
-#### Protected Endpoints
+### Protected Endpoints
 All authenticated endpoints must:
 1. Validate `{appName}_token` cookie exists and is valid
 2. For state-changing operations (POST, PUT, DELETE), validate `X-CSRF-Token` header
 3. Return 401 if authentication fails
 4. Return 403 if CSRF validation fails
 
-#### Security Considerations
+### Security Considerations
 
 - **XSS Protection**: Session token is HttpOnly — JavaScript cannot access it
 - **CSRF Protection**: Dual-token pattern prevents cookie-based CSRF attacks
@@ -331,7 +445,7 @@ All authenticated endpoints must:
 - **HTTPS Requirement**: All cookies marked `Secure` in production
 - **localStorage Trade-offs**: Acceptable for CSRF token (cannot authenticate alone), never store session token
 
-#### Example Backend Implementation (Express.js)
+### Example Backend Implementation (Express.js)
 
 ```javascript
 import express from 'express';
@@ -366,10 +480,10 @@ function requireCSRF(req, res, next) {
 }
 
 app.post('/api/signup', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
 
-  const user = await createUser(email, password);
+  const user = await createUser(email, password, name);
   const sessionToken = generateToken();
   const csrfToken = generateToken();
 
@@ -400,7 +514,7 @@ app.post('/api/signout', requireAuth, requireCSRF, (req, res) => {
 });
 ```
 
-#### Auth Troubleshooting
+### Auth Troubleshooting
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -409,7 +523,7 @@ app.post('/api/signout', requireAuth, requireCSRF, (req, res) => {
 | Cookies not persisting | SameSite/Secure flags | Set `secure: false` in dev, check domain match |
 | `isAuthenticated()` false but cookie exists | localStorage cleared | Re-fetch from `/me` endpoint |
 
-#### No-Login Mode
+### No-Login Mode
 
 ```javascript
 const constants = { noLogin: true };
@@ -423,326 +537,69 @@ Effects: `isAuthenticated()` always returns `true`, ProtectedRoute allows all ac
 
 | Component | Import | Description |
 |-----------|--------|-------------|
+| Sidebar | `@stevederico/skateboard-ui/Sidebar` | Desktop navigation sidebar with collapsible icon mode |
 | Header | `@stevederico/skateboard-ui/Header` | App header with title and action button |
-| Layout | `@stevederico/skateboard-ui/Layout` | Page layout with sidebar/tabbar |
-| Sidebar | `@stevederico/skateboard-ui/Sidebar` | Desktop navigation sidebar |
-| TabBar | `@stevederico/skateboard-ui/TabBar` | Mobile bottom navigation |
-| DynamicIcon | `@stevederico/skateboard-ui/DynamicIcon` | Lucide icon by name |
-| ThemeToggle | `@stevederico/skateboard-ui/ThemeToggle` | Dark/light mode switch |
+| Layout | `@stevederico/skateboard-ui/Layout` | Page layout with sidebar (desktop) and tabbar (mobile) |
+| TabBar | `@stevederico/skateboard-ui/TabBar` | Mobile bottom navigation with labels |
+| DynamicIcon | `@stevederico/skateboard-ui/DynamicIcon` | Lucide icon by name string |
+| ThemeToggle | `@stevederico/skateboard-ui/ThemeToggle` | Dark/light mode toggle button |
 | Sheet | `@stevederico/skateboard-ui/Sheet` | Slide-out panel |
-| UpgradeSheet | `@stevederico/skateboard-ui/UpgradeSheet` | Premium upgrade UI |
+| UpgradeSheet | `@stevederico/skateboard-ui/UpgradeSheet` | Premium upgrade drawer |
 | ErrorBoundary | `@stevederico/skateboard-ui/ErrorBoundary` | Error boundary wrapper |
 
 ### View Components
 
 | Component | Import | Description |
 |-----------|--------|-------------|
-| LandingView | `@stevederico/skateboard-ui/LandingView` | Landing page |
-| SignInView | `@stevederico/skateboard-ui/SignInView` | Sign in form |
-| SignUpView | `@stevederico/skateboard-ui/SignUpView` | Sign up form |
-| SignOutView | `@stevederico/skateboard-ui/SignOutView` | Sign out handler |
-| SettingsView | `@stevederico/skateboard-ui/SettingsView` | User settings |
-| PaymentView | `@stevederico/skateboard-ui/PaymentView` | Stripe payment |
-| TextView | `@stevederico/skateboard-ui/TextView` | Legal pages |
+| LandingView | `@stevederico/skateboard-ui/LandingView` | Landing page with hero, features, pricing |
+| LandingViewSimple | `@stevederico/skateboard-ui/LandingViewSimple` | Minimal landing page |
+| SignInView | `@stevederico/skateboard-ui/SignInView` | Sign in form with Card layout |
+| SignUpView | `@stevederico/skateboard-ui/SignUpView` | Sign up form with password validation |
+| SignOutView | `@stevederico/skateboard-ui/SignOutView` | Sign out handler with redirect |
+| SettingsView | `@stevederico/skateboard-ui/SettingsView` | User settings, billing, theme |
+| PaymentView | `@stevederico/skateboard-ui/PaymentView` | Stripe payment redirect handler |
+| TextView | `@stevederico/skateboard-ui/TextView` | Legal document viewer with placeholder replacement |
 | NotFound | `@stevederico/skateboard-ui/NotFound` | 404 page |
 
-### Auth Overlay (Lazy Authentication)
+### Auth Components
 
 | Export | Import | Description |
 |--------|--------|-------------|
 | AuthOverlay | `@stevederico/skateboard-ui/AuthOverlay` | Modal sign-in/sign-up dialog |
 | useAuthGate | `@stevederico/skateboard-ui/useAuthGate` | Hook to gate actions behind auth |
 
-### Enhanced Components (New in v1.3.0)
+### State & Utilities
 
-| Component | Import | Description |
-|-----------|--------|-------------|
-| Toast | `@stevederico/skateboard-ui/Toast` | Toast notifications (Sonner) |
-| SkeletonLoader | `@stevederico/skateboard-ui/SkeletonLoader` | Loading state patterns |
+| Export | Import | Description |
+|--------|--------|-------------|
+| Context | `@stevederico/skateboard-ui/Context` | App state provider and accessor |
+| Utilities | `@stevederico/skateboard-ui/Utilities` | API, auth, formatting, and UI utilities |
+| App | `@stevederico/skateboard-ui/App` | createSkateboardApp bootstrap function |
+| ProtectedRoute | `@stevederico/skateboard-ui/ProtectedRoute` | Route guard with server validation |
 
-**Font System:** Geist font family loaded automatically for improved typography.
+## Component Details
 
-### Font System
+### Sidebar
 
-Geist font family is loaded via npm package in `App.jsx`:
-```jsx
-import 'geist/font/sans/style.css';
-import 'geist/font/mono/style.css';
-```
-
-Applied in `styles.css`:
-- Sans: `font-family: 'Geist'` (body)
-- Mono: `font-family: 'Geist Mono'` (code, pre, kbd elements)
-
-### Toast Notifications
-
-Import from sonner:
-```jsx
-import { toast } from 'sonner';
-
-// Success
-toast.success('Changes saved!');
-
-// Error
-toast.error('Failed to save');
-
-// Loading
-toast.loading('Saving...');
-
-// Info
-toast.info('New feature available');
-
-// Warning
-toast.warning('This action cannot be undone');
-
-// Promise-based
-toast.promise(
-  fetch('/api/data'),
-  {
-    loading: 'Loading...',
-    success: 'Data loaded!',
-    error: 'Failed to load'
-  }
-);
-```
-
-### Skeleton Loaders
-
-Import from SkeletonLoader:
-```jsx
-import { CardSkeleton, TableSkeleton, AvatarSkeleton, FormSkeleton } from '@stevederico/skateboard-ui/SkeletonLoader';
-
-// Card skeleton
-<CardSkeleton />
-
-// Table skeleton with custom rows
-<TableSkeleton rows={10} />
-
-// Avatar skeleton
-<AvatarSkeleton />
-
-// Form skeleton
-<FormSkeleton />
-```
-
-### Avatar
-
-```jsx
-import { Avatar, AvatarFallback, AvatarImage } from '@stevederico/skateboard-ui/shadcn/ui/avatar';
-
-<Avatar size="lg">
-  <AvatarImage src={user.avatar} alt={user.name} />
-  <AvatarFallback>JD</AvatarFallback>
-</Avatar>
-
-// Sizes: sm, default, lg
-```
-
-### Badge
-
-```jsx
-import { Badge } from '@stevederico/skateboard-ui/shadcn/ui/badge';
-
-<Badge variant="default">Pro</Badge>
-<Badge variant="secondary">Beta</Badge>
-<Badge variant="destructive">Expired</Badge>
-<Badge variant="outline">New</Badge>
-```
-
-### Tooltip
-
-```jsx
-import { Tooltip, TooltipContent, TooltipTrigger } from '@stevederico/skateboard-ui/shadcn/ui/tooltip';
-
-<Tooltip>
-  <TooltipTrigger asChild>
-    <button>Help</button>
-  </TooltipTrigger>
-  <TooltipContent side="right">
-    Click to learn more
-  </TooltipContent>
-</Tooltip>
-
-// Sides: top, right, bottom, left
-```
-
-### Alert Dialog
-
-```jsx
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@stevederico/skateboard-ui/shadcn/ui/alert-dialog';
-
-<AlertDialog>
-  <AlertDialogTrigger asChild>
-    <button>Delete Account</button>
-  </AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
-```
-
-### Checkbox
-
-```jsx
-import { Checkbox } from '@stevederico/skateboard-ui/shadcn/ui/checkbox';
-
-const [checked, setChecked] = useState(false);
-
-<div className="flex items-center gap-2">
-  <Checkbox
-    id="terms"
-    checked={checked}
-    onCheckedChange={setChecked}
-  />
-  <label htmlFor="terms">Accept terms</label>
-</div>
-```
-
-### Switch
-
-```jsx
-import { Switch } from '@stevederico/skateboard-ui/shadcn/ui/switch';
-
-const [enabled, setEnabled] = useState(false);
-
-<div className="flex items-center gap-2">
-  <Switch
-    id="notifications"
-    checked={enabled}
-    onCheckedChange={setEnabled}
-  />
-  <label htmlFor="notifications">Enable notifications</label>
-</div>
-```
-
-### Select
-
-```jsx
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@stevederico/skateboard-ui/shadcn/ui/select';
-
-<Select value={value} onValueChange={setValue}>
-  <SelectTrigger>
-    <SelectValue placeholder="Select option" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="option1">Option 1</SelectItem>
-    <SelectItem value="option2">Option 2</SelectItem>
-  </SelectContent>
-</Select>
-```
-
-### Textarea
-
-```jsx
-import { Textarea } from '@stevederico/skateboard-ui/shadcn/ui/textarea';
-
-<Textarea
-  placeholder="Enter your message"
-  value={message}
-  onChange={(e) => setMessage(e.target.value)}
-/>
-```
-
-### Alert
-
-```jsx
-import { Alert, AlertDescription, AlertTitle } from '@stevederico/skateboard-ui/shadcn/ui/alert';
-
-<Alert>
-  <AlertTitle>Heads up!</AlertTitle>
-  <AlertDescription>
-    Your subscription expires in 3 days.
-  </AlertDescription>
-</Alert>
-```
-
-### Progress
-
-```jsx
-import { Progress } from '@stevederico/skateboard-ui/shadcn/ui/progress';
-
-<Progress value={66} className="w-full" />
-```
-
-### Dropdown Menu
-
-```jsx
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@stevederico/skateboard-ui/shadcn/ui/dropdown-menu';
-
-<DropdownMenu>
-  <DropdownMenuTrigger>Profile</DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem>Settings</DropdownMenuItem>
-    <DropdownMenuItem>Billing</DropdownMenuItem>
-    <DropdownMenuItem>Sign Out</DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
-```
-
-### Dark Mode Support
-
-All components support dark mode automatically via the `next-themes` provider. Colors are defined in `styles.css` using CSS variables that adapt to the theme.
-
-### Component Customization
-
-All components use Tailwind utility classes and can be customized via the `className` prop:
-
-```jsx
-<Badge className="text-lg px-4 py-2" variant="default">
-  Custom Badge
-</Badge>
-```
-
-### shadcn/ui Components
-
-51 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
+Desktop navigation sidebar with collapsible icon mode, user dropdown, and settings link.
 
 ```javascript
-import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button'
-import { Card } from '@stevederico/skateboard-ui/shadcn/ui/card'
-import { Input } from '@stevederico/skateboard-ui/shadcn/ui/input'
-import { Dialog } from '@stevederico/skateboard-ui/shadcn/ui/dialog'
-import { Avatar } from '@stevederico/skateboard-ui/shadcn/ui/avatar'
-import { Badge } from '@stevederico/skateboard-ui/shadcn/ui/badge'
-import { Tooltip } from '@stevederico/skateboard-ui/shadcn/ui/tooltip'
-import { AlertDialog } from '@stevederico/skateboard-ui/shadcn/ui/alert-dialog'
+import Sidebar from '@stevederico/skateboard-ui/Sidebar';
+
+// Used internally by Layout. Renders automatically based on constants.
 ```
 
-## Usage Examples
+**Reads from constants:**
+- `pages` — Navigation items rendered as sidebar menu buttons
+- `appName` — Displayed in sidebar header
+- `appIcon` — Icon in sidebar header
+- `hideSidebarHeader` — Hides the header when `true`
+
+**Features:**
+- Collapsible to icon-only mode via rail
+- Active page highlighting based on current route
+- Tooltip labels when collapsed
+- Footer with Settings button and user dropdown (account, billing, notifications, sign out)
 
 ### Header
 
@@ -753,21 +610,84 @@ import Header from '@stevederico/skateboard-ui/Header';
   title="Dashboard"
   buttonTitle="Add"
   onButtonTitleClick={() => console.log('clicked')}
-/>
+  buttonClass="bg-app text-white"
+  className="sticky top-0"
+>
+  {/* Optional: custom right-side content */}
+</Header>
 ```
 
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| title | string | required | Header title |
+| buttonTitle | string | — | Action button text (omit to hide) |
+| onButtonTitleClick | function | — | Button click handler |
+| buttonClass | string | — | Additional button CSS classes |
+| className | string | — | Additional header CSS classes |
+| children | ReactNode | — | Custom right-side content |
+
 ### DynamicIcon
+
+Renders a Lucide icon by name string. Accepts kebab-case, snake_case, or PascalCase.
 
 ```javascript
 import DynamicIcon from '@stevederico/skateboard-ui/DynamicIcon';
 
 <DynamicIcon name="home" size={24} />
-<DynamicIcon name="settings" size={20} className="text-muted" />
+<DynamicIcon name="arrow-right" size={20} color="red" />
+<DynamicIcon name="settings" className="text-muted-foreground" />
 ```
 
-Icons from [lucide-react](https://lucide.dev/icons/).
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| name | string | required | Icon name (e.g. "home", "arrow-right", "Settings") |
+| size | number | 24 | Icon size in pixels |
+| color | string | 'currentColor' | Stroke color |
+| strokeWidth | number | 2 | Stroke width |
+| className | string | — | Additional CSS classes |
+
+Icons from [lucide-react](https://lucide.dev/icons/). Returns null if icon name not found.
+
+### ThemeToggle
+
+```javascript
+import ThemeToggle from '@stevederico/skateboard-ui/ThemeToggle';
+
+<ThemeToggle />
+<ThemeToggle variant="landing" iconSize={18} />
+```
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | "" | Additional CSS classes |
+| iconSize | number | 16 | Icon size in pixels |
+| variant | string | "settings" | "settings" (ghost) or "landing" (outline) |
+
+### TabBar
+
+Mobile bottom navigation bar. Hidden on `md+` screens. Renders pages from `constants.pages` plus a Settings link.
+
+```javascript
+import TabBar from '@stevederico/skateboard-ui/TabBar';
+
+// Used internally by Layout. Renders automatically.
+```
+
+**Features:**
+- Fixed bottom position on mobile
+- Active page highlighting with bold stroke
+- Text labels under each icon
+- Settings link appended automatically
 
 ### UpgradeSheet
+
+Drawer component for premium upgrade prompts. Controlled via ref.
 
 ```javascript
 import { useRef } from 'react';
@@ -788,7 +708,48 @@ function MyComponent() {
 }
 ```
 
-### Context
+**Ref Methods:** `show()`, `open()`, `hide()`, `close()`, `toggle()`
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| userEmail | string | User's email for Stripe checkout |
+
+**Reads from constants:** `stripeProducts[0]` (title, price, features)
+
+### TextView
+
+Renders legal documents with placeholder replacement.
+
+```javascript
+import TextView from '@stevederico/skateboard-ui/TextView';
+
+<TextView details={constants.termsOfService} />
+```
+
+**Props:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| details | string | Text content with optional placeholders |
+| className | string | Additional CSS classes |
+
+**Placeholders:** `_COMPANY_` → companyName, `_WEBSITE_` → companyWebsite, `_EMAIL_` → companyEmail
+
+### ErrorBoundary
+
+Catches render errors, unhandled promise rejections, and global errors. Shows an error card with retry options.
+
+```javascript
+import ErrorBoundary from '@stevederico/skateboard-ui/ErrorBoundary';
+
+<ErrorBoundary>
+  <App />
+</ErrorBoundary>
+```
+
+## Context (State Management)
 
 ```javascript
 import { getState } from '@stevederico/skateboard-ui/Context';
@@ -796,24 +757,106 @@ import { getState } from '@stevederico/skateboard-ui/Context';
 function MyComponent() {
   const { state, dispatch } = getState();
 
-  // Access user
+  // Access state
   const user = state.user;
+  const constants = state.constants;
 
-  // Update user
-  dispatch({ type: 'SET_USER', payload: newUser });
-
-  // Sign out
+  // Dispatch actions
+  dispatch({ type: 'SET_USER', payload: userData });
   dispatch({ type: 'CLEAR_USER' });
 }
 ```
 
+### State Shape
+
+```javascript
+{
+  user: {
+    id: string,
+    email: string,
+    name: string,
+    subscription: {
+      status: 'active' | 'canceled' | null,
+      expires: number,      // Unix timestamp (seconds)
+      stripeID: string
+    }
+  } | null,
+
+  ui: {
+    sidebarVisible: boolean,
+    tabBarVisible: boolean
+  },
+
+  authOverlay: {
+    visible: boolean,
+    pendingCallback: Function | null
+  },
+
+  constants: Object  // App configuration
+}
+```
+
+### Available Actions
+
+| Action | Payload | Description |
+|--------|---------|-------------|
+| `SET_USER` | user object | Set authenticated user |
+| `CLEAR_USER` | — | Clear user (logout) |
+| `SET_SIDEBAR_VISIBLE` | boolean | Show/hide sidebar |
+| `SET_TABBAR_VISIBLE` | boolean | Show/hide tab bar |
+| `SET_UI_VISIBILITY` | `{ sidebar?, tabBar? }` | Batch update UI visibility |
+| `SHOW_AUTH_OVERLAY` | callback or null | Show auth dialog, optionally queue callback |
+| `HIDE_AUTH_OVERLAY` | — | Hide auth dialog |
+| `AUTH_OVERLAY_SUCCESS` | — | Auth success, run pending callback and close |
+
+### localStorage Keys
+
+All keys are namespaced with `{appName}_`:
+
+| Key | Description |
+|-----|-------------|
+| `{appName}_user` | Persisted user object |
+| `{appName}_csrf` | CSRF token (fallback, primary is cookie) |
+| `{appName}_beforeCheckoutURL` | Redirect URL after Stripe checkout |
+| `{appName}_beforeManageURL` | Redirect URL after Stripe portal |
+
 ## Utilities
+
+```javascript
+import {
+  apiRequest,
+  apiRequestWithParams,
+  isAuthenticated,
+  getCurrentUser,
+  isSubscriber,
+  getCSRFToken,
+  getBackendURL,
+  getAppKey,
+  getConstants,
+  getRemainingUsage,
+  trackUsage,
+  showCheckout,
+  showManage,
+  showUpgradeSheet,
+  showSidebar,
+  hideSidebar,
+  showTabBar,
+  hideTabBar,
+  setSidebarVisible,
+  setTabBarVisible,
+  setUIVisibility,
+  timestampToString,
+  useListData,
+  useForm,
+  useAppSetup,
+  isAppMode,
+  validateConstants,
+} from '@stevederico/skateboard-ui/Utilities';
+```
 
 ### API Requests
 
 ```javascript
-import { apiRequest } from '@stevederico/skateboard-ui/Utilities';
-
 // GET
 const data = await apiRequest('/deals');
 
@@ -822,12 +865,64 @@ const newDeal = await apiRequest('/deals', {
   method: 'POST',
   body: JSON.stringify({ name: 'New Deal', amount: 5000 })
 });
+
+// GET with query params
+const filtered = await apiRequestWithParams('/deals', { status: 'active', limit: 10 });
 ```
 
-Features:
-- Auto-includes credentials
-- Auto-adds CSRF token for mutations
-- Auto-redirects to /signout on 401
+**Features:**
+- Auto-includes credentials (cookies)
+- Auto-adds `X-CSRF-Token` header for POST, PUT, DELETE, PATCH
+- Auto-redirects to `/signout` on 401 (unless authOverlay mode)
+- Auto-retries once on CSRF 403 failure
+
+### Auth Utilities
+
+```javascript
+// Client-side check (fast, no network)
+if (isAuthenticated()) {
+  const user = getCurrentUser();
+}
+
+// Server-side validation
+const user = await getCurrentUser();  // Calls GET /me
+
+// Check subscription
+const subscribed = await isSubscriber();  // Calls GET /isSubscriber
+
+// Get CSRF token (from cookie, falls back to localStorage)
+const token = getCSRFToken();
+
+// Get backend URL (devBackendURL in dev, backendURL in production)
+const url = getBackendURL();
+
+// Generate app-namespaced localStorage key
+const key = getAppKey('user');  // → "{appName}_user"
+```
+
+### Usage Tracking
+
+```javascript
+// Check remaining usage for an action
+const usage = await getRemainingUsage('messages');
+// { remaining: 15, total: 20, isSubscriber: false }
+
+// Track usage (decrements remaining)
+const updated = await trackUsage('messages');
+```
+
+### Stripe Payments
+
+```javascript
+// Redirect to Stripe checkout
+showCheckout('user@example.com', 0);  // productIndex defaults to 0
+
+// Open Stripe billing portal
+showManage('cus_abc123');
+
+// Show upgrade sheet if not subscriber
+showUpgradeSheet(upgradeSheetRef);
+```
 
 ### Data Fetching Hook
 
@@ -842,85 +937,83 @@ function DealsList() {
 
   return data.map(deal => <DealCard key={deal.id} {...deal} />);
 }
+
+// With custom sort
+const { data } = useListData('/deals', (a, b) => b.amount - a.amount);
 ```
 
-### Usage Tracking
+### Form Hook
 
 ```javascript
-import { getRemainingUsage, trackUsage, showUpgradeSheet } from '@stevederico/skateboard-ui/Utilities';
+import { useForm } from '@stevederico/skateboard-ui/Utilities';
 
-// Check remaining usage
-const usage = await getRemainingUsage('messages');
-// { remaining: 15, total: 20, isSubscriber: false }
+function ContactForm() {
+  const { values, handleChange, handleSubmit, reset, submitting, error } = useForm(
+    { name: '', email: '', message: '' },
+    async (formValues) => {
+      await apiRequest('/contact', {
+        method: 'POST',
+        body: JSON.stringify(formValues)
+      });
+    }
+  );
 
-// Track usage (decrements remaining)
-const updated = await trackUsage('messages');
-
-// Show upgrade prompt
-showUpgradeSheet(upgradeSheetRef);
-```
-
-### Auth Utilities
-
-```javascript
-import { isAuthenticated, getCurrentUser } from '@stevederico/skateboard-ui/Utilities';
-
-if (isAuthenticated()) {
-  const user = getCurrentUser();
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="name" value={values.name} onChange={handleChange} />
+      <input name="email" value={values.email} onChange={handleChange} />
+      <textarea name="message" value={values.message} onChange={handleChange} />
+      <button type="submit" disabled={submitting}>Send</button>
+      {error && <p>{error}</p>}
+    </form>
+  );
 }
 ```
 
-## UI Visibility Control
-
-### Static (constants.json)
-
-```json
-{
-  "hideSidebar": true,
-  "hideTabBar": true
-}
-```
-
-### Programmatic
+### Timestamp Formatting
 
 ```javascript
-import { showSidebar, hideSidebar, showTabBar, hideTabBar, setUIVisibility } from '@stevederico/skateboard-ui/Utilities';
+import { timestampToString } from '@stevederico/skateboard-ui/Utilities';
 
+timestampToString(1706000000, 'ago');           // "2 hours ago"
+timestampToString(1706000000, 'DOB');           // "Jan 23, 2024"
+timestampToString(1706000000, 'DOBT');          // "Jan 23, 2024 3:00 PM"
+timestampToString(1706000000, 'ISO');           // "2024-01-23"
+timestampToString(1706000000, 'day-month-time');// "23 Jan 3:00 PM"
+timestampToString(1706000000, 'day');           // "Monday"
+timestampToString(1706000000, 'time');          // "3:00 PM"
+timestampToString(1706000000, 'full');          // "Monday, Jan 23, 2024 3:00 PM"
+```
+
+### UI Visibility Control
+
+```javascript
+// Programmatic control
 hideSidebar();
 showSidebar();
 hideTabBar();
 showTabBar();
 
+// Set directly
+setSidebarVisible(false);
+setTabBarVisible(true);
+
 // Batch control
 setUIVisibility({ sidebar: false, tabBar: false });
 ```
 
-## Styling
+### Other Utilities
 
-Import base theme and override as needed:
+```javascript
+// Check if running inside native WebKit wrapper (iOS/macOS app)
+if (isAppMode()) { /* native context */ }
 
-```css
-/* styles.css */
-@import "@stevederico/skateboard-ui/styles.css";
+// Validate constants object (called internally by createSkateboardApp)
+validateConstants(constants);
 
-@source '../../node_modules/@stevederico/skateboard-ui';
-
-@theme {
-  --color-app: var(--color-purple-500);
-}
+// Get constants object
+const constants = getConstants();
 ```
-
-### Theme Variables
-
-| Variable | Description |
-|----------|-------------|
-| `--color-app` | Primary brand color |
-| `--background` | Page background |
-| `--foreground` | Text color |
-| `--accent` | Secondary backgrounds |
-| `--radius` | Border radius |
-
-Dark mode is automatic via CSS custom properties.
 
 ## Lazy Authentication (Auth Overlay)
 
@@ -958,7 +1051,7 @@ function SaveButton() {
 }
 ```
 
-### How it works
+### How It Works
 
 1. User clicks a protected action (Save, Like, Post, etc.)
 2. `requireAuth()` checks if user is signed in
@@ -969,13 +1062,124 @@ function SaveButton() {
 
 The dialog supports toggling between sign-in and sign-up modes inline, and can be dismissed with the X button (cancels the action).
 
-## Protected Routes
+## Toast Notifications
+
+Toasts are provided by [Sonner](https://sonner.emilkowal.dev/) and rendered automatically by `createSkateboardApp`.
 
 ```javascript
-import ProtectedRoute from '@stevederico/skateboard-ui/ProtectedRoute';
+import { toast } from 'sonner';
+
+toast.success('Changes saved!');
+toast.error('Failed to save');
+toast.loading('Saving...');
+toast.info('New feature available');
+toast.warning('This action cannot be undone');
+
+// Promise-based
+toast.promise(
+  fetch('/api/data'),
+  {
+    loading: 'Loading...',
+    success: 'Data loaded!',
+    error: 'Failed to load'
+  }
+);
 ```
 
-Used internally by createSkateboardApp. Redirects to /signin if not authenticated.
+## Styling
+
+Import base theme and override as needed:
+
+```css
+/* styles.css */
+@import "@stevederico/skateboard-ui/styles.css";
+
+@source '../../node_modules/@stevederico/skateboard-ui';
+
+@theme {
+  --color-app: var(--color-purple-500);
+}
+```
+
+### Theme Variables
+
+| Variable | Description |
+|----------|-------------|
+| `--color-app` | Primary brand color (used for app icon backgrounds, gradient buttons) |
+| `--background` | Page background |
+| `--foreground` | Text color |
+| `--accent` | Secondary backgrounds |
+| `--radius` | Border radius |
+
+Dark mode is automatic via CSS custom properties and `next-themes`.
+
+## shadcn/ui Components
+
+51 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
+
+```javascript
+import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '@stevederico/skateboard-ui/shadcn/ui/card';
+import { Input } from '@stevederico/skateboard-ui/shadcn/ui/input';
+import { Label } from '@stevederico/skateboard-ui/shadcn/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@stevederico/skateboard-ui/shadcn/ui/dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@stevederico/skateboard-ui/shadcn/ui/avatar';
+import { Badge } from '@stevederico/skateboard-ui/shadcn/ui/badge';
+import { Separator } from '@stevederico/skateboard-ui/shadcn/ui/separator';
+import { ScrollArea } from '@stevederico/skateboard-ui/shadcn/ui/scroll-area';
+import { Skeleton } from '@stevederico/skateboard-ui/shadcn/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@stevederico/skateboard-ui/shadcn/ui/alert';
+import { Progress } from '@stevederico/skateboard-ui/shadcn/ui/progress';
+import { Switch } from '@stevederico/skateboard-ui/shadcn/ui/switch';
+import { Checkbox } from '@stevederico/skateboard-ui/shadcn/ui/checkbox';
+import { Textarea } from '@stevederico/skateboard-ui/shadcn/ui/textarea';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@stevederico/skateboard-ui/shadcn/ui/tooltip';
+```
+
+```javascript
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from '@stevederico/skateboard-ui/shadcn/ui/select';
+
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+} from '@stevederico/skateboard-ui/shadcn/ui/dropdown-menu';
+
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger,
+} from '@stevederico/skateboard-ui/shadcn/ui/alert-dialog';
+
+import {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+} from '@stevederico/skateboard-ui/shadcn/ui/accordion';
+
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from '@stevederico/skateboard-ui/shadcn/ui/table';
+
+import {
+  Tabs, TabsContent, TabsList, TabsTrigger,
+} from '@stevederico/skateboard-ui/shadcn/ui/tabs';
+```
+
+### Utilities
+
+```javascript
+// Tailwind className merger
+import { cn } from '@stevederico/skateboard-ui/shadcn/lib/utils';
+
+cn('px-2 py-1', condition && 'bg-red-500', 'px-4');  // Merges without conflicts
+
+// Mobile detection hook (< 768px)
+import { useIsMobile } from '@stevederico/skateboard-ui/shadcn/hooks/use-mobile';
+
+const isMobile = useIsMobile();
+```
+
+All components support dark mode automatically and accept a `className` prop for customization.
 
 ## Dependencies
 
@@ -985,13 +1189,18 @@ Used internally by createSkateboardApp. Redirects to /signin if not authenticate
 - react-router-dom 7.0+
 
 ### Core Dependencies
-- @base-ui/react - Accessible UI primitives
-- TailwindCSS 4.0+ - Utility-first CSS framework
-- geist - Vercel's Geist font family (sans & mono)
-- lucide-react - Icon library
-- class-variance-authority - Type-safe variant styling
-- clsx & tailwind-merge - className utilities
-- sonner - Toast notifications
+- @base-ui/react — Accessible UI primitives
+- lucide-react — Icon library
+- next-themes — Theme management
+- class-variance-authority — Variant styling
+- clsx & tailwind-merge — className utilities
+- sonner — Toast notifications
+- vaul — Drawer primitives
+- cmdk — Command menu
+- embla-carousel-react — Carousel
+- react-day-picker — Calendar
+- react-resizable-panels — Resizable panels
+- recharts — Charts
 
 ## Repository
 

@@ -4,7 +4,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from "./shadcn/ui/drawer"
+} from "../shadcn/ui/drawer"
 
 /**
  * Bottom sheet (drawer) component with imperative open/close API.

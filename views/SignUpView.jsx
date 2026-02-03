@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { cn } from "./shadcn/lib/utils"
-import { Button } from "./shadcn/ui/button"
-import { Input } from "./shadcn/ui/input"
-import { Label } from "./shadcn/ui/label"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./shadcn/ui/card"
-import { Alert, AlertDescription } from "./shadcn/ui/alert"
-import DynamicIcon from './DynamicIcon';
+import { cn } from "../shadcn/lib/utils"
+import { Button } from "../shadcn/ui/button"
+import { Input } from "../shadcn/ui/input"
+import { Label } from "../shadcn/ui/label"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../shadcn/ui/card"
+import { Alert, AlertDescription } from "../shadcn/ui/alert"
+import DynamicIcon from '../core/DynamicIcon';
 import { useNavigate } from 'react-router-dom';
-import { getState } from "./Context.jsx";
-import { getBackendURL } from './Utilities'
+import { getState } from "../core/Context.jsx";
+import { getBackendURL } from '../core/Utilities'
 
 /**
  * Full-page sign-up form.
