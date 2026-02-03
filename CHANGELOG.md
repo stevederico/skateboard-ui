@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.2.2
+
+  Add cursor-pointer to interactive components
+
 2.2.1
 
   Fix Sidebar import path
