@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { isAuthenticated, apiRequest, getAppKey, getConstants } from './Utilities';
+import { Spinner } from './shadcn/ui/spinner.jsx';
 
 /**
  * Route guard that validates authentication before rendering child routes.
@@ -52,7 +53,11 @@ const ProtectedRoute = () => {
     }, []);
 
     if (status === 'checking') {
-        return <div className="min-h-screen bg-background" />;
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-background">
+                <Spinner className="size-6" />
+            </div>
+        );
     }
 
     return status === 'valid' ? <Outlet /> : <Navigate to="/signin" replace />;

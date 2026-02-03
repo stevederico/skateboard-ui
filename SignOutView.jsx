@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getBackendURL, getCSRFToken } from './Utilities';
+import { Spinner } from './shadcn/ui/spinner.jsx';
 
 /**
  * Sign-out handler page.
@@ -22,7 +23,6 @@ function SignOutView() {
     const signOut = async () => {
       try {
         const csrfToken = getCSRFToken();
-        // Call backend signout endpoint
         await fetch(`${getBackendURL()}/signout`, {
           method: 'POST',
           credentials: 'include',
@@ -34,8 +34,6 @@ function SignOutView() {
       } catch (error) {
         console.error('Sign out error:', error);
       } finally {
-        // CSRF cookie is cleared by backend, no localStorage cleanup needed
-        // Redirect to sign in
         navigate('/signin', { replace: true });
       }
     };
@@ -44,9 +42,10 @@ function SignOutView() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="text-xl">Signing out...</div>
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner className="size-6" />
+        <p className="text-sm text-muted-foreground">Signing out...</p>
       </div>
     </div>
   );

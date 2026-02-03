@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "./shadcn/ui/dropdown-menu.jsx";
 import {
-  Sidebar,
+  Sidebar as SidebarRoot,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -39,11 +39,11 @@ import { ChevronsUpDown, LogOut, Settings, CreditCard, Bell } from "lucide-react
  * @returns {JSX.Element} Sidebar navigation
  *
  * @example
- * import AppSidebar from '@stevederico/skateboard-ui/AppSidebar';
+ * import Sidebar from '@stevederico/skateboard-ui/Sidebar';
  *
- * <AppSidebar />
+ * <Sidebar />
  */
-export default function AppSidebar({ variant = "inset", ...props }) {
+export default function Sidebar({ variant = "inset", ...props }) {
   const { open } = useSidebar();
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,7 +59,7 @@ export default function AppSidebar({ variant = "inset", ...props }) {
       : "U";
 
   return (
-    <Sidebar collapsible="icon" variant={variant} {...props}>
+    <SidebarRoot collapsible="icon" variant={variant} {...props}>
       {/* Header: App icon + name */}
       {!constants.hideSidebarHeader && (
         <SidebarHeader>
@@ -216,6 +216,6 @@ export default function AppSidebar({ variant = "inset", ...props }) {
       </SidebarFooter>
 
       <SidebarRail />
-    </Sidebar>
+    </SidebarRoot>
   );
 }

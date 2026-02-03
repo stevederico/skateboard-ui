@@ -1,4 +1,5 @@
 import { cn } from './shadcn/lib/utils.js';
+import { Card, CardHeader, CardTitle, CardDescription } from './shadcn/ui/card.jsx';
 
 /**
  * 404 page displayed for unmatched routes.
@@ -14,9 +15,13 @@ import { cn } from './shadcn/lib/utils.js';
  */
 export default function NotFound({ className, ...props }) {
   return (
-    <div className={cn("w-full py-6", className)} {...props}>
-      <h1 className="text-center font-bold leading-tight my-6 text-4xl">Page Not Found</h1>
-      <p className="text-center font-light leading-tight my-6 text-foreground text-xl">Are you sure you have the right URL?</p>
+    <div className={cn("flex items-center justify-center min-h-screen bg-background p-4", className)} {...props}>
+      <Card className="max-w-md w-full text-center">
+        <CardHeader>
+          <CardTitle className="text-4xl">404</CardTitle>
+          <CardDescription>Page not found. Are you sure you have the right URL?</CardDescription>
+        </CardHeader>
+      </Card>
     </div>
   );
 }

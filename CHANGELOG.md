@@ -1,15 +1,18 @@
 # CHANGELOG
 
-2.0.2
+2.1.0
 
-  Inline ThemeToggle in views
-  Replace Toast with Sonner direct
-  Remove SkeletonLoader component
-  Add TabBar labels and separator
-  Add TextView Card layout
-  Simplify ThemeToggle variants
-  Remove Toast export
-  Remove SkeletonLoader export
+  Rename AppSidebar to Sidebar
+  Simplify LandingView layout
+  Add form Labels to views
+  Add AuthOverlay dialog header
+  Update SettingsView card layout
+  Add DynamicIcon className support
+  Remove Layout theme logic
+  Add sidebar Settings button
+  Consolidate docs into README
+  Remove USAGE.md
+  Remove AUTHENTICATION.md
 
 2.0.1
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Dialog, DialogContent } from './shadcn/ui/dialog.jsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './shadcn/ui/dialog.jsx';
 import { Input } from './shadcn/ui/input.jsx';
+import { Label } from './shadcn/ui/label.jsx';
 import { Button } from './shadcn/ui/button.jsx';
 import { Alert, AlertDescription } from './shadcn/ui/alert.jsx';
 import DynamicIcon from './DynamicIcon.jsx';
@@ -50,7 +51,6 @@ export default function AuthOverlay() {
   // Focus first input when dialog opens or mode changes
   useEffect(() => {
     if (visible && firstInputRef.current) {
-      // Small delay to let dialog animation finish
       const t = setTimeout(() => firstInputRef.current?.focus(), 100);
       return () => clearTimeout(t);
     }
@@ -128,149 +128,145 @@ export default function AuthOverlay() {
     }
   }
 
-  const inputClass = "py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary";
-  const inputStyle = { fontSize: '20px' };
-
   return (
     <Dialog open={visible} onOpenChange={(open) => { if (!open) handleClose(); }}>
-      <DialogContent className="sm:max-w-lg p-6 overflow-auto max-h-[90vh]">
-        <div className="flex flex-col gap-6">
-          {/* App branding */}
-          <div className="flex flex-row items-center justify-center">
-            <div className="bg-app dark:bg-app dark:border dark:border-gray-700 rounded-2xl flex aspect-square size-12 items-center justify-center">
-              <DynamicIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
+      <DialogContent>
+        {/* Branding */}
+        <DialogHeader className="items-center text-center">
+          <div className="flex items-center justify-center gap-3">
+            <div className="bg-app rounded-2xl flex aspect-square size-10 items-center justify-center">
+              <DynamicIcon name={constants.appIcon} size={20} color="white" strokeWidth={2} />
             </div>
-            <div className="font-bold ml-3 text-3xl text-foreground">{constants.appName}</div>
+            <span className="text-2xl font-bold">{constants.appName}</span>
           </div>
+          <DialogTitle>{mode === 'signin' ? 'Welcome back' : 'Create an account'}</DialogTitle>
+          <DialogDescription>
+            {mode === 'signin' ? 'Sign in to your account' : 'Enter your details to get started'}
+          </DialogDescription>
+        </DialogHeader>
 
-          {errorMessage && (
-            <Alert variant="destructive">
-              <AlertDescription className="text-center">{errorMessage}</AlertDescription>
-            </Alert>
-          )}
+        {errorMessage && (
+          <Alert variant="destructive">
+            <AlertDescription className="text-center">{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
-          {mode === 'signin' ? (
-            /* Sign In Form */
-            <form onSubmit={handleSignIn} className="flex flex-col gap-4">
+        {mode === 'signin' ? (
+          <form onSubmit={handleSignIn} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="overlay-email">Email</Label>
               <Input
                 ref={firstInputRef}
                 id="overlay-email"
                 type="email"
-                placeholder="Email"
-                className={inputClass}
-                style={inputStyle}
+                placeholder="john@example.com"
                 required
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrorMessage(''); }}
               />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="overlay-password">Password</Label>
               <Input
                 id="overlay-password"
                 type="password"
-                placeholder="Password"
-                className={inputClass}
-                style={inputStyle}
+                placeholder="••••••••"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+            <Button
+              type="submit"
+              variant="gradient"
+              size="cta"
+              className="w-full"
+              disabled={isSubmitting}
+            >
+              <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
+                <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
+                {isSubmitting ? 'Signing in...' : 'Sign In'}
+              </span>
+            </Button>
+            <div className="text-center text-sm">
+              <span className="text-muted-foreground">Don't have an account?</span>{' '}
               <Button
-                type="submit"
-                variant="gradient"
-                size="cta"
-                className="w-full"
-                disabled={isSubmitting}
+                variant="link"
+                className="p-0 h-auto"
+                onClick={() => { setMode('signup'); setErrorMessage(''); }}
               >
-                <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
-                  <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
-                  {isSubmitting ? 'Signing in...' : 'Sign In'}
-                </span>
+                Sign Up
               </Button>
-              <div className="mt-2 text-center text-base">
-                <span className="text-muted-foreground italic">Don't have an account?</span>{' '}
-                <Button
-                  variant="link"
-                  className="p-0 text-base h-auto"
-                  onClick={() => { setMode('signup'); setErrorMessage(''); }}
-                >
-                  Sign Up
-                </Button>
-              </div>
-            </form>
-          ) : (
-            /* Sign Up Form */
-            <form onSubmit={handleSignUp} className="flex flex-col gap-4">
+            </div>
+          </form>
+        ) : (
+          <form onSubmit={handleSignUp} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="overlay-name">Name</Label>
               <Input
                 ref={firstInputRef}
                 id="overlay-name"
-                placeholder="Name"
-                className={inputClass}
-                style={inputStyle}
+                placeholder="John Doe"
                 required
                 value={name}
                 onChange={(e) => { setName(e.target.value); setErrorMessage(''); }}
               />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="overlay-signup-email">Email</Label>
               <Input
                 id="overlay-signup-email"
                 type="email"
-                placeholder="Email"
-                className={inputClass}
-                style={inputStyle}
+                placeholder="john@example.com"
                 required
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrorMessage(''); }}
               />
-              <div className="flex flex-col gap-1">
-                <Input
-                  id="overlay-signup-password"
-                  type="password"
-                  placeholder="Password"
-                  className={inputClass}
-                  style={inputStyle}
-                  required
-                  minLength={6}
-                  maxLength={72}
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }}
-                />
-                <p className="text-xs text-muted-foreground ml-1">Minimum 6 characters</p>
-              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="overlay-signup-password">Password</Label>
+              <Input
+                id="overlay-signup-password"
+                type="password"
+                placeholder="••••••••"
+                required
+                minLength={6}
+                maxLength={72}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }}
+              />
+              <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
+            </div>
+            <Button
+              type="submit"
+              variant="gradient"
+              size="cta"
+              className="w-full"
+              disabled={isSubmitting}
+            >
+              <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
+                <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
+                {isSubmitting ? 'Signing up...' : 'Sign Up'}
+              </span>
+            </Button>
+            <div className="text-center text-sm">
+              <span className="text-muted-foreground">Already have an account?</span>{' '}
               <Button
-                type="submit"
-                variant="gradient"
-                size="cta"
-                className="w-full"
-                disabled={isSubmitting}
+                variant="link"
+                className="p-0 h-auto"
+                onClick={() => { setMode('signin'); setErrorMessage(''); }}
               >
-                <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
-                  <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
-                  {isSubmitting ? 'Signing up...' : 'Sign Up'}
-                </span>
+                Sign In
               </Button>
-              <div className="mt-2 text-center text-base">
-                <span className="text-muted-foreground italic">Already have an account?</span>{' '}
-                <Button
-                  variant="link"
-                  className="p-0 text-base h-auto"
-                  onClick={() => { setMode('signin'); setErrorMessage(''); }}
-                >
-                  Sign In
-                </Button>
-              </div>
-              <div className="mt-2 text-center text-sm text-muted-foreground">
-                By registering you agree to our
-                <a href="/terms" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-foreground">
-                  Terms of Service
-                </a>,
-                <a href="/eula" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-foreground">
-                  EULA
-                </a>,
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-4 whitespace-nowrap text-foreground">
-                  Privacy Policy
-                </a>
-              </div>
-            </form>
-          )}
-        </div>
+            </div>
+            <div className="text-center text-xs text-muted-foreground">
+              By registering you agree to our{" "}
+              <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">Terms of Service</a>,{" "}
+              <a href="/eula" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">EULA</a>,{" "}
+              <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">Privacy Policy</a>
+            </div>
+          </form>
+        )}
       </DialogContent>
     </Dialog>
   );
