@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from './Context.jsx';
 import { getCurrentUser } from './Utilities.js'
+import { Spinner } from './shadcn/ui/spinner.jsx';
 
 // Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
 const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
@@ -106,13 +107,12 @@ export default function PaymentView() {
     return () => clearTimeout(timeoutId);
   }, [navigate, searchParams, fetchUser]);
 
-
-
-
-
   return (
-    <div className="flex items-center justify-center h-screen">
-      <p className="text-lg font-medium"> Redirecting...</p>
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner className="size-6" />
+        <p className="text-sm text-muted-foreground">Redirecting...</p>
+      </div>
     </div>
   );
 }

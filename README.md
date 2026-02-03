@@ -139,15 +139,283 @@ Endpoints are relative to this base URL:
 
 ### Authentication Setup
 
-skateboard-ui uses a hybrid cookie + localStorage authentication system. Your backend must implement specific endpoints and cookie handling.
+skateboard-ui uses a **hybrid cookie + localStorage authentication system** that combines security with performance:
 
-**See [AUTHENTICATION.md](./docs/AUTHENTICATION.md) for complete backend setup requirements.**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Authentication Flow                      │
+└─────────────────────────────────────────────────────────────────┘
 
-Quick overview:
-- Session token stored in HttpOnly cookie for security
-- CSRF token in localStorage for request validation
-- Backend validates cookies on protected endpoints
-- Client-side `isAuthenticated()` checks localStorage for fast validation
+  Frontend                    Backend                   Storage
+  ────────                    ───────                   ───────
+
+1. POST /signin           →  Validate credentials
+   credentials
+                          ←  Set-Cookie: {appName}_token (HttpOnly)
+                          ←  Set-Cookie: csrf_token
+                          ←  Response: { csrfToken, ...user }
+
+2. Extract tokens         →                          localStorage:
+   - CSRF from cookie                                  {appName}_csrf
+   - User from response                                {appName}_user
+
+3. isAuthenticated()      →                          Check localStorage
+   (client-side)                                      (fast, no network)
+
+4. ProtectedRoute         →  GET /me
+   (server validation)       Validate cookies
+                          ←  200 OK or 401 Unauthorized
+
+5. API requests           →  Protected endpoints
+   + cookies (automatic)     Validate {appName}_token
+   + X-CSRF-Token header     Validate CSRF header
+```
+
+#### Cookie-Based Session Management
+- **Session token** stored in `{appName}_token` cookie (HttpOnly, Secure, SameSite=Strict)
+- Automatically sent with every request via browser
+- Cannot be accessed by JavaScript (XSS protection)
+- Backend validates cookie on each protected endpoint
+
+#### localStorage for Client-Side Validation
+- **CSRF token** and **user data** stored in localStorage
+- Enables instant `isAuthenticated()` checks without network calls
+- Used by client-side routing logic (ProtectedRoute initial check)
+- Not used for actual authentication (cookies handle that)
+
+#### CSRF Protection
+- Dual-token system prevents CSRF attacks
+- **CSRF token** sent in `X-CSRF-Token` header with state-changing requests
+- Backend validates header matches stored session CSRF token
+- Separate from session cookie to prevent cookie-based CSRF
+
+#### CSRF Error Handling
+
+The `apiRequest` utility automatically handles CSRF token failures:
+
+1. **Auto-Regeneration**: Backend auto-regenerates tokens after server restart
+2. **Retry Logic**: Frontend automatically retries failed requests once after refreshing the session
+3. **User Experience**: Transparent recovery without forcing sign-out or page refresh
+
+**Error Flow**:
+```
+POST /api/keys → 403 CSRF error
+    ↓
+Fetch /me (triggers backend auto-regeneration)
+    ↓
+Retry POST /api/keys with fresh token
+    ↓
+Success
+```
+
+#### Required Backend Endpoints
+
+##### POST /signup
+Create new user account.
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+```
+
+**Response:**
+- Status: 201 Created
+- Headers:
+  - `Set-Cookie: {appName}_token={sessionToken}; HttpOnly; Secure; SameSite=Strict; Path=/`
+  - `Set-Cookie: csrf_token={csrfToken}; Secure; SameSite=Lax; Path=/`
+- Body:
+```json
+{
+  "csrfToken": "csrf_abc123...",
+  "user": {
+    "id": "user123",
+    "email": "user@example.com",
+    "name": "John Doe"
+  }
+}
+```
+
+##### POST /signin
+Authenticate existing user.
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+```
+
+**Response:**
+- Status: 200 OK
+- Headers: Same as /signup
+- Body: Same as /signup
+
+##### GET /me
+Validate current session and return user data.
+
+**Request:**
+- Headers: Cookies automatically sent by browser
+
+**Response (authenticated):**
+- Status: 200 OK
+- Body:
+```json
+{
+  "user": {
+    "id": "user123",
+    "email": "user@example.com",
+    "name": "John Doe"
+  }
+}
+```
+
+**Response (not authenticated):**
+- Status: 401 Unauthorized
+
+##### POST /signout
+End current session.
+
+**Request:**
+- Headers:
+  - Cookies automatically sent
+  - `X-CSRF-Token: {csrfToken}`
+
+**Response:**
+- Status: 200 OK
+- Headers:
+  - `Set-Cookie: {appName}_token=; Max-Age=0; Path=/` (clear cookie)
+  - `Set-Cookie: csrf_token=; Max-Age=0; Path=/` (clear cookie)
+
+#### Cookie Configuration
+
+**Session Token Cookie:**
+```javascript
+{
+  name: '{appName}_token',
+  httpOnly: true,      // Prevents JavaScript access (XSS protection)
+  secure: true,        // HTTPS only (production)
+  sameSite: 'Strict',  // Strongest CSRF protection
+  path: '/',
+  maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days (configurable)
+}
+```
+
+**CSRF Token Cookie:**
+```javascript
+{
+  name: 'csrf_token',
+  httpOnly: false,     // Must be readable by JavaScript
+  secure: true,        // HTTPS only (production)
+  sameSite: 'Lax',     // Allow top-level navigation
+  path: '/',
+  maxAge: 7 * 24 * 60 * 60 * 1000  // Match session token
+}
+```
+
+#### Protected Endpoints
+All authenticated endpoints must:
+1. Validate `{appName}_token` cookie exists and is valid
+2. For state-changing operations (POST, PUT, DELETE), validate `X-CSRF-Token` header
+3. Return 401 if authentication fails
+4. Return 403 if CSRF validation fails
+
+#### Security Considerations
+
+- **XSS Protection**: Session token is HttpOnly — JavaScript cannot access it
+- **CSRF Protection**: Dual-token pattern prevents cookie-based CSRF attacks
+- **SameSite Policy**: Session token (Strict), CSRF token (Lax)
+- **HTTPS Requirement**: All cookies marked `Secure` in production
+- **localStorage Trade-offs**: Acceptable for CSRF token (cannot authenticate alone), never store session token
+
+#### Example Backend Implementation (Express.js)
+
+```javascript
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import crypto from 'crypto';
+
+const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
+// In-memory session store (use Redis in production)
+const sessions = new Map();
+
+function generateToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function requireAuth(req, res, next) {
+  const sessionToken = req.cookies.myapp_token;
+  const session = sessions.get(sessionToken);
+  if (!session) return res.status(401).json({ error: 'Not authenticated' });
+  req.session = session;
+  next();
+}
+
+function requireCSRF(req, res, next) {
+  const csrfToken = req.headers['x-csrf-token'];
+  if (!req.session || req.session.csrfToken !== csrfToken) {
+    return res.status(403).json({ error: 'Invalid CSRF token' });
+  }
+  next();
+}
+
+app.post('/api/signup', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+
+  const user = await createUser(email, password);
+  const sessionToken = generateToken();
+  const csrfToken = generateToken();
+
+  sessions.set(sessionToken, { userId: user.id, csrfToken, createdAt: Date.now() });
+
+  res.cookie('myapp_token', sessionToken, {
+    httpOnly: true, secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict', maxAge: 7 * 24 * 60 * 60 * 1000
+  });
+  res.cookie('csrf_token', csrfToken, {
+    httpOnly: false, secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000
+  });
+
+  res.status(201).json({ csrfToken, user: { id: user.id, email: user.email, name: user.name } });
+});
+
+app.get('/api/me', requireAuth, async (req, res) => {
+  const user = await getUserById(req.session.userId);
+  res.json({ user: { id: user.id, email: user.email, name: user.name } });
+});
+
+app.post('/api/signout', requireAuth, requireCSRF, (req, res) => {
+  sessions.delete(req.cookies.myapp_token);
+  res.clearCookie('myapp_token');
+  res.clearCookie('csrf_token');
+  res.json({ message: 'Signed out successfully' });
+});
+```
+
+#### Auth Troubleshooting
+
+| Problem | Cause | Fix |
+|---------|-------|-----|
+| "Not authenticated" after signin | Cookies not sent | Verify `credentials: 'include'` in fetch calls |
+| CSRF 403 errors | Token mismatch | Check `X-CSRF-Token` header, verify cookie exists |
+| Cookies not persisting | SameSite/Secure flags | Set `secure: false` in dev, check domain match |
+| `isAuthenticated()` false but cookie exists | localStorage cleared | Re-fetch from `/me` endpoint |
+
+#### No-Login Mode
+
+```javascript
+const constants = { noLogin: true };
+```
+
+Effects: `isAuthenticated()` always returns `true`, ProtectedRoute allows all access.
 
 ## Components
 
@@ -157,7 +425,7 @@ Quick overview:
 |-----------|--------|-------------|
 | Header | `@stevederico/skateboard-ui/Header` | App header with title and action button |
 | Layout | `@stevederico/skateboard-ui/Layout` | Page layout with sidebar/tabbar |
-| AppSidebar | `@stevederico/skateboard-ui/AppSidebar` | Desktop navigation sidebar |
+| Sidebar | `@stevederico/skateboard-ui/Sidebar` | Desktop navigation sidebar |
 | TabBar | `@stevederico/skateboard-ui/TabBar` | Mobile bottom navigation |
 | DynamicIcon | `@stevederico/skateboard-ui/DynamicIcon` | Lucide icon by name |
 | ThemeToggle | `@stevederico/skateboard-ui/ThemeToggle` | Dark/light mode switch |
@@ -194,7 +462,270 @@ Quick overview:
 
 **Font System:** Geist font family loaded automatically for improved typography.
 
-**See [USAGE.md](./USAGE.md) for detailed examples of Toast, Skeleton, Avatar, Badge, Tooltip, AlertDialog, Checkbox, Switch, and more.**
+### Font System
+
+Geist font family is loaded via npm package in `App.jsx`:
+```jsx
+import 'geist/font/sans/style.css';
+import 'geist/font/mono/style.css';
+```
+
+Applied in `styles.css`:
+- Sans: `font-family: 'Geist'` (body)
+- Mono: `font-family: 'Geist Mono'` (code, pre, kbd elements)
+
+### Toast Notifications
+
+Import from sonner:
+```jsx
+import { toast } from 'sonner';
+
+// Success
+toast.success('Changes saved!');
+
+// Error
+toast.error('Failed to save');
+
+// Loading
+toast.loading('Saving...');
+
+// Info
+toast.info('New feature available');
+
+// Warning
+toast.warning('This action cannot be undone');
+
+// Promise-based
+toast.promise(
+  fetch('/api/data'),
+  {
+    loading: 'Loading...',
+    success: 'Data loaded!',
+    error: 'Failed to load'
+  }
+);
+```
+
+### Skeleton Loaders
+
+Import from SkeletonLoader:
+```jsx
+import { CardSkeleton, TableSkeleton, AvatarSkeleton, FormSkeleton } from '@stevederico/skateboard-ui/SkeletonLoader';
+
+// Card skeleton
+<CardSkeleton />
+
+// Table skeleton with custom rows
+<TableSkeleton rows={10} />
+
+// Avatar skeleton
+<AvatarSkeleton />
+
+// Form skeleton
+<FormSkeleton />
+```
+
+### Avatar
+
+```jsx
+import { Avatar, AvatarFallback, AvatarImage } from '@stevederico/skateboard-ui/shadcn/ui/avatar';
+
+<Avatar size="lg">
+  <AvatarImage src={user.avatar} alt={user.name} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+// Sizes: sm, default, lg
+```
+
+### Badge
+
+```jsx
+import { Badge } from '@stevederico/skateboard-ui/shadcn/ui/badge';
+
+<Badge variant="default">Pro</Badge>
+<Badge variant="secondary">Beta</Badge>
+<Badge variant="destructive">Expired</Badge>
+<Badge variant="outline">New</Badge>
+```
+
+### Tooltip
+
+```jsx
+import { Tooltip, TooltipContent, TooltipTrigger } from '@stevederico/skateboard-ui/shadcn/ui/tooltip';
+
+<Tooltip>
+  <TooltipTrigger asChild>
+    <button>Help</button>
+  </TooltipTrigger>
+  <TooltipContent side="right">
+    Click to learn more
+  </TooltipContent>
+</Tooltip>
+
+// Sides: top, right, bottom, left
+```
+
+### Alert Dialog
+
+```jsx
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@stevederico/skateboard-ui/shadcn/ui/alert-dialog';
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <button>Delete Account</button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+### Checkbox
+
+```jsx
+import { Checkbox } from '@stevederico/skateboard-ui/shadcn/ui/checkbox';
+
+const [checked, setChecked] = useState(false);
+
+<div className="flex items-center gap-2">
+  <Checkbox
+    id="terms"
+    checked={checked}
+    onCheckedChange={setChecked}
+  />
+  <label htmlFor="terms">Accept terms</label>
+</div>
+```
+
+### Switch
+
+```jsx
+import { Switch } from '@stevederico/skateboard-ui/shadcn/ui/switch';
+
+const [enabled, setEnabled] = useState(false);
+
+<div className="flex items-center gap-2">
+  <Switch
+    id="notifications"
+    checked={enabled}
+    onCheckedChange={setEnabled}
+  />
+  <label htmlFor="notifications">Enable notifications</label>
+</div>
+```
+
+### Select
+
+```jsx
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@stevederico/skateboard-ui/shadcn/ui/select';
+
+<Select value={value} onValueChange={setValue}>
+  <SelectTrigger>
+    <SelectValue placeholder="Select option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2">Option 2</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Textarea
+
+```jsx
+import { Textarea } from '@stevederico/skateboard-ui/shadcn/ui/textarea';
+
+<Textarea
+  placeholder="Enter your message"
+  value={message}
+  onChange={(e) => setMessage(e.target.value)}
+/>
+```
+
+### Alert
+
+```jsx
+import { Alert, AlertDescription, AlertTitle } from '@stevederico/skateboard-ui/shadcn/ui/alert';
+
+<Alert>
+  <AlertTitle>Heads up!</AlertTitle>
+  <AlertDescription>
+    Your subscription expires in 3 days.
+  </AlertDescription>
+</Alert>
+```
+
+### Progress
+
+```jsx
+import { Progress } from '@stevederico/skateboard-ui/shadcn/ui/progress';
+
+<Progress value={66} className="w-full" />
+```
+
+### Dropdown Menu
+
+```jsx
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@stevederico/skateboard-ui/shadcn/ui/dropdown-menu';
+
+<DropdownMenu>
+  <DropdownMenuTrigger>Profile</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+    <DropdownMenuItem>Billing</DropdownMenuItem>
+    <DropdownMenuItem>Sign Out</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Dark Mode Support
+
+All components support dark mode automatically via the `next-themes` provider. Colors are defined in `styles.css` using CSS variables that adapt to the theme.
+
+### Component Customization
+
+All components use Tailwind utility classes and can be customized via the `className` prop:
+
+```jsx
+<Badge className="text-lg px-4 py-2" variant="default">
+  Custom Badge
+</Badge>
+```
 
 ### shadcn/ui Components
 
@@ -445,10 +976,6 @@ import ProtectedRoute from '@stevederico/skateboard-ui/ProtectedRoute';
 ```
 
 Used internally by createSkateboardApp. Redirects to /signin if not authenticated.
-
-## Documentation
-
-- **[Authentication Guide](./docs/AUTHENTICATION.md)** - Complete guide to the hybrid cookie + localStorage authentication system, including backend requirements, security considerations, and Express.js implementation examples
 
 ## Dependencies
 

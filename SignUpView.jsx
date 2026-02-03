@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { cn } from "./shadcn/lib/utils"
 import { Button } from "./shadcn/ui/button"
 import { Input } from "./shadcn/ui/input"
+import { Label } from "./shadcn/ui/label"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./shadcn/ui/card"
 import { Alert, AlertDescription } from "./shadcn/ui/alert"
 import DynamicIcon from './DynamicIcon';
 import { useNavigate } from 'react-router-dom';
@@ -85,101 +87,103 @@ export default function LoginForm({
   }
 
   return (
-    <div className="fixed inset-0 bg-background transition-colors duration-300 overflow-auto">
-      <div className={cn("flex flex-col gap-6 p-4 max-w-lg mx-auto mt-20", className)} {...props}>
-      <div className="flex flex-row items-center justify-center mb-4">
-        <div className="bg-app dark:bg-app dark:border dark:border-gray-700 rounded-2xl flex aspect-square size-16 items-center justify-center">
-          <DynamicIcon name={constants.appIcon} size={32} color="white" strokeWidth={2} />
-        </div>
-        <div className="font-bold ml-3 text-5xl text-foreground">{constants.appName}</div>
-      </div>
+    <div className="fixed inset-0 bg-background overflow-auto">
+      <div className={cn("flex flex-col items-center justify-center min-h-screen p-4", className)} {...props}>
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="bg-app rounded-2xl flex aspect-square size-12 items-center justify-center">
+                <DynamicIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
+              </div>
+              <span className="text-3xl font-bold">{constants.appName}</span>
+            </div>
+            <CardTitle>Create an account</CardTitle>
+            <CardDescription>Enter your details to get started</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {errorMessage !== '' && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription className="text-center">{errorMessage}</AlertDescription>
+              </Alert>
+            )}
 
-      {errorMessage !== '' && (
-        <Alert variant="destructive">
-          <AlertDescription className="text-center">{errorMessage}</AlertDescription>
-        </Alert>
-      )}
+            <form onSubmit={signUpClicked} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  ref={nameInputRef}
+                  id="name"
+                  placeholder="John Doe"
+                  required
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setErrorMessage('');
+                  }}
+                />
+              </div>
 
-      <form onSubmit={signUpClicked} className="flex flex-col gap-4">
-        <Input
-          ref={nameInputRef}
-          id="name"
-          placeholder="Name"
-          className="py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary"
-          style={{ fontSize: '20px' }}
-          required
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            setErrorMessage('');
-          }}
-        />
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErrorMessage('');
+                  }}
+                />
+              </div>
 
-        <Input
-          id="email"
-          type="email"
-          placeholder="Email"
-          className="py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary"
-          style={{ fontSize: '20px' }}
-          required
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrorMessage('');
-          }}
-        />
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  minLength={6}
+                  maxLength={72}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrorMessage('');
+                  }}
+                />
+                <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
+              </div>
 
-        <div className="flex flex-col gap-1">
-          <Input
-            id="password"
-            type="password"
-            placeholder="Password"
-            className="py-7 px-4 placeholder:text-gray-400 rounded-lg border-2 bg-secondary dark:bg-secondary dark:border-secondary"
-            style={{ fontSize: '20px' }}
-            required
-            minLength={6}
-            maxLength={72}
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setErrorMessage('');
-            }}
-          />
-          <p className="text-xs text-muted-foreground ml-1">Minimum 6 characters</p>
-        </div>
+              <Button
+                type="submit"
+                variant="gradient"
+                size="cta"
+                className="w-full"
+              >
+                <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
+                  <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
+                  Sign Up
+                </span>
+              </Button>
 
-        <Button
-          type="submit"
-          variant="gradient"
-          size="cta"
-          className="w-full"
-        >
-          <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
-            <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
-            Sign Up
-          </span>
-        </Button>
+              <div className="text-center text-sm">
+                <span className="text-muted-foreground">Already have an account?</span>{" "}
+                <Button variant="link" className="p-0 h-auto" onClick={(e) => { e.preventDefault(); navigate('/signin'); }}>
+                  Sign In
+                </Button>
+              </div>
+            </form>
 
-        <div className="mt-4 text-center text-base">
-          <span className="text-muted-foreground italic">Already have an account?</span>{" "}
-          <Button variant="link" className="p-0 text-base h-auto" onClick={(e) => { e.preventDefault(); navigate('/signin'); }}>
-            Sign In
-          </Button>
-        </div>
-      </form>
-
-      <div className="mt-6 text-center text-sm max-w-none text-muted-foreground">
-        By registering you agree to our
-        <Button variant="link" className="p-0 text-sm h-auto ml-1" onClick={(e) => { e.preventDefault(); navigate('/terms'); }}>
-          Terms of Service
-        </Button>,
-        <Button variant="link" className="p-0 text-sm h-auto ml-1" onClick={(e) => { e.preventDefault(); navigate('/eula'); }}>
-          EULA
-        </Button>,
-        <Button variant="link" className="p-0 text-sm h-auto ml-1" onClick={(e) => { e.preventDefault(); navigate('/privacy'); }}>
-          Privacy Policy
-        </Button>
-      </div>
+            <div className="mt-4 text-center text-xs text-muted-foreground">
+              By registering you agree to our{" "}
+              <a href="/terms" className="underline underline-offset-4 hover:text-foreground">Terms of Service</a>,{" "}
+              <a href="/eula" className="underline underline-offset-4 hover:text-foreground">EULA</a>,{" "}
+              <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy Policy</a>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

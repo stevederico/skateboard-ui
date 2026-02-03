@@ -34,13 +34,15 @@ export default function TextView({ details, className, ...props }) {
 
   return (
     <ScrollArea className={cn("max-h-screen", className)} {...props}>
-      <Card className="m-4 shadow-none">
-        <CardContent>
-          <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
-            {formattedText}
-          </p>
-        </CardContent>
-      </Card>
+      <div className="p-4">
+        <Card>
+          <CardContent>
+            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+              {formattedText}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </ScrollArea>
   );
 }

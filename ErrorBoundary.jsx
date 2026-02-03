@@ -1,13 +1,15 @@
 import React from 'react';
 import { Button } from './shadcn/ui/button.jsx';
-import { Card, CardContent } from './shadcn/ui/card.jsx';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from './shadcn/ui/card.jsx';
+import { Alert, AlertDescription } from './shadcn/ui/alert.jsx';
+import { Badge } from './shadcn/ui/badge.jsx';
 
 /**
  * Top-level error boundary that catches render errors, unhandled promise
  * rejections, and global errors.
  *
- * Displays a fallback UI with "Try Again" and "Reload Page" buttons.
- * Wrap your app root with this component.
+ * Displays a shadcn Card fallback with a destructive Alert showing the
+ * error message, plus "Try Again" and "Reload Page" buttons.
  *
  * @param {Object} props
  * @param {React.ReactNode} props.children - Child components to protect
@@ -35,7 +37,6 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidMount() {
-    // Handle unhandled promise rejections (async errors)
     const handleUnhandledRejection = (event) => {
       console.error('Unhandled promise rejection:', event.reason);
       this.setState({
@@ -44,7 +45,6 @@ class ErrorBoundary extends React.Component {
       });
     };
 
-    // Handle errors in event handlers and other non-React contexts
     const handleError = (event) => {
       if (event.error && !(this.state.hasError)) {
         console.error('Global error:', event.error);
@@ -72,25 +72,28 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="flex items-center justify-center w-full h-screen bg-background">
-          <Card className="max-w-md text-center">
-            <CardContent className="flex flex-col items-center gap-4">
-              <h1 className="text-2xl font-bold">Something went wrong</h1>
-              <p className="text-muted-foreground break-words">{this.state.error?.message || 'Unknown error'}</p>
-              <div className="flex gap-2 justify-center">
-                <Button
-                  variant="secondary"
-                  onClick={() => this.setState({ hasError: false, error: null })}
-                >
-                  Try Again
-                </Button>
-                <Button
-                  variant="default"
-                  onClick={() => window.location.reload()}
-                >
-                  Reload Page
-                </Button>
-              </div>
-            </CardContent>
+          <Card className="max-w-md w-full">
+            <CardHeader>
+              <CardTitle>Something went wrong</CardTitle>
+              <CardDescription>An unexpected error occurred in the application.</CardDescription>
+            </CardHeader>
+            <Alert variant="destructive" className="mx-6">
+              <AlertDescription>
+                <Badge variant="outline" className="mr-2">Error</Badge>
+                {this.state.error?.message || 'Unknown error'}
+              </AlertDescription>
+            </Alert>
+            <CardFooter className="gap-2">
+              <Button
+                variant="outline"
+                onClick={() => this.setState({ hasError: false, error: null })}
+              >
+                Try Again
+              </Button>
+              <Button onClick={() => window.location.reload()}>
+                Reload Page
+              </Button>
+            </CardFooter>
           </Card>
         </div>
       );

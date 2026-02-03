@@ -1,12 +1,12 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "2.0.2",
+  "version": "2.1.0",
   "type": "module",
   "exports": {
-    "./AppSidebar": {
-      "import": "./AppSidebar.jsx",
-      "default": "./AppSidebar.jsx"
+    "./Sidebar": {
+      "import": "./Sidebar.jsx",
+      "default": "./Sidebar.jsx"
     },
     "./DynamicIcon": {
       "import": "./DynamicIcon.jsx",
