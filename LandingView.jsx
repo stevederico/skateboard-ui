@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { getState } from "./Context.jsx";
-import * as LucideIcons from "lucide-react";
+import DynamicIcon from './DynamicIcon.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
-
-// Dynamic Icon Component
-const DynamicIcon = ({ name, size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => {
-  const toPascalCase = (str) => str.split(/[-_\s]/).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('');
-  const possibleNames = [name, toPascalCase(name), name.charAt(0).toUpperCase() + name.slice(1)];
-  const LucideIcon = possibleNames.find(n => LucideIcons[n]) ? LucideIcons[possibleNames.find(n => LucideIcons[n])] : null;
-  return LucideIcon ? React.createElement(LucideIcon, { size, color, strokeWidth, ...props }) : null;
-};
+import { Button } from './shadcn/ui/button.jsx';
+import { Card, CardContent } from './shadcn/ui/card.jsx';
 
 /**
  * Default landing page with hero section, features grid, pricing card,
@@ -41,54 +35,31 @@ export default function LandingView() {
         <div className="relative min-h-[120px] md:h-[140px] flex flex-col items-center justify-center py-8">
           {/* CTA in Hero */}
           <div className="text-center">
-            <button 
+            <Button
+              variant="gradient"
+              size="cta"
+              className="px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 rounded-2xl text-base sm:text-lg md:text-xl lg:text-2xl h-auto"
               onClick={() => navigate('/app')}
-              className="relative group bg-gradient-to-br text-white px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 rounded-2xl font-semibold text-base sm:text-lg md:text-xl lg:text-2xl transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
-              style={{
-                backgroundImage: `linear-gradient(to bottom right, 
-                  var(--color-app), 
-                  oklch(from var(--color-app) calc(l - 0.05) c h), 
-                  oklch(from var(--color-app) calc(l - 0.08) c h), 
-                  oklch(from var(--color-app) calc(l - 0.12) c h))`,
-                boxShadow: `0 25px 50px -12px var(--shadow-color)`
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right, 
-                  oklch(from var(--color-app) calc(l - 0.05) c h), 
-                  oklch(from var(--color-app) calc(l - 0.08) c h), 
-                  oklch(from var(--color-app) calc(l - 0.12) c h), 
-                  oklch(from var(--color-app) calc(l - 0.16) c h))`;
-                e.currentTarget.style.boxShadow = '0 25px 50px -12px var(--shadow-color)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right, 
-                  var(--color-app), 
-                  oklch(from var(--color-app) calc(l - 0.05) c h), 
-                  oklch(from var(--color-app) calc(l - 0.08) c h), 
-                  oklch(from var(--color-app) calc(l - 0.12) c h))`;
-                e.currentTarget.style.boxShadow = '0 25px 50px -12px var(--shadow-color)'
-              }}
             >
               <span className="relative z-20 flex items-center justify-center gap-3 md:gap-4 drop-shadow-sm">
                 <DynamicIcon name="sparkles" size={20} color="currentColor" strokeWidth={2} className="animate-pulse -ml-1 md:w-6 md:h-6 lg:w-7 lg:h-7" />
                 {constants.cta}
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-            </button>
+            </Button>
           </div>
         </div>
 
         <style>{`
           @keyframes springOutLong {
-            0% { 
+            0% {
               opacity: 0;
               transform: translateY(-60px) scale(0.1);
             }
-            50% { 
+            50% {
               opacity: 1;
               transform: translateY(0) scale(1.2);
             }
-            100% { 
+            100% {
               opacity: 1;
               transform: translateY(0) scale(1);
             }
@@ -118,24 +89,24 @@ export default function LandingView() {
             right: -200vw;
             bottom: 0;
             width: 500vw;
-            background-image: 
+            background-image:
               linear-gradient(color-mix(in srgb, var(--color-app) 50%, transparent 50%) 5px, transparent 5px),
               linear-gradient(90deg, color-mix(in srgb, var(--color-app) 40%, transparent 60%) 5px, transparent 5px);
             background-size: 300px 300px;
             animation: rollingGrid 6s linear infinite;
             transform: none;
             transform-origin: center bottom;
-            mask-image: linear-gradient(to bottom, 
-              transparent 0%, 
-              rgba(0,0,0,0.1) 20%, 
-              rgba(0,0,0,0.8) 40%, 
-              rgba(0,0,0,0.3) 80%, 
+            mask-image: linear-gradient(to bottom,
+              transparent 0%,
+              rgba(0,0,0,0.1) 20%,
+              rgba(0,0,0,0.8) 40%,
+              rgba(0,0,0,0.3) 80%,
               transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, 
-              transparent 0%, 
-              rgba(0,0,0,0.1) 20%, 
-              rgba(0,0,0,0.8) 40%, 
-              rgba(0,0,0,0.3) 80%, 
+            -webkit-mask-image: linear-gradient(to bottom,
+              transparent 0%,
+              rgba(0,0,0,0.1) 20%,
+              rgba(0,0,0,0.8) 40%,
+              rgba(0,0,0,0.3) 80%,
               transparent 100%);
             height: 300%;
           }
@@ -145,8 +116,8 @@ export default function LandingView() {
   };
 
   return (
-    <div 
-      className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white relative transition-colors duration-300"
+    <div
+      className="min-h-screen bg-background text-foreground relative transition-colors duration-300"
       style={{
         '--gradient-from': 'color-mix(in srgb, var(--color-app) 90%, white 10%)',
         '--gradient-via': 'var(--color-app)',
@@ -157,7 +128,7 @@ export default function LandingView() {
         '--text-gradient-to': 'oklch(from var(--color-app) l c calc(h + 30))'
       }}
     >
-      
+
       {/* Subtle Grid Pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0" style={{
@@ -171,10 +142,10 @@ export default function LandingView() {
 
       {/* Header */}
       <header className="relative z-10 pt-4 px-6">
-        <nav className="max-w-6xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg px-6 py-4 flex justify-between items-center transition-colors duration-300">
+        <nav className="max-w-6xl mx-auto bg-background/80 backdrop-blur-sm border border-border rounded-2xl shadow-lg px-6 py-4 flex justify-between items-center transition-colors duration-300">
           <div className="flex items-center gap-2">
             <DynamicIcon name={constants.appIcon} size={28} color="var(--color-app)" strokeWidth={2} />
-            <div 
+            <div
               className="text-2xl font-bold bg-clip-text text-transparent"
               style={{
                 backgroundImage: `linear-gradient(90deg, var(--text-gradient-from), var(--text-gradient-to))`
@@ -183,51 +154,27 @@ export default function LandingView() {
               {constants.appName}
             </div>
           </div>
-          
+
           <ul className="hidden md:flex gap-8 list-none">
-            <li><a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-semibold">Features</a></li>
-            <li><a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-semibold">Pricing</a></li>
-            <li><a href="/terms" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-semibold">Terms</a></li>
+            <li><a href="#features" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Features</a></li>
+            <li><a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Pricing</a></li>
+            <li><a href="/terms" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Terms</a></li>
           </ul>
-          
+
           <div className="flex gap-3 items-center">
             {/* Dark Mode Toggle */}
             <ThemeToggle variant="landing" iconSize={18} />
-            
-            <button 
+
+            <Button
+              variant="gradient"
+              className="rounded-xl text-sm px-4 py-3 h-auto"
               onClick={() => navigate('/app')}
-              className="relative group bg-gradient-to-br text-white px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300 shadow-lg backdrop-blur-sm overflow-hidden cursor-pointer"
-              style={{
-                backgroundImage: `linear-gradient(to bottom right, 
-                  var(--color-app), 
-                  oklch(from var(--color-app) calc(l - 0.05) c h), 
-                  oklch(from var(--color-app) calc(l - 0.08) c h), 
-                  oklch(from var(--color-app) calc(l - 0.12) c h))`,
-                boxShadow: `0 8px 32px var(--shadow-color)`
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right, 
-                  oklch(from var(--color-app) calc(l - 0.05) c h), 
-                  oklch(from var(--color-app) calc(l - 0.08) c h), 
-                  oklch(from var(--color-app) calc(l - 0.12) c h), 
-                  oklch(from var(--color-app) calc(l - 0.16) c h))`;
-                e.currentTarget.style.boxShadow = '0 8px 32px var(--shadow-color)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right, 
-                  var(--color-app), 
-                  oklch(from var(--color-app) calc(l - 0.05) c h), 
-                  oklch(from var(--color-app) calc(l - 0.08) c h), 
-                  oklch(from var(--color-app) calc(l - 0.12) c h))`;
-                e.currentTarget.style.boxShadow = '0 8px 32px var(--shadow-color)'
-              }}
             >
               <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
                 <DynamicIcon name="sparkles" size={14} color="currentColor" strokeWidth={2} className="animate-pulse" />
                 {constants.cta}
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-            </button>
+            </Button>
           </div>
         </nav>
       </header>
@@ -241,7 +188,7 @@ export default function LandingView() {
           </div>
           <div className="max-w-7xl mx-auto px-6 relative z-20 flex flex-col justify-center min-h-[30vh] md:min-h-[40vh]">
             <div className="max-w-4xl mx-auto mb-12">
-              <h1 
+              <h1
                 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-0 leading-tight bg-clip-text text-transparent"
                 style={{
                   backgroundImage: `linear-gradient(90deg, var(--text-gradient-from), var(--text-gradient-to))`
@@ -250,58 +197,60 @@ export default function LandingView() {
                 {constants.tagline}
               </h1>
             </div>
-            
+
             {/* Hero Content */}
             {renderHeroContent()}
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="bg-slate-100 dark:bg-gray-800 py-12 md:py-20 transition-colors duration-300">
+        <section id="features" className="bg-secondary py-12 md:py-20 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">{constants.features?.title || 'Features'}</h2>
+            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">{constants.features?.title || 'Features'}</h2>
 
             {/* Feature Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {(constants.features?.items || []).map((feature, index) => (
-                <div key={index} className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg text-center transition-colors duration-300">
-                  <div className="text-4xl mb-6">{feature.icon}</div>
-                  <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
-                </div>
+                <Card key={index} className="text-center">
+                  <CardContent className="flex flex-col items-center gap-4">
+                    <div className="text-4xl">{feature.icon}</div>
+                    <h3 className="text-xl font-bold">{feature.title}</h3>
+                    <p className="text-muted-foreground">{feature.description}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
 
         {/* Pricing Section */}
-        <section 
-          id="pricing" 
+        <section
+          id="pricing"
           className="py-20 transition-colors duration-300"
           style={{
-            background: isDarkMode 
-              ? 'linear-gradient(135deg, oklch(0.25 0 0), oklch(0.2 0 0))' 
+            background: isDarkMode
+              ? 'linear-gradient(135deg, oklch(0.25 0 0), oklch(0.2 0 0))'
               : `linear-gradient(135deg, color-mix(in srgb, var(--gradient-light) 80%, white 20%), color-mix(in srgb, var(--gradient-light) 60%, white 40%))`
           }}
         >
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16 text-gray-900 dark:text-white">Pricing</h2>
+            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">Pricing</h2>
             <div className="max-w-md mx-auto">
-              <div 
-                className="bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-lg border-2 transition-colors duration-300"
+              <Card
+                className="border-2 transition-colors duration-300"
                 style={{
-                  borderColor: isDarkMode 
+                  borderColor: isDarkMode
                     ? `color-mix(in srgb, var(--color-app) 40%, transparent 60%)`
                     : `color-mix(in srgb, var(--color-app) 20%, transparent 80%)`
                 }}
               >
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{constants.stripeProducts[0]?.title || 'Monthly Plan'}</h3>
-                  <div 
+                <CardContent className="text-center">
+                  <h3 className="text-2xl font-bold mb-4">{constants.stripeProducts[0]?.title || 'Monthly Plan'}</h3>
+                  <div
                     className="text-5xl font-bold mb-2"
                     style={{ color: 'var(--color-app)' }}
                   >{constants.stripeProducts[0]?.price || '$5.00'}</div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-8">per month</p>
+                  <p className="text-muted-foreground mb-8">per month</p>
                   <ul className="text-left space-y-4 mb-8">
                     {(constants.features?.items || []).map((feature, index) => (
                       <li key={index} className="flex items-center">
@@ -315,42 +264,19 @@ export default function LandingView() {
                       ✅ Cancel anytime
                     </li>
                   </ul>
-                  <button 
+                  <Button
+                    variant="gradient"
+                    size="cta"
+                    className="w-full"
                     onClick={() => navigate('/app')}
-                    className="relative group w-full bg-gradient-to-br text-white text-lg px-8 py-4 rounded-xl font-semibold transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer"
-                    style={{
-                      backgroundImage: `linear-gradient(to bottom right, 
-                        var(--color-app), 
-                        oklch(from var(--color-app) calc(l - 0.05) c h), 
-                        oklch(from var(--color-app) calc(l - 0.08) c h), 
-                        oklch(from var(--color-app) calc(l - 0.12) c h))`,
-                      boxShadow: `0 25px 50px -12px var(--shadow-color)`
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right, 
-                        oklch(from var(--color-app) calc(l - 0.05) c h), 
-                        oklch(from var(--color-app) calc(l - 0.08) c h), 
-                        oklch(from var(--color-app) calc(l - 0.12) c h), 
-                        oklch(from var(--color-app) calc(l - 0.16) c h))`;
-                      e.currentTarget.style.boxShadow = '0 25px 50px -12px var(--shadow-color)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundImage = `linear-gradient(to bottom right, 
-                        var(--color-app), 
-                        oklch(from var(--color-app) calc(l - 0.05) c h), 
-                        oklch(from var(--color-app) calc(l - 0.08) c h), 
-                        oklch(from var(--color-app) calc(l - 0.12) c h))`;
-                      e.currentTarget.style.boxShadow = '0 25px 50px -12px var(--shadow-color)'
-                    }}
                   >
                     <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
                       <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
                       {constants.cta}
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-                  </button>
-                </div>
-              </div>
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -358,36 +284,37 @@ export default function LandingView() {
         {/* CTA Section */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-6">
-            <div 
+            <div
               className="py-16 text-center rounded-3xl text-white"
               style={{
                 background: `linear-gradient(90deg, var(--gradient-from), var(--gradient-to))`
               }}
             >
               <h2 className="text-4xl md:text-5xl font-bold mb-10">Ready To Build?</h2>
-              <button 
-                onClick={() => navigate('/app')}
-                className="relative group bg-white hover:bg-gray-50 text-lg px-8 py-4 rounded-xl font-semibold transition-all duration-300 shadow-xl hover:shadow-white/40 backdrop-blur-sm overflow-hidden border-2 border-white/20 cursor-pointer"
+              <Button
+                variant="outline"
+                size="cta"
+                className="bg-white hover:bg-gray-50 border-2 border-white/20 shadow-xl hover:shadow-white/40"
                 style={{ color: 'var(--color-app)' }}
+                onClick={() => navigate('/app')}
               >
                 <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
                   <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
                   {constants.cta}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 skew-x-12"></div>
-              </button>
+              </Button>
             </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-gray-700 py-10 text-center text-gray-600 dark:text-gray-300 relative z-10 bg-white dark:bg-gray-900 transition-colors duration-300">
+      <footer className="border-t border-border py-10 text-center text-muted-foreground relative z-10 bg-background transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center gap-8 mb-6">
-            <a href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors font-semibold">Privacy</a>
-            <a href="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors font-semibold">Terms</a>
-            <a href="/eula" className="hover:text-gray-900 dark:hover:text-white transition-colors font-semibold">EULA</a>
+            <a href="/privacy" className="hover:text-foreground transition-colors font-semibold">Privacy</a>
+            <a href="/terms" className="hover:text-foreground transition-colors font-semibold">Terms</a>
+            <a href="/eula" className="hover:text-foreground transition-colors font-semibold">EULA</a>
           </div>
           <p>&copy; {new Date().getFullYear()} {constants.companyName}. All rights reserved.</p>
         </div>

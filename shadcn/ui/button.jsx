@@ -14,6 +14,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive: "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
         link: "text-primary underline-offset-4 hover:underline",
+        gradient: "relative group text-white font-semibold transition-all duration-300 shadow-xl backdrop-blur-sm overflow-hidden cursor-pointer gradient-btn",
       },
       size: {
         default: "h-9 gap-1.5 px-2.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
@@ -24,6 +25,7 @@ const buttonVariants = cva(
         "icon-xs": "size-6 rounded-[min(var(--radius-md),8px)] in-data-[slot=button-group]:rounded-md [&_svg:not([class*='size-'])]:size-3",
         "icon-sm": "size-8 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-md",
         "icon-lg": "size-10",
+        cta: "h-14 gap-2 px-8 text-lg rounded-xl",
       },
     },
     defaultVariants: {
@@ -33,6 +35,15 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Primary button component with variant and size support.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {"default"|"outline"|"secondary"|"ghost"|"destructive"|"link"|"gradient"} [props.variant="default"] - Visual style
+ * @param {"default"|"xs"|"sm"|"lg"|"icon"|"icon-xs"|"icon-sm"|"icon-lg"|"cta"} [props.size="default"] - Button size
+ * @returns {JSX.Element}
+ */
 function Button({
   className,
   variant = "default",
