@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from './Context.jsx';
-import ThemeToggle from './ThemeToggle.jsx';
+import { useTheme } from 'next-themes';
+import { Sun, Moon } from 'lucide-react';
 import { Avatar, AvatarFallback } from './shadcn/ui/avatar.jsx';
 import { Badge } from './shadcn/ui/badge.jsx';
 import { Button } from './shadcn/ui/button.jsx';
@@ -37,6 +38,8 @@ export default function SettingsView() {
   const { state, dispatch } = getState();
   const constants = state.constants;
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
   function signOutClicked() {
     dispatch({ type: 'CLEAR_USER', payload: null });
@@ -50,7 +53,9 @@ export default function SettingsView() {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h1 className="text-lg font-medium">Settings</h1>
-          <ThemeToggle />
+          <Button variant="ghost" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
+            {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+          </Button>
         </div>
 
         {/* Main content */}

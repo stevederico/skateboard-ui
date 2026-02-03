@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { getState } from "./Context.jsx";
 import DynamicIcon from './DynamicIcon.jsx';
-import ThemeToggle from './ThemeToggle.jsx';
+import { Sun, Moon } from 'lucide-react';
 import { Button } from './shadcn/ui/button.jsx';
 import { Card, CardContent } from './shadcn/ui/card.jsx';
 
@@ -26,7 +26,7 @@ export default function LandingView() {
   const { state } = getState();
   const constants = state.constants;
   const navigate = useNavigate();
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const isDarkMode = theme === 'dark';
 
   const renderHeroContent = () => {
@@ -163,7 +163,9 @@ export default function LandingView() {
 
           <div className="flex gap-3 items-center">
             {/* Dark Mode Toggle */}
-            <ThemeToggle variant="landing" iconSize={18} />
+            <Button variant="outline" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </Button>
 
             <Button
               variant="gradient"
