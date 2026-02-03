@@ -117,24 +117,9 @@ export default function AppSidebar({ variant = "inset", ...props }) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Settings pushed to bottom */}
-        <SidebarGroup className="mt-auto">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                isActive={location.pathname.toLowerCase().includes("settings")}
-                tooltip="Settings"
-                onClick={() => navigate("/app/settings")}
-              >
-                <Settings size={18} strokeWidth={1.5} />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer: NavUser dropdown */}
+      {/* Footer: NavUser + Settings */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -144,6 +129,7 @@ export default function AppSidebar({ variant = "inset", ...props }) {
               >
                 <SidebarMenuButton
                   size="lg"
+                  render={<div />}
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
@@ -168,23 +154,25 @@ export default function AppSidebar({ variant = "inset", ...props }) {
                 align="end"
                 sideOffset={4}
               >
-                <DropdownMenuLabel className="p-0 font-normal">
-                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarFallback className="rounded-lg bg-app text-white text-xs">
-                        {initials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">
-                        {user?.name || "User"}
-                      </span>
-                      <span className="truncate text-xs text-muted-foreground">
-                        {user?.email || ""}
-                      </span>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="p-0 font-normal">
+                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                      <Avatar className="h-8 w-8 rounded-lg">
+                        <AvatarFallback className="rounded-lg bg-app text-white text-xs">
+                          {initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-semibold">
+                          {user?.name || "User"}
+                        </span>
+                        <span className="truncate text-xs text-muted-foreground">
+                          {user?.email || ""}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </DropdownMenuLabel>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem
@@ -219,6 +207,16 @@ export default function AppSidebar({ variant = "inset", ...props }) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              isActive={location.pathname.toLowerCase().includes("settings")}
+              tooltip="Settings"
+              onClick={() => navigate("/app/settings")}
+            >
+              <Settings size={18} strokeWidth={1.5} />
+              <span>Settings</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
