@@ -9,7 +9,7 @@ function Collapsible({
 function CollapsibleTrigger({
   ...props
 }) {
-  return (<CollapsiblePrimitive.Trigger data-slot="collapsible-trigger" {...props} />);
+  return (<CollapsiblePrimitive.Trigger data-slot="collapsible-trigger" className="cursor-pointer" {...props} />);
 }
 
 function CollapsibleContent({
