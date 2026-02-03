@@ -1,5 +1,9 @@
 # CHANGELOG
 
+1.5.2
+
+  Fix isAuthenticated cookie check
+
 1.5.1
 
   Rename noProtectedRoutes to authOverlay
