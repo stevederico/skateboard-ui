@@ -660,7 +660,7 @@ export function timestampToString(input, format = "DOB") {
 
 
         default:
-            return ts;
+            return input;
     }
 }
 
