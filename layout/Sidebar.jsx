@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import DynamicIcon from "../core/DynamicIcon.jsx";
 import { getState } from "../core/Context.jsx";
-import { Avatar, AvatarFallback } from ".../shadcn/ui/avatar.jsx";
+import { Avatar, AvatarFallback } from "../shadcn/ui/avatar.jsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
