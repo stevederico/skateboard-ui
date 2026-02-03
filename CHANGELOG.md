@@ -1,5 +1,16 @@
 # CHANGELOG
 
+2.0.2
+
+  Inline ThemeToggle in views
+  Replace Toast with Sonner direct
+  Remove SkeletonLoader component
+  Add TabBar labels and separator
+  Add TextView Card layout
+  Simplify ThemeToggle variants
+  Remove Toast export
+  Remove SkeletonLoader export
+
 2.0.1
 
   Add shadcn sidebar primitives

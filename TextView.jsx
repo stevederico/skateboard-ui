@@ -1,4 +1,5 @@
 import { getState } from "./Context.jsx";
+import { Card, CardContent } from './shadcn/ui/card.jsx';
 import { ScrollArea } from './shadcn/ui/scroll-area.jsx';
 import { cn } from './shadcn/lib/utils.js';
 
@@ -21,7 +22,7 @@ import { cn } from './shadcn/lib/utils.js';
 export default function TextView({ details, className, ...props }) {
   const { state } = getState();
   const constants = state.constants;
-  // Function to replace placeholders with actual values
+
   const replacePlaceholders = (text) => {
     return text
       .replace(/_COMPANY_/g, constants.companyName)
@@ -29,12 +30,17 @@ export default function TextView({ details, className, ...props }) {
       .replace(/_EMAIL_/g, constants.companyEmail);
   };
 
-  // Process the details string with replacements
   const formattedText = replacePlaceholders(details);
 
   return (
     <ScrollArea className={cn("max-h-screen", className)} {...props}>
-      <div className="p-4 whitespace-pre-wrap">{formattedText}</div>
+      <Card className="m-4 shadow-none">
+        <CardContent>
+          <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+            {formattedText}
+          </p>
+        </CardContent>
+      </Card>
     </ScrollArea>
   );
 }

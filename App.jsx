@@ -21,7 +21,7 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import { useAppSetup, initializeUtilities, validateConstants } from './Utilities.js';
 import { ContextProvider } from './Context.jsx';
-import Toast from './Toast.jsx';
+import { Toaster } from './shadcn/ui/sonner.jsx';
 import AuthOverlay from './AuthOverlay.jsx';
 
 function App({ constants, appRoutes, defaultRoute, landingPage }) {
@@ -94,7 +94,7 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   root.render(
     <ErrorBoundary>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Toast />
+        <Toaster position="top-right" richColors closeButton />
         <ContextProvider constants={constants}>
           <AuthOverlay />
           {Wrapper ? (
