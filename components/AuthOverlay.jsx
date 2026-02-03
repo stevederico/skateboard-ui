@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './shadcn/ui/dialog.jsx';
-import { Input } from './shadcn/ui/input.jsx';
-import { Label } from './shadcn/ui/label.jsx';
-import { Button } from './shadcn/ui/button.jsx';
-import { Alert, AlertDescription } from './shadcn/ui/alert.jsx';
-import DynamicIcon from './DynamicIcon.jsx';
-import { getState } from './Context.jsx';
-import { getBackendURL } from './Utilities.js';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../shadcn/ui/dialog.jsx';
+import { Input } from '../shadcn/ui/input.jsx';
+import { Label } from '../shadcn/ui/label.jsx';
+import { Button } from '../shadcn/ui/button.jsx';
+import { Alert, AlertDescription } from '../shadcn/ui/alert.jsx';
+import DynamicIcon from '../core/DynamicIcon.jsx';
+import { getState } from '../core/Context.jsx';
+import { getBackendURL } from '../core/Utilities.js';
 
 /**
  * Modal authentication overlay with sign-in and sign-up forms.

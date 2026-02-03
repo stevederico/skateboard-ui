@@ -1,5 +1,13 @@
 # CHANGELOG
 
+2.2.0
+
+  Reorganize into folders
+  Add migration guide
+  Remove AppSidebar dead code
+  Remove LandingViewSimple export
+  Add view overrides
+
 2.1.0
 
   Rename AppSidebar to Sidebar

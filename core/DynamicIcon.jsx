@@ -1,6 +1,6 @@
 import React from "react";
 import * as LucideIcons from "lucide-react";
-import { cn } from "./shadcn/lib/utils.js";
+import { cn } from "../shadcn/lib/utils.js";
 
 /**
  * Render a Lucide icon by name string.

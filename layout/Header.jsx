@@ -1,7 +1,7 @@
-import { Separator } from "./shadcn/ui/separator.jsx";
-import { Button } from "./shadcn/ui/button.jsx";
-import { Badge } from "./shadcn/ui/badge.jsx";
-import { cn } from "./shadcn/lib/utils.js";
+import { Separator } from "../shadcn/ui/separator.jsx";
+import { Button } from "../shadcn/ui/button.jsx";
+import { Badge } from "../shadcn/ui/badge.jsx";
+import { cn } from "../shadcn/lib/utils.js";
 
 /**
  * App header bar built on shadcn primitives (Button, Separator, Badge).

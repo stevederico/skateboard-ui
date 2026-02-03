@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import DynamicIcon from './DynamicIcon';
-import { getState } from './Context.jsx';
-import { cn } from './shadcn/lib/utils.js';
+import DynamicIcon from '../core/DynamicIcon';
+import { getState } from '../core/Context.jsx';
+import { cn } from '../shadcn/lib/utils.js';
 
 /**
  * Mobile bottom tab bar navigation.

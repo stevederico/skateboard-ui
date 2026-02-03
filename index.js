@@ -1,2 +1,2 @@
-export { default as ProtectedRoute } from "./ProtectedRoute";
-export { isAuthenticated, getAppKey, getCSRFToken, getCurrentUser, useAppSetup } from "./Utilities";
+export { default as ProtectedRoute } from "./components/ProtectedRoute";
+export { isAuthenticated, getAppKey, getCSRFToken, getCurrentUser, useAppSetup } from "./core/Utilities";

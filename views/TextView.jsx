@@ -1,7 +1,7 @@
-import { getState } from "./Context.jsx";
-import { Card, CardContent } from './shadcn/ui/card.jsx';
-import { ScrollArea } from './shadcn/ui/scroll-area.jsx';
-import { cn } from './shadcn/lib/utils.js';
+import { getState } from "../core/Context.jsx";
+import { Card, CardContent } from '../shadcn/ui/card.jsx';
+import { ScrollArea } from '../shadcn/ui/scroll-area.jsx';
+import { cn } from '../shadcn/lib/utils.js';
 
 /**
  * Legal/text document viewer.

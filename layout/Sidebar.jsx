@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import DynamicIcon from "./DynamicIcon.jsx";
-import { getState } from "./Context.jsx";
-import { Avatar, AvatarFallback } from "./shadcn/ui/avatar.jsx";
+import DynamicIcon from "../core/DynamicIcon.jsx";
+import { getState } from "../core/Context.jsx";
+import { Avatar, AvatarFallback } from ".../shadcn/ui/avatar.jsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./shadcn/ui/dropdown-menu.jsx";
+} from "../shadcn/ui/dropdown-menu.jsx";
 import {
   Sidebar as SidebarRoot,
   SidebarContent,
@@ -26,7 +26,7 @@ import {
   SidebarRail,
   SidebarSeparator,
   useSidebar,
-} from "./shadcn/ui/sidebar";
+} from "../shadcn/ui/sidebar";
 import { ChevronsUpDown, LogOut, Settings, CreditCard, Bell } from "lucide-react";
 
 /**
