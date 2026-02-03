@@ -1,5 +1,13 @@
 # CHANGELOG
 
+2.0.1
+
+  Add shadcn sidebar primitives
+  Add NavUser dropdown footer
+  Add SidebarInset layout
+  Fix ProtectedRoute loading state
+  Update sidebar width CSS var
+
 2.0.0
 
   Add gradient Button variant

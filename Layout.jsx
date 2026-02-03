@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import TabBar from './TabBar.jsx'
-import { SidebarProvider, SidebarTrigger } from "./shadcn/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "./shadcn/ui/sidebar"
 import AppSidebar from "./AppSidebar"
 import { useEffect } from 'react';
 import { getState } from './Context.jsx';
@@ -9,8 +9,8 @@ import { getState } from './Context.jsx';
  * Page layout wrapper with sidebar and tab bar.
  *
  * Renders AppSidebar (desktop) and TabBar (mobile) based on constants
- * configuration and programmatic visibility state. Wraps child routes
- * via react-router Outlet.
+ * configuration and programmatic visibility state. Uses SidebarInset
+ * for proper shadcn sidebar layout with inset variant.
  *
  * @param {Object} props
  * @param {React.ReactNode} [props.children] - Child content (unused, Outlet renders routes)
@@ -68,18 +68,16 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen flex flex-col pt-[env(safe-area-inset-top)] pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
-      <SidebarProvider style={{ '--sidebar-width': '12rem' }}>
-        {showSidebar && <AppSidebar />}
-        <main className="flex-1">
+      <SidebarProvider style={{
+        '--sidebar-width': 'calc(var(--spacing) * 72)',
+        '--header-height': '3.5rem',
+      }}>
+        {showSidebar && <AppSidebar variant="inset" />}
+        <SidebarInset>
           <Outlet />
-        </main>
+        </SidebarInset>
       </SidebarProvider>
       {showTabBar && <TabBar className="md:hidden" />}
     </div>
   );
 }
-
-
-
-
-
