@@ -58,7 +58,7 @@ export default function SettingsView() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex-1">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-border">
         <h1 className="text-base font-medium">Settings</h1>
