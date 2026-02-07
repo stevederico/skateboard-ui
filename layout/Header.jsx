@@ -26,7 +26,7 @@ function Header({ title, buttonTitle, onButtonTitleClick, buttonClass, className
         {...props}
       >
         <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
-          <h1 className="text-base font-medium">{title}</h1>
+          <h1 className="text-lg font-medium">{title}</h1>
           <div className="ml-auto flex items-center gap-2">
             {typeof buttonTitle !== "undefined" && (
               <Button

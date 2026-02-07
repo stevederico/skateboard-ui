@@ -26,7 +26,7 @@ import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "16rem"
+const SIDEBAR_WIDTH = "14rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
@@ -307,7 +307,7 @@ function SidebarHeader({
     <div
       data-slot="sidebar-header"
       data-sidebar="header"
-      className={cn("gap-2 p-2 flex flex-col", className)}
+      className={cn("gap-2 px-2 pb-2 flex flex-col", className)}
       {...props} />
   );
 }
@@ -457,9 +457,9 @@ const sidebarMenuButtonVariants = cva(
         outline: "bg-background hover:bg-sidebar-accent hover:text-sidebar-accent-foreground shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
       size: {
-        default: "h-8 text-sm",
-        sm: "h-7 text-xs",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
+        default: "h-10 text-base",
+        sm: "h-8 text-sm",
+        lg: "h-14 text-base group-data-[collapsible=icon]:p-0!",
       },
     },
     defaultVariants: {
