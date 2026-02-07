@@ -42,16 +42,16 @@ export default function Sidebar({ variant = "inset", ...props }) {
     <SidebarRoot collapsible="icon" variant={variant} {...props}>
       {/* Header: App icon + name */}
       {!constants.hideSidebarHeader && (
-        <SidebarHeader className="px-1">
+        <SidebarHeader className="px-1 group-data-[collapsible=icon]:px-0">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 size="lg"
                 onClick={() => navigate("/app")}
                 tooltip={constants.appName}
-                className="hover:bg-transparent active:bg-transparent"
+                className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:justify-center"
               >
-                <div className="bg-app dark:border rounded-lg flex aspect-square size-8 items-center justify-center">
+                <div className="bg-app dark:border rounded-lg flex aspect-square size-8 items-center justify-center shrink-0">
                   <DynamicIcon
                     name={constants.appIcon}
                     size={20}

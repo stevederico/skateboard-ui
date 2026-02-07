@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.9.2
+
+  Fix collapsed brand icon
+
 2.9.1
 
   Remove SignInView header text
