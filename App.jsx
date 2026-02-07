@@ -115,6 +115,14 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   // Initialize utilities with constants
   initializeUtilities(constants);
 
+  // Prevent theme flash by setting dark class before React hydrates
+  // This runs synchronously before render, reading from localStorage or system preference
+  const storageKey = 'theme';
+  const storedTheme = localStorage.getItem(storageKey);
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = storedTheme === 'dark' || (storedTheme !== 'light' && systemDark);
+  document.documentElement.classList.toggle('dark', isDark);
+
   const container = document.getElementById('root');
   const root = createRoot(container);
 
