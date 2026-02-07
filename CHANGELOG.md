@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.4.0
+
+  Add sidebarCollapsed constant
+
 2.3.1
 
   Remove sidebar rail hover border
