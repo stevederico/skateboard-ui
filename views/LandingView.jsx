@@ -84,7 +84,9 @@ export default function LandingView() {
               {(constants.features?.items || []).map((feature, index) => (
                 <Card key={index} className="text-center">
                   <CardHeader className="items-center">
-                    <Badge variant="secondary" className="text-2xl mb-2 h-auto px-3 py-1">{feature.icon}</Badge>
+                    <div className="w-full flex justify-center">
+                      <Badge variant="secondary" className="text-2xl mb-2 h-auto px-3 py-1">{feature.icon}</Badge>
+                    </div>
                     <CardTitle className="text-xl font-bold">{feature.title}</CardTitle>
                     <CardDescription>{feature.description}</CardDescription>
                   </CardHeader>

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2.6.0
+
+  Fix dark mode flash
+  Add CSS dark mode fallback
+  Center feature emojis
+
 2.5.0
 
   Add configurable LandingView constants
