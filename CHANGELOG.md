@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.9.3
+
+  Simplify sidebar brand styling
+
 2.9.2
 
   Fix collapsed brand icon
