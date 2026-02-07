@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.8.0
+
+  Add content area border
+  Add SettingsView sign-in card
+
 2.7.0
 
   Improve light mode sidebar contrast
