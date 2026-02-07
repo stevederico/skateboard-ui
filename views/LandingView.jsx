@@ -13,8 +13,8 @@ import { Separator } from '../shadcn/ui/separator.jsx';
  * Default landing page with hero section, features grid, pricing card,
  * CTA section, and footer.
  *
- * Reads app branding, tagline, features, and pricing from constants.
- * Uses shadcn defaults for all styling — no inline styles or custom animations.
+ * Reads app branding, tagline, features, pricing, and layout from constants.
+ * All sections are configurable via optional constants keys with sensible defaults.
  *
  * @returns {JSX.Element} Full landing page
  *
@@ -43,9 +43,13 @@ export default function LandingView() {
           </div>
 
           <div className="hidden md:flex gap-6">
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Features</a>
-            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Pricing</a>
-            <a href="/terms" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Terms</a>
+            {(constants.navLinks || [
+              { label: 'Features', href: '#features' },
+              ...(constants.stripeProducts?.length > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
+              { label: 'Terms', href: '/terms' },
+            ]).map((link, index) => (
+              <a key={index} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors font-semibold">{link.label}</a>
+            ))}
           </div>
 
           <div className="flex gap-3 items-center">
@@ -91,50 +95,50 @@ export default function LandingView() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">Pricing</h2>
-            <div className="max-w-md mx-auto">
-              <Card>
-                <CardHeader className="text-center">
-                  <CardTitle className="text-2xl font-bold">{constants.stripeProducts[0]?.title || 'Monthly Plan'}</CardTitle>
-                  <CardDescription>per month</CardDescription>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <div className="text-5xl font-bold text-foreground mb-8">{constants.stripeProducts[0]?.price || '$5.00'}</div>
-                  <ul className="text-left space-y-4 mb-8">
-                    {(constants.features?.items || []).map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <Check size={16} className="text-primary shrink-0" />
-                        {feature.title}
-                      </li>
-                    ))}
-                    <li className="flex items-center gap-2">
-                      <Check size={16} className="text-primary shrink-0" />
-                      Priority Customer Support
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check size={16} className="text-primary shrink-0" />
-                      Cancel anytime
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="default" size="cta" className="w-full" onClick={() => navigate('/app')}>
-                    {constants.cta}
-                  </Button>
-                </CardFooter>
-              </Card>
+        {constants.stripeProducts?.length > 0 && (
+          <section id="pricing" className="py-16 md:py-24">
+            <div className="max-w-7xl mx-auto px-6">
+              <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">{constants.pricing?.title || 'Pricing'}</h2>
+              <div className="max-w-md mx-auto">
+                <Card>
+                  <CardHeader className="text-center">
+                    <CardTitle className="text-2xl font-bold">{constants.stripeProducts[0]?.title || 'Monthly Plan'}</CardTitle>
+                    <CardDescription>per {constants.stripeProducts[0]?.interval || 'month'}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <div className="text-5xl font-bold text-foreground mb-8">{constants.stripeProducts[0]?.price || '$5.00'}</div>
+                    <ul className="text-left space-y-4 mb-8">
+                      {(constants.stripeProducts[0]?.features || []).map((feature, index) => (
+                        <li key={index} className="flex items-center gap-2">
+                          <Check size={16} className="text-primary shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                      {(constants.pricing?.extras || []).map((extra, index) => (
+                        <li key={`extra-${index}`} className="flex items-center gap-2">
+                          <Check size={16} className="text-primary shrink-0" />
+                          {extra}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button variant="default" size="cta" className="w-full" onClick={() => navigate('/app')}>
+                      {constants.cta}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* CTA Section */}
         <section className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-6">
             <Card className="bg-primary text-primary-foreground py-16 text-center">
               <CardContent>
-                <h2 className="text-4xl md:text-5xl font-bold mb-10">Ready To Build?</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-10">{constants.ctaHeading || 'Ready To Build?'}</h2>
                 <Button variant="secondary" size="cta" onClick={() => navigate('/app')}>
                   {constants.cta}
                 </Button>
@@ -149,11 +153,15 @@ export default function LandingView() {
         <div className="max-w-7xl mx-auto px-6">
           <Separator className="mb-8" />
           <div className="flex justify-center gap-8 mb-6">
-            <a href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Privacy</a>
-            <a href="/terms" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">Terms</a>
-            <a href="/eula" className="text-muted-foreground hover:text-foreground transition-colors font-semibold">EULA</a>
+            {(constants.footerLinks || [
+              ...(constants.privacyPolicy ? [{ label: 'Privacy', href: '/privacy' }] : []),
+              ...(constants.termsOfService ? [{ label: 'Terms', href: '/terms' }] : []),
+              ...(constants.EULA ? [{ label: 'EULA', href: '/eula' }] : []),
+            ]).map((link, index) => (
+              <a key={index} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors font-semibold">{link.label}</a>
+            ))}
           </div>
-          <p className="text-center text-muted-foreground">&copy; {new Date().getFullYear()} {constants.companyName}. All rights reserved.</p>
+          <p className="text-center text-muted-foreground">&copy; {new Date().getFullYear()} {constants.companyName}. {constants.copyrightText || 'All rights reserved.'}</p>
         </div>
       </footer>
     </div>

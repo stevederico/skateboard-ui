@@ -1,5 +1,17 @@
 # CHANGELOG
 
+2.5.0
+
+  Add configurable LandingView constants
+  Add navLinks constant
+  Add pricing.title constant
+  Add pricing.extras constant
+  Add ctaHeading constant
+  Add footerLinks constant
+  Add copyrightText constant
+  Use stripeProducts features and interval
+  Conditionally render pricing section
+
 2.4.0
 
   Add sidebarCollapsed constant

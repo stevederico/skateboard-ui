@@ -123,6 +123,24 @@ const constants = {
     }
   ],
 
+  // Optional: Landing page customization
+  navLinks: [                                    // Override header nav links
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Blog", href: "/blog" }
+  ],
+  pricing: {
+    title: "Simple Pricing",                     // Pricing section heading
+    extras: ["Priority Customer Support", "Cancel anytime"]  // Extra bullets after product features
+  },
+  ctaHeading: "Ready To Build?",                 // CTA section heading
+  footerLinks: [                                 // Override footer links
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "EULA", href: "/eula" }
+  ],
+  copyrightText: "All rights reserved.",         // Copyright suffix after "© {year} {companyName}."
+
   // Optional: Legal documents (plain text, supports _COMPANY_, _WEBSITE_, _EMAIL_ placeholders)
   termsOfService: "Terms of Service for _COMPANY_...",
   privacyPolicy: "Privacy Policy for _COMPANY_...",
