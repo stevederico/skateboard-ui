@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.3.1
+
+  Remove sidebar rail hover border
+
 2.3.0
 
   Remove sidebar user section
