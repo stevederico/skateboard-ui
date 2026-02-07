@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getState } from '../core/Context.jsx';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
+import Header from '../layout/Header.jsx';
 import { Avatar, AvatarFallback } from '../shadcn/ui/avatar.jsx';
 import { Badge } from '../shadcn/ui/badge.jsx';
 import { Button } from '../shadcn/ui/button.jsx';
@@ -59,13 +60,11 @@ export default function SettingsView() {
 
   return (
     <div className="flex-1">
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-        <h1 className="text-base font-medium">Settings</h1>
+      <Header title="Settings">
         <Button variant="ghost" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
-          {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </Button>
-      </div>
+      </Header>
 
       {/* Main content */}
       <div className="flex flex-col items-center p-4 gap-4">

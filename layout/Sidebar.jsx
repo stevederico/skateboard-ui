@@ -42,13 +42,14 @@ export default function Sidebar({ variant = "inset", ...props }) {
     <SidebarRoot collapsible="icon" variant={variant} {...props}>
       {/* Header: App icon + name */}
       {!constants.hideSidebarHeader && (
-        <SidebarHeader>
+        <SidebarHeader className="px-1">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 size="lg"
                 onClick={() => navigate("/app")}
                 tooltip={constants.appName}
+                className="hover:bg-transparent active:bg-transparent"
               >
                 <div className="bg-app dark:border rounded-lg flex aspect-square size-8 items-center justify-center">
                   <DynamicIcon
@@ -58,7 +59,7 @@ export default function Sidebar({ variant = "inset", ...props }) {
                     strokeWidth={2}
                   />
                 </div>
-                <span className="font-semibold text-lg truncate">
+                <span className="font-semibold text-lg shrink min-w-0 truncate">
                   {constants.appName}
                 </span>
               </SidebarMenuButton>
@@ -79,14 +80,16 @@ export default function Sidebar({ variant = "inset", ...props }) {
                     <SidebarMenuButton
                       isActive={isActive}
                       tooltip={item.title}
+                      size="sm"
+                      className="data-active:font-normal"
                       onClick={() =>
                         navigate(`/app/${item.url.toLowerCase()}`)
                       }
                     >
                       <DynamicIcon
                         name={item.icon}
-                        size={18}
-                        strokeWidth={1.5}
+                        size={20}
+                        strokeWidth={2}
                       />
                       <span>{item.title}</span>
                     </SidebarMenuButton>
@@ -105,9 +108,11 @@ export default function Sidebar({ variant = "inset", ...props }) {
             <SidebarMenuButton
               isActive={location.pathname.toLowerCase().includes("settings")}
               tooltip="Settings"
+              size="sm"
+              className="data-active:font-normal"
               onClick={() => navigate("/app/settings")}
             >
-              <Settings size={18} strokeWidth={1.5} />
+              <Settings size={20} strokeWidth={2} />
               <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

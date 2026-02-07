@@ -1,5 +1,15 @@
 # CHANGELOG
 
+2.9.0
+
+  Improve dark mode sidebar contrast
+  Update Header text size
+  Remove brand hover state
+  Reduce brand padding
+  Add brand text shrink
+  Remove nav bold on active
+  Use smaller nav buttons
+
 2.8.0
 
   Add content area border

@@ -47,7 +47,7 @@ export default function Layout({ children }) {
           '--header-height': '3.5rem',
         }}>
         {showSidebar && <Sidebar variant="inset" />}
-        <SidebarInset className={`border border-border ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
+        <SidebarInset className={`border border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
           <Outlet />
         </SidebarInset>
       </SidebarProvider>
