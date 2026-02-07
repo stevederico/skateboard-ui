@@ -5,8 +5,10 @@ import {
   Route,
   Navigate,
   useLocation,
+  useNavigate,
 } from 'react-router-dom';
 import { useEffect } from 'react';
+import { getState } from './core/Context.jsx';
 import { ThemeProvider } from 'next-themes';
 import Layout from './layout/Layout.jsx';
 import LandingView from './views/LandingView.jsx';
@@ -24,6 +26,26 @@ import { ContextProvider } from './core/Context.jsx';
 import { Toaster } from './shadcn/ui/sonner.jsx';
 import AuthOverlay from './components/AuthOverlay.jsx';
 
+/**
+ * Redirect component for auth routes when authOverlay mode is enabled.
+ *
+ * Dispatches SHOW_AUTH_OVERLAY on mount and redirects to the previous page
+ * (from location state) or /app/home as fallback.
+ */
+function AuthRedirect() {
+  const { dispatch } = getState();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch({ type: 'SHOW_AUTH_OVERLAY' });
+    const returnTo = location.state?.from || '/app/home';
+    navigate(returnTo, { replace: true });
+  }, [dispatch, navigate, location.state]);
+
+  return null;
+}
+
 function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }) {
   const location = useLocation();
 
@@ -36,10 +58,16 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
   const LayoutComponent = overrides.layout || Layout;
   const SettingsComponent = overrides.settings || SettingsView;
   const PaymentComponent = overrides.payment || PaymentView;
-  const SignInComponent = overrides.signIn || SignInView;
-  const SignUpComponent = overrides.signUp || SignUpView;
   const SignOutComponent = overrides.signOut || SignOutView;
   const NotFoundComponent = overrides.notFound || NotFound;
+
+  // When authOverlay is enabled, redirect /signin and /signup to show the overlay instead
+  const SignInComponent = constants.authOverlay
+    ? AuthRedirect
+    : (overrides.signIn || SignInView);
+  const SignUpComponent = constants.authOverlay
+    ? AuthRedirect
+    : (overrides.signUp || SignUpView);
 
   return (
     <Routes>

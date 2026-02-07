@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.7.0
+
+  Improve light mode sidebar contrast
+
 2.6.0
 
   Fix dark mode flash
