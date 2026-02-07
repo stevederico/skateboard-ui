@@ -1,5 +1,13 @@
 # CHANGELOG
 
+2.3.0
+
+  Remove sidebar user section
+  Remove sidebar divider
+  Remove sidebar group label
+  Add hideSidebarInsetRounding prop
+  Fix SettingsView rounding
+
 2.2.2
 
   Add cursor-pointer to interactive components

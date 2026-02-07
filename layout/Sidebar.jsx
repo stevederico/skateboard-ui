@@ -2,39 +2,26 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import DynamicIcon from "../core/DynamicIcon.jsx";
 import { getState } from "../core/Context.jsx";
-import { Avatar, AvatarFallback } from "../shadcn/ui/avatar.jsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../shadcn/ui/dropdown-menu.jsx";
 import {
   Sidebar as SidebarRoot,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator,
   useSidebar,
 } from "../shadcn/ui/sidebar";
-import { ChevronsUpDown, LogOut, Settings, CreditCard, Bell } from "lucide-react";
+import { Settings } from "lucide-react";
 
 /**
  * Desktop navigation sidebar using shadcn primitives.
  *
  * Renders app pages from constants.pages with DynamicIcon icons,
- * tooltip support when collapsed, settings pushed to bottom,
- * and a NavUser dropdown footer with avatar, account, billing, and logout.
+ * tooltip support when collapsed, and settings pushed to the footer.
  *
  * @returns {JSX.Element} Sidebar navigation
  *
@@ -50,13 +37,6 @@ export default function Sidebar({ variant = "inset", ...props }) {
   const currentPage = (location.pathname.split("/")[2] || "").toLowerCase();
   const { state } = getState();
   const constants = state.constants;
-  const user = state.user;
-
-  const initials = user?.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : user?.email
-      ? user.email[0].toUpperCase()
-      : "U";
 
   return (
     <SidebarRoot collapsible="icon" variant={variant} {...props}>
@@ -90,7 +70,6 @@ export default function Sidebar({ variant = "inset", ...props }) {
       {/* Main navigation from constants.pages */}
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{constants.appName}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {constants.pages.map((item) => {
@@ -119,7 +98,7 @@ export default function Sidebar({ variant = "inset", ...props }) {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer: NavUser + Settings */}
+      {/* Footer: Settings */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -131,86 +110,6 @@ export default function Sidebar({ variant = "inset", ...props }) {
               <Settings size={18} strokeWidth={1.5} />
               <span>Settings</span>
             </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarSeparator />
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <SidebarMenuButton
-                  size="lg"
-                  render={<div />}
-                >
-                  <Avatar>
-                    <AvatarFallback>
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      {user?.name || "User"}
-                    </span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {user?.email || ""}
-                    </span>
-                  </div>
-                  <ChevronsUpDown className="ml-auto size-4" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="min-w-56"
-                side="bottom"
-                align="end"
-                sideOffset={4}
-              >
-                <DropdownMenuGroup>
-                  <DropdownMenuLabel>
-                    <div className="flex items-center gap-2">
-                      <Avatar>
-                        <AvatarFallback>
-                          {initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="grid flex-1 text-left text-sm leading-tight">
-                        <span className="truncate font-semibold">
-                          {user?.name || "User"}
-                        </span>
-                        <span className="truncate text-xs text-muted-foreground">
-                          {user?.email || ""}
-                        </span>
-                      </div>
-                    </div>
-                  </DropdownMenuLabel>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/settings")}
-                  >
-                    <Settings />
-                    Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/settings?tab=billing")}
-                  >
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/settings?tab=notifications")}
-                  >
-                    <Bell />
-                    Notifications
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => navigate("/signout")}
-                >
-                  <LogOut />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

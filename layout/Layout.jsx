@@ -11,6 +11,9 @@ import { getState } from '../core/Context.jsx';
  * configuration and programmatic visibility state. Uses SidebarInset
  * for proper shadcn sidebar layout with inset variant.
  *
+ * Set `constants.hideSidebarInsetRounding` to true to remove the
+ * rounded corners on the main content area.
+ *
  * @param {Object} props
  * @param {React.ReactNode} [props.children] - Child content (unused, Outlet renders routes)
  * @returns {JSX.Element} Layout with sidebar, main content, and tab bar
@@ -39,7 +42,7 @@ export default function Layout({ children }) {
         '--header-height': '3.5rem',
       }}>
         {showSidebar && <Sidebar variant="inset" />}
-        <SidebarInset>
+        <SidebarInset className={constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}>
           <Outlet />
         </SidebarInset>
       </SidebarProvider>
