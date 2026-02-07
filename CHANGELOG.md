@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.9.1
+
+  Remove SignInView header text
+  Remove SignUpView header text
+
 2.9.0
 
   Improve dark mode sidebar contrast

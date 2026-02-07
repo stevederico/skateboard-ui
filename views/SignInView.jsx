@@ -84,9 +84,7 @@ export default function LoginForm({
               </div>
               <span className="text-3xl font-bold">{constants.appName}</span>
             </div>
-            <CardTitle>Welcome back</CardTitle>
-            <CardDescription>Sign in to your account</CardDescription>
-          </CardHeader>
+                      </CardHeader>
           <CardContent>
             {errorMessage && (
               <Alert variant="destructive" className="mb-4">

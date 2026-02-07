@@ -97,9 +97,7 @@ export default function LoginForm({
               </div>
               <span className="text-3xl font-bold">{constants.appName}</span>
             </div>
-            <CardTitle>Create an account</CardTitle>
-            <CardDescription>Enter your details to get started</CardDescription>
-          </CardHeader>
+                      </CardHeader>
           <CardContent>
             {errorMessage !== '' && (
               <Alert variant="destructive" className="mb-4">
