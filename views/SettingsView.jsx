@@ -69,6 +69,31 @@ export default function SettingsView() {
 
       {/* Main content */}
       <div className="flex flex-col items-center p-4 gap-4">
+        {/* Sign In prompt (shown when not authenticated and auth is enabled) */}
+        {!user && constants.noLogin !== true && (
+          <Card className="w-full max-w-lg">
+            <CardHeader>
+              <CardTitle>Account</CardTitle>
+              <CardDescription>Sign in to access your account settings.</CardDescription>
+              <CardAction>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (constants.authOverlay) {
+                      dispatch({ type: 'SHOW_AUTH_OVERLAY' });
+                    } else {
+                      navigate('/signin');
+                    }
+                  }}
+                >
+                  Sign In
+                </Button>
+              </CardAction>
+            </CardHeader>
+          </Card>
+        )}
+
         {/* Account */}
         {showAuth && (
           <Card className="w-full max-w-lg">
