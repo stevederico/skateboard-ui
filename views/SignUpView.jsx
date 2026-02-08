@@ -11,23 +11,32 @@ import { getState } from "../core/Context.jsx";
 import { getBackendURL } from '../core/Utilities'
 
 /**
- * Full-page sign-up form.
+ * Sign-up form component.
  *
  * Creates account via POST to /signup with name, email, and password.
- * Validates password length (6-72 chars), dispatches SET_USER on success,
- * and navigates to /app. Includes legal agreement links.
+ * Validates password length (6-72 chars), dispatches SET_USER on success.
+ * In full-page mode, navigates to /app. In embedded mode, calls onSuccess.
  *
  * @param {Object} props
  * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Sign-up page
+ * @param {boolean} [props.embedded=false] - Render without page wrapper (for dialogs)
+ * @param {function} [props.onSuccess] - Called after successful sign-up (embedded mode)
+ * @param {function} [props.onSwitchMode] - Called when user clicks "Sign In" (embedded mode)
+ * @returns {JSX.Element} Sign-up form
  *
  * @example
- * import SignUpView from '@stevederico/skateboard-ui/SignUpView';
- *
+ * // Full page
  * <Route path="/signup" element={<SignUpView />} />
+ *
+ * @example
+ * // Embedded in dialog
+ * <SignUpView embedded onSuccess={handleSuccess} onSwitchMode={() => setMode('signin')} />
  */
 export default function LoginForm({
   className,
+  embedded = false,
+  onSuccess,
+  onSwitchMode,
   ...props
 }) {
   const { state, dispatch } = getState();
@@ -76,7 +85,11 @@ export default function LoginForm({
           localStorage.setItem(csrfKey, csrfToken);
         }
         dispatch({ type: 'SET_USER', payload: data });
-        navigate('/app');
+        if (embedded && onSuccess) {
+          onSuccess();
+        } else {
+          navigate('/app');
+        }
       } else {
         setErrorMessage('Invalid Credentials')
       }
@@ -84,6 +97,96 @@ export default function LoginForm({
       console.error('Signup failed:', error);
       setErrorMessage('Server Error')
     }
+  }
+
+  const formContent = (
+    <>
+      {errorMessage !== '' && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription className="text-center">{errorMessage}</AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={signUpClicked} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            ref={nameInputRef}
+            id="name"
+            placeholder="John Doe"
+            required
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="john@example.com"
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            required
+            minLength={6}
+            maxLength={72}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+          <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
+        </div>
+
+        <Button
+          type="submit"
+          variant="gradient"
+          size="cta"
+          className="w-full"
+        >
+          <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
+            <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
+            Sign Up
+          </span>
+        </Button>
+
+        <div className="text-center text-sm">
+          <span className="text-muted-foreground">Already have an account?</span>{" "}
+          <Button variant="link" className="p-0 h-auto" onClick={(e) => { e.preventDefault(); embedded && onSwitchMode ? onSwitchMode() : navigate('/signin'); }}>
+            Sign In
+          </Button>
+        </div>
+      </form>
+
+      <div className="mt-4 text-center text-xs text-muted-foreground">
+        By registering you agree to our{" "}
+        <a href="/terms" className="underline underline-offset-4 hover:text-foreground">Terms of Service</a>,{" "}
+        <a href="/eula" className="underline underline-offset-4 hover:text-foreground">EULA</a>,{" "}
+        <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy Policy</a>
+      </div>
+    </>
+  );
+
+  if (embedded) {
+    return formContent;
   }
 
   return (
@@ -99,87 +202,7 @@ export default function LoginForm({
             </div>
           </CardHeader>
           <CardContent>
-            {errorMessage !== '' && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertDescription className="text-center">{errorMessage}</AlertDescription>
-              </Alert>
-            )}
-
-            <form onSubmit={signUpClicked} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  ref={nameInputRef}
-                  id="name"
-                  placeholder="John Doe"
-                  required
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    setErrorMessage('');
-                  }}
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setErrorMessage('');
-                  }}
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                  minLength={6}
-                  maxLength={72}
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setErrorMessage('');
-                  }}
-                />
-                <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
-              </div>
-
-              <Button
-                type="submit"
-                variant="gradient"
-                size="cta"
-                className="w-full"
-              >
-                <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
-                  <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
-                  Sign Up
-                </span>
-              </Button>
-
-              <div className="text-center text-sm">
-                <span className="text-muted-foreground">Already have an account?</span>{" "}
-                <Button variant="link" className="p-0 h-auto" onClick={(e) => { e.preventDefault(); navigate('/signin'); }}>
-                  Sign In
-                </Button>
-              </div>
-            </form>
-
-            <div className="mt-4 text-center text-xs text-muted-foreground">
-              By registering you agree to our{" "}
-              <a href="/terms" className="underline underline-offset-4 hover:text-foreground">Terms of Service</a>,{" "}
-              <a href="/eula" className="underline underline-offset-4 hover:text-foreground">EULA</a>,{" "}
-              <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy Policy</a>
-            </div>
+            {formContent}
           </CardContent>
         </Card>
       </div>

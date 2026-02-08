@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2.9.5
+
+  Reuse SignInView in AuthOverlay
+  Reuse SignUpView in AuthOverlay
+  Add embedded prop to views
+
 2.9.4
 
   Remove unused Card imports
