@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "2.9.3",
+  "version": "2.9.4",
   "type": "module",
   "exports": {
     "./Sidebar": {

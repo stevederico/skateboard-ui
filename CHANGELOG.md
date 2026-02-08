@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.9.4
+
+  Remove unused Card imports
+  Fix CardHeader indentation
+
 2.9.3
 
   Simplify sidebar brand styling
