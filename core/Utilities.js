@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { UNSAFE_NavigationContext } from 'react-router-dom';
 import { getDispatch } from './Context.jsx';
 
 // Constants will be initialized by the app shell
@@ -984,4 +985,34 @@ export function setUIVisibility({ sidebar, tabBar }) {
     } else {
         console.warn('setUIVisibility: Context not initialized');
     }
+}
+
+/**
+ * Safe navigation hook that works with or without Router context.
+ *
+ * Uses UNSAFE_NavigationContext directly instead of useNavigate() to avoid
+ * throwing when rendered outside Router (e.g., in Portals or module duplication).
+ * Falls back to window.location.href if no Router context is available.
+ *
+ * @returns {function} Navigate function (path, options?) => void
+ *
+ * @example
+ * const navigate = useSafeNavigate();
+ * navigate('/app');
+ * navigate('/app', { replace: true });
+ */
+export function useSafeNavigate() {
+    const ctx = useContext(UNSAFE_NavigationContext);
+
+    if (!ctx) {
+        return (path) => { window.location.href = path; };
+    }
+
+    return (path, options = {}) => {
+        if (options.replace) {
+            ctx.navigator.replace(path, options.state);
+        } else {
+            ctx.navigator.push(path, options.state);
+        }
+    };
 }
