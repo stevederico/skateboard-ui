@@ -3,7 +3,7 @@ import { cn } from "../shadcn/lib/utils"
 import { Button } from "../shadcn/ui/button"
 import { Input } from "../shadcn/ui/input"
 import { Label } from "../shadcn/ui/label"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../shadcn/ui/card"
+import { Card, CardContent, CardHeader } from "../shadcn/ui/card"
 import { Alert, AlertDescription } from "../shadcn/ui/alert"
 import DynamicIcon from '../core/DynamicIcon';
 import { useNavigate } from 'react-router-dom';
@@ -84,7 +84,7 @@ export default function LoginForm({
               </div>
               <span className="text-3xl font-bold">{constants.appName}</span>
             </div>
-                      </CardHeader>
+          </CardHeader>
           <CardContent>
             {errorMessage && (
               <Alert variant="destructive" className="mb-4">
