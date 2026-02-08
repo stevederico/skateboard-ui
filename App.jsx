@@ -159,15 +159,16 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <Toaster position="top-right" richColors closeButton />
         <ContextProvider constants={constants}>
-          <AuthOverlay />
           {Wrapper ? (
             <Wrapper>
               <Router>
+                <AuthOverlay />
                 <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
               </Router>
             </Wrapper>
           ) : (
             <Router>
+              <AuthOverlay />
               <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
             </Router>
           )}

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.9.6
+
+  Move AuthOverlay inside Router
+
 2.9.5
 
   Reuse SignInView in AuthOverlay
