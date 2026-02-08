@@ -6,9 +6,8 @@ import { Label } from "../shadcn/ui/label"
 import { Card, CardContent, CardHeader } from "../shadcn/ui/card"
 import { Alert, AlertDescription } from "../shadcn/ui/alert"
 import DynamicIcon from '../core/DynamicIcon';
-import { useNavigate } from 'react-router-dom';
 import { getState } from "../core/Context.jsx";
-import { getBackendURL } from '../core/Utilities'
+import { getBackendURL, useSafeNavigate } from '../core/Utilities'
 
 /**
  * Sign-up form component.
@@ -44,8 +43,8 @@ export default function LoginForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useSafeNavigate();
   const nameInputRef = useRef(null);
 
   // Focus the first input on mount

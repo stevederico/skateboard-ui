@@ -6,9 +6,8 @@ import { Label } from "../shadcn/ui/label"
 import { Card, CardContent, CardHeader } from "../shadcn/ui/card"
 import { Alert, AlertDescription } from "../shadcn/ui/alert"
 import DynamicIcon from '../core/DynamicIcon';
-import { useNavigate } from 'react-router-dom';
 import { getState } from "../core/Context.jsx";
-import { getBackendURL } from '../core/Utilities'
+import { getBackendURL, useSafeNavigate } from '../core/Utilities'
 
 /**
  * Sign-in form component.
@@ -43,7 +42,7 @@ export default function LoginForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useSafeNavigate();
   const emailInputRef = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState('')

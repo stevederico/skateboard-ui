@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.9.7
+
+  Add useSafeNavigate hook
+  Fix Router context error in auth views
+
 2.9.6
 
   Move AuthOverlay inside Router
