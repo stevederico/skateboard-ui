@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2.9.8
+
+  Add useUser hook
+  Add useDispatch hook
+  Update README Context docs
+
 2.9.7
 
   Add useSafeNavigate hook

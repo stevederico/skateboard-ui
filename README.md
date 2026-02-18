@@ -770,7 +770,7 @@ import ErrorBoundary from '@stevederico/skateboard-ui/ErrorBoundary';
 ## Context (State Management)
 
 ```javascript
-import { getState } from '@stevederico/skateboard-ui/Context';
+import { getState, useUser, useDispatch } from '@stevederico/skateboard-ui/Context';
 
 function MyComponent() {
   const { state, dispatch } = getState();
@@ -784,6 +784,33 @@ function MyComponent() {
   dispatch({ type: 'CLEAR_USER' });
 }
 ```
+
+### Optimized Hooks
+
+Use these hooks to avoid unnecessary re-renders:
+
+```javascript
+import { useUser, useDispatch } from '@stevederico/skateboard-ui/Context';
+
+// Only re-renders when user changes (not on sidebar/theme changes)
+function ProfileCard() {
+  const user = useUser();
+  if (!user) return null;
+  return <div>{user.name}</div>;
+}
+
+// Stable dispatch reference, never causes re-renders
+function SignOutButton() {
+  const dispatch = useDispatch();
+  return <button onClick={() => dispatch({ type: 'CLEAR_USER' })}>Sign Out</button>;
+}
+```
+
+| Hook | Returns | Re-renders on |
+|------|---------|---------------|
+| `getState()` | `{ state, dispatch }` | Any state change |
+| `useUser()` | `user` or `null` | User changes only |
+| `useDispatch()` | `dispatch` | Never (stable) |
 
 ### State Shape
 
