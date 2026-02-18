@@ -206,3 +206,46 @@ export function ContextProvider({ children, constants }) {
 export function getState() {
   return useContext(context);
 }
+
+/**
+ * Hook to access only the current user.
+ *
+ * More efficient than getState() when you only need user data,
+ * as it avoids re-renders from unrelated state changes.
+ *
+ * @returns {Object|null} Current user object or null if not authenticated
+ *
+ * @example
+ * import { useUser } from '@stevederico/skateboard-ui/Context';
+ *
+ * function ProfileCard() {
+ *   const user = useUser();
+ *   if (!user) return null;
+ *   return <div>{user.name}</div>;
+ * }
+ */
+export function useUser() {
+  const { state } = useContext(context);
+  return state.user;
+}
+
+/**
+ * Hook to access dispatch function.
+ *
+ * Use when you only need to dispatch actions without reading state.
+ * Avoids re-renders since dispatch is stable.
+ *
+ * @returns {Function} Dispatch function
+ *
+ * @example
+ * import { useDispatch } from '@stevederico/skateboard-ui/Context';
+ *
+ * function SignOutButton() {
+ *   const dispatch = useDispatch();
+ *   return <button onClick={() => dispatch({ type: 'CLEAR_USER' })}>Sign Out</button>;
+ * }
+ */
+export function useDispatch() {
+  const { dispatch } = useContext(context);
+  return dispatch;
+}
