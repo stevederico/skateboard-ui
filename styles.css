@@ -209,6 +209,16 @@
   code, pre, kbd {
     font-family: 'Geist Mono', ui-monospace, monospace;
   }
+  ::selection {
+    background-color: color-mix(in oklch, var(--color-app) 20%, transparent);
+  }
+}
+
+@layer utilities {
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 200px;
+  }
 }
 
 #root {

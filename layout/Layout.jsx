@@ -40,6 +40,9 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen flex flex-col pt-[env(safe-area-inset-top)] pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:rounded-md focus:ring-2 focus:ring-ring">
+        Skip to content
+      </a>
       <SidebarProvider
         defaultOpen={!constants.sidebarCollapsed}
         style={{
@@ -47,7 +50,7 @@ export default function Layout({ children }) {
           '--header-height': '3.5rem',
         }}>
         {showSidebar && <Sidebar variant="inset" />}
-        <SidebarInset className={`border border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
+        <SidebarInset id="main" className={`border border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
           <Outlet />
         </SidebarInset>
       </SidebarProvider>

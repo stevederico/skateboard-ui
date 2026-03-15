@@ -1,5 +1,13 @@
 # CHANGELOG
 
+2.12.0
+
+  Add skip-to-content link
+  Add selection styling brand color
+  Add content-auto utility class
+  Add button active press feedback
+  Add main landmark id
+
 2.11.0
 
   Fix DynamicIcon lazy loading
