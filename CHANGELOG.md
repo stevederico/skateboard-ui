@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2.10.0
+
+  Fix landing page feature icons
+  Add FeatureIcon DynamicIcon resolver
+  Export canResolveIcon utility
+
 2.9.9
 
   Add proportional radius cascade
