@@ -16,7 +16,7 @@ import { Separator } from "../shadcn/ui/separator"
 import { Button } from "../shadcn/ui/button"
 import { getState } from "../core/Context.jsx";
 import { showCheckout } from '../core/Utilities.js';
-import { Sparkles, CircleCheck } from 'lucide-react';
+import { IconSparkles, IconCircleCheck } from '@tabler/icons-react';
 
 /**
  * Premium upgrade drawer with pricing and checkout button.
@@ -104,7 +104,7 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
               <div className="w-full space-y-3">
                 {product.features?.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <CircleCheck className="size-5 text-primary shrink-0" />
+                    <IconCircleCheck className="size-5 text-primary shrink-0" />
                     <span className="text-sm">{feature}</span>
                   </div>
                 ))}
@@ -115,7 +115,7 @@ const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
 
         <DrawerFooter>
           <Button className="w-full" size="lg" onClick={handleUpgrade}>
-            <Sparkles className="size-4" />
+            <IconSparkles className="size-4" />
             Upgrade to {product.title}
           </Button>
         </DrawerFooter>
