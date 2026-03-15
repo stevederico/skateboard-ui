@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.9.9
+
+  Add proportional radius cascade
+  Add radius-2xl/3xl/4xl tokens
+
 2.9.8
 
   Add useUser hook
