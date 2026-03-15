@@ -2,12 +2,25 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { getState } from "../core/Context.jsx";
-import DynamicIcon from '../core/DynamicIcon.jsx';
+import DynamicIcon, { canResolveIcon } from '../core/DynamicIcon.jsx';
 import { Sun, Moon, Check } from 'lucide-react';
 import { Button } from '../shadcn/ui/button.jsx';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../shadcn/ui/card.jsx';
 import { Badge } from '../shadcn/ui/badge.jsx';
 import { Separator } from '../shadcn/ui/separator.jsx';
+
+/**
+ * Renders a feature icon from a name string or emoji.
+ * Resolves Lucide icon names (kebab-case), falls back to raw text (emoji).
+ *
+ * @param {Object} props
+ * @param {string} props.name - Icon name (kebab-case) or emoji string
+ * @returns {JSX.Element} Icon component or text span
+ */
+function FeatureIcon({ name }) {
+  if (canResolveIcon(name)) return <DynamicIcon name={name} size={24} />;
+  return <span>{name}</span>;
+}
 
 /**
  * Default landing page with hero section, features grid, pricing card,
@@ -85,7 +98,9 @@ export default function LandingView() {
                 <Card key={index} className="text-center">
                   <CardHeader className="items-center">
                     <div className="w-full flex justify-center">
-                      <Badge variant="secondary" className="text-2xl mb-2 h-auto px-3 py-1">{feature.icon}</Badge>
+                      <Badge variant="secondary" className="text-2xl mb-2 h-auto px-3 py-1">
+                        <FeatureIcon name={feature.icon} />
+                      </Badge>
                     </div>
                     <CardTitle className="text-xl font-bold">{feature.title}</CardTitle>
                     <CardDescription>{feature.description}</CardDescription>

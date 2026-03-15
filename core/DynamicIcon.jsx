@@ -45,4 +45,14 @@ const DynamicIcon = ({ name, size = 24, color = "currentColor", strokeWidth = 2,
   return <Icon size={size} color={color} strokeWidth={strokeWidth} className={cn(className)} {...props} />;
 };
 
+/**
+ * Check if a name string resolves to a valid Lucide icon.
+ *
+ * @param {string} name - Icon name to check
+ * @returns {boolean} True if name resolves to an icon
+ */
+export function canResolveIcon(name) {
+  return resolveIcon(name) !== null;
+}
+
 export default DynamicIcon;
