@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.10.1
+
+  Add Geist font files self-hosted
+  Add @font-face declarations
+
 2.10.0
 
   Fix landing page feature icons
