@@ -2,23 +2,42 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { getState } from "../core/Context.jsx";
-import DynamicIcon, { canResolveIcon } from '../core/DynamicIcon.jsx';
+import DynamicIcon from '../core/DynamicIcon.jsx';
 import { Sun, Moon, Check } from 'lucide-react';
 import { Button } from '../shadcn/ui/button.jsx';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../shadcn/ui/card.jsx';
 import { Badge } from '../shadcn/ui/badge.jsx';
 import { Separator } from '../shadcn/ui/separator.jsx';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
+const DEFAULT_NAV_LINKS = [
+  { label: 'Features', href: '#features' },
+];
+
+const DEFAULT_NAV_LINKS_SUFFIX = [
+  { label: 'Terms', href: '/terms' },
+];
+
+const PRICING_LINK = { label: 'Pricing', href: '#pricing' };
+
+const PRIVACY_LINK = { label: 'Privacy', href: '/privacy' };
+const TERMS_LINK = { label: 'Terms', href: '/terms' };
+const EULA_LINK = { label: 'EULA', href: '/eula' };
+
 /**
  * Renders a feature icon from a name string or emoji.
- * Resolves Lucide icon names (kebab-case), falls back to raw text (emoji).
+ * If the name looks like an icon identifier (ASCII letters, digits, hyphens),
+ * renders it via DynamicIcon with lazy loading. Otherwise treats it as
+ * raw text (e.g. an emoji).
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (kebab-case) or emoji string
  * @returns {JSX.Element} Icon component or text span
  */
 function FeatureIcon({ name }) {
-  if (canResolveIcon(name)) return <DynamicIcon name={name} size={24} />;
+  const isIconName = /^[a-z][a-z0-9-]*$/i.test(name);
+  if (isIconName) return <DynamicIcon name={name} size={24} />;
   return <span>{name}</span>;
 }
 
@@ -57,9 +76,9 @@ export default function LandingView() {
 
           <div className="hidden md:flex gap-6">
             {(constants.navLinks || [
-              { label: 'Features', href: '#features' },
-              ...(constants.stripeProducts?.length > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
-              { label: 'Terms', href: '/terms' },
+              ...DEFAULT_NAV_LINKS,
+              ...(constants.stripeProducts?.length > 0 ? [PRICING_LINK] : []),
+              ...DEFAULT_NAV_LINKS_SUFFIX,
             ]).map((link, index) => (
               <a key={index} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors font-semibold">{link.label}</a>
             ))}
@@ -171,14 +190,14 @@ export default function LandingView() {
           <Separator className="mb-8" />
           <div className="flex justify-center gap-8 mb-6">
             {(constants.footerLinks || [
-              ...(constants.privacyPolicy ? [{ label: 'Privacy', href: '/privacy' }] : []),
-              ...(constants.termsOfService ? [{ label: 'Terms', href: '/terms' }] : []),
-              ...(constants.EULA ? [{ label: 'EULA', href: '/eula' }] : []),
+              ...(constants.privacyPolicy ? [PRIVACY_LINK] : []),
+              ...(constants.termsOfService ? [TERMS_LINK] : []),
+              ...(constants.EULA ? [EULA_LINK] : []),
             ]).map((link, index) => (
               <a key={index} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors font-semibold">{link.label}</a>
             ))}
           </div>
-          <p className="text-center text-muted-foreground">&copy; {new Date().getFullYear()} {constants.companyName}. {constants.copyrightText || 'All rights reserved.'}</p>
+          <p className="text-center text-muted-foreground">&copy; {CURRENT_YEAR} {constants.companyName}. {constants.copyrightText || 'All rights reserved.'}</p>
         </div>
       </footer>
     </div>

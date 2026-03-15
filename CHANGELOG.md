@@ -1,5 +1,12 @@
 # CHANGELOG
 
+2.11.0
+
+  Fix DynamicIcon lazy loading
+  Remove barrel import lucide-react
+  Hoist LandingView static values
+  Add FeatureIcon emoji fallback
+
 2.10.1
 
   Add Geist font files self-hosted
