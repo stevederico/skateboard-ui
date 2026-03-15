@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2.13.0
+
+  Fix DynamicIcon per-icon imports
+  Remove lucide-react from views
+  Switch views to Tabler icons
+
 2.12.0
 
   Add skip-to-content link

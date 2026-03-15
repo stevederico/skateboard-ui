@@ -14,64 +14,74 @@ function toPascalCase(str) {
     .join("");
 }
 
-let iconsModule = null;
-let iconsPromise = null;
+/** Cache of resolved icon components keyed by name */
+const iconCache = new Map();
+
+/** Cache of in-flight import promises keyed by module name */
+const importCache = new Map();
 
 /**
- * Lazily load the lucide-react module on first use.
- * Subsequent calls return the cached module immediately.
+ * Load a single Tabler icon by its PascalCase name (e.g. "IconLock").
+ * Each icon is imported individually (~1KB) instead of loading the entire
+ * icon library (~400KB). Results are cached for instant subsequent lookups.
  *
- * @returns {Promise<Object>} The lucide-react module
+ * @param {string} iconName - PascalCase icon name with "Icon" prefix
+ * @returns {Promise<React.ComponentType|null>} Icon component or null
  */
-function loadIcons() {
-  if (iconsModule) return Promise.resolve(iconsModule);
-  if (!iconsPromise) {
-    iconsPromise = import("lucide-react").then((mod) => {
-      iconsModule = mod;
-      return mod;
+function loadIcon(iconName) {
+  if (iconCache.has(iconName)) return Promise.resolve(iconCache.get(iconName));
+  if (importCache.has(iconName)) return importCache.get(iconName);
+
+  const promise = import(`@tabler/icons-react/dist/esm/icons/${iconName}.mjs`)
+    .then((mod) => {
+      const Icon = mod.default || mod[iconName] || null;
+      iconCache.set(iconName, Icon);
+      importCache.delete(iconName);
+      return Icon;
+    })
+    .catch(() => {
+      iconCache.set(iconName, null);
+      importCache.delete(iconName);
+      return null;
     });
-  }
-  return iconsPromise;
+
+  importCache.set(iconName, promise);
+  return promise;
 }
 
 /**
- * Resolve icon name to a Lucide component from the cached module.
+ * Resolve a kebab-case icon name to a Tabler PascalCase module name.
+ * e.g. "layout-dashboard" → "IconLayoutDashboard"
  *
- * @param {Object} mod - The lucide-react module
- * @param {string} name - Icon name (kebab-case, snake_case, or PascalCase)
- * @returns {React.ComponentType|null} Icon component or null
+ * @param {string} name - Icon name in any case format
+ * @returns {string} Tabler PascalCase name with "Icon" prefix
  */
-function resolveIcon(mod, name) {
-  if (!mod) return null;
-  const candidates = [
-    name,
-    toPascalCase(name),
-    name.charAt(0).toUpperCase() + name.slice(1),
-  ];
-  for (const candidate of candidates) {
-    if (mod[candidate]) return mod[candidate];
-  }
-  return null;
+function toTablerName(name) {
+  if (name.startsWith("Icon")) return name;
+  return "Icon" + toPascalCase(name);
 }
 
 /**
- * Check if a name string resolves to a valid Lucide icon.
- * Returns false until the icon module has been loaded.
+ * Check if a name string has been resolved to a valid icon.
+ * Returns false for unloaded or invalid icons.
  *
  * @param {string} name - Icon name to check
- * @returns {boolean} True if name resolves to an icon
+ * @returns {boolean} True if icon is cached and valid
  */
 export function canResolveIcon(name) {
-  if (!iconsModule) return false;
-  return resolveIcon(iconsModule, name) !== null;
+  const tablerName = toTablerName(name);
+  return iconCache.has(tablerName) && iconCache.get(tablerName) !== null;
 }
 
 /**
- * Render a Lucide icon by name string with lazy loading.
+ * Render a Tabler icon by name string with per-icon lazy loading.
  *
- * Loads lucide-react on first render via dynamic import, then caches the
- * module for all subsequent uses. Shows nothing while loading (typically
- * under 50ms from cache).
+ * Each icon is imported individually from @tabler/icons-react (~1KB per icon)
+ * instead of loading the entire library. Resolved icons are cached in memory
+ * for instant rendering on subsequent uses.
+ *
+ * Accepts kebab-case ("layout-dashboard"), PascalCase ("LayoutDashboard"),
+ * or prefixed ("IconLayoutDashboard") names.
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (e.g. "home", "arrow-right", "Settings")
@@ -96,18 +106,16 @@ const DynamicIcon = ({
   className,
   ...props
 }) => {
-  const [Icon, setIcon] = useState(() => {
-    if (iconsModule) return resolveIcon(iconsModule, name);
-    return null;
-  });
+  const tablerName = toTablerName(name);
+
+  const [Icon, setIcon] = useState(() => iconCache.get(tablerName) || null);
 
   useEffect(() => {
     if (Icon) return;
-    loadIcons().then((mod) => {
-      const resolved = resolveIcon(mod, name);
-      setIcon(() => resolved);
+    loadIcon(tablerName).then((resolved) => {
+      if (resolved) setIcon(() => resolved);
     });
-  }, [name, Icon]);
+  }, [tablerName, Icon]);
 
   if (!Icon) return null;
 
@@ -116,7 +124,7 @@ const DynamicIcon = ({
       size={size}
       color={color}
       strokeWidth={strokeWidth}
-      className={cn(className)}
+      className={className}
       {...props}
     />
   );
