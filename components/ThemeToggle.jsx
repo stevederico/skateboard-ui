@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from 'next-themes';
-import { IconSun, IconMoon } from '@tabler/icons-react';
+import { Sun, Moon } from 'lucide-react';
 import { Button } from '../shadcn/ui/button.jsx';
 import { cn } from '../shadcn/lib/utils.js';
 
@@ -45,8 +45,8 @@ export default function ThemeToggle({ className = "", iconSize = 16, variant = "
       {...props}
     >
       {isDarkMode
-        ? <IconSun size={iconSize} />
-        : <IconMoon size={iconSize} />
+        ? <Sun size={iconSize} />
+        : <Moon size={iconSize} />
       }
     </Button>
   );

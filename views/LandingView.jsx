@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { getState } from "../core/Context.jsx";
 import DynamicIcon from '../core/DynamicIcon.jsx';
-import { IconSun, IconMoon, IconCheck } from '@tabler/icons-react';
+import { Sun, Moon, Check } from 'lucide-react';
 import { Button } from '../shadcn/ui/button.jsx';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../shadcn/ui/card.jsx';
 import { Badge } from '../shadcn/ui/badge.jsx';
@@ -86,7 +86,7 @@ export default function LandingView() {
 
           <div className="flex gap-3 items-center">
             <Button variant="outline" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
-              {isDarkMode ? <IconSun size={18} /> : <IconMoon size={18} />}
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </Button>
             <Button variant="default" onClick={() => navigate('/app')}>
               {constants.cta}
@@ -146,13 +146,13 @@ export default function LandingView() {
                     <ul className="text-left space-y-4 mb-8">
                       {(constants.stripeProducts[0]?.features || []).map((feature, index) => (
                         <li key={index} className="flex items-center gap-2">
-                          <IconCheck size={16} className="text-primary shrink-0" />
+                          <Check size={16} className="text-primary shrink-0" />
                           {feature}
                         </li>
                       ))}
                       {(constants.pricing?.extras || []).map((extra, index) => (
                         <li key={`extra-${index}`} className="flex items-center gap-2">
-                          <IconCheck size={16} className="text-primary shrink-0" />
+                          <Check size={16} className="text-primary shrink-0" />
                           {extra}
                         </li>
                       ))}

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+2.14.0
+
+  Switch icons to Lucide React
+  Update DynamicIcon Lucide loader
+  Remove Tabler icon imports
+
 2.13.0
 
   Fix DynamicIcon per-icon imports
