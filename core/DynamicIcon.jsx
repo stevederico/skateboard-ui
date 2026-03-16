@@ -14,6 +14,19 @@ function toPascalCase(str) {
     .join("");
 }
 
+/**
+ * Convert a PascalCase or camelCase string to kebab-case.
+ *
+ * @param {string} str - Input string
+ * @returns {string} kebab-case version
+ */
+function toKebabCase(str) {
+  return str
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1-$2")
+    .toLowerCase();
+}
+
 /** Cache of resolved icon components keyed by name */
 const iconCache = new Map();
 
@@ -21,44 +34,53 @@ const iconCache = new Map();
 const importCache = new Map();
 
 /**
- * Load a single Tabler icon by its PascalCase name (e.g. "IconLock").
+ * Load a single Lucide icon by its kebab-case file name (e.g. "arrow-right").
  * Each icon is imported individually (~1KB) instead of loading the entire
- * icon library (~400KB). Results are cached for instant subsequent lookups.
+ * icon library. Results are cached for instant subsequent lookups.
  *
- * @param {string} iconName - PascalCase icon name with "Icon" prefix
+ * @param {string} kebabName - kebab-case icon file name
+ * @param {string} cacheKey - PascalCase name used as cache key
  * @returns {Promise<React.ComponentType|null>} Icon component or null
  */
-function loadIcon(iconName) {
-  if (iconCache.has(iconName)) return Promise.resolve(iconCache.get(iconName));
-  if (importCache.has(iconName)) return importCache.get(iconName);
+function loadIcon(kebabName, cacheKey) {
+  if (iconCache.has(cacheKey)) return Promise.resolve(iconCache.get(cacheKey));
+  if (importCache.has(cacheKey)) return importCache.get(cacheKey);
 
-  const promise = import(`@tabler/icons-react/dist/esm/icons/${iconName}.mjs`)
+  const promise = import(`/node_modules/lucide-react/dist/esm/icons/${kebabName}.js`)
     .then((mod) => {
-      const Icon = mod.default || mod[iconName] || null;
-      iconCache.set(iconName, Icon);
-      importCache.delete(iconName);
+      const Icon = mod.default || null;
+      iconCache.set(cacheKey, Icon);
+      importCache.delete(cacheKey);
       return Icon;
     })
     .catch(() => {
-      iconCache.set(iconName, null);
-      importCache.delete(iconName);
+      iconCache.set(cacheKey, null);
+      importCache.delete(cacheKey);
       return null;
     });
 
-  importCache.set(iconName, promise);
+  importCache.set(cacheKey, promise);
   return promise;
 }
 
 /**
- * Resolve a kebab-case icon name to a Tabler PascalCase module name.
- * e.g. "layout-dashboard" → "IconLayoutDashboard"
+ * Resolve an icon name in any format to a PascalCase name and kebab-case file path.
+ * e.g. "layout-dashboard" → { pascal: "LayoutDashboard", kebab: "layout-dashboard" }
+ *      "LayoutDashboard"  → { pascal: "LayoutDashboard", kebab: "layout-dashboard" }
+ *
+ * Strips legacy "Icon" prefix from Tabler-style names for backwards compatibility.
  *
  * @param {string} name - Icon name in any case format
- * @returns {string} Tabler PascalCase name with "Icon" prefix
+ * @returns {{ pascal: string, kebab: string }} Resolved icon name pair
  */
-function toTablerName(name) {
-  if (name.startsWith("Icon")) return name;
-  return "Icon" + toPascalCase(name);
+function toIconName(name) {
+  let stripped = name;
+  if (stripped.startsWith("Icon") && stripped.length > 4 && stripped[4] === stripped[4].toUpperCase()) {
+    stripped = stripped.slice(4);
+  }
+  const pascal = /[-_\s]/.test(stripped) ? toPascalCase(stripped) : stripped;
+  const kebab = toKebabCase(pascal);
+  return { pascal, kebab };
 }
 
 /**
@@ -69,19 +91,19 @@ function toTablerName(name) {
  * @returns {boolean} True if icon is cached and valid
  */
 export function canResolveIcon(name) {
-  const tablerName = toTablerName(name);
-  return iconCache.has(tablerName) && iconCache.get(tablerName) !== null;
+  const { pascal } = toIconName(name);
+  return iconCache.has(pascal) && iconCache.get(pascal) !== null;
 }
 
 /**
- * Render a Tabler icon by name string with per-icon lazy loading.
+ * Render a Lucide icon by name string with per-icon lazy loading.
  *
- * Each icon is imported individually from @tabler/icons-react (~1KB per icon)
+ * Each icon is imported individually from lucide-react (~1KB per icon)
  * instead of loading the entire library. Resolved icons are cached in memory
  * for instant rendering on subsequent uses.
  *
  * Accepts kebab-case ("layout-dashboard"), PascalCase ("LayoutDashboard"),
- * or prefixed ("IconLayoutDashboard") names.
+ * or legacy prefixed ("IconLayoutDashboard") names.
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (e.g. "home", "arrow-right", "Settings")
@@ -106,16 +128,16 @@ const DynamicIcon = ({
   className,
   ...props
 }) => {
-  const tablerName = toTablerName(name);
+  const { pascal, kebab } = toIconName(name);
 
-  const [Icon, setIcon] = useState(() => iconCache.get(tablerName) || null);
+  const [Icon, setIcon] = useState(() => iconCache.get(pascal) || null);
 
   useEffect(() => {
     if (Icon) return;
-    loadIcon(tablerName).then((resolved) => {
+    loadIcon(kebab, pascal).then((resolved) => {
       if (resolved) setIcon(() => resolved);
     });
-  }, [tablerName, Icon]);
+  }, [pascal, kebab, Icon]);
 
   if (!Icon) return null;
 

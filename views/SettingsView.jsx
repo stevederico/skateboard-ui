@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from '../core/Context.jsx';
 import { useTheme } from 'next-themes';
-import { IconSun, IconMoon } from '@tabler/icons-react';
+import { Sun, Moon } from 'lucide-react';
 import Header from '../layout/Header.jsx';
 import { Avatar, AvatarFallback } from '../shadcn/ui/avatar.jsx';
 import { Badge } from '../shadcn/ui/badge.jsx';
@@ -62,7 +62,7 @@ export default function SettingsView() {
     <div className="flex-1">
       <Header title="Settings">
         <Button variant="ghost" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
-          {isDarkMode ? <IconSun size={20} /> : <IconMoon size={20} />}
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </Button>
       </Header>
 

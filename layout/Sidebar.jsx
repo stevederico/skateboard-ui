@@ -15,7 +15,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "../shadcn/ui/sidebar";
-import { IconSettings } from '@tabler/icons-react';
+import { Settings } from 'lucide-react';
 
 /**
  * Desktop navigation sidebar using shadcn primitives.
@@ -111,7 +111,7 @@ export default function Sidebar({ variant = "inset", ...props }) {
               className="data-active:font-normal"
               onClick={() => navigate("/app/settings")}
             >
-              <IconSettings size={20} strokeWidth={2} />
+              <Settings size={20} strokeWidth={2} />
               <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
