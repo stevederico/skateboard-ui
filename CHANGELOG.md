@@ -1,5 +1,10 @@
 # CHANGELOG
 
+2.15.0
+
+  Add authOverlay 401 retry logic
+  Add SHOW_AUTH_OVERLAY dispatch
+
 2.14.0
 
   Switch icons to Lucide React

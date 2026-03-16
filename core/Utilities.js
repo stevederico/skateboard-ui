@@ -723,11 +723,31 @@ export async function apiRequest(endpoint, options = {}) {
         if (timeoutId) clearTimeout(timeoutId);
     }
 
-    // Handle 401 (redirect to signout, unless authOverlay mode)
+    // Handle 401 (redirect to signout, or show auth overlay and retry)
     if (response.status === 401) {
         if (getConstants().authOverlay !== true) {
             window.location.href = '/signout';
+            throw new Error('Unauthorized');
         }
+
+        // In authOverlay mode: show sign-in overlay, retry request after auth
+        const dispatch = getDispatch();
+        if (dispatch) {
+            return new Promise((resolve, reject) => {
+                dispatch({
+                    type: 'SHOW_AUTH_OVERLAY',
+                    payload: async () => {
+                        try {
+                            const result = await apiRequest(endpoint, options);
+                            resolve(result);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    }
+                });
+            });
+        }
+
         throw new Error('Unauthorized');
     }
 
