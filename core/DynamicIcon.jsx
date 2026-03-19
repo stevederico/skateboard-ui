@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { cn } from "../shadcn/lib/utils.js";
+import * as LucideIcons from "lucide-react";
 
 /**
  * Convert a kebab-case, snake_case, or space-separated string to PascalCase.
@@ -27,42 +26,6 @@ function toKebabCase(str) {
     .toLowerCase();
 }
 
-/** Cache of resolved icon components keyed by name */
-const iconCache = new Map();
-
-/** Cache of in-flight import promises keyed by module name */
-const importCache = new Map();
-
-/**
- * Load a single Lucide icon by its kebab-case file name (e.g. "arrow-right").
- * Each icon is imported individually (~1KB) instead of loading the entire
- * icon library. Results are cached for instant subsequent lookups.
- *
- * @param {string} kebabName - kebab-case icon file name
- * @param {string} cacheKey - PascalCase name used as cache key
- * @returns {Promise<React.ComponentType|null>} Icon component or null
- */
-function loadIcon(kebabName, cacheKey) {
-  if (iconCache.has(cacheKey)) return Promise.resolve(iconCache.get(cacheKey));
-  if (importCache.has(cacheKey)) return importCache.get(cacheKey);
-
-  const promise = import(`/node_modules/lucide-react/dist/esm/icons/${kebabName}.js`)
-    .then((mod) => {
-      const Icon = mod.default || null;
-      iconCache.set(cacheKey, Icon);
-      importCache.delete(cacheKey);
-      return Icon;
-    })
-    .catch(() => {
-      iconCache.set(cacheKey, null);
-      importCache.delete(cacheKey);
-      return null;
-    });
-
-  importCache.set(cacheKey, promise);
-  return promise;
-}
-
 /**
  * Resolve an icon name in any format to a PascalCase name and kebab-case file path.
  * e.g. "layout-dashboard" → { pascal: "LayoutDashboard", kebab: "layout-dashboard" }
@@ -84,23 +47,22 @@ function toIconName(name) {
 }
 
 /**
- * Check if a name string has been resolved to a valid icon.
- * Returns false for unloaded or invalid icons.
+ * Check if a name string can be resolved to a valid Lucide icon.
  *
  * @param {string} name - Icon name to check
- * @returns {boolean} True if icon is cached and valid
+ * @returns {boolean} True if icon exists in the Lucide library
  */
 export function canResolveIcon(name) {
   const { pascal } = toIconName(name);
-  return iconCache.has(pascal) && iconCache.get(pascal) !== null;
+  return pascal in LucideIcons && typeof LucideIcons[pascal] === "function";
 }
 
 /**
- * Render a Lucide icon by name string with per-icon lazy loading.
+ * Render a Lucide icon by name string using a static import of all icons.
  *
- * Each icon is imported individually from lucide-react (~1KB per icon)
- * instead of loading the entire library. Resolved icons are cached in memory
- * for instant rendering on subsequent uses.
+ * All icons are bundled at build time from lucide-react, ensuring they work
+ * in both Vite dev mode and production builds. Icons are looked up synchronously
+ * by PascalCase name from the LucideIcons namespace.
  *
  * Accepts kebab-case ("layout-dashboard"), PascalCase ("LayoutDashboard"),
  * or legacy prefixed ("IconLayoutDashboard") names.
@@ -111,7 +73,7 @@ export function canResolveIcon(name) {
  * @param {string} [props.color='currentColor'] - Icon stroke color
  * @param {number} [props.strokeWidth=2] - Stroke width
  * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element|null} Rendered icon or null if loading/not found
+ * @returns {JSX.Element|null} Rendered icon or null if not found
  *
  * @example
  * import DynamicIcon from '@stevederico/skateboard-ui/DynamicIcon';
@@ -128,18 +90,10 @@ const DynamicIcon = ({
   className,
   ...props
 }) => {
-  const { pascal, kebab } = toIconName(name);
+  const { pascal } = toIconName(name);
+  const Icon = LucideIcons[pascal];
 
-  const [Icon, setIcon] = useState(() => iconCache.get(pascal) || null);
-
-  useEffect(() => {
-    if (Icon) return;
-    loadIcon(kebab, pascal).then((resolved) => {
-      if (resolved) setIcon(() => resolved);
-    });
-  }, [pascal, kebab, Icon]);
-
-  if (!Icon) return null;
+  if (!Icon || typeof Icon !== "function") return null;
 
   return (
     <Icon
