@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.22.0
+
+  Fix Layout sidebar override
+
 2.21.0
 
   Reduce sidebar width to 12rem
