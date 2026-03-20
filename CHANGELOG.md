@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.21.0
+
+  Reduce sidebar width to 12rem
+
 2.20.0
 
   Fix hero gradient using Tailwind primary token
