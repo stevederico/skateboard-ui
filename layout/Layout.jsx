@@ -46,7 +46,7 @@ export default function Layout({ children }) {
       <SidebarProvider
         defaultOpen={!constants.sidebarCollapsed}
         style={{
-          '--sidebar-width': 'calc(var(--spacing) * 72)',
+          '--sidebar-width': '12rem',
           '--header-height': '3.5rem',
         }}>
         {showSidebar && <Sidebar variant="inset" />}
