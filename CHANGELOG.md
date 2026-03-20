@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.18.0
+
+  Fix DynamicIcon single-word icon name resolution
+
 2.17.0
 
   Fix DynamicIcon forwardRef detection

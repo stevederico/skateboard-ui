@@ -41,7 +41,7 @@ function toIconName(name) {
   if (stripped.startsWith("Icon") && stripped.length > 4 && stripped[4] === stripped[4].toUpperCase()) {
     stripped = stripped.slice(4);
   }
-  const pascal = /[-_\s]/.test(stripped) ? toPascalCase(stripped) : stripped;
+  const pascal = /[-_\s]/.test(stripped) ? toPascalCase(stripped) : stripped.charAt(0).toUpperCase() + stripped.slice(1);
   const kebab = toKebabCase(pascal);
   return { pascal, kebab };
 }
