@@ -97,8 +97,9 @@ export default function LandingView() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative py-24 md:py-40 text-center overflow-hidden" style={{ background: 'linear-gradient(135deg, color-mix(in oklch, var(--color-app) 15%, var(--color-background)), color-mix(in oklch, var(--color-app) 5%, var(--color-background)))' }}>
-          <div className="absolute inset-0 opacity-10" style={{ background: 'radial-gradient(ellipse at 20% 50%, var(--color-app) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, var(--color-app) 0%, transparent 50%)' }} />
+        <section className="relative py-24 md:py-40 text-center overflow-hidden bg-app/15">
+          <div className="absolute inset-0 bg-app/25" style={{ maskImage: 'radial-gradient(ellipse at 20% 50%, black 0%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at 20% 50%, black 0%, transparent 70%)' }} />
+          <div className="absolute inset-0 bg-app/20" style={{ maskImage: 'radial-gradient(ellipse at 80% 30%, black 0%, transparent 60%)', WebkitMaskImage: 'radial-gradient(ellipse at 80% 30%, black 0%, transparent 60%)' }} />
           <div className="relative max-w-4xl mx-auto px-6">
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 text-foreground leading-tight">
               {constants.tagline}
