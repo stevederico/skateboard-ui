@@ -54,7 +54,8 @@ function toIconName(name) {
  */
 export function canResolveIcon(name) {
   const { pascal } = toIconName(name);
-  return pascal in LucideIcons && typeof LucideIcons[pascal] === "function";
+  const icon = LucideIcons[pascal];
+  return !!icon && (typeof icon === "function" || typeof icon?.render === "function");
 }
 
 /**
@@ -93,7 +94,7 @@ const DynamicIcon = ({
   const { pascal } = toIconName(name);
   const Icon = LucideIcons[pascal];
 
-  if (!Icon || typeof Icon !== "function") return null;
+  if (!Icon || (typeof Icon !== "function" && typeof Icon?.render !== "function")) return null;
 
   return (
     <Icon
