@@ -1,5 +1,13 @@
 # CHANGELOG
 
+2.17.0
+
+  Fix DynamicIcon forwardRef detection
+
+2.16.0
+
+  Fix DynamicIcon static imports
+
 2.15.0
 
   Add authOverlay 401 retry logic
