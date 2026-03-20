@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.20.0
+
+  Fix hero gradient using Tailwind primary token
+
 2.19.0
 
   Add colored hero gradient to default landing
