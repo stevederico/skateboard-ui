@@ -1,5 +1,9 @@
 # CHANGELOG
 
+2.19.0
+
+  Add colored hero gradient to default landing
+
 2.18.0
 
   Fix DynamicIcon single-word icon name resolution
