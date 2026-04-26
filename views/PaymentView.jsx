@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from '../core/Context.jsx';
-import { getCurrentUser } from '../core/Utilities.js'
+import { getCurrentUser, getAppKey } from '../core/Utilities.js'
 import { Spinner } from '../shadcn/ui/spinner.jsx';
 
 // Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
@@ -9,9 +9,14 @@ const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
 const DEFAULT_REDIRECT = '/app/home';
 
 function isAllowedRedirect(path) {
-  // Must start with allowed prefix and not contain protocol
-  if (path.includes('://') || path.includes('//')) return false;
-  return ALLOWED_REDIRECT_PREFIXES.some(prefix => path.startsWith(prefix));
+  try {
+    // Resolve relative to current origin; reject anything that escapes it.
+    const url = new URL(path, window.location.origin);
+    if (url.origin !== window.location.origin) return false;
+    return ALLOWED_REDIRECT_PREFIXES.some(prefix => url.pathname.startsWith(prefix));
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -28,8 +33,7 @@ function isAllowedRedirect(path) {
  * <Route path="payment" element={<PaymentView />} />
  */
 export default function PaymentView() {
-  const { state, dispatch } = getState();
-  const constants = state.constants;
+  const { dispatch } = getState();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -45,10 +49,6 @@ export default function PaymentView() {
   }, [dispatch]);
 
   useEffect(() => {
-    // Get app-specific localStorage keys
-    const appName = constants.appName || 'skateboard';
-    const getAppKey = (suffix) => `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
-
     // Get query parameters
     const success = searchParams.get('success') === 'true';
     const canceled = searchParams.get('canceled') === 'true';

@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from 'react';
-import { UNSAFE_NavigationContext } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useInRouterContext, useNavigate } from 'react-router-dom';
 import { getDispatch } from './Context.jsx';
 
 // Constants will be initialized by the app shell
@@ -131,8 +131,7 @@ export function getCookie(name) {
     // For token cookies, use app-specific name
     let cookieName = name;
     if (name === 'token') {
-        const appName = getConstants().appName || 'skateboard';
-        cookieName = `${appName.toLowerCase().replace(/\s+/g, '-')}_token`;
+        cookieName = getAppKey('token');
     }
 
     const value = `; ${document.cookie}`;
@@ -162,9 +161,7 @@ export function getCSRFToken() {
     if (csrfCookie) return csrfCookie;
 
     // Fallback to localStorage (for backwards compatibility)
-    const appName = getConstants().appName || 'skateboard';
-    const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
-    return safeGetItem(csrfKey);
+    return safeGetItem(getAppKey('csrf'));
 }
 
 /**
@@ -523,9 +520,7 @@ export async function trackUsage(action) {
  */
 export async function showUpgradeSheet(upgradeSheetRef) {
     // Check subscription from user data in localStorage instead of API call
-    const appName = getConstants().appName || 'skateboard';
-    const storageKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_user`;
-    const storedUser = safeGetItem(storageKey);
+    const storedUser = safeGetItem(getAppKey('user'));
 
     let subscriber = false;
     if (storedUser && storedUser !== "undefined") {
@@ -1010,9 +1005,8 @@ export function setUIVisibility({ sidebar, tabBar }) {
 /**
  * Safe navigation hook that works with or without Router context.
  *
- * Uses UNSAFE_NavigationContext directly instead of useNavigate() to avoid
- * throwing when rendered outside Router (e.g., in Portals or module duplication).
- * Falls back to window.location.href if no Router context is available.
+ * Falls back to window.location.href if no Router context is available
+ * (e.g., rendered in Portals or via module duplication).
  *
  * @returns {function} Navigate function (path, options?) => void
  *
@@ -1022,17 +1016,16 @@ export function setUIVisibility({ sidebar, tabBar }) {
  * navigate('/app', { replace: true });
  */
 export function useSafeNavigate() {
-    const ctx = useContext(UNSAFE_NavigationContext);
+    const inRouter = useInRouterContext();
+    // Router presence is stable for a given component instance, so the
+    // conditional useNavigate call respects the rules of hooks at runtime.
+    const navigate = inRouter ? useNavigate() : null;
 
-    if (!ctx) {
+    if (!navigate) {
         return (path) => { window.location.href = path; };
     }
 
     return (path, options = {}) => {
-        if (options.replace) {
-            ctx.navigator.replace(path, options.state);
-        } else {
-            ctx.navigator.push(path, options.state);
-        }
+        navigate(path, { replace: !!options.replace, state: options.state });
     };
 }

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader } from "../shadcn/ui/card"
 import { Alert, AlertDescription } from "../shadcn/ui/alert"
 import DynamicIcon from '../core/DynamicIcon';
 import { getState } from "../core/Context.jsx";
-import { getBackendURL, useSafeNavigate } from '../core/Utilities'
+import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities'
 
 /**
  * Sign-up form component.
@@ -31,7 +31,7 @@ import { getBackendURL, useSafeNavigate } from '../core/Utilities'
  * // Embedded in dialog
  * <SignUpView embedded onSuccess={handleSuccess} onSwitchMode={() => setMode('signin')} />
  */
-export default function LoginForm({
+export default function SignUpView({
   className,
   embedded = false,
   onSuccess,
@@ -79,9 +79,7 @@ export default function LoginForm({
         const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
         const csrfToken = csrfCookie ? csrfCookie.split('=')[1] : data.csrfToken;
         if (csrfToken) {
-          const appName = constants.appName || 'skateboard';
-          const csrfKey = `${appName.toLowerCase().replace(/\s+/g, '-')}_csrf`;
-          localStorage.setItem(csrfKey, csrfToken);
+          localStorage.setItem(getAppKey('csrf'), csrfToken);
         }
         dispatch({ type: 'SET_USER', payload: data });
         if (embedded && onSuccess) {

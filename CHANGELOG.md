@@ -1,5 +1,15 @@
 # CHANGELOG
 
+2.23.0
+
+  Rename auth view functions
+  Harden PaymentView redirect check
+  Replace UNSAFE_NavigationContext usage
+  Consolidate app-key derivation
+  Export createSkateboardApp from root
+  Bump lucide-react to 1.x
+  Bump dependencies
+
 2.22.0
 
   Fix Layout sidebar override

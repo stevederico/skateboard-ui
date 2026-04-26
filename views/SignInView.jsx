@@ -30,7 +30,7 @@ import { getBackendURL, useSafeNavigate } from '../core/Utilities'
  * // Embedded in dialog
  * <SignInView embedded onSuccess={handleSuccess} onSwitchMode={() => setMode('signup')} />
  */
-export default function LoginForm({
+export default function SignInView({
   className,
   embedded = false,
   onSuccess,
