@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from 'next-themes';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from '../icons';
 import { Button } from '../shadcn/ui/button.jsx';
 import { cn } from '../shadcn/lib/utils.js';
 

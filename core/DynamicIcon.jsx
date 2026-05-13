@@ -1,4 +1,4 @@
-import * as LucideIcons from "lucide-react";
+import * as LucideIcons from "../icons";
 
 /**
  * Convert a kebab-case, snake_case, or space-separated string to PascalCase.
@@ -61,7 +61,7 @@ export function canResolveIcon(name) {
 /**
  * Render a Lucide icon by name string using a static import of all icons.
  *
- * All icons are bundled at build time from lucide-react, ensuring they work
+ * All icons are vendored from lucide at scripts/vendor-icons.js, ensuring they work
  * in both Vite dev mode and production builds. Icons are looked up synchronously
  * by PascalCase name from the LucideIcons namespace.
  *

@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
 } from "./tooltip.jsx"
 import { useIsMobile } from "../hooks/use-mobile.js"
-import { PanelLeftIcon } from "lucide-react"
+import { PanelLeftIcon } from "../../icons"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

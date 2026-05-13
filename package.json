@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "2.23.0",
+  "version": "3.0.0",
   "type": "module",
   "exports": {
     "./Sidebar": {
@@ -100,6 +100,11 @@
       "import": "./hooks/useAuthGate.js",
       "default": "./hooks/useAuthGate.js"
     },
+    "./icons": {
+      "import": "./icons/index.js",
+      "default": "./icons/index.js"
+    },
+    "./icons/*": "./icons/*.jsx",
     "./shadcn/ui/*": "./shadcn/ui/*.jsx",
     "./shadcn/lib/utils": {
       "import": "./shadcn/lib/utils.js",
@@ -128,7 +133,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
-    "lucide-react": "^1.11.0",
     "next-themes": "^0.4.6",
     "react-day-picker": "^9.14.0",
     "react-resizable-panels": "^4.10.0",

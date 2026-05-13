@@ -29,6 +29,30 @@ createSkateboardApp({ constants, appRoutes });
 
 That's it! You get routing, auth, layout, landing page, settings, and payments.
 
+## Migrating to 3.0
+
+Version 3.0 vendors all 1700+ lucide icons into the package and drops the `lucide-react` npm dependency. Icons are pin-versioned, auditable, and re-runnable via `node scripts/vendor-icons.js`.
+
+**One change in your app:**
+
+```diff
+- import { ArrowUp, X } from 'lucide-react';
++ import { ArrowUp, X } from '@stevederico/skateboard-ui/icons';
+```
+
+One-line migration:
+
+```bash
+find src -type f -name "*.jsx" -exec sed -i '' \
+  "s|from 'lucide-react'|from '@stevederico/skateboard-ui/icons'|g" {} +
+```
+
+Then remove `lucide-react` from your app's `package.json`.
+
+**API is identical** — same component names (`ArrowUp`, `XIcon`, etc.), same props (`size`, `color`, `strokeWidth`, `className`), same `Icon`-suffix aliases shadcn uses. Legacy lucide aliases (e.g., `Loader2` → `LoaderCircle`) are preserved.
+
+To refresh the icon set against a newer lucide release: bump `LUCIDE_TAG` in `scripts/vendor-icons.js` and re-run.
+
 ## Dark Mode Setup
 
 To prevent flash of unstyled content (FOUC) when using dark mode, add this script to your `index.html` **before** your app loads:
@@ -668,7 +692,7 @@ import DynamicIcon from '@stevederico/skateboard-ui/DynamicIcon';
 | strokeWidth | number | 2 | Stroke width |
 | className | string | — | Additional CSS classes |
 
-Icons from [lucide-react](https://lucide.dev/icons/). Returns null if icon name not found.
+Icons vendored from [lucide](https://lucide.dev/icons/) at `scripts/vendor-icons.js`. Returns null if icon name not found.
 
 ### ThemeToggle
 
@@ -1235,7 +1259,6 @@ All components support dark mode automatically and accept a `className` prop for
 
 ### Core Dependencies
 - @base-ui/react — Accessible UI primitives
-- lucide-react — Icon library
 - next-themes — Theme management
 - class-variance-authority — Variant styling
 - clsx & tailwind-merge — className utilities

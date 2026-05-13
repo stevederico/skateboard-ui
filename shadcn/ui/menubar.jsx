@@ -20,7 +20,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./dropdown-menu.jsx"
-import { CheckIcon } from "lucide-react"
+import { CheckIcon } from "../../icons"
 
 function Menubar({
   className,

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+3.0.0
+
+  Vendor lucide icons
+  Drop lucide-react dep
+  Add icons subpath export
+
+  Breaking: see README "Migrating to 3.0"
+
 2.23.0
 
   Rename auth view functions
