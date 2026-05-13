@@ -16,6 +16,8 @@
   Drop sonner dep
   Recreate DayPicker calendar
   Drop react-day-picker dep
+  Inline tailwindcss-animate utilities
+  Drop tailwindcss-animate dep
 
   Breaking: see README "Migrating to 3.0"
 
