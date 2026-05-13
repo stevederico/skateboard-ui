@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cva } from "class-variance-authority";
+import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
 

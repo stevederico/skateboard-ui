@@ -16,7 +16,7 @@ import { Separator } from "../shadcn/ui/separator"
 import { Button } from "../shadcn/ui/button"
 import { getState } from "../core/Context.jsx";
 import { showCheckout } from '../core/Utilities.js';
-import { Sparkles, CircleCheck } from 'lucide-react';
+import { Sparkles, CircleCheck } from '../icons';
 
 /**
  * Premium upgrade drawer with pricing and checkout button.

@@ -1,4 +1,4 @@
-import { clsx } from "clsx";
+import { clsx } from "./clsx.js";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs) {

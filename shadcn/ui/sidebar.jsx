@@ -2,7 +2,7 @@
 import * as React from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
-import { cva } from "class-variance-authority";
+import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.jsx"
@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
 } from "./tooltip.jsx"
 import { useIsMobile } from "../hooks/use-mobile.js"
-import { PanelLeftIcon } from "lucide-react"
+import { PanelLeftIcon } from "../../icons"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

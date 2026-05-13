@@ -27,3 +27,6 @@ build/
 
 # Test coverage
 coverage/
+
+# Override global ~/.gitignore which excludes lib/ — we ship shadcn/lib/
+!shadcn/lib/
