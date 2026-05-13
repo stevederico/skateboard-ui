@@ -496,7 +496,9 @@ export function DayPicker({
                           aria-disabled={dis}
                           aria-current={tod ? 'date' : undefined}
                           className=""
-                        />
+                        >
+                          {date.getDate()}
+                        </DayButton>
                       </td>
                     );
                   })}
