@@ -53,6 +53,19 @@ Then remove `lucide-react` from your app's `package.json`.
 
 To refresh the icon set against a newer lucide release: bump `LUCIDE_TAG` in `scripts/vendor-icons.js` and re-run.
 
+## Optional Peer Dependencies
+
+Four shadcn primitives are powered by single-purpose libraries that are now **optional peer dependencies** — apps that don't import them install nothing.
+
+| Component | Required peer dep |
+|---|---|
+| `Carousel` | `embla-carousel-react` |
+| `Chart` | `recharts` |
+| `Drawer` | `vaul` |
+| `ResizablePanels` | `react-resizable-panels` |
+
+If you import one of these without installing the matching package, your bundler will fail with a clear "Cannot find module" error. Just `npm i <package>` and continue.
+
 ## Dark Mode Setup
 
 To prevent flash of unstyled content (FOUC) when using dark mode, add this script to your `index.html` **before** your app loads:

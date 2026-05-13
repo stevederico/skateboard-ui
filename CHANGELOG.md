@@ -18,6 +18,7 @@
   Drop react-day-picker dep
   Inline tailwindcss-animate utilities
   Drop tailwindcss-animate dep
+  Heavy primitives now optional peer deps
 
   Breaking: see README "Migrating to 3.0"
 
