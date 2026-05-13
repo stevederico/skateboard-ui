@@ -1,5 +1,10 @@
 # CHANGELOG
 
+3.0.1
+
+  Move vaul back to deps
+  UpgradeSheet uses Drawer
+
 3.0.0
 
   Vendor lucide icons
