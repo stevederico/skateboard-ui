@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
+import { Command as CommandPrimitive } from "../../core/Command.jsx"
 
 import { cn } from "../lib/utils.js"
 import {

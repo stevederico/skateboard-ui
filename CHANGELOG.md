@@ -10,6 +10,10 @@
   Drop class-variance-authority dep
   Recreate ThemeProvider locally
   Drop next-themes dep
+  Recreate Command primitives
+  Drop cmdk dep
+  Remove sonner Toaster
+  Drop sonner dep
 
   Breaking: see README "Migrating to 3.0"
 
