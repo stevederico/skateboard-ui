@@ -14,6 +14,8 @@
   Drop cmdk dep
   Remove sonner Toaster
   Drop sonner dep
+  Recreate DayPicker calendar
+  Drop react-day-picker dep
 
   Breaking: see README "Migrating to 3.0"
 
