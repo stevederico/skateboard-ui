@@ -8,6 +8,8 @@
   Recreate clsx locally
   Recreate cva locally
   Drop class-variance-authority dep
+  Recreate ThemeProvider locally
+  Drop next-themes dep
 
   Breaking: see README "Migrating to 3.0"
 

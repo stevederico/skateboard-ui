@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from '../core/Context.jsx';
-import { useTheme } from 'next-themes';
+import { useTheme } from '../core/ThemeProvider.jsx';
 import { Sun, Moon } from '../icons';
 import Header from '../layout/Header.jsx';
 import { Avatar, AvatarFallback } from '../shadcn/ui/avatar.jsx';

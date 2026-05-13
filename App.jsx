@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getState } from './core/Context.jsx';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from './core/ThemeProvider.jsx';
 import Layout from './layout/Layout.jsx';
 import LandingView from './views/LandingView.jsx';
 import TextView from './views/TextView.jsx';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from 'next-themes';
+import { useTheme } from '../core/ThemeProvider.jsx';
 import { Sun, Moon } from '../icons';
 import { Button } from '../shadcn/ui/button.jsx';
 import { cn } from '../shadcn/lib/utils.js';
@@ -7,7 +7,7 @@ import { cn } from '../shadcn/lib/utils.js';
 /**
  * Dark/light mode toggle button.
  *
- * Renders a sun/moon icon that toggles the theme via next-themes.
+ * Renders a sun/moon icon that toggles the theme via the local ThemeProvider.
  * Supports two visual variants: "settings" (ghost) and "landing" (outline).
  *
  * @param {Object} props
