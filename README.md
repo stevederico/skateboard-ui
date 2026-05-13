@@ -53,6 +53,8 @@ Then remove `lucide-react` from your app's `package.json`.
 
 To refresh the icon set against a newer lucide release: bump `LUCIDE_TAG` in `scripts/vendor-icons.js` and re-run.
 
+The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some legacy icons inherit Feather's MIT license — both notices are in that file).
+
 ## Optional Peer Dependencies
 
 Four shadcn primitives are powered by single-purpose libraries that are now **optional peer dependencies** — apps that don't import them install nothing.

@@ -78,10 +78,18 @@ export default Icon;
   writeFileSync(join(ICONS_DIR, '_Icon.jsx'), code);
 }
 
+function copyLucideLicense() {
+  const src = join(TMP_DIR, 'LICENSE');
+  if (existsSync(src)) {
+    writeFileSync(join(ICONS_DIR, 'LICENSE'), readFileSync(src, 'utf8'));
+  }
+}
+
 function generate() {
   ensureLucide();
   rmSync(ICONS_DIR, { recursive: true, force: true });
   mkdirSync(ICONS_DIR, { recursive: true });
+  copyLucideLicense();
   writeIconWrapper();
 
   const svgFiles = readdirSync(join(TMP_DIR, 'icons')).filter(f => f.endsWith('.svg')).sort();
