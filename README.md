@@ -50,7 +50,7 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 - `tailwindcss-animate` → inlined as plain CSS in `styles.css`
 - `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
 
-**Now optional peer deps** (apps install only if they import the matching component): `embla-carousel-react` (Carousel), `recharts` (Chart), `vaul` (Drawer), `react-resizable-panels` (ResizablePanels).
+**Now optional peer deps** (apps install only if they import the matching component): `embla-carousel-react` (Carousel), `recharts` (Chart), `react-resizable-panels` (ResizablePanels). `vaul` stays a hard dep because the built-in `UpgradeSheet` uses it.
 
 ## Migrating to 3.0
 
@@ -80,16 +80,17 @@ The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some
 
 ## Optional Peer Dependencies
 
-Four shadcn primitives are powered by single-purpose libraries that are now **optional peer dependencies** — apps that don't import them install nothing.
+Three shadcn primitives are powered by single-purpose libraries that are **optional peer dependencies** — apps that don't import them install nothing.
 
 | Component | Required peer dep |
 |---|---|
 | `Carousel` | `embla-carousel-react` |
 | `Chart` | `recharts` |
-| `Drawer` | `vaul` |
 | `ResizablePanels` | `react-resizable-panels` |
 
 If you import one of these without installing the matching package, your bundler will fail with a clear "Cannot find module" error. Just `npm i <package>` and continue.
+
+(`Drawer`'s underlying lib `vaul` stays a hard dep because the built-in `UpgradeSheet` uses it.)
 
 ## Dark Mode Setup
 
