@@ -5,6 +5,9 @@
   Vendor lucide icons
   Drop lucide-react dep
   Add icons subpath export
+  Recreate clsx locally
+  Recreate cva locally
+  Drop class-variance-authority dep
 
   Breaking: see README "Migrating to 3.0"
 
