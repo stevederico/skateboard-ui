@@ -29,6 +29,68 @@ createSkateboardApp({ constants, appRoutes });
 
 That's it! You get routing, auth, layout, landing page, settings, and payments.
 
+## Dependency Footprint
+
+skateboard-ui v3.0 was a major slimming pass — most utility libraries are now recreated in-house, and single-purpose component libs are opt-in.
+
+| | Hard deps | Optional peer deps | Total |
+|---|---|---|---|
+| Before (v2.23) | 15 | 0 | 15 |
+| **Now (v3.0)** | **3** | **4** | **7** |
+
+**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `tailwind-merge` (encodes Tailwind class precedence — the brain behind `cn()`), `use-sync-external-store` (React polyfill).
+
+**Removed entirely** by recreating, vendoring, or inlining:
+- `lucide-react` → 1700+ icons vendored at `icons/` via `scripts/vendor-icons.js`
+- `cmdk` → recreated as `core/Command.jsx`
+- `react-day-picker` → recreated as `core/Calendar.jsx`
+- `next-themes` → recreated as `core/ThemeProvider.jsx`
+- `class-variance-authority` → recreated as `shadcn/lib/cva.js`
+- `clsx` → recreated as `shadcn/lib/clsx.js`
+- `tailwindcss-animate` → inlined as plain CSS in `styles.css`
+- `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
+
+**Now optional peer deps** (apps install only if they import the matching component): `embla-carousel-react` (Carousel), `recharts` (Chart), `vaul` (Drawer), `react-resizable-panels` (ResizablePanels).
+
+## Migrating to 3.0
+
+Version 3.0 vendors all 1700+ lucide icons into the package and drops the `lucide-react` npm dependency. Icons are pin-versioned, auditable, and re-runnable via `node scripts/vendor-icons.js`.
+
+**One change in your app:**
+
+```diff
+- import { ArrowUp, X } from 'lucide-react';
++ import { ArrowUp, X } from '@stevederico/skateboard-ui/icons';
+```
+
+One-line migration:
+
+```bash
+find src -type f -name "*.jsx" -exec sed -i '' \
+  "s|from 'lucide-react'|from '@stevederico/skateboard-ui/icons'|g" {} +
+```
+
+Then remove `lucide-react` from your app's `package.json`.
+
+**API is identical** — same component names (`ArrowUp`, `XIcon`, etc.), same props (`size`, `color`, `strokeWidth`, `className`), same `Icon`-suffix aliases shadcn uses. Legacy lucide aliases (e.g., `Loader2` → `LoaderCircle`) are preserved.
+
+To refresh the icon set against a newer lucide release: bump `LUCIDE_TAG` in `scripts/vendor-icons.js` and re-run.
+
+The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some legacy icons inherit Feather's MIT license — both notices are in that file).
+
+## Optional Peer Dependencies
+
+Four shadcn primitives are powered by single-purpose libraries that are now **optional peer dependencies** — apps that don't import them install nothing.
+
+| Component | Required peer dep |
+|---|---|
+| `Carousel` | `embla-carousel-react` |
+| `Chart` | `recharts` |
+| `Drawer` | `vaul` |
+| `ResizablePanels` | `react-resizable-panels` |
+
+If you import one of these without installing the matching package, your bundler will fail with a clear "Cannot find module" error. Just `npm i <package>` and continue.
+
 ## Dark Mode Setup
 
 To prevent flash of unstyled content (FOUC) when using dark mode, add this script to your `index.html` **before** your app loads:
@@ -668,7 +730,7 @@ import DynamicIcon from '@stevederico/skateboard-ui/DynamicIcon';
 | strokeWidth | number | 2 | Stroke width |
 | className | string | — | Additional CSS classes |
 
-Icons from [lucide-react](https://lucide.dev/icons/). Returns null if icon name not found.
+Icons vendored from [lucide](https://lucide.dev/icons/) at `scripts/vendor-icons.js`. Returns null if icon name not found.
 
 ### ThemeToggle
 
@@ -1235,7 +1297,6 @@ All components support dark mode automatically and accept a `className` prop for
 
 ### Core Dependencies
 - @base-ui/react — Accessible UI primitives
-- lucide-react — Icon library
 - next-themes — Theme management
 - class-variance-authority — Variant styling
 - clsx & tailwind-merge — className utilities

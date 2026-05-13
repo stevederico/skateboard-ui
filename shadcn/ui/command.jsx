@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
+import { Command as CommandPrimitive } from "../../core/Command.jsx"
 
 import { cn } from "../lib/utils.js"
 import {
@@ -13,7 +13,7 @@ import {
   InputGroup,
   InputGroupAddon,
 } from "./input-group.jsx"
-import { SearchIcon, CheckIcon } from "lucide-react"
+import { SearchIcon, CheckIcon } from "../../icons"
 
 function Command({
   className,

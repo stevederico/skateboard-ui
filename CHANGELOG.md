@@ -1,5 +1,27 @@
 # CHANGELOG
 
+3.0.0
+
+  Vendor lucide icons
+  Drop lucide-react dep
+  Add icons subpath export
+  Recreate clsx locally
+  Recreate cva locally
+  Drop class-variance-authority dep
+  Recreate ThemeProvider locally
+  Drop next-themes dep
+  Recreate Command primitives
+  Drop cmdk dep
+  Remove sonner Toaster
+  Drop sonner dep
+  Recreate DayPicker calendar
+  Drop react-day-picker dep
+  Inline tailwindcss-animate utilities
+  Drop tailwindcss-animate dep
+  Heavy primitives now optional peer deps
+
+  Breaking: see README "Migrating to 3.0"
+
 2.23.0
 
   Rename auth view functions

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from 'next-themes';
+import { useTheme } from '../core/ThemeProvider.jsx';
 import { getState } from "../core/Context.jsx";
 import DynamicIcon from '../core/DynamicIcon.jsx';
-import { Sun, Moon, Check } from 'lucide-react';
+import { Sun, Moon, Check } from '../icons';
 import { Button } from '../shadcn/ui/button.jsx';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../shadcn/ui/card.jsx';
 import { Badge } from '../shadcn/ui/badge.jsx';

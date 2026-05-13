@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getState } from './core/Context.jsx';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from './core/ThemeProvider.jsx';
 import Layout from './layout/Layout.jsx';
 import LandingView from './views/LandingView.jsx';
 import TextView from './views/TextView.jsx';
@@ -23,7 +23,6 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { useAppSetup, initializeUtilities, validateConstants } from './core/Utilities.js';
 import { ContextProvider } from './core/Context.jsx';
-import { Toaster } from './shadcn/ui/sonner.jsx';
 import AuthOverlay from './components/AuthOverlay.jsx';
 
 /**
@@ -157,7 +156,6 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   root.render(
     <ErrorBoundary>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Toaster position="top-right" richColors closeButton />
         <ContextProvider constants={constants}>
           {Wrapper ? (
             <Wrapper>

@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "2.23.0",
+  "version": "3.0.0",
   "type": "module",
   "exports": {
     "./Sidebar": {
@@ -100,6 +100,11 @@
       "import": "./hooks/useAuthGate.js",
       "default": "./hooks/useAuthGate.js"
     },
+    "./icons": {
+      "import": "./icons/index.js",
+      "default": "./icons/index.js"
+    },
+    "./icons/*": "./icons/*.jsx",
     "./shadcn/ui/*": "./shadcn/ui/*.jsx",
     "./shadcn/lib/utils": {
       "import": "./shadcn/lib/utils.js",
@@ -124,23 +129,21 @@
   "dependencies": {
     "@base-ui/react": "^1.4.1",
     "use-sync-external-store": "^1.6.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "cmdk": "^1.1.1",
-    "embla-carousel-react": "^8.6.0",
-    "lucide-react": "^1.11.0",
-    "next-themes": "^0.4.6",
-    "react-day-picker": "^9.14.0",
-    "react-resizable-panels": "^4.10.0",
-    "recharts": "^3.8.1",
-    "sonner": "^2.0.7",
-    "tailwind-merge": "^3.5.0",
-    "tailwindcss-animate": "^1.0.7",
-    "vaul": "^1.1.2"
+    "tailwind-merge": "^3.5.0"
   },
   "peerDependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.0.0"
+    "react-router-dom": "^7.0.0",
+    "embla-carousel-react": "^8.6.0",
+    "react-resizable-panels": "^4.10.0",
+    "recharts": "^3.8.1",
+    "vaul": "^1.1.2"
+  },
+  "peerDependenciesMeta": {
+    "embla-carousel-react": { "optional": true },
+    "react-resizable-panels": { "optional": true },
+    "recharts": { "optional": true },
+    "vaul": { "optional": true }
   }
 }
