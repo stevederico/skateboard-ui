@@ -118,6 +118,21 @@
   "scripts": {
     "prod": "npm publish"
   },
+  "files": [
+    "App.jsx",
+    "index.js",
+    "styles.css",
+    "CHANGELOG.md",
+    "README.md",
+    "MIGRATION.md",
+    "core",
+    "components",
+    "layout",
+    "views",
+    "shadcn",
+    "hooks",
+    "fonts"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
