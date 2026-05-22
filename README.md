@@ -39,13 +39,15 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 | v3.0 | 4 | 3 | 7 |
 | v3.1 | 3 | 1 | 4 |
 | v3.2 | 2 | 1 | 3 |
-| **Now (v3.3)** | **2** | **0** | **2** |
+| v3.3 | 2 | 0 | 2 |
+| **Now (v3.4)** | **1** | **0** | **1** |
 
-**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `vaul` (drawer drag physics — backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports).
+**Hard dep that stayed:** `@base-ui/react` (powers 31 shadcn primitives — accordion, dialog, dropdown, popover, select, sheet, sidebar, etc. Replacing it means rewriting floating-ui math).
 
 **Removed entirely** by recreating, vendoring, or inlining:
 - `lucide-react` → 1700+ icons vendored at `icons/` via `scripts/vendor-icons.js`
 - `tailwind-merge` → vendored at `shadcn/lib/tailwind-merge.js` via `scripts/vendor-tailwind-merge.js` (re-run when bumping the pinned version to match a new Tailwind release)
+- `vaul` → drag math ported into `shadcn/ui/drawer.jsx` (MIT, Emil Kowalski); `Drawer` now uses base-ui Dialog as the modal shell + ported swipe-to-dismiss gesture. Removes vaul plus its 14 transitive `@radix-ui/*` packages.
 - `cmdk` → recreated as `core/Command.jsx`
 - `react-day-picker` → recreated as `core/Calendar.jsx`
 - `next-themes` → recreated as `core/ThemeProvider.jsx`
@@ -54,11 +56,13 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 - `tailwindcss-animate` → inlined as plain CSS in `styles.css`
 - `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
 
-**No optional peer deps remain.** `vaul` stays a hard dep because the `Drawer`, `Sheet`, and `UpgradeSheet` exports all use it.
+**No optional peer deps remain.** `@base-ui/react` is the only non-React hard dep.
 
 **Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped.
 
 **Dropped in v3.3:** `Chart` (recharts) — component removed, peer dep dropped.
+
+**Dropped in v3.4:** `vaul` — drag gesture ported inline; `Drawer` now wraps base-ui Dialog. Multi-direction (top/left/right), snap points, and nested drawers were removed since no in-tree consumer used them.
 
 If you used any of these, install the lib directly in your app and import from it instead.
 
@@ -90,7 +94,7 @@ The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some
 
 ## Optional Peer Dependencies
 
-None as of v3.3. `vaul` is the only non-React hard dep, and it backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports.
+None as of v3.4. `@base-ui/react` is the only non-React hard dep.
 
 ## Dark Mode Setup
 
@@ -1297,8 +1301,7 @@ All components support dark mode automatically and accept a `className` prop for
 - react-router-dom 7.0+
 
 ### Hard dependencies
-- `@base-ui/react` — popover/dropdown/floating-ui primitives
-- `vaul` — drawer drag physics (backs `Drawer`, `Sheet`, `UpgradeSheet`)
+- `@base-ui/react` — primitives for 31 shadcn components (dialog, dropdown, popover, select, sheet, sidebar, etc.) plus the new base-ui-backed `Drawer`/`Sheet`/`UpgradeSheet`
 
 See the dep-count table near the top of this README for the full vendoring history.
 

@@ -1,119 +1,221 @@
 import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 
 import { cn } from "../lib/utils.js"
 
-function Drawer({
-  ...props
-}) {
-  return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
+// Drag thresholds and animation timing ported from vaul (MIT — Emil Kowalski).
+// https://github.com/emilkowalski/vaul/blob/main/src/constants.ts
+const VELOCITY_THRESHOLD = 0.4
+const CLOSE_THRESHOLD = 0.25
+const TRANSITION = "transform 500ms cubic-bezier(0.32, 0.72, 0, 1)"
+
+function dampenValue(v) {
+  return 8 * (Math.log(v + 1) - 2)
 }
 
-function DrawerTrigger({
-  ...props
-}) {
-  return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />;
+// Ported from vaul/src/index.tsx `shouldDrag`. Skips drag when the pointer is
+// inside a scrollable child that isn't at scrollTop=0 (lets content scroll
+// naturally), on a <select>, on a [data-no-drag] subtree, or when text is
+// highlighted.
+function shouldDrag(el, popup) {
+  let element = el
+  if (window.getSelection()?.toString()) return false
+  while (element && element !== popup) {
+    if (element.tagName === "SELECT") return false
+    if (element.hasAttribute?.("data-no-drag") || element.closest?.("[data-no-drag]")) return false
+    if (element.scrollHeight > element.clientHeight && element.scrollTop !== 0) return false
+    element = element.parentNode
+  }
+  return true
 }
 
-function DrawerPortal({
-  ...props
-}) {
-  return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />;
-}
+const DrawerCtx = React.createContext(null)
 
-function DrawerClose({
-  ...props
-}) {
-  return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />;
-}
-
-function DrawerOverlay({
-  className,
-  ...props
-}) {
+function Drawer({ open, defaultOpen, onOpenChange, ...props }) {
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
+  const isControlled = open !== undefined
+  const actualOpen = isControlled ? open : internalOpen
+  const handleOpenChange = React.useCallback(
+    (next) => {
+      if (!isControlled) setInternalOpen(next)
+      onOpenChange?.(next)
+    },
+    [isControlled, onOpenChange]
+  )
   return (
-    <DrawerPrimitive.Overlay
+    <DrawerCtx.Provider value={{ onOpenChange: handleOpenChange }}>
+      <DialogPrimitive.Root
+        data-slot="drawer"
+        open={actualOpen}
+        onOpenChange={handleOpenChange}
+        {...props}
+      />
+    </DrawerCtx.Provider>
+  )
+}
+
+function DrawerTrigger(props) {
+  return <DialogPrimitive.Trigger data-slot="drawer-trigger" {...props} />
+}
+
+function DrawerPortal(props) {
+  return <DialogPrimitive.Portal data-slot="drawer-portal" {...props} />
+}
+
+function DrawerClose(props) {
+  return <DialogPrimitive.Close data-slot="drawer-close" {...props} />
+}
+
+function DrawerOverlay({ className, ...props }) {
+  return (
+    <DialogPrimitive.Backdrop
       data-slot="drawer-overlay"
-      className={cn(
-        "data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 z-50",
-        className
-      )}
-      {...props} />
-  );
+      className={cn("drawer-backdrop fixed inset-0 z-50 bg-black/10 supports-backdrop-filter:backdrop-blur-xs", className)}
+      {...props}
+    />
+  )
 }
 
-function DrawerContent({
-  className,
-  children,
-  ...props
-}) {
+function DrawerContent({ className, children, ...props }) {
+  const popupRef = React.useRef(null)
+  const ctx = React.useContext(DrawerCtx)
+  const dragState = React.useRef({ dragging: false, startY: 0, height: 0, startTime: 0 })
+
+  const snapBack = React.useCallback(() => {
+    const el = popupRef.current
+    if (!el) return
+    el.style.transition = ""
+    el.style.transform = ""
+  }, [])
+
+  const dismiss = React.useCallback(() => {
+    const el = popupRef.current
+    if (!el) {
+      ctx?.onOpenChange(false)
+      return
+    }
+    el.style.transition = TRANSITION
+    el.style.transform = "translate3d(0, 100%, 0)"
+    window.setTimeout(() => {
+      ctx?.onOpenChange(false)
+    }, 500)
+  }, [ctx])
+
+  const handlePointerDown = React.useCallback((event) => {
+    const el = popupRef.current
+    if (!el || !shouldDrag(event.target, el)) return
+    event.target.setPointerCapture?.(event.pointerId)
+    dragState.current = {
+      dragging: true,
+      startY: event.clientY,
+      height: el.getBoundingClientRect().height || 0,
+      startTime: event.timeStamp,
+    }
+    el.style.transition = "none"
+  }, [])
+
+  const handlePointerMove = React.useCallback((event) => {
+    const state = dragState.current
+    if (!state.dragging) return
+    const el = popupRef.current
+    if (!el) return
+    const delta = event.clientY - state.startY
+    if (delta >= 0) {
+      // Dragging down toward close — direct translate
+      el.style.transform = `translate3d(0, ${delta}px, 0)`
+    } else {
+      // Dragging up away from close — logarithmic rubber-band damping (vaul-style)
+      const damped = -dampenValue(-delta)
+      el.style.transform = `translate3d(0, ${damped}px, 0)`
+    }
+  }, [])
+
+  const handlePointerUp = React.useCallback(
+    (event) => {
+      const state = dragState.current
+      if (!state.dragging) return
+      state.dragging = false
+      const delta = event.clientY - state.startY
+      const elapsed = Math.max(1, event.timeStamp - state.startTime)
+      const velocity = Math.abs(delta) / elapsed
+
+      if (delta < 0) {
+        snapBack()
+        return
+      }
+      if (velocity > VELOCITY_THRESHOLD || delta >= state.height * CLOSE_THRESHOLD) {
+        dismiss()
+      } else {
+        snapBack()
+      }
+    },
+    [dismiss, snapBack]
+  )
+
+  const handlePointerCancel = React.useCallback(() => {
+    if (!dragState.current.dragging) return
+    dragState.current.dragging = false
+    snapBack()
+  }, [snapBack])
+
   return (
-    <DrawerPortal data-slot="drawer-portal">
+    <DrawerPortal>
       <DrawerOverlay />
-      <DrawerPrimitive.Content
+      <DialogPrimitive.Popup
+        ref={popupRef}
         data-slot="drawer-content"
-        className={cn(
-          "bg-background flex h-auto flex-col text-sm outline-none data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=bottom]:rounded-t-xl data-[vaul-drawer-direction=bottom]:border-t data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:rounded-r-xl data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:rounded-l-xl data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-xl data-[vaul-drawer-direction=top]:border-b data-[vaul-drawer-direction=left]:sm:max-w-sm data-[vaul-drawer-direction=right]:sm:max-w-sm group/drawer-content fixed z-50",
-          className
-        )}
-        {...props}>
-        <div
-          className="bg-muted mx-auto mt-4 hidden h-1.5 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block bg-muted mx-auto hidden shrink-0 group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        className={cn("drawer-popup bg-background text-sm", className)}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        {...props}
+      >
+        <div className="bg-muted mx-auto mt-4 h-1.5 w-[100px] shrink-0 rounded-full" />
         {children}
-      </DrawerPrimitive.Content>
+      </DialogPrimitive.Popup>
     </DrawerPortal>
-  );
+  )
 }
 
-function DrawerHeader({
-  className,
-  ...props
-}) {
+function DrawerHeader({ className, ...props }) {
   return (
     <div
       data-slot="drawer-header"
-      className={cn(
-        "gap-0.5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1.5 md:text-left flex flex-col",
-        className
-      )}
-      {...props} />
-  );
+      className={cn("gap-0.5 p-4 text-center md:gap-1.5 md:text-left flex flex-col", className)}
+      {...props}
+    />
+  )
 }
 
-function DrawerFooter({
-  className,
-  ...props
-}) {
+function DrawerFooter({ className, ...props }) {
   return (
     <div
       data-slot="drawer-footer"
       className={cn("gap-2 p-4 mt-auto flex flex-col", className)}
-      {...props} />
-  );
+      {...props}
+    />
+  )
 }
 
-function DrawerTitle({
-  className,
-  ...props
-}) {
+function DrawerTitle({ className, ...props }) {
   return (
-    <DrawerPrimitive.Title
+    <DialogPrimitive.Title
       data-slot="drawer-title"
       className={cn("text-foreground font-medium", className)}
-      {...props} />
-  );
+      {...props}
+    />
+  )
 }
 
-function DrawerDescription({
-  className,
-  ...props
-}) {
+function DrawerDescription({ className, ...props }) {
   return (
-    <DrawerPrimitive.Description
+    <DialogPrimitive.Description
       data-slot="drawer-description"
       className={cn("text-muted-foreground text-sm", className)}
-      {...props} />
-  );
+      {...props}
+    />
+  )
 }
 
 export {
