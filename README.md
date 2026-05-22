@@ -36,9 +36,10 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 | | Hard deps | Optional peer deps | Total |
 |---|---|---|---|
 | Before (v2.23) | 15 | 0 | 15 |
-| **Now (v3.0)** | **3** | **4** | **7** |
+| v3.0 | 4 | 3 | 7 |
+| **Now (v3.1)** | **3** | **1** | **4** |
 
-**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `tailwind-merge` (encodes Tailwind class precedence — the brain behind `cn()`), `use-sync-external-store` (React polyfill).
+**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `tailwind-merge` (encodes Tailwind class precedence — the brain behind `cn()`), `vaul` (drawer drag physics — used by the built-in `Drawer` and `UpgradeSheet`).
 
 **Removed entirely** by recreating, vendoring, or inlining:
 - `lucide-react` → 1700+ icons vendored at `icons/` via `scripts/vendor-icons.js`
@@ -50,7 +51,9 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 - `tailwindcss-animate` → inlined as plain CSS in `styles.css`
 - `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
 
-**Now optional peer deps** (apps install only if they import the matching component): `embla-carousel-react` (Carousel), `recharts` (Chart), `react-resizable-panels` (ResizablePanels). `vaul` stays a hard dep because the built-in `UpgradeSheet` uses it.
+**Now optional peer deps** (apps install only if they import the matching component): `recharts` (Chart). `vaul` stays a hard dep because the built-in `UpgradeSheet` uses it.
+
+**Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped. If you used them, install the lib directly in your app and import from it instead.
 
 ## Migrating to 3.0
 
