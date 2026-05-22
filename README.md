@@ -37,12 +37,14 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 |---|---|---|---|
 | Before (v2.23) | 15 | 0 | 15 |
 | v3.0 | 4 | 3 | 7 |
-| **Now (v3.1)** | **3** | **1** | **4** |
+| v3.1 | 3 | 1 | 4 |
+| **Now (v3.2)** | **2** | **1** | **3** |
 
-**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `tailwind-merge` (encodes Tailwind class precedence — the brain behind `cn()`), `vaul` (drawer drag physics — used by the built-in `Drawer` and `UpgradeSheet`).
+**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `vaul` (drawer drag physics — used by the built-in `Drawer` and `UpgradeSheet`).
 
 **Removed entirely** by recreating, vendoring, or inlining:
 - `lucide-react` → 1700+ icons vendored at `icons/` via `scripts/vendor-icons.js`
+- `tailwind-merge` → vendored at `shadcn/lib/tailwind-merge.js` via `scripts/vendor-tailwind-merge.js` (re-run when bumping the pinned version to match a new Tailwind release)
 - `cmdk` → recreated as `core/Command.jsx`
 - `react-day-picker` → recreated as `core/Calendar.jsx`
 - `next-themes` → recreated as `core/ThemeProvider.jsx`
