@@ -38,7 +38,8 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 | Before (v2.23) | 15 | 0 | 15 |
 | v3.0 | 4 | 3 | 7 |
 | v3.1 | 3 | 1 | 4 |
-| **Now (v3.2)** | **2** | **1** | **3** |
+| v3.2 | 2 | 1 | 3 |
+| **Now (v3.3)** | **2** | **0** | **2** |
 
 **Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `vaul` (drawer drag physics — backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports).
 
@@ -53,9 +54,13 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 - `tailwindcss-animate` → inlined as plain CSS in `styles.css`
 - `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
 
-**Now optional peer deps** (apps install only if they import the matching component): `recharts` (Chart). `vaul` stays a hard dep because the `Drawer`, `Sheet`, and `UpgradeSheet` exports all use it.
+**No optional peer deps remain.** `vaul` stays a hard dep because the `Drawer`, `Sheet`, and `UpgradeSheet` exports all use it.
 
-**Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped. If you used them, install the lib directly in your app and import from it instead.
+**Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped.
+
+**Dropped in v3.3:** `Chart` (recharts) — component removed, peer dep dropped.
+
+If you used any of these, install the lib directly in your app and import from it instead.
 
 ## Migrating to 3.0
 
@@ -85,15 +90,7 @@ The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some
 
 ## Optional Peer Dependencies
 
-One shadcn primitive is powered by a single-purpose library that's an **optional peer dependency** — apps that don't import it install nothing.
-
-| Component | Required peer dep |
-|---|---|
-| `Chart` | `recharts` |
-
-If you import `Chart` without installing `recharts`, your bundler will fail with a clear "Cannot find module" error. Just `npm i recharts` and continue.
-
-(`vaul` stays a hard dep — it backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports.)
+None as of v3.3. `vaul` is the only non-React hard dep, and it backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports.
 
 ## Dark Mode Setup
 
@@ -1302,9 +1299,6 @@ All components support dark mode automatically and accept a `className` prop for
 ### Hard dependencies
 - `@base-ui/react` — popover/dropdown/floating-ui primitives
 - `vaul` — drawer drag physics (backs `Drawer`, `Sheet`, `UpgradeSheet`)
-
-### Optional peer dependencies
-- `recharts` — only required if you import `Chart`
 
 See the dep-count table near the top of this README for the full vendoring history.
 

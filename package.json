@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "3.2.1",
+  "version": "3.3.0",
   "type": "module",
   "exports": {
     "./Sidebar": {
@@ -148,10 +148,6 @@
   "peerDependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.0.0",
-    "recharts": "^3.8.1"
-  },
-  "peerDependenciesMeta": {
-    "recharts": { "optional": true }
+    "react-router-dom": "^7.0.0"
   }
 }
