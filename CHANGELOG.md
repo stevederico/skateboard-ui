@@ -1,5 +1,15 @@
 # CHANGELOG
 
+3.1.0
+
+  Drop Carousel component
+  Drop embla-carousel-react peer dep
+  Drop Resizable component
+  Drop react-resizable-panels peer dep
+  Drop use-sync-external-store direct dep (@base-ui/react ^1.5.0 owns it transitively)
+
+  If you used these, import directly from embla-carousel-react / react-resizable-panels in your app
+
 3.0.2
 
   Exclude .claude from npm tarball
