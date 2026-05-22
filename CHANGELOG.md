@@ -1,5 +1,12 @@
 # CHANGELOG
 
+3.3.0
+
+  Drop Chart component
+  Drop recharts peer dep
+
+  If you used Chart, install recharts directly in your app and import its primitives from there.
+
 3.2.1
 
   Fix SidebarMenuButton outline variant shadow — tokens are oklch so wrapping in hsl() produced invalid CSS and the browser dropped the shadow. Port of upstream shadcn-ui f454f6e.
