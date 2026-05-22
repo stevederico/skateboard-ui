@@ -1,5 +1,17 @@
 # CHANGELOG
 
+3.4.0
+
+  Drop vaul dep
+  Drawer now uses @base-ui/react Dialog as the modal shell with vaul's drag-to-dismiss gesture logic ported into shadcn/ui/drawer.jsx (MIT — Emil Kowalski)
+  Single hard dep tree on @base-ui/react (removes vaul + 14 transitive @radix-ui/* packages)
+
+  Behavior preserved: open/close via open + onOpenChange, slide-up entrance, fade backdrop, click-outside, Escape, focus trap, drag-handle pill, swipe-down-to-dismiss with velocity + 25%-height thresholds
+  Behavior dropped (unused by Sheet/UpgradeSheet): multi-direction (top/left/right), snap points, nested drawers, scale-background, backdrop opacity fade during drag
+
+  shouldDrag gate ported from vaul: skips when content is scrolled mid-list, when text is selected, on <select>, or under [data-no-drag]
+  Sheet.jsx and UpgradeSheet.jsx consume the same Drawer API — no consumer changes
+
 3.3.0
 
   Drop Chart component

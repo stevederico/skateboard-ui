@@ -87,6 +87,37 @@
 .slide-out-to-right-10  { --tw-exit-translate-x: 2.5rem; }
 .slide-out-to-right-52  { --tw-exit-translate-x: 13rem; }
 
+/* Drawer (bottom sheet) — base-ui Dialog shell + ported vaul drag math.
+   Entrance/exit keyed off base-ui's data-starting-style / data-ending-style. */
+.drawer-popup {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  border-top: 1px solid var(--border);
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  outline: none;
+  transform: translate3d(0, 0, 0);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  touch-action: none;
+}
+.drawer-popup[data-starting-style],
+.drawer-popup[data-ending-style] {
+  transform: translate3d(0, 100%, 0);
+}
+.drawer-backdrop {
+  opacity: 1;
+  transition: opacity 250ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.drawer-backdrop[data-starting-style],
+.drawer-backdrop[data-ending-style] {
+  opacity: 0;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
