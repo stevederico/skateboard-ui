@@ -1,5 +1,11 @@
 # CHANGELOG
 
+3.2.0
+
+  Vendor tailwind-merge
+  Drop tailwind-merge dep
+  Add scripts/vendor-tailwind-merge.js (re-run on version bumps to track new Tailwind releases)
+
 3.1.0
 
   Drop Carousel component
