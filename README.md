@@ -40,7 +40,7 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 | v3.1 | 3 | 1 | 4 |
 | **Now (v3.2)** | **2** | **1** | **3** |
 
-**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `vaul` (drawer drag physics — used by the built-in `Drawer` and `UpgradeSheet`).
+**Hard deps that stayed:** `@base-ui/react` (popover/dropdown primitives — replacing it means rewriting floating-ui math), `vaul` (drawer drag physics — backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports).
 
 **Removed entirely** by recreating, vendoring, or inlining:
 - `lucide-react` → 1700+ icons vendored at `icons/` via `scripts/vendor-icons.js`
@@ -53,7 +53,7 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 - `tailwindcss-animate` → inlined as plain CSS in `styles.css`
 - `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
 
-**Now optional peer deps** (apps install only if they import the matching component): `recharts` (Chart). `vaul` stays a hard dep because the built-in `UpgradeSheet` uses it.
+**Now optional peer deps** (apps install only if they import the matching component): `recharts` (Chart). `vaul` stays a hard dep because the `Drawer`, `Sheet`, and `UpgradeSheet` exports all use it.
 
 **Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped. If you used them, install the lib directly in your app and import from it instead.
 
@@ -85,17 +85,15 @@ The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some
 
 ## Optional Peer Dependencies
 
-Three shadcn primitives are powered by single-purpose libraries that are **optional peer dependencies** — apps that don't import them install nothing.
+One shadcn primitive is powered by a single-purpose library that's an **optional peer dependency** — apps that don't import it install nothing.
 
 | Component | Required peer dep |
 |---|---|
-| `Carousel` | `embla-carousel-react` |
 | `Chart` | `recharts` |
-| `ResizablePanels` | `react-resizable-panels` |
 
-If you import one of these without installing the matching package, your bundler will fail with a clear "Cannot find module" error. Just `npm i <package>` and continue.
+If you import `Chart` without installing `recharts`, your bundler will fail with a clear "Cannot find module" error. Just `npm i recharts` and continue.
 
-(`Drawer`'s underlying lib `vaul` stays a hard dep because the built-in `UpgradeSheet` uses it.)
+(`vaul` stays a hard dep — it backs the `Drawer`, `Sheet`, and `UpgradeSheet` exports.)
 
 ## Dark Mode Setup
 
@@ -1296,23 +1294,19 @@ All components support dark mode automatically and accept a `className` prop for
 
 ## Dependencies
 
-### Peer Dependencies
+### Required peer dependencies
 - React 19.1+
 - react-dom 19.1+
 - react-router-dom 7.0+
 
-### Core Dependencies
-- @base-ui/react — Accessible UI primitives
-- next-themes — Theme management
-- class-variance-authority — Variant styling
-- clsx & tailwind-merge — className utilities
-- sonner — Toast notifications
-- vaul — Drawer primitives
-- cmdk — Command menu
-- embla-carousel-react — Carousel
-- react-day-picker — Calendar
-- react-resizable-panels — Resizable panels
-- recharts — Charts
+### Hard dependencies
+- `@base-ui/react` — popover/dropdown/floating-ui primitives
+- `vaul` — drawer drag physics (backs `Drawer`, `Sheet`, `UpgradeSheet`)
+
+### Optional peer dependencies
+- `recharts` — only required if you import `Chart`
+
+See the dep-count table near the top of this README for the full vendoring history.
 
 ## Repository
 
