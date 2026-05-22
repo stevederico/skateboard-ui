@@ -1,5 +1,10 @@
 # CHANGELOG
 
+3.0.2
+
+  Exclude .claude from npm tarball
+  Add files allowlist to package.json
+
 3.0.1
 
   Move vaul back to deps
