@@ -1,4 +1,4 @@
-import { Button as ButtonPrimitive } from "@base-ui/react/button"
+import { Button as ButtonPrimitive } from "../lib/base-ui/button.js"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"

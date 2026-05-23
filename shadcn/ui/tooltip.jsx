@@ -1,4 +1,4 @@
-import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
+import { Tooltip as TooltipPrimitive } from "../lib/base-ui/tooltip.js"
 
 import { cn } from "../lib/utils.js"
 

@@ -1,4 +1,4 @@
-import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion"
+import { Accordion as AccordionPrimitive } from "../lib/base-ui/accordion.js"
 
 import { cn } from "../lib/utils.js"
 import { ChevronDownIcon, ChevronUpIcon } from "../../icons"

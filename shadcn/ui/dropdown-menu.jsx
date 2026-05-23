@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Menu as MenuPrimitive } from "@base-ui/react/menu"
+import { Menu as MenuPrimitive } from "../lib/base-ui/menu.js"
 
 import { cn } from "../lib/utils.js"
 import { ChevronRightIcon, CheckIcon } from "../../icons"

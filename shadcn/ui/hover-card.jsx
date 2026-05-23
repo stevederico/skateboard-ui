@@ -1,4 +1,4 @@
-import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card"
+import { PreviewCard as PreviewCardPrimitive } from "../lib/base-ui/preview-card.js"
 
 import { cn } from "../lib/utils.js"
 

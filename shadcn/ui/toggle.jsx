@@ -1,6 +1,6 @@
 "use client"
 
-import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
+import { Toggle as TogglePrimitive } from "../lib/base-ui/toggle.js"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"

@@ -1,4 +1,4 @@
-import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible"
+import { Collapsible as CollapsiblePrimitive } from "../lib/base-ui/collapsible.js"
 
 function Collapsible({
   ...props

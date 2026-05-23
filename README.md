@@ -40,16 +40,18 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 | v3.1 | 3 | 1 | 4 |
 | v3.2 | 2 | 1 | 3 |
 | v3.3 | 2 | 0 | 2 |
-| **Now (v3.4)** | **1** | **0** | **1** |
+| v3.4 | 1 | 0 | 1 |
+| **Now (v3.5)** | **0** | **0** | **0** |
 
-**Hard dep that stayed:** `@base-ui/react` (powers 31 shadcn primitives — accordion, dialog, dropdown, popover, select, sheet, sidebar, etc. Replacing it means rewriting floating-ui math).
+**No hard deps remain.** React + React-DOM + React Router are the only `peerDependencies`. Every other piece of code that runs in a consumer browser is either authored here, recreated as a drop-in, or vendored from upstream.
 
 ### Vendored packages
 
-Full source copies live in this repo so consumers don't pull them from npm. Refresh scripts in `scripts/` pin a version and re-fetch.
+Pre-built copies live in this repo so consumers don't pull them from npm. Refresh scripts in `scripts/` pin a version and re-bundle.
 
 | Source | Lives at | Refresh script |
 |---|---|---|
+| `@base-ui/react` + 5 transitive deps (`@floating-ui/react-dom`, `@floating-ui/utils`, `@babel/runtime`, `use-sync-external-store`, `@base-ui/utils`) | `shadcn/lib/base-ui/*.js` (28 entry points + shared chunks) | `node scripts/vendor-base-ui.js` (requires `bun`; bump `BASE_UI_VERSION`) |
 | `lucide` icons (1700+) | `icons/*.jsx` | `node scripts/vendor-icons.js` (bump `LUCIDE_TAG`) |
 | `tailwind-merge` | `shadcn/lib/tailwind-merge.js` | `node scripts/vendor-tailwind-merge.js` (bump `TM_VERSION`) |
 
@@ -66,13 +68,15 @@ Full source copies live in this repo so consumers don't pull them from npm. Refr
 | `tailwindcss-animate` | `styles.css` | inlined as plain CSS utilities |
 | `sonner` | — | removed; use `Dialog` / `Alert` |
 
-**No optional peer deps remain.** `@base-ui/react` is the only non-React hard dep.
+**No remaining npm runtime deps.** React, React-DOM, and React Router stay peer.
 
 **Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped.
 
 **Dropped in v3.3:** `Chart` (recharts) — component removed, peer dep dropped.
 
 **Dropped in v3.4:** `vaul` — drag gesture ported inline; `Drawer` now wraps base-ui Dialog. Multi-direction (top/left/right), snap points, and nested drawers were removed since no in-tree consumer used them.
+
+**Dropped in v3.5:** `@base-ui/react` — vendored as pre-bundled ESM at `shadcn/lib/base-ui/`. All 5 transitive deps (floating-ui math, babel runtime, etc.) are absorbed into the bundles. React stays peer-external.
 
 If you used any of the dropped components, install the lib directly in your app and import from it instead.
 
@@ -104,7 +108,7 @@ The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some
 
 ## Optional Peer Dependencies
 
-None as of v3.4. `@base-ui/react` is the only non-React hard dep.
+None as of v3.5. Zero runtime npm deps — only the React peer trio.
 
 ## Dark Mode Setup
 
@@ -1290,9 +1294,8 @@ All components support dark mode automatically and accept a `className` prop for
 - react-router-dom 7.0+
 
 ### Hard dependencies
-- `@base-ui/react` — primitives for 31 shadcn components (dialog, dropdown, popover, select, sheet, sidebar, etc.) plus the new base-ui-backed `Drawer`/`Sheet`/`UpgradeSheet`
 
-See the dep-count table near the top of this README for the full vendoring history.
+None. `@base-ui/react` and all its transitive deps are vendored at `shadcn/lib/base-ui/`. See the dep-count table near the top of this README for the full vendoring history.
 
 ## Repository
 

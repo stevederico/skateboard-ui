@@ -1,4 +1,4 @@
-import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu"
+import { NavigationMenu as NavigationMenuPrimitive } from "../lib/base-ui/navigation-menu.js"
 import { cva } from "../lib/cva.js"
 
 import { cn } from "../lib/utils.js"

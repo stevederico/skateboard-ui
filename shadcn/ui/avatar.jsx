@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
+import { Avatar as AvatarPrimitive } from "../lib/base-ui/avatar.js"
 
 import { cn } from "../lib/utils.js"
 

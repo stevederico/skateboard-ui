@@ -1,5 +1,19 @@
 # CHANGELOG
 
+3.5.0
+
+  Drop @base-ui/react dep — zero runtime npm deps
+  Vendor @base-ui/react@1.4.1 as pre-bundled ESM at shadcn/lib/base-ui/ (28 entry points + shared chunks via bun build code-splitting)
+  All 5 transitive deps absorbed: @floating-ui/react-dom, @floating-ui/utils, @babel/runtime, use-sync-external-store, @base-ui/utils
+  React, React-DOM, react/jsx-runtime stay external as peer-resolved imports
+
+  Rewrite shadcn/ui/*.jsx imports: @base-ui/react/X → ../lib/base-ui/X.js (32 files)
+  Add scripts/vendor-base-ui.js (re-run after bumping BASE_UI_VERSION; requires bun)
+  Tree-shaking preserved: bun's splitting puts shared floating-ui/utils code in _chunk-*.js files referenced by primitives that need them
+
+  package.json dependencies block removed entirely — only peerDependencies remain
+  Consumers see zero npm packages pulled in by skateboard-ui on install
+
 3.4.0
 
   Drop vaul dep
