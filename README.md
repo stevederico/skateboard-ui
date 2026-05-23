@@ -44,17 +44,27 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 
 **Hard dep that stayed:** `@base-ui/react` (powers 31 shadcn primitives — accordion, dialog, dropdown, popover, select, sheet, sidebar, etc. Replacing it means rewriting floating-ui math).
 
-**Removed entirely** by recreating, vendoring, or inlining:
-- `lucide-react` → 1700+ icons vendored at `icons/` via `scripts/vendor-icons.js`
-- `tailwind-merge` → vendored at `shadcn/lib/tailwind-merge.js` via `scripts/vendor-tailwind-merge.js` (re-run when bumping the pinned version to match a new Tailwind release)
-- `vaul` → drag math ported into `shadcn/ui/drawer.jsx` (MIT, Emil Kowalski); `Drawer` now uses base-ui Dialog as the modal shell + ported swipe-to-dismiss gesture. Removes vaul plus its 14 transitive `@radix-ui/*` packages.
-- `cmdk` → recreated as `core/Command.jsx`
-- `react-day-picker` → recreated as `core/Calendar.jsx`
-- `next-themes` → recreated as `core/ThemeProvider.jsx`
-- `class-variance-authority` → recreated as `shadcn/lib/cva.js`
-- `clsx` → recreated as `shadcn/lib/clsx.js`
-- `tailwindcss-animate` → inlined as plain CSS in `styles.css`
-- `sonner` → Toaster removed entirely (use `Dialog`/`Alert` instead)
+### Vendored packages
+
+Full source copies live in this repo so consumers don't pull them from npm. Refresh scripts in `scripts/` pin a version and re-fetch.
+
+| Source | Lives at | Refresh script |
+|---|---|---|
+| `lucide` icons (1700+) | `icons/*.jsx` | `node scripts/vendor-icons.js` (bump `LUCIDE_TAG`) |
+| `tailwind-merge` | `shadcn/lib/tailwind-merge.js` | `node scripts/vendor-tailwind-merge.js` (bump `TM_VERSION`) |
+
+### Ported / recreated / inlined
+
+| Replaces | Lives at | Approach |
+|---|---|---|
+| `vaul` (drag gesture) | `shadcn/ui/drawer.jsx` | ported — drag math copied from vaul `src/index.tsx` (MIT, Emil Kowalski); base-ui Dialog as modal shell |
+| `cmdk` | `core/Command.jsx` | rewritten drop-in |
+| `react-day-picker` | `core/Calendar.jsx` | rewritten drop-in |
+| `next-themes` | `core/ThemeProvider.jsx` | rewritten drop-in |
+| `class-variance-authority` | `shadcn/lib/cva.js` | rewritten drop-in |
+| `clsx` | `shadcn/lib/clsx.js` | rewritten drop-in |
+| `tailwindcss-animate` | `styles.css` | inlined as plain CSS utilities |
+| `sonner` | — | removed; use `Dialog` / `Alert` |
 
 **No optional peer deps remain.** `@base-ui/react` is the only non-React hard dep.
 
@@ -64,7 +74,7 @@ skateboard-ui v3.0 was a major slimming pass — most utility libraries are now 
 
 **Dropped in v3.4:** `vaul` — drag gesture ported inline; `Drawer` now wraps base-ui Dialog. Multi-direction (top/left/right), snap points, and nested drawers were removed since no in-tree consumer used them.
 
-If you used any of these, install the lib directly in your app and import from it instead.
+If you used any of the dropped components, install the lib directly in your app and import from it instead.
 
 ## Migrating to 3.0
 
@@ -257,9 +267,8 @@ createSkateboardApp({
 
 - **Routes:** Landing, signin, signup, signout, app routes, settings, payment, legal pages (terms, privacy, EULA, subscription)
 - **Authentication:** ProtectedRoute wrapping `/app/*`, AuthOverlay for lazy auth
-- **Theming:** next-themes ThemeProvider with system theme support
+- **Theming:** in-house `ThemeProvider` (system / light / dark) — `core/ThemeProvider.jsx`
 - **State:** ContextProvider with user, UI, and auth overlay state
-- **Toasts:** Sonner Toaster (top-right, rich colors, close button)
 - **Error Boundary:** Catches render errors, unhandled rejections, and global errors
 
 ### Generated Routes
@@ -1176,27 +1185,7 @@ The dialog supports toggling between sign-in and sign-up modes inline, and can b
 
 ## Toast Notifications
 
-Toasts are provided by [Sonner](https://sonner.emilkowal.dev/) and rendered automatically by `createSkateboardApp`.
-
-```javascript
-import { toast } from 'sonner';
-
-toast.success('Changes saved!');
-toast.error('Failed to save');
-toast.loading('Saving...');
-toast.info('New feature available');
-toast.warning('This action cannot be undone');
-
-// Promise-based
-toast.promise(
-  fetch('/api/data'),
-  {
-    loading: 'Loading...',
-    success: 'Data loaded!',
-    error: 'Failed to load'
-  }
-);
-```
+Removed in v3.0. The Sonner dependency is gone — surface short-lived feedback with `Dialog` or `Alert` from `shadcn/ui` instead.
 
 ## Styling
 
@@ -1223,11 +1212,11 @@ Import base theme and override as needed:
 | `--accent` | Secondary backgrounds |
 | `--radius` | Border radius |
 
-Dark mode is automatic via CSS custom properties and `next-themes`.
+Dark mode is automatic via CSS custom properties and the in-house `ThemeProvider` (`core/ThemeProvider.jsx`).
 
 ## shadcn/ui Components
 
-51 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
+47 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
 
 ```javascript
 import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button';
