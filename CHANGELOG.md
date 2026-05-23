@@ -1,5 +1,9 @@
 # CHANGELOG
 
+3.6.1
+
+  Fix: restore `icons/` in files allowlist (regressed in 3.6.0 — `@stevederico/skateboard-ui/icons` import was unresolvable in published tarball)
+
 3.6.0
 
   Internal reorganization (no dep changes, no consumer API changes)
