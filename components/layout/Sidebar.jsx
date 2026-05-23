@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import DynamicIcon from "../core/DynamicIcon.jsx";
 import { getState } from "../core/Context.jsx";
 import {

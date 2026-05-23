@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router';
 import { isAuthenticated, apiRequest, getAppKey, getConstants } from './core/Utilities';
 import { Spinner } from '../shadcn/ui/spinner.jsx';
 

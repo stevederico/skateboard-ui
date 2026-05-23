@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useTheme } from '../core/ThemeProvider.jsx';
 import { getState } from "../core/Context.jsx";
 import DynamicIcon from '../core/DynamicIcon.jsx';

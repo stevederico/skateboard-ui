@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { getBackendURL, getCSRFToken } from '../core/Utilities';
 import { Spinner } from '../../shadcn/ui/spinner.jsx';
 
