@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { isAuthenticated, apiRequest, getAppKey, getConstants } from '../core/Utilities';
+import { isAuthenticated, apiRequest, getAppKey, getConstants } from './core/Utilities';
 import { Spinner } from '../shadcn/ui/spinner.jsx';
 
 /**

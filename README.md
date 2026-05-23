@@ -43,7 +43,8 @@ Across the v3.x series, every npm runtime dep was either vendored, recreated, or
 | v3.2 | 2 | 1 | 3 |
 | v3.3 | 2 | 0 | 2 |
 | v3.4 | 1 | 0 | 1 |
-| **Now (v3.5)** | **0** | **0** | **0** |
+| v3.5 | 0 | 0 | 0 |
+| **Now (v3.6)** | **0** | **0** | **0** |
 
 **No hard deps remain.** React + React-DOM + React Router are the only `peerDependencies`. Every other piece of code that runs in a consumer browser is either authored here, recreated as a drop-in, or vendored from upstream.
 
@@ -62,9 +63,9 @@ Pre-built copies live in this repo so consumers don't pull them from npm. Refres
 | Replaces | Lives at | Approach |
 |---|---|---|
 | `vaul` (drag gesture) | `shadcn/ui/drawer.jsx` | ported — drag math copied from vaul `src/index.tsx` (MIT, Emil Kowalski); base-ui Dialog as modal shell |
-| `cmdk` | `core/Command.jsx` | rewritten drop-in |
-| `react-day-picker` | `core/Calendar.jsx` | rewritten drop-in |
-| `next-themes` | `core/ThemeProvider.jsx` | rewritten drop-in |
+| `cmdk` | `components/core/Command.jsx` | rewritten drop-in |
+| `react-day-picker` | `components/core/Calendar.jsx` | rewritten drop-in |
+| `next-themes` | `components/core/ThemeProvider.jsx` | rewritten drop-in |
 | `class-variance-authority` | `shadcn/lib/cva.js` | rewritten drop-in |
 | `clsx` | `shadcn/lib/clsx.js` | rewritten drop-in |
 | `tailwindcss-animate` | `styles.css` | inlined as plain CSS utilities |
@@ -276,7 +277,7 @@ createSkateboardApp({
 
 - **Routes:** Landing, signin, signup, signout, app routes, settings, payment, legal pages (terms, privacy, EULA, subscription)
 - **Authentication:** ProtectedRoute wrapping `/app/*`, AuthOverlay for lazy auth
-- **Theming:** in-house `ThemeProvider` (system / light / dark) — `core/ThemeProvider.jsx`
+- **Theming:** in-house `ThemeProvider` (system / light / dark) — `components/core/ThemeProvider.jsx`
 - **State:** ContextProvider with user, UI, and auth overlay state
 - **Error Boundary:** Catches render errors, unhandled rejections, and global errors
 
@@ -1221,7 +1222,7 @@ Import base theme and override as needed:
 | `--accent` | Secondary backgrounds |
 | `--radius` | Border radius |
 
-Dark mode is automatic via CSS custom properties and the in-house `ThemeProvider` (`core/ThemeProvider.jsx`).
+Dark mode is automatic via CSS custom properties and the in-house `ThemeProvider` (`components/core/ThemeProvider.jsx`).
 
 ## shadcn/ui Components
 

@@ -14,8 +14,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "../shadcn/ui/sidebar";
-import { Settings } from '../icons';
+} from "../../shadcn/ui/sidebar";
+import { Settings } from '../../icons';
 
 /**
  * Desktop navigation sidebar using shadcn primitives.

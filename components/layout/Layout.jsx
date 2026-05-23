@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import TabBar from './TabBar.jsx'
-import { SidebarProvider, SidebarInset } from "../shadcn/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "../../shadcn/ui/sidebar"
 import Sidebar from "./Sidebar"
 import { getState } from '../core/Context.jsx';
 

@@ -8,21 +8,21 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getState } from './core/Context.jsx';
-import { ThemeProvider } from './core/ThemeProvider.jsx';
-import Layout from './layout/Layout.jsx';
-import LandingView from './views/LandingView.jsx';
-import TextView from './views/TextView.jsx';
-import SignUpView from './views/SignUpView.jsx';
-import SignInView from './views/SignInView.jsx';
-import SignOutView from './views/SignOutView.jsx';
-import PaymentView from './views/PaymentView.jsx';
-import SettingsView from './views/SettingsView.jsx';
-import NotFound from './views/NotFound.jsx';
+import { getState } from './components/core/Context.jsx';
+import { ThemeProvider } from './components/core/ThemeProvider.jsx';
+import Layout from './components/layout/Layout.jsx';
+import LandingView from './components/views/LandingView.jsx';
+import TextView from './components/views/TextView.jsx';
+import SignUpView from './components/views/SignUpView.jsx';
+import SignInView from './components/views/SignInView.jsx';
+import SignOutView from './components/views/SignOutView.jsx';
+import PaymentView from './components/views/PaymentView.jsx';
+import SettingsView from './components/views/SettingsView.jsx';
+import NotFound from './components/views/NotFound.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import { useAppSetup, initializeUtilities, validateConstants } from './core/Utilities.js';
-import { ContextProvider } from './core/Context.jsx';
+import { useAppSetup, initializeUtilities, validateConstants } from './components/core/Utilities.js';
+import { ContextProvider } from './components/core/Context.jsx';
 import AuthOverlay from './components/AuthOverlay.jsx';
 
 /**
