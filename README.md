@@ -2,6 +2,8 @@
 
 React component library for rapid application development. Built with TailwindCSS v4 and shadcn/ui.
 
+**Zero runtime npm dependencies.** Only React, React-DOM, and React Router are peer-resolved. Everything else — base-ui primitives, lucide icons, tailwind-merge, drag physics, command palette, date picker, theme provider — is vendored, ported, or recreated inside the repo.
+
 ## Installation
 
 ```bash
@@ -31,7 +33,7 @@ That's it! You get routing, auth, layout, landing page, settings, and payments.
 
 ## Dependency Footprint
 
-skateboard-ui v3.0 was a major slimming pass — most utility libraries are now recreated in-house, and single-purpose component libs are opt-in.
+Across the v3.x series, every npm runtime dep was either vendored, recreated, or dropped. v3.5 finished the job by vendoring `@base-ui/react`.
 
 | | Hard deps | Optional peer deps | Total |
 |---|---|---|---|
@@ -68,17 +70,14 @@ Pre-built copies live in this repo so consumers don't pull them from npm. Refres
 | `tailwindcss-animate` | `styles.css` | inlined as plain CSS utilities |
 | `sonner` | — | removed; use `Dialog` / `Alert` |
 
-**No remaining npm runtime deps.** React, React-DOM, and React Router stay peer.
+### Removed components (by version)
 
-**Dropped in v3.1:** `Carousel` (embla-carousel-react) and `Resizable` (react-resizable-panels) — components removed, peer deps dropped.
-
-**Dropped in v3.3:** `Chart` (recharts) — component removed, peer dep dropped.
-
-**Dropped in v3.4:** `vaul` — drag gesture ported inline; `Drawer` now wraps base-ui Dialog. Multi-direction (top/left/right), snap points, and nested drawers were removed since no in-tree consumer used them.
-
-**Dropped in v3.5:** `@base-ui/react` — vendored as pre-bundled ESM at `shadcn/lib/base-ui/`. All 5 transitive deps (floating-ui math, babel runtime, etc.) are absorbed into the bundles. React stays peer-external.
-
-If you used any of the dropped components, install the lib directly in your app and import from it instead.
+| Version | Dropped | Reason |
+|---|---|---|
+| v3.1 | `Carousel`, `Resizable` | unused; consumers can install `embla-carousel-react` / `react-resizable-panels` directly |
+| v3.3 | `Chart` | unused; consumers can install `recharts` directly |
+| v3.4 | `vaul` | drag physics ported; `Drawer` rebuilt on base-ui Dialog |
+| v3.5 | `@base-ui/react` | vendored; see table above |
 
 ## Migrating to 3.0
 
@@ -106,9 +105,15 @@ To refresh the icon set against a newer lucide release: bump `LUCIDE_TAG` in `sc
 
 The vendored icons keep their original [Lucide ISC license](icons/LICENSE) (some legacy icons inherit Feather's MIT license — both notices are in that file).
 
-## Optional Peer Dependencies
+## Refreshing vendored packages
 
-None as of v3.5. Zero runtime npm deps — only the React peer trio.
+Each vendored library has a script that pins a version, fetches the upstream release, and re-emits the local copy. Trust model: vendoring upgrades from "trust npm on every install" to "trust npm at refresh time." Audit the diff between refreshes.
+
+| Library | Bump | Command | Host requirement |
+|---|---|---|---|
+| `@base-ui/react` | `BASE_UI_VERSION` in `scripts/vendor-base-ui.js` | `node scripts/vendor-base-ui.js` | [bun](https://bun.sh) |
+| `lucide` icons | `LUCIDE_TAG` in `scripts/vendor-icons.js` | `node scripts/vendor-icons.js` | Node |
+| `tailwind-merge` | `TM_VERSION` in `scripts/vendor-tailwind-merge.js` | `node scripts/vendor-tailwind-merge.js` | Node |
 
 ## Dark Mode Setup
 
