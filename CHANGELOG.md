@@ -1,5 +1,11 @@
 # CHANGELOG
 
+3.7.0
+
+  Breaking (peer dep rename): `react-router-dom` → `react-router`
+  In react-router v7 `react-router-dom` is just a re-export of `react-router`; consumers must install `react-router@^7.0.0` instead of `react-router-dom`
+  All internal imports rewritten (App, ProtectedRoute, Layout, Sidebar, TabBar, Utilities, Landing/Payment/Settings/SignOut views)
+
 3.6.1
 
   Fix: restore `icons/` in files allowlist (regressed in 3.6.0 — `@stevederico/skateboard-ui/icons` import was unresolvable in published tarball)

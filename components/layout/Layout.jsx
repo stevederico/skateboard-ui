@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import TabBar from './TabBar.jsx'
 import { SidebarProvider, SidebarInset } from "../../shadcn/ui/sidebar"
 import Sidebar from "./Sidebar"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { getState } from '../core/Context.jsx';
 import { useTheme } from '../core/ThemeProvider.jsx';
 import { Sun, Moon } from '../../icons';
