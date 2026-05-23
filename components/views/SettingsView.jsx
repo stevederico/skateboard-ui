@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getState } from '../core/Context.jsx';
 import { useTheme } from '../core/ThemeProvider.jsx';
-import { Sun, Moon } from '../icons';
+import { Sun, Moon } from '../../icons';
 import Header from '../layout/Header.jsx';
-import { Avatar, AvatarFallback } from '../shadcn/ui/avatar.jsx';
-import { Badge } from '../shadcn/ui/badge.jsx';
-import { Button } from '../shadcn/ui/button.jsx';
-import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '../shadcn/ui/card.jsx';
+import { Avatar, AvatarFallback } from '../../shadcn/ui/avatar.jsx';
+import { Badge } from '../../shadcn/ui/badge.jsx';
+import { Button } from '../../shadcn/ui/button.jsx';
+import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '../../shadcn/ui/card.jsx';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '../shadcn/ui/alert-dialog.jsx';
+} from '../../shadcn/ui/alert-dialog.jsx';
 import { showCheckout, showManage } from '../core/Utilities';
 
 /**

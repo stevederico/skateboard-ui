@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getState } from '../core/Context.jsx';
 import { getCurrentUser, getAppKey } from '../core/Utilities.js'
-import { Spinner } from '../shadcn/ui/spinner.jsx';
+import { Spinner } from '../../shadcn/ui/spinner.jsx';
 
 // Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
 const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];

@@ -1,68 +1,68 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "3.5.0",
+  "version": "3.6.0",
   "type": "module",
   "exports": {
     "./Sidebar": {
-      "import": "./layout/Sidebar.jsx",
-      "default": "./layout/Sidebar.jsx"
+      "import": "./components/layout/Sidebar.jsx",
+      "default": "./components/layout/Sidebar.jsx"
     },
     "./DynamicIcon": {
-      "import": "./core/DynamicIcon.jsx",
-      "default": "./core/DynamicIcon.jsx"
+      "import": "./components/core/DynamicIcon.jsx",
+      "default": "./components/core/DynamicIcon.jsx"
     },
     "./ErrorBoundary": {
       "import": "./components/ErrorBoundary.jsx",
       "default": "./components/ErrorBoundary.jsx"
     },
     "./Header": {
-      "import": "./layout/Header.jsx",
-      "default": "./layout/Header.jsx"
+      "import": "./components/layout/Header.jsx",
+      "default": "./components/layout/Header.jsx"
     },
     "./LandingView": {
-      "import": "./views/LandingView.jsx",
-      "default": "./views/LandingView.jsx"
+      "import": "./components/views/LandingView.jsx",
+      "default": "./components/views/LandingView.jsx"
     },
     "./Layout": {
-      "import": "./layout/Layout.jsx",
-      "default": "./layout/Layout.jsx"
+      "import": "./components/layout/Layout.jsx",
+      "default": "./components/layout/Layout.jsx"
     },
     "./NotFound": {
-      "import": "./views/NotFound.jsx",
-      "default": "./views/NotFound.jsx"
+      "import": "./components/views/NotFound.jsx",
+      "default": "./components/views/NotFound.jsx"
     },
     "./SettingsView": {
-      "import": "./views/SettingsView.jsx",
-      "default": "./views/SettingsView.jsx"
+      "import": "./components/views/SettingsView.jsx",
+      "default": "./components/views/SettingsView.jsx"
     },
     "./Sheet": {
       "import": "./components/Sheet.jsx",
       "default": "./components/Sheet.jsx"
     },
     "./SignInView": {
-      "import": "./views/SignInView.jsx",
-      "default": "./views/SignInView.jsx"
+      "import": "./components/views/SignInView.jsx",
+      "default": "./components/views/SignInView.jsx"
     },
     "./SignUpView": {
-      "import": "./views/SignUpView.jsx",
-      "default": "./views/SignUpView.jsx"
+      "import": "./components/views/SignUpView.jsx",
+      "default": "./components/views/SignUpView.jsx"
     },
     "./SignOutView": {
-      "import": "./views/SignOutView.jsx",
-      "default": "./views/SignOutView.jsx"
+      "import": "./components/views/SignOutView.jsx",
+      "default": "./components/views/SignOutView.jsx"
     },
     "./PaymentView": {
-      "import": "./views/PaymentView.jsx",
-      "default": "./views/PaymentView.jsx"
+      "import": "./components/views/PaymentView.jsx",
+      "default": "./components/views/PaymentView.jsx"
     },
     "./TabBar": {
-      "import": "./layout/TabBar.jsx",
-      "default": "./layout/TabBar.jsx"
+      "import": "./components/layout/TabBar.jsx",
+      "default": "./components/layout/TabBar.jsx"
     },
     "./TextView": {
-      "import": "./views/TextView.jsx",
-      "default": "./views/TextView.jsx"
+      "import": "./components/views/TextView.jsx",
+      "default": "./components/views/TextView.jsx"
     },
     "./ThemeToggle": {
       "import": "./components/ThemeToggle.jsx",
@@ -73,8 +73,8 @@
       "default": "./components/UpgradeSheet.jsx"
     },
     "./Utilities": {
-      "import": "./core/Utilities.js",
-      "default": "./core/Utilities.js"
+      "import": "./components/core/Utilities.js",
+      "default": "./components/core/Utilities.js"
     },
     "./ProtectedRoute": {
       "import": "./components/ProtectedRoute.jsx",
@@ -85,8 +85,8 @@
       "default": "./styles.css"
     },
     "./Context": {
-      "import": "./core/Context.jsx",
-      "default": "./core/Context.jsx"
+      "import": "./components/core/Context.jsx",
+      "default": "./components/core/Context.jsx"
     },
     "./App": {
       "import": "./App.jsx",
@@ -125,10 +125,7 @@
     "CHANGELOG.md",
     "README.md",
     "MIGRATION.md",
-    "core",
     "components",
-    "layout",
-    "views",
     "shadcn",
     "hooks",
     "fonts"

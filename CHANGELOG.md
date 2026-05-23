@@ -1,5 +1,16 @@
 # CHANGELOG
 
+3.6.0
+
+  Internal reorganization (no dep changes, no consumer API changes)
+  Move core/ → components/core/ (Calendar, Command, Context, DynamicIcon, ThemeProvider, Utilities)
+  Move layout/ → components/layout/ (Header, Layout, Sidebar, TabBar)
+  Move views/ → components/views/ (Landing, SignIn/Up/Out, Settings, Payment, Text, NotFound)
+  Delete empty src/shims/
+  Collapses 4 top-level dirs to 1; everything user-facing now lives under components/
+  package.json exports field updated to point to new internal paths — consumers continue to import via the same '@stevederico/skateboard-ui/X' names with no changes
+  files allowlist trimmed: core/, layout/, views/ removed (folded into components/)
+
 3.5.0
 
   Drop @base-ui/react dep — zero runtime npm deps

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../core/ThemeProvider.jsx';
+import { useTheme } from './core/ThemeProvider.jsx';
 import { Sun, Moon } from '../icons';
 import { Button } from '../shadcn/ui/button.jsx';
 import { cn } from '../shadcn/lib/utils.js';

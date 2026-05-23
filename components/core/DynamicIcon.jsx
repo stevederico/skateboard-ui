@@ -1,4 +1,4 @@
-import * as LucideIcons from "../icons";
+import * as LucideIcons from "../../icons";
 
 /**
  * Convert a kebab-case, snake_case, or space-separated string to PascalCase.

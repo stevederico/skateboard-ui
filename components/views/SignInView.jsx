@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { cn } from "../shadcn/lib/utils"
-import { Button } from "../shadcn/ui/button"
-import { Input } from "../shadcn/ui/input"
-import { Label } from "../shadcn/ui/label"
-import { Card, CardContent, CardHeader } from "../shadcn/ui/card"
-import { Alert, AlertDescription } from "../shadcn/ui/alert"
+import { cn } from "../../shadcn/lib/utils"
+import { Button } from "../../shadcn/ui/button"
+import { Input } from "../../shadcn/ui/input"
+import { Label } from "../../shadcn/ui/label"
+import { Card, CardContent, CardHeader } from "../../shadcn/ui/card"
+import { Alert, AlertDescription } from "../../shadcn/ui/alert"
 import DynamicIcon from '../core/DynamicIcon';
 import { getState } from "../core/Context.jsx";
 import { getBackendURL, useSafeNavigate } from '../core/Utilities'
