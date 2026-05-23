@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "3.4.0",
+  "version": "3.5.0",
   "type": "module",
   "exports": {
     "./Sidebar": {
@@ -140,9 +140,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stevederico/skateboard-ui.git"
-  },
-  "dependencies": {
-    "@base-ui/react": "^1.4.1"
   },
   "peerDependencies": {
     "react": "^19.1.0",

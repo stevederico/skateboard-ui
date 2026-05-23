@@ -1,4 +1,4 @@
-import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
+import { Tabs as TabsPrimitive } from "../lib/base-ui/tabs.js"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"

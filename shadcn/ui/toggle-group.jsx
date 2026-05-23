@@ -1,6 +1,6 @@
 import * as React from "react"
-import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
-import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group"
+import { Toggle as TogglePrimitive } from "../lib/base-ui/toggle.js"
+import { ToggleGroup as ToggleGroupPrimitive } from "../lib/base-ui/toggle-group.js"
 
 import { cn } from "../lib/utils.js"
 import { toggleVariants } from "./toggle.jsx"

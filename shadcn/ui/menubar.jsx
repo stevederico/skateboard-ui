@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Menu as MenuPrimitive } from "@base-ui/react/menu"
-import { Menubar as MenubarPrimitive } from "@base-ui/react/menubar"
+import { Menu as MenuPrimitive } from "../lib/base-ui/menu.js"
+import { Menubar as MenubarPrimitive } from "../lib/base-ui/menubar.js"
 
 import { cn } from "../lib/utils.js"
 import {

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Select as SelectPrimitive } from "@base-ui/react/select"
+import { Select as SelectPrimitive } from "../lib/base-ui/select.js"
 
 import { cn } from "../lib/utils.js"
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "../../icons"

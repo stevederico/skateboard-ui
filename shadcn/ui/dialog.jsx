@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
+import { Dialog as DialogPrimitive } from "../lib/base-ui/dialog.js"
 
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.jsx"

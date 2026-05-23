@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu"
+import { ContextMenu as ContextMenuPrimitive } from "../lib/base-ui/context-menu.js"
 
 import { cn } from "../lib/utils.js"
 import { ChevronRightIcon, CheckIcon } from "../../icons"

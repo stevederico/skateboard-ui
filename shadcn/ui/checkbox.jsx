@@ -1,6 +1,6 @@
 "use client"
 
-import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox"
+import { Checkbox as CheckboxPrimitive } from "../lib/base-ui/checkbox.js"
 
 import { cn } from "../lib/utils.js"
 import { CheckIcon } from "../../icons"
