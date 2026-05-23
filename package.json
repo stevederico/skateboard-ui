@@ -64,6 +64,10 @@
       "import": "./components/views/TextView.jsx",
       "default": "./components/views/TextView.jsx"
     },
+    "./ThemeProvider": {
+      "import": "./components/core/ThemeProvider.jsx",
+      "default": "./components/core/ThemeProvider.jsx"
+    },
     "./ThemeToggle": {
       "import": "./components/ThemeToggle.jsx",
       "default": "./components/ThemeToggle.jsx"

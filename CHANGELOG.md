@@ -3,6 +3,7 @@
 3.6.1
 
   Fix: restore `icons/` in files allowlist (regressed in 3.6.0 — `@stevederico/skateboard-ui/icons` import was unresolvable in published tarball)
+  Add: `./ThemeProvider` export — exposes the in-house `ThemeProvider` + `useTheme` from components/core/ThemeProvider.jsx for consumers who don't go through createSkateboardApp
 
 3.6.0
 
