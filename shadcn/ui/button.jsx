@@ -1,3 +1,4 @@
+import { Children } from "react";
 import { Button as ButtonPrimitive } from "../lib/base-ui/button.js"
 import { cva } from "../lib/cva.js";
 
@@ -42,19 +43,37 @@ const buttonVariants = cva(
  * @param {string} [props.className] - Additional CSS classes
  * @param {"default"|"outline"|"secondary"|"ghost"|"destructive"|"link"|"gradient"} [props.variant="default"] - Visual style
  * @param {"default"|"xs"|"sm"|"lg"|"icon"|"icon-xs"|"icon-sm"|"icon-lg"|"cta"} [props.size="default"] - Button size
+ * @param {boolean} [props.asChild=false] - Render the single child element styled as a button (shadcn-style). Bridged onto Base UI's `render` prop.
  * @returns {JSX.Element}
  */
 function Button({
   className,
   variant = "default",
   size = "default",
+  asChild = false,
+  children,
   ...props
 }) {
+  const classes = cn(buttonVariants({ variant, size, className }));
+  // Base UI has no `asChild` — it uses a `render` prop. Bridge the shadcn-style
+  // `asChild` API so `<Button asChild><a .../></Button>` renders the child element
+  // (merged with button props) instead of leaking `asChild` onto the DOM <button>.
+  if (asChild) {
+    return (
+      <ButtonPrimitive
+        data-slot="button"
+        className={classes}
+        render={Children.only(children)}
+        {...props} />
+    );
+  }
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props} />
+      className={classes}
+      {...props}>
+      {children}
+    </ButtonPrimitive>
   );
 }
 
