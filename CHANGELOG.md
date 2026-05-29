@@ -1,5 +1,9 @@
 # CHANGELOG
 
+3.7.1
+
+  Fix: `Button` now bridges shadcn-style `asChild` onto Base UI's `render` prop instead of leaking it onto the DOM `<button>` — removes the "React does not recognize the `asChild` prop" warning for `<Button asChild><a/></Button>` (e.g. LandingSpecSheet "Learn more")
+
 3.7.0
 
   Breaking (peer dep rename): `react-router-dom` → `react-router`
