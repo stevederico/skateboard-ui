@@ -655,8 +655,7 @@ Effects: `isAuthenticated()` always returns `true`, ProtectedRoute allows all ac
 
 | Component | Import | Description |
 |-----------|--------|-------------|
-| LandingView | `@stevederico/skateboard-ui/LandingView` | Landing page with hero, features, pricing |
-| LandingViewSimple | `@stevederico/skateboard-ui/LandingViewSimple` | Minimal landing page |
+| LandingView | `@stevederico/skateboard-ui/LandingView` | Landing page — sticky header, hero, features, pricing, CTA, footer |
 | SignInView | `@stevederico/skateboard-ui/SignInView` | Sign in form with Card layout |
 | SignUpView | `@stevederico/skateboard-ui/SignUpView` | Sign up form with password validation |
 | SignOutView | `@stevederico/skateboard-ui/SignOutView` | Sign out handler with redirect |
