@@ -1,5 +1,11 @@
 # CHANGELOG
 
+3.8.0
+
+  Redesign: `LandingView` now uses the SpecSheet layout — sticky header with nav + theme toggle, quiet hero with CTA buttons, icon-leading feature cards (responsive 1–3 columns), optional pricing card, dark CTA section, and footer. Reads all copy from `constants` (tagline, cta, navLinks, features, stripeProducts, pricing, ctaHeading, footerLinks, companyName, copyrightText)
+  Feature/app icons resolve via `DynamicIcon` (Lucide names); legacy emoji/text values fall back to rendering as raw text so they never silently disappear
+  Apps that vendored `LandingSpecSheet.jsx` can delete the local copy and rely on the package default (omit `landingPage`) or import `@stevederico/skateboard-ui/LandingView`
+
 3.7.1
 
   Fix: `Button` now bridges shadcn-style `asChild` onto Base UI's `render` prop instead of leaking it onto the DOM `<button>` — removes the "React does not recognize the `asChild` prop" warning for `<Button asChild><a/></Button>` (e.g. LandingSpecSheet "Learn more")

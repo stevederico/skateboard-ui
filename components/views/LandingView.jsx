@@ -1,184 +1,189 @@
-import React from 'react';
 import { useNavigate } from 'react-router';
-import { useTheme } from '../core/ThemeProvider.jsx';
-import { getState } from "../core/Context.jsx";
+import { getState } from '../core/Context.jsx';
 import DynamicIcon from '../core/DynamicIcon.jsx';
-import { Sun, Moon, Check } from '../../icons';
+import ThemeToggle from '../ThemeToggle.jsx';
+import { Check, ArrowRight } from '../../icons';
 import { Button } from '../../shadcn/ui/button.jsx';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../shadcn/ui/card.jsx';
-import { Badge } from '../../shadcn/ui/badge.jsx';
 import { Separator } from '../../shadcn/ui/separator.jsx';
+import { cn } from '../../shadcn/lib/utils.js';
 
 const CURRENT_YEAR = new Date().getFullYear();
-
-const DEFAULT_NAV_LINKS = [
-  { label: 'Features', href: '#features' },
-];
-
-const DEFAULT_NAV_LINKS_SUFFIX = [
-  { label: 'Terms', href: '/terms' },
-];
-
-const PRICING_LINK = { label: 'Pricing', href: '#pricing' };
 
 const PRIVACY_LINK = { label: 'Privacy', href: '/privacy' };
 const TERMS_LINK = { label: 'Terms', href: '/terms' };
 const EULA_LINK = { label: 'EULA', href: '/eula' };
 
 /**
- * Renders a feature icon from a name string or emoji.
- * If the name looks like an icon identifier (ASCII letters, digits, hyphens),
- * renders it via DynamicIcon with lazy loading. Otherwise treats it as
- * raw text (e.g. an emoji).
+ * Renders a constants icon value. Values that look like a Lucide name (ASCII
+ * letters, digits, hyphens) resolve via DynamicIcon; anything else (e.g. a
+ * legacy emoji icon) renders as raw text so it never silently disappears.
  *
  * @param {Object} props
- * @param {string} props.name - Icon name (kebab-case) or emoji string
- * @returns {JSX.Element} Icon component or text span
+ * @param {string} props.name - Lucide icon name or emoji/text
+ * @param {number} props.size - Pixel size (icon dimension or emoji font size)
+ * @param {number} [props.strokeWidth] - Stroke width for Lucide icons
+ * @returns {JSX.Element|null}
  */
-function FeatureIcon({ name }) {
-  const isIconName = /^[a-z][a-z0-9-]*$/i.test(name);
-  if (isIconName) return <DynamicIcon name={name} size={24} />;
-  return <span>{name}</span>;
+function ConstantIcon({ name, size, strokeWidth }) {
+  if (!name) return null;
+  if (/^[a-z][a-z0-9-]*$/i.test(name)) return <DynamicIcon name={name} size={size} strokeWidth={strokeWidth} />;
+  return <span className="leading-none" style={{ fontSize: size }}>{name}</span>;
 }
 
 /**
- * Default landing page with hero section, features grid, pricing card,
- * CTA section, and footer.
+ * Default landing page (SpecSheet design). Sticky header, quiet hero,
+ * icon-leading feature cards, optional pricing card, CTA, and footer.
+ * Rendered at "/" whenever an app passes no custom landingPage to
+ * createSkateboardApp. Reads all copy from constants (appName, appIcon,
+ * tagline, cta, navLinks, features, stripeProducts, pricing, ctaHeading,
+ * footerLinks, companyName, copyrightText).
  *
- * Reads app branding, tagline, features, pricing, and layout from constants.
- * All sections are configurable via optional constants keys with sensible defaults.
+ * Feature icons (constants.features.items[].icon) and appIcon are resolved
+ * via DynamicIcon as Lucide names (kebab/PascalCase). Emoji icons do NOT
+ * render — migrate legacy emoji icons in constants.json to Lucide names.
  *
- * @returns {JSX.Element} Full landing page
- *
- * @example
- * import LandingView from '@stevederico/skateboard-ui/LandingView';
- *
- * // Used automatically by createSkateboardApp, or pass as landingPage prop:
- * createSkateboardApp({ constants, appRoutes, landingPage: <LandingView /> });
+ * @returns {JSX.Element}
  */
 export default function LandingView() {
   const { state } = getState();
-  const constants = state.constants;
+  const constants = state.constants || {};
   const navigate = useNavigate();
-  const { theme, setTheme } = useTheme();
-  const isDarkMode = theme === 'dark';
+  const goApp = () => navigate('/app');
+
+  const navLinks = constants.navLinks || [
+    { label: 'Features', href: '#features' },
+    ...(constants.stripeProducts?.length > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
+  ];
+  const footerLinks = constants.footerLinks || [
+    ...(constants.privacyPolicy ? [PRIVACY_LINK] : []),
+    ...(constants.termsOfService ? [TERMS_LINK] : []),
+    ...(constants.EULA ? [EULA_LINK] : []),
+  ];
+  const items = constants.features?.items || [];
+  const sp = (constants.stripeProducts || [])[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
-        <nav className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <DynamicIcon name={constants.appIcon} size={28} className="text-primary" strokeWidth={2} />
-            <span className="text-2xl font-bold text-foreground">{constants.appName}</span>
-          </div>
-
-          <div className="hidden md:flex gap-6">
-            {(constants.navLinks || [
-              ...DEFAULT_NAV_LINKS,
-              ...(constants.stripeProducts?.length > 0 ? [PRICING_LINK] : []),
-              ...DEFAULT_NAV_LINKS_SUFFIX,
-            ]).map((link, index) => (
-              <a key={index} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors font-semibold">{link.label}</a>
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2.5">
+            <span className="size-8 rounded-md bg-app/15 text-app flex items-center justify-center">
+              <ConstantIcon name={constants.appIcon} size={18} strokeWidth={2.25} />
+            </span>
+            <span className="text-base font-semibold tracking-tight">{constants.appName}</span>
+          </a>
+          <div className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
+            {navLinks.map((l, i) => (
+              <a key={i} href={l.href} className="hover:text-foreground transition-colors">{l.label}</a>
             ))}
           </div>
-
-          <div className="flex gap-3 items-center">
-            <Button variant="outline" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </Button>
-            <Button variant="default" onClick={() => navigate('/app')}>
-              {constants.cta}
-            </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle variant="landing" iconSize={14} />
+            <Button size="default" onClick={goApp}>{constants.cta}</Button>
           </div>
         </nav>
       </header>
 
       <main>
-        {/* Hero Section */}
-        <section className="relative py-24 md:py-40 text-center overflow-hidden bg-app/15">
-          <div className="absolute inset-0 bg-app/25" style={{ maskImage: 'radial-gradient(ellipse at 20% 50%, black 0%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at 20% 50%, black 0%, transparent 70%)' }} />
-          <div className="absolute inset-0 bg-app/20" style={{ maskImage: 'radial-gradient(ellipse at 80% 30%, black 0%, transparent 60%)', WebkitMaskImage: 'radial-gradient(ellipse at 80% 30%, black 0%, transparent 60%)' }} />
-          <div className="relative max-w-4xl mx-auto px-6">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 text-foreground leading-tight">
+        {/* Hero */}
+        <section className="relative border-b border-border">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-app/5 via-background to-background" />
+          <div className="max-w-3xl mx-auto px-6 py-24 md:py-36 text-center">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-balance mb-12">
               {constants.tagline}
             </h1>
-            <Button variant="default" size="cta" onClick={() => navigate('/app')}>
-              {constants.cta}
-            </Button>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section id="features" className="bg-muted py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">{constants.features?.title || 'Features'}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {(constants.features?.items || []).map((feature, index) => (
-                <Card key={index} className="text-center">
-                  <CardHeader className="items-center">
-                    <div className="w-full flex justify-center">
-                      <Badge variant="secondary" className="text-2xl mb-2 h-auto px-3 py-1">
-                        <FeatureIcon name={feature.icon} />
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-xl font-bold">{feature.title}</CardTitle>
-                    <CardDescription>{feature.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Button onClick={goApp} className="gap-2 h-14 px-10 text-base font-medium">
+                {constants.cta} <ArrowRight size={18} />
+              </Button>
+              {navLinks[0] && (
+                <Button variant="outline" asChild className="h-14 px-8 text-base font-medium">
+                  <a href={navLinks[0].href}>Learn more</a>
+                </Button>
+              )}
             </div>
           </div>
         </section>
 
-        {/* Pricing Section */}
-        {constants.stripeProducts?.length > 0 && (
-          <section id="pricing" className="py-16 md:py-24">
-            <div className="max-w-7xl mx-auto px-6">
-              <h2 className="text-center text-4xl md:text-5xl font-bold mb-16">{constants.pricing?.title || 'Pricing'}</h2>
-              <div className="max-w-md mx-auto">
-                <Card>
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-2xl font-bold">{constants.stripeProducts[0]?.title || 'Monthly Plan'}</CardTitle>
-                    <CardDescription>per {constants.stripeProducts[0]?.interval || 'month'}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <div className="text-5xl font-bold text-foreground mb-8">{constants.stripeProducts[0]?.price || '$5.00'}</div>
-                    <ul className="text-left space-y-4 mb-8">
-                      {(constants.stripeProducts[0]?.features || []).map((feature, index) => (
-                        <li key={index} className="flex items-center gap-2">
-                          <Check size={16} className="text-primary shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                      {(constants.pricing?.extras || []).map((extra, index) => (
-                        <li key={`extra-${index}`} className="flex items-center gap-2">
-                          <Check size={16} className="text-primary shrink-0" />
-                          {extra}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="default" size="cta" className="w-full" onClick={() => navigate('/app')}>
-                      {constants.cta}
-                    </Button>
-                  </CardFooter>
-                </Card>
+        {/* Features */}
+        {items.length > 0 && (
+          <section id="features" className="border-b border-border bg-muted/30">
+            <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+              <div className="text-center mb-14">
+                <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-balance">
+                  {constants.features?.title || 'Features'}
+                </h2>
+              </div>
+              <div className={cn('grid gap-6', items.length >= 3 ? 'md:grid-cols-3' : items.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1 max-w-md mx-auto')}>
+                {items.map((it, i) => (
+                  <Card key={i} className="border-border/60 transition-colors hover:border-border">
+                    <CardHeader>
+                      <span className="size-10 rounded-md bg-app/10 text-app flex items-center justify-center mb-3">
+                        <ConstantIcon name={it.icon} size={20} strokeWidth={2} />
+                      </span>
+                      <CardTitle className="text-lg">{it.title}</CardTitle>
+                      <CardDescription className="leading-relaxed">{it.description}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                ))}
               </div>
             </div>
           </section>
         )}
 
-        {/* CTA Section */}
-        <section className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            <Card className="bg-primary text-primary-foreground py-16 text-center">
-              <CardContent>
-                <h2 className="text-4xl md:text-5xl font-bold mb-10">{constants.ctaHeading || 'Ready To Build?'}</h2>
-                <Button variant="secondary" size="cta" onClick={() => navigate('/app')}>
-                  {constants.cta}
+        {/* Pricing */}
+        {sp && (
+          <section id="pricing" className="border-b border-border">
+            <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+              <div className="text-center mb-14">
+                <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-balance">
+                  {constants.pricing?.title || 'Pricing'}
+                </h2>
+              </div>
+              <Card className="max-w-md mx-auto border-app/30 shadow-sm">
+                <CardHeader className="text-center pb-4">
+                  <CardTitle className="text-base font-medium text-muted-foreground">{sp.title}</CardTitle>
+                  <div className="flex items-baseline justify-center gap-1.5 mt-2">
+                    <span className="text-5xl font-semibold tracking-tight text-foreground">{sp.price}</span>
+                    <span className="text-sm text-muted-foreground">/ {sp.interval}</span>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 text-sm">
+                    {(sp.features || []).map((f, i) => (
+                      <li key={`sp-${i}`} className="flex items-start gap-2.5">
+                        <Check size={16} className="text-app shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                    {(constants.pricing?.extras || []).map((f, i) => (
+                      <li key={`x-${i}`} className="flex items-start gap-2.5">
+                        <Check size={16} className="text-app shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Button size="lg" className="w-full" onClick={goApp}>{constants.cta}</Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </section>
+        )}
+
+        {/* CTA */}
+        <section className="border-b border-border">
+          <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+            <Card className="bg-foreground text-background border-0 py-16 md:py-20">
+              <CardContent className="text-center">
+                <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-balance mb-8 max-w-2xl mx-auto">
+                  {constants.ctaHeading || 'Ready to Build?'}
+                </h2>
+                <Button size="lg" variant="secondary" onClick={goApp} className="gap-1.5">
+                  {constants.cta} <ArrowRight size={16} />
                 </Button>
               </CardContent>
             </Card>
@@ -187,19 +192,25 @@ export default function LandingView() {
       </main>
 
       {/* Footer */}
-      <footer className="py-10 bg-background">
-        <div className="max-w-7xl mx-auto px-6">
-          <Separator className="mb-8" />
-          <div className="flex justify-center gap-8 mb-6">
-            {(constants.footerLinks || [
-              ...(constants.privacyPolicy ? [PRIVACY_LINK] : []),
-              ...(constants.termsOfService ? [TERMS_LINK] : []),
-              ...(constants.EULA ? [EULA_LINK] : []),
-            ]).map((link, index) => (
-              <a key={index} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors font-semibold">{link.label}</a>
-            ))}
+      <footer className="bg-background">
+        <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="flex flex-wrap items-center justify-between gap-6">
+            <div className="flex items-center gap-2.5">
+              <span className="size-7 rounded-md bg-app/15 text-app flex items-center justify-center">
+                <ConstantIcon name={constants.appIcon} size={16} strokeWidth={2.25} />
+              </span>
+              <span className="text-sm font-semibold tracking-tight">{constants.appName}</span>
+            </div>
+            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              {footerLinks.map((l, i) => (
+                <a key={i} href={l.href} className="hover:text-foreground transition-colors">{l.label}</a>
+              ))}
+            </div>
           </div>
-          <p className="text-center text-muted-foreground">&copy; {CURRENT_YEAR} {constants.companyName}. {constants.copyrightText || 'All rights reserved.'}</p>
+          <Separator className="my-6" />
+          <p className="text-xs text-muted-foreground">
+            © {CURRENT_YEAR} {constants.companyName}. {constants.copyrightText || 'All rights reserved.'}
+          </p>
         </div>
       </footer>
     </div>
