@@ -1,5 +1,9 @@
 # CHANGELOG
 
+3.8.1
+
+  Add engines node >=24.0.0 (align with skateboard; dev/vendor scripts only)
+
 3.8.0
 
   Redesign: `LandingView` now uses the SpecSheet layout — sticky header with nav + theme toggle, quiet hero with CTA buttons, icon-leading feature cards (responsive 1–3 columns), optional pricing card, dark CTA section, and footer. Reads all copy from `constants` (tagline, cta, navLinks, features, stripeProducts, pricing, ctaHeading, footerLinks, companyName, copyrightText)

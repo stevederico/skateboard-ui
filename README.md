@@ -4,6 +4,8 @@ React component library for rapid application development. Built with TailwindCS
 
 **Zero runtime npm dependencies.** Only React, React-DOM, and React Router are peer-resolved. Everything else — base-ui primitives, lucide icons, tailwind-merge, drag physics, command palette, date picker, theme provider — is vendored, ported, or recreated inside the repo.
 
+**Node.js 24+** is required in the app repo for build tooling and backend (see `engines` in `package.json`). The UI package itself runs in the browser.
+
 ## Installation
 
 ```bash
