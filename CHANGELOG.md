@@ -1,5 +1,12 @@
 # CHANGELOG
 
+3.9.0
+
+  Auth overlay on by default
+  Retry all parked 401s after sign-in
+  Sign-out clears local session
+  Sign-in autocomplete attributes
+
 3.8.1
 
   Add engines node >=24.0.0 (align with skateboard; dev/vendor scripts only)

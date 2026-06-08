@@ -111,6 +111,7 @@ export default function SignUpView({
             ref={nameInputRef}
             id="name"
             placeholder="John Doe"
+            autoComplete="name"
             required
             value={name}
             onChange={(e) => {
@@ -126,6 +127,7 @@ export default function SignUpView({
             id="email"
             type="email"
             placeholder="john@example.com"
+            autoComplete="username"
             required
             value={email}
             onChange={(e) => {
@@ -141,6 +143,7 @@ export default function SignUpView({
             id="password"
             type="password"
             placeholder="••••••••"
+            autoComplete="new-password"
             required
             minLength={6}
             maxLength={72}

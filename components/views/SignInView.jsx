@@ -101,6 +101,7 @@ export default function SignInView({
             id="email"
             type="email"
             placeholder="john@example.com"
+            autoComplete="username"
             required
             value={email}
             onChange={(e) => {
@@ -116,6 +117,7 @@ export default function SignInView({
             id="password"
             type="password"
             placeholder="••••••••"
+            autoComplete="current-password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
