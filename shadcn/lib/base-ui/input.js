@@ -1,26 +1,26 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useFieldsetRootContext
-} from "./_chunk-c3572b5x.js";
+} from "./_chunk-c2bz952e.js";
 import {
   useLabel
-} from "./_chunk-fch5cba8.js";
+} from "./_chunk-ghn1tzt8.js";
 import {
   useLabelableId
-} from "./_chunk-k4mc2kan.js";
-import"./_chunk-w68yxg9d.js";
+} from "./_chunk-23rx7haq.js";
+import"./_chunk-vgkfmtbe.js";
 import {
   useCheckboxGroupContext
-} from "./_chunk-bk7n9s9e.js";
+} from "./_chunk-8xaqxgck.js";
 import {
   FieldItemContext
-} from "./_chunk-qgzhcjsj.js";
+} from "./_chunk-7b9dc493.js";
 import {
   useFormContext,
   useRegisterFieldControl
-} from "./_chunk-97tas84n.js";
+} from "./_chunk-95tf2rxq.js";
 import {
   DEFAULT_VALIDITY_STATE,
   FieldRootContext,
@@ -28,63 +28,61 @@ import {
   fieldValidityMapping,
   useFieldRootContext,
   useLabelableContext
-} from "./_chunk-kfz96xv1.js";
-import"./_chunk-ds8fnpjj.js";
+} from "./_chunk-8ctgmf06.js";
+import"./_chunk-dzvjwv25.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
-import {
-  ownerDocument
-} from "./_chunk-xb7ph1ka.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   activeElement
-} from "./_chunk-atnkefgd.js";
-import"./_chunk-t7j3rbpv.js";
+} from "./_chunk-cgptgywc.js";
+import"./_chunk-rrh8rt4v.js";
 import {
   useTimeout
-} from "./_chunk-7v1t86x1.js";
+} from "./_chunk-b6dkjkbw.js";
+import {
+  ownerDocument
+} from "./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   transitionStatusMapping,
   useOpenChangeComplete,
   useTransitionStatus
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   error
-} from "./_chunk-71zm6zgv.js";
-import"./_chunk-sx6vkz01.js";
-import {
-  SafeReact
-} from "./_chunk-n7dnqnbw.js";
+} from "./_chunk-hm5h9vsk.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
+  SafeReact,
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   EMPTY_OBJECT,
   useRefWithInit,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export,
   mergeProps
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/input/Input.js
+// node_modules/@base-ui/react/esm/input/Input.js
 import * as React11 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/index.parts.js
+// node_modules/@base-ui/react/esm/field/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Validity: () => FieldValidity,
@@ -96,10 +94,10 @@ __export(exports_index_parts, {
   Control: () => FieldControl
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/root/FieldRoot.js
+// node_modules/@base-ui/react/esm/field/root/FieldRoot.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/internals/labelable-provider/LabelableProvider.js
+// node_modules/@base-ui/react/esm/internals/labelable-provider/LabelableProvider.js
 import * as React from "react";
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
@@ -158,10 +156,10 @@ var LabelableProvider = function LabelableProvider2(props) {
 if (true)
   LabelableProvider.displayName = "LabelableProvider";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/root/useFieldValidation.js
+// node_modules/@base-ui/react/esm/field/root/useFieldValidation.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/utils/getCombinedFieldValidityData.js
+// node_modules/@base-ui/react/esm/field/utils/getCombinedFieldValidityData.js
 function getCombinedFieldValidityData(validityData, invalid) {
   return {
     ...validityData,
@@ -172,7 +170,7 @@ function getCombinedFieldValidityData(validityData, invalid) {
   };
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/root/useFieldValidation.js
+// node_modules/@base-ui/react/esm/field/root/useFieldValidation.js
 "use client";
 var validityKeys = Object.keys(DEFAULT_VALIDITY_STATE);
 function isOnlyValueMissing(state) {
@@ -207,7 +205,8 @@ function useFieldValidation(params) {
     markedDirtyRef,
     state,
     name,
-    shouldValidateOnChange
+    shouldValidateOnChange,
+    getRegisteredFieldId
   } = params;
   const {
     controlId,
@@ -219,6 +218,21 @@ function useFieldValidation(params) {
     const element = inputRef.current;
     if (!element) {
       return;
+    }
+    function updateRegisteredFieldValidity(nextValidityData2, externalInvalid = invalid) {
+      const fieldId = getRegisteredFieldId() ?? controlId;
+      if (fieldId == null) {
+        return;
+      }
+      const currentFieldData = formRef.current.fields.get(fieldId);
+      if (!currentFieldData) {
+        return;
+      }
+      const validityDataWithFormErrors = getCombinedFieldValidityData(nextValidityData2, externalInvalid);
+      formRef.current.fields.set(fieldId, {
+        ...currentFieldData,
+        validityData: validityDataWithFormErrors
+      });
     }
     if (revalidate) {
       if (state.valid !== false) {
@@ -237,15 +251,7 @@ function useFieldValidation(params) {
           initialValue: validityData.initialValue
         };
         element.setCustomValidity("");
-        if (controlId) {
-          const currentFieldData = formRef.current.fields.get(controlId);
-          if (currentFieldData) {
-            formRef.current.fields.set(controlId, {
-              ...currentFieldData,
-              ...getCombinedFieldValidityData(nextValidityData2, false)
-            });
-          }
-        }
+        updateRegisteredFieldValidity(nextValidityData2, false);
         setValidityData(nextValidityData2);
         return;
       }
@@ -330,15 +336,7 @@ function useFieldValidation(params) {
       errors: validationErrors,
       initialValue: validityData.initialValue
     };
-    if (controlId) {
-      const currentFieldData = formRef.current.fields.get(controlId);
-      if (currentFieldData) {
-        formRef.current.fields.set(controlId, {
-          ...currentFieldData,
-          ...getCombinedFieldValidityData(nextValidityData, invalid)
-        });
-      }
-    }
+    updateRegisteredFieldValidity(nextValidityData);
     setValidityData(nextValidityData);
   });
   const getValidationProps = React2.useCallback((externalProps = {}) => mergeProps(getDescriptionProps, state.valid === false ? {
@@ -377,9 +375,8 @@ function useFieldValidation(params) {
   }), [getValidationProps, getInputValidationProps, commit]);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/internals/field-register-control/useFieldControlRegistration.js
+// node_modules/@base-ui/react/esm/internals/field-register-control/useFieldControlRegistration.js
 import * as React3 from "react";
-import * as ReactDOM from "react-dom";
 "use client";
 function useFieldControlRegistration(params) {
   const {
@@ -387,6 +384,7 @@ function useFieldControlRegistration(params) {
     invalid,
     markedDirtyRef,
     name,
+    setRegisteredFieldId,
     setValidityData,
     validityData
   } = params;
@@ -396,7 +394,7 @@ function useFieldControlRegistration(params) {
   const activeFieldControlSourceRef = React3.useRef(null);
   const registrationRef = React3.useRef(null);
   const fallbackControlRef = React3.useRef(null);
-  const getValue = useStableCallback(() => {
+  const getValueForForm = useStableCallback(() => {
     const registration = registrationRef.current;
     if (!registration) {
       return;
@@ -406,21 +404,17 @@ function useFieldControlRegistration(params) {
     }
     return registration.value;
   });
-  const validate = useStableCallback((flushSync2 = true) => {
+  const validate = useStableCallback(() => {
     const registration = registrationRef.current;
     if (!registration) {
       return;
     }
     let nextValue = registration.value;
     if (nextValue === undefined) {
-      nextValue = getValue();
+      nextValue = getValueForForm();
     }
     markedDirtyRef.current = true;
-    if (!flushSync2) {
-      commit(nextValue);
-    } else {
-      ReactDOM.flushSync(() => commit(nextValue));
-    }
+    commit(nextValue);
   });
   function refreshRegistration() {
     const registration = registrationRef.current;
@@ -428,7 +422,7 @@ function useFieldControlRegistration(params) {
       return;
     }
     formRef.current.fields.set(registration.id, {
-      getValue,
+      getValue: getValueForForm,
       name,
       controlRef: registration.controlRef ?? fallbackControlRef,
       validityData: getCombinedFieldValidityData(validityData, invalid),
@@ -447,7 +441,7 @@ function useFieldControlRegistration(params) {
     }
     let initialValue = registration.value;
     if (initialValue === undefined) {
-      initialValue = getValue();
+      initialValue = getValueForForm();
     }
     if (validityData.initialValue === null && initialValue !== null) {
       setValidityData((prev) => ({
@@ -462,13 +456,13 @@ function useFieldControlRegistration(params) {
       return;
     }
     formRef.current.fields.set(registration.id, {
-      getValue,
+      getValue: getValueForForm,
       name,
       controlRef: registration.controlRef ?? fallbackControlRef,
       validityData: getCombinedFieldValidityData(validityData, invalid),
       validate
     });
-  }, [formRef, getValue, invalid, name, validate, validityData]);
+  }, [formRef, getValueForForm, invalid, name, validate, validityData]);
   useIsoLayoutEffect(() => {
     const fields = formRef.current.fields;
     return () => {
@@ -484,12 +478,14 @@ function useFieldControlRegistration(params) {
         activeFieldControlSourceRef.current = null;
         deleteRegistration();
         registrationRef.current = null;
+        setRegisteredFieldId(undefined);
       }
       return;
     }
     const previousId = registrationRef.current?.id;
     activeFieldControlSourceRef.current = source;
     registrationRef.current = registration;
+    setRegisteredFieldId(registration.id);
     if (previousId && previousId !== registration.id) {
       deleteRegistration(previousId);
     }
@@ -498,7 +494,7 @@ function useFieldControlRegistration(params) {
   });
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/root/FieldRoot.js
+// node_modules/@base-ui/react/esm/field/root/FieldRoot.js
 import { jsx as _jsx2 } from "react/jsx-runtime";
 "use client";
 var FieldRootInner = /* @__PURE__ */ React4.forwardRef(function FieldRootInner2(componentProps, forwardedRef) {
@@ -534,6 +530,11 @@ var FieldRootInner = /* @__PURE__ */ React4.forwardRef(function FieldRootInner2(
   const dirty = dirtyProp ?? dirtyState;
   const touched = touchedProp ?? touchedState;
   const markedDirtyRef = React4.useRef(false);
+  const registeredFieldIdRef = React4.useRef(undefined);
+  const getRegisteredFieldId = React4.useCallback(() => registeredFieldIdRef.current, []);
+  const setRegisteredFieldId = React4.useCallback((id) => {
+    registeredFieldIdRef.current = id;
+  }, []);
   const setDirty = useStableCallback((value) => {
     if (dirtyProp !== undefined) {
       return;
@@ -577,17 +578,20 @@ var FieldRootInner = /* @__PURE__ */ React4.forwardRef(function FieldRootInner2(
     markedDirtyRef,
     state,
     name,
-    shouldValidateOnChange
+    shouldValidateOnChange,
+    getRegisteredFieldId
   });
+  const validityValue = validityData.value;
   const handleImperativeValidate = React4.useCallback(() => {
     markedDirtyRef.current = true;
-    validation.commit(validityData.value);
-  }, [validation, validityData]);
+    validation.commit(validityValue);
+  }, [validation, validityValue]);
   const registerFieldControl = useFieldControlRegistration({
     commit: validation.commit,
     invalid,
     markedDirtyRef,
     name,
+    setRegisteredFieldId,
     setValidityData,
     validityData
   });
@@ -640,7 +644,7 @@ var FieldRoot = /* @__PURE__ */ React4.forwardRef(function FieldRoot2(componentP
 });
 if (true)
   FieldRoot.displayName = "FieldRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/label/FieldLabel.js
+// node_modules/@base-ui/react/esm/field/label/FieldLabel.js
 import * as React5 from "react";
 "use client";
 var FieldLabel = /* @__PURE__ */ React5.forwardRef(function FieldLabel2(componentProps, forwardedRef) {
@@ -690,7 +694,7 @@ var FieldLabel = /* @__PURE__ */ React5.forwardRef(function FieldLabel2(componen
 });
 if (true)
   FieldLabel.displayName = "FieldLabel";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/error/FieldError.js
+// node_modules/@base-ui/react/esm/field/error/FieldError.js
 import * as React6 from "react";
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
@@ -792,7 +796,7 @@ var FieldError = /* @__PURE__ */ React6.forwardRef(function FieldError2(componen
 });
 if (true)
   FieldError.displayName = "FieldError";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/description/FieldDescription.js
+// node_modules/@base-ui/react/esm/field/description/FieldDescription.js
 import * as React7 from "react";
 "use client";
 var FieldDescription = /* @__PURE__ */ React7.forwardRef(function FieldDescription2(componentProps, forwardedRef) {
@@ -829,7 +833,7 @@ var FieldDescription = /* @__PURE__ */ React7.forwardRef(function FieldDescripti
 });
 if (true)
   FieldDescription.displayName = "FieldDescription";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/control/FieldControl.js
+// node_modules/@base-ui/react/esm/field/control/FieldControl.js
 import * as React8 from "react";
 "use client";
 var FieldControl = /* @__PURE__ */ React8.forwardRef(function FieldControl2(componentProps, forwardedRef) {
@@ -892,12 +896,8 @@ var FieldControl = /* @__PURE__ */ React8.forwardRef(function FieldControl2(comp
   });
   const isControlled = valueProp !== undefined;
   const value = isControlled ? valueUnwrapped : undefined;
-  const getFieldValue = useStableCallback(() => validation.inputRef.current?.value);
-  useRegisterFieldControl(validation.inputRef, {
-    id,
-    value,
-    getValue: getFieldValue
-  });
+  const getValueFromInput = useStableCallback(() => validation.inputRef.current?.value);
+  useRegisterFieldControl(validation.inputRef, id, value, getValueFromInput);
   const element = useRenderElement("input", componentProps, {
     ref: [forwardedRef, inputRef],
     state,
@@ -942,7 +942,7 @@ var FieldControl = /* @__PURE__ */ React8.forwardRef(function FieldControl2(comp
 });
 if (true)
   FieldControl.displayName = "FieldControl";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/validity/FieldValidity.js
+// node_modules/@base-ui/react/esm/field/validity/FieldValidity.js
 import * as React9 from "react";
 import { jsx as _jsx4 } from "react/jsx-runtime";
 "use client";
@@ -972,7 +972,7 @@ var FieldValidity = function FieldValidity2(props) {
 };
 if (true)
   FieldValidity.displayName = "FieldValidity";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/field/item/FieldItem.js
+// node_modules/@base-ui/react/esm/field/item/FieldItem.js
 import * as React10 from "react";
 import { jsx as _jsx5 } from "react/jsx-runtime";
 "use client";
@@ -990,9 +990,8 @@ var FieldItem = /* @__PURE__ */ React10.forwardRef(function FieldItem2(component
   } = useFieldRootContext(false);
   const disabled = rootDisabled || disabledProp;
   const checkboxGroupContext = useCheckboxGroupContext();
-  const parentId = checkboxGroupContext?.parent.id;
   const hasParentCheckbox = checkboxGroupContext?.allValues !== undefined;
-  const controlId = hasParentCheckbox ? parentId : undefined;
+  const controlId = hasParentCheckbox ? checkboxGroupContext?.parent.id : undefined;
   const fieldItemContext = React10.useMemo(() => ({
     disabled
   }), [disabled]);
@@ -1012,7 +1011,7 @@ var FieldItem = /* @__PURE__ */ React10.forwardRef(function FieldItem2(component
 });
 if (true)
   FieldItem.displayName = "FieldItem";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/input/Input.js
+// node_modules/@base-ui/react/esm/input/Input.js
 import { jsx as _jsx6 } from "react/jsx-runtime";
 "use client";
 var Input = /* @__PURE__ */ React11.forwardRef(function Input2(props, forwardedRef) {

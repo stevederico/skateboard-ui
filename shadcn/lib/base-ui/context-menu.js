@@ -1,4 +1,4 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
@@ -24,85 +24,84 @@ import {
   findRootOwnerId,
   useContextMenuRootContext,
   useMenuRootContext
-} from "./_chunk-ha06w2pp.js";
-import"./_chunk-6b17g8t7.js";
+} from "./_chunk-ktvsd5k6.js";
+import"./_chunk-b0nc8wq7.js";
 import {
   Separator
-} from "./_chunk-7fmjymvh.js";
-import"./_chunk-65zw5gs2.js";
-import"./_chunk-j0eqdjta.js";
-import"./_chunk-b5jsqt97.js";
-import"./_chunk-0xhx4g7r.js";
-import"./_chunk-agc6ew3g.js";
-import"./_chunk-y887e46p.js";
-import"./_chunk-q7yw9mz4.js";
-import"./_chunk-gfce3j3z.js";
-import"./_chunk-502wngfc.js";
-import"./_chunk-xfagb0fq.js";
-import"./_chunk-ek863ta9.js";
-import"./_chunk-vdc01ss3.js";
-import"./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
-import"./_chunk-wtw745qd.js";
-import"./_chunk-01rqe37g.js";
-import"./_chunk-q3nee19r.js";
-import"./_chunk-7jjzay8b.js";
-import"./_chunk-f09cp81f.js";
-import"./_chunk-f9tgee1q.js";
+} from "./_chunk-n11h505c.js";
+import"./_chunk-wx2nxg0p.js";
+import"./_chunk-f2wttwrf.js";
+import"./_chunk-j3qkyd10.js";
+import"./_chunk-8ganmsbg.js";
+import"./_chunk-ebyxgtb4.js";
+import"./_chunk-mnd0j7v9.js";
+import"./_chunk-qbezxj1g.js";
+import"./_chunk-m307wpdj.js";
+import"./_chunk-fqry7pew.js";
+import"./_chunk-xcqbtm2f.js";
+import"./_chunk-3enq1vat.js";
+import"./_chunk-26cc610z.js";
+import"./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
+import"./_chunk-gy0bpkmx.js";
+import"./_chunk-9x63vfqj.js";
+import"./_chunk-ytnp24gq.js";
+import"./_chunk-q5cg71p7.js";
+import"./_chunk-242gh8ph.js";
+import"./_chunk-5gaqyne5.js";
 import {
   pressableTriggerOpenStateMapping
-} from "./_chunk-536jvgeq.js";
-import"./_chunk-9nyxkvte.js";
-import"./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import {
-  ownerDocument
-} from "./_chunk-xb7ph1ka.js";
+} from "./_chunk-t7ppm3t0.js";
+import"./_chunk-3cpd1vjz.js";
+import"./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
 import {
   contains,
   getTarget
-} from "./_chunk-atnkefgd.js";
-import"./_chunk-drfb9kp2.js";
-import"./_chunk-qce0xt57.js";
+} from "./_chunk-cgptgywc.js";
+import"./_chunk-pv7b791x.js";
 import {
   stopEvent
-} from "./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
+} from "./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
 import {
   useTimeout
-} from "./_chunk-7v1t86x1.js";
-import"./_chunk-cwr896nf.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
+} from "./_chunk-b6dkjkbw.js";
+import"./_chunk-s5pwkz8v.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
 import {
   addEventListener
-} from "./_chunk-mvv30fkv.js";
+} from "./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import {
+  ownerDocument
+} from "./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useId
-} from "./_chunk-8kh3xk78.js";
-import"./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
-import"./_chunk-mznt6ktj.js";
-import"./_chunk-b40erthe.js";
+} from "./_chunk-wdqynnjf.js";
+import"./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
+import"./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
+import"./_chunk-5tze5c8q.js";
 import {
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/context-menu/index.parts.js
+// node_modules/@base-ui/react/esm/context-menu/index.parts.js
 var exports_index_parts2 = {};
 __export(exports_index_parts2, {
   Trigger: () => ContextMenuTrigger,
@@ -126,7 +125,7 @@ __export(exports_index_parts2, {
   Arrow: () => MenuArrow
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/context-menu/root/ContextMenuRoot.js
+// node_modules/@base-ui/react/esm/context-menu/root/ContextMenuRoot.js
 import * as React from "react";
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
@@ -169,7 +168,7 @@ function ContextMenuRoot(props) {
     })
   });
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/context-menu/trigger/ContextMenuTrigger.js
+// node_modules/@base-ui/react/esm/context-menu/trigger/ContextMenuTrigger.js
 import * as React2 from "react";
 "use client";
 var LONG_PRESS_DELAY = 500;

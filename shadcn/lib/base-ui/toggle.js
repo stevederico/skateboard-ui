@@ -1,46 +1,43 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useToggleGroupContext
-} from "./_chunk-m45547cc.js";
+} from "./_chunk-qmsqz6nt.js";
 import {
   CompositeItem
-} from "./_chunk-j0eqdjta.js";
-import"./_chunk-b5jsqt97.js";
-import"./_chunk-ek863ta9.js";
-import"./_chunk-20rtfsz9.js";
+} from "./_chunk-f2wttwrf.js";
+import"./_chunk-j3qkyd10.js";
+import"./_chunk-3enq1vat.js";
+import"./_chunk-3xpke33f.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
+} from "./_chunk-5xmdvndx.js";
 import {
   error
-} from "./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
-import {
-  useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   useRenderElement
-} from "./_chunk-1s41sngz.js";
-import"./_chunk-1e6khrvm.js";
+} from "./_chunk-x8xehj6d.js";
+import"./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/toggle/Toggle.js
+// node_modules/@base-ui/react/esm/toggle/Toggle.js
 import * as React from "react";
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
@@ -50,7 +47,7 @@ var Toggle = /* @__PURE__ */ React.forwardRef(function Toggle2(componentProps, f
     defaultPressed: defaultPressedProp = false,
     disabled: disabledProp = false,
     form,
-    onPressedChange: onPressedChangeProp,
+    onPressedChange,
     pressed: pressedProp,
     render,
     type,
@@ -77,12 +74,6 @@ var Toggle = /* @__PURE__ */ React.forwardRef(function Toggle2(componentProps, f
     name: "Toggle",
     state: "pressed"
   });
-  const onPressedChange = useStableCallback((nextPressed, eventDetails) => {
-    if (value) {
-      groupContext?.setGroupValue?.(value, nextPressed, eventDetails);
-    }
-    onPressedChangeProp?.(nextPressed, eventDetails);
-  });
   const {
     getButtonProps,
     buttonRef
@@ -100,7 +91,10 @@ var Toggle = /* @__PURE__ */ React.forwardRef(function Toggle2(componentProps, f
     onClick(event) {
       const nextPressed = !pressed;
       const details = createChangeEventDetails(exports_reason_parts.none, event.nativeEvent);
-      onPressedChange(nextPressed, details);
+      if (value) {
+        groupContext?.setGroupValue?.(value, nextPressed, details);
+      }
+      onPressedChange?.(nextPressed, details);
       if (details.isCanceled) {
         return;
       }

@@ -1,52 +1,51 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   normalizeScrollOffset,
   styleDisableScrollbar
-} from "./_chunk-k1e5fvcj.js";
+} from "./_chunk-e6k2ecs7.js";
 import {
   clamp
-} from "./_chunk-szcr6mhk.js";
+} from "./_chunk-yzr7eg4b.js";
 import {
   useCSPContext
-} from "./_chunk-ymj1dpqg.js";
+} from "./_chunk-watha94s.js";
 import {
   useDirection
-} from "./_chunk-wtw745qd.js";
+} from "./_chunk-gy0bpkmx.js";
 import {
   contains,
   getTarget
-} from "./_chunk-atnkefgd.js";
+} from "./_chunk-cgptgywc.js";
 import {
   isWebKit
-} from "./_chunk-t7j3rbpv.js";
+} from "./_chunk-rrh8rt4v.js";
 import {
   useTimeout
-} from "./_chunk-7v1t86x1.js";
+} from "./_chunk-b6dkjkbw.js";
 import {
   addEventListener
-} from "./_chunk-mvv30fkv.js";
+} from "./_chunk-ase0ydtt.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-wdqynnjf.js";
+import"./_chunk-6ejf1z1r.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/index.parts.js
+// node_modules/@base-ui/react/esm/scroll-area/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Viewport: () => ScrollAreaViewport,
@@ -57,10 +56,10 @@ __export(exports_index_parts, {
   Content: () => ScrollAreaContent
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRoot.js
+// node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRootContext.js
+// node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRootContext.js
 import * as React from "react";
 "use client";
 var ScrollAreaRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -74,18 +73,18 @@ function useScrollAreaRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRootCssVars.js
+// node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRootCssVars.js
 var ScrollAreaRootCssVars = /* @__PURE__ */ function(ScrollAreaRootCssVars2) {
   ScrollAreaRootCssVars2["scrollAreaCornerHeight"] = "--scroll-area-corner-height";
   ScrollAreaRootCssVars2["scrollAreaCornerWidth"] = "--scroll-area-corner-width";
   return ScrollAreaRootCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/constants.js
+// node_modules/@base-ui/react/esm/scroll-area/constants.js
 var SCROLL_TIMEOUT = 500;
 var MIN_THUMB_SIZE = 16;
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/utils/getOffset.js
+// node_modules/@base-ui/react/esm/scroll-area/utils/getOffset.js
 function getOffset(element, prop, axis) {
   if (!element) {
     return 0;
@@ -98,7 +97,7 @@ function getOffset(element, prop, axis) {
   return parseFloat(styles[`${prop}${propAxis}Start`]) + parseFloat(styles[`${prop}${propAxis}End`]);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbarDataAttributes.js
+// node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbarDataAttributes.js
 var ScrollAreaScrollbarDataAttributes = /* @__PURE__ */ function(ScrollAreaScrollbarDataAttributes2) {
   ScrollAreaScrollbarDataAttributes2["orientation"] = "data-orientation";
   ScrollAreaScrollbarDataAttributes2["hovering"] = "data-hovering";
@@ -112,7 +111,7 @@ var ScrollAreaScrollbarDataAttributes = /* @__PURE__ */ function(ScrollAreaScrol
   return ScrollAreaScrollbarDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRootDataAttributes.js
+// node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRootDataAttributes.js
 var ScrollAreaRootDataAttributes = /* @__PURE__ */ function(ScrollAreaRootDataAttributes2) {
   ScrollAreaRootDataAttributes2["scrolling"] = "data-scrolling";
   ScrollAreaRootDataAttributes2["hasOverflowX"] = "data-has-overflow-x";
@@ -124,7 +123,7 @@ var ScrollAreaRootDataAttributes = /* @__PURE__ */ function(ScrollAreaRootDataAt
   return ScrollAreaRootDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/root/stateAttributes.js
+// node_modules/@base-ui/react/esm/scroll-area/root/stateAttributes.js
 var scrollAreaStateAttributesMapping = {
   hasOverflowX: (value) => value ? {
     [ScrollAreaRootDataAttributes.hasOverflowX]: ""
@@ -147,7 +146,7 @@ var scrollAreaStateAttributesMapping = {
   cornerHidden: () => null
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRoot.js
+// node_modules/@base-ui/react/esm/scroll-area/root/ScrollAreaRoot.js
 import { jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 var DEFAULT_COORDS = {
@@ -389,10 +388,10 @@ function normalizeOverflowEdgeThreshold(threshold) {
     yEnd: Math.max(0, threshold?.yEnd || 0)
   };
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewport.js
+// node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewport.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewportContext.js
+// node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewportContext.js
 import * as React3 from "react";
 "use client";
 var ScrollAreaViewportContext = /* @__PURE__ */ React3.createContext(undefined);
@@ -406,7 +405,7 @@ function useScrollAreaViewportContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewportCssVars.js
+// node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewportCssVars.js
 var ScrollAreaViewportCssVars = /* @__PURE__ */ function(ScrollAreaViewportCssVars2) {
   ScrollAreaViewportCssVars2["scrollAreaOverflowXStart"] = "--scroll-area-overflow-x-start";
   ScrollAreaViewportCssVars2["scrollAreaOverflowXEnd"] = "--scroll-area-overflow-x-end";
@@ -415,7 +414,7 @@ var ScrollAreaViewportCssVars = /* @__PURE__ */ function(ScrollAreaViewportCssVa
   return ScrollAreaViewportCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewport.js
+// node_modules/@base-ui/react/esm/scroll-area/viewport/ScrollAreaViewport.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var scrollAreaOverflowVarsRegistered = false;
@@ -616,7 +615,7 @@ var ScrollAreaViewport = /* @__PURE__ */ React4.forwardRef(function ScrollAreaVi
       return;
     }
     let hasInitialized = false;
-    const ro = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver(() => {
       if (!hasInitialized) {
         hasInitialized = true;
         const lastMeasuredViewportMetrics = lastMeasuredViewportMetricsRef.current;
@@ -626,7 +625,7 @@ var ScrollAreaViewport = /* @__PURE__ */ React4.forwardRef(function ScrollAreaVi
       }
       computeThumbPosition();
     });
-    ro.observe(viewport);
+    resizeObserver.observe(viewport);
     waitForAnimationsTimeout.start(0, () => {
       const animations = viewport.getAnimations({
         subtree: true
@@ -637,7 +636,7 @@ var ScrollAreaViewport = /* @__PURE__ */ React4.forwardRef(function ScrollAreaVi
       Promise.allSettled(animations.map((animation) => animation.finished)).then(computeThumbPosition).catch(() => {});
     });
     return () => {
-      ro.disconnect();
+      resizeObserver.disconnect();
       waitForAnimationsTimeout.clear();
     };
   }, [computeThumbPosition, viewportRef, waitForAnimationsTimeout]);
@@ -716,10 +715,10 @@ function mergeHiddenState(prevState, nextState) {
   }
   return nextState;
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbar.js
+// node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbar.js
 import * as React6 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbarContext.js
+// node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbarContext.js
 import * as React5 from "react";
 "use client";
 var ScrollAreaScrollbarContext = /* @__PURE__ */ React5.createContext(undefined);
@@ -733,14 +732,14 @@ function useScrollAreaScrollbarContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbarCssVars.js
+// node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbarCssVars.js
 var ScrollAreaScrollbarCssVars = /* @__PURE__ */ function(ScrollAreaScrollbarCssVars2) {
   ScrollAreaScrollbarCssVars2["scrollAreaThumbHeight"] = "--scroll-area-thumb-height";
   ScrollAreaScrollbarCssVars2["scrollAreaThumbWidth"] = "--scroll-area-thumb-width";
   return ScrollAreaScrollbarCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbar.js
+// node_modules/@base-ui/react/esm/scroll-area/scrollbar/ScrollAreaScrollbar.js
 import { jsx as _jsx2 } from "react/jsx-runtime";
 "use client";
 var ScrollAreaScrollbar = /* @__PURE__ */ React6.forwardRef(function ScrollAreaScrollbar2(componentProps, forwardedRef) {
@@ -786,7 +785,12 @@ var ScrollAreaScrollbar = /* @__PURE__ */ React6.forwardRef(function ScrollAreaS
   };
   const direction = useDirection();
   const hideTrackUntilMeasured = !hasMeasuredScrollbar && !keepMounted;
+  const isHidden = orientation === "vertical" ? hiddenState.y : hiddenState.x;
+  const shouldRender = keepMounted || !isHidden;
   React6.useEffect(() => {
+    if (!shouldRender) {
+      return;
+    }
     const viewportEl = viewportRef.current;
     const scrollbarEl = orientation === "vertical" ? scrollbarYRef.current : scrollbarXRef.current;
     if (!scrollbarEl) {
@@ -797,30 +801,22 @@ var ScrollAreaScrollbar = /* @__PURE__ */ React6.forwardRef(function ScrollAreaS
         return;
       }
       event.preventDefault();
-      if (orientation === "vertical") {
-        if (viewportEl.scrollTop === 0 && event.deltaY < 0) {
-          return;
-        }
-      } else if (viewportEl.scrollLeft === 0 && event.deltaX < 0) {
+      const horizontal = orientation === "horizontal";
+      const scrollProperty = horizontal ? "scrollLeft" : "scrollTop";
+      const delta = horizontal ? event.deltaX : event.deltaY;
+      const maxScroll = horizontal ? viewportEl.scrollWidth - viewportEl.clientWidth : viewportEl.scrollHeight - viewportEl.clientHeight;
+      const minScroll = horizontal && direction === "rtl" ? -maxScroll : 0;
+      const maxScrollValue = horizontal && direction === "rtl" ? 0 : maxScroll;
+      const scrollValue = viewportEl[scrollProperty];
+      if (scrollValue <= minScroll && delta < 0 || scrollValue >= maxScrollValue && delta > 0) {
         return;
       }
-      if (orientation === "vertical") {
-        if (viewportEl.scrollTop === viewportEl.scrollHeight - viewportEl.clientHeight && event.deltaY > 0) {
-          return;
-        }
-      } else if (viewportEl.scrollLeft === viewportEl.scrollWidth - viewportEl.clientWidth && event.deltaX > 0) {
-        return;
-      }
-      if (orientation === "vertical") {
-        viewportEl.scrollTop += event.deltaY;
-      } else {
-        viewportEl.scrollLeft += event.deltaX;
-      }
+      viewportEl[scrollProperty] = Math.min(maxScrollValue, Math.max(minScroll, scrollValue + delta));
     }
     return addEventListener(scrollbarEl, "wheel", handleWheel, {
       passive: false
     });
-  }, [orientation, scrollbarXRef, scrollbarYRef, viewportRef]);
+  }, [direction, orientation, scrollbarXRef, scrollbarYRef, shouldRender, viewportRef]);
   const props = {
     ...rootId && {
       "data-id": `${rootId}-scrollbar`
@@ -903,8 +899,6 @@ var ScrollAreaScrollbar = /* @__PURE__ */ React6.forwardRef(function ScrollAreaS
   const contextValue = React6.useMemo(() => ({
     orientation
   }), [orientation]);
-  const isHidden = orientation === "vertical" ? hiddenState.y : hiddenState.x;
-  const shouldRender = keepMounted || !isHidden;
   if (!shouldRender) {
     return null;
   }
@@ -915,7 +909,7 @@ var ScrollAreaScrollbar = /* @__PURE__ */ React6.forwardRef(function ScrollAreaS
 });
 if (true)
   ScrollAreaScrollbar.displayName = "ScrollAreaScrollbar";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/content/ScrollAreaContent.js
+// node_modules/@base-ui/react/esm/scroll-area/content/ScrollAreaContent.js
 import * as React7 from "react";
 "use client";
 var ScrollAreaContent = /* @__PURE__ */ React7.forwardRef(function ScrollAreaContent2(componentProps, forwardedRef) {
@@ -925,19 +919,19 @@ var ScrollAreaContent = /* @__PURE__ */ React7.forwardRef(function ScrollAreaCon
     style,
     ...elementProps
   } = componentProps;
-  const contentWrapperRef = React7.useRef(null);
   const {
     computeThumbPosition
   } = useScrollAreaViewportContext();
   const {
     viewportState
   } = useScrollAreaRootContext();
+  const contentWrapperRef = React7.useRef(null);
   useIsoLayoutEffect(() => {
     if (typeof ResizeObserver === "undefined") {
       return;
     }
     let hasInitialized = false;
-    const ro = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver(() => {
       if (!hasInitialized) {
         hasInitialized = true;
         return;
@@ -945,10 +939,10 @@ var ScrollAreaContent = /* @__PURE__ */ React7.forwardRef(function ScrollAreaCon
       computeThumbPosition();
     });
     if (contentWrapperRef.current) {
-      ro.observe(contentWrapperRef.current);
+      resizeObserver.observe(contentWrapperRef.current);
     }
     return () => {
-      ro.disconnect();
+      resizeObserver.disconnect();
     };
   }, [computeThumbPosition]);
   const element = useRenderElement("div", componentProps, {
@@ -966,7 +960,7 @@ var ScrollAreaContent = /* @__PURE__ */ React7.forwardRef(function ScrollAreaCon
 });
 if (true)
   ScrollAreaContent.displayName = "ScrollAreaContent";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/thumb/ScrollAreaThumb.js
+// node_modules/@base-ui/react/esm/scroll-area/thumb/ScrollAreaThumb.js
 import * as React8 from "react";
 "use client";
 var ScrollAreaThumb = /* @__PURE__ */ React8.forwardRef(function ScrollAreaThumb2(componentProps, forwardedRef) {
@@ -1022,7 +1016,7 @@ var ScrollAreaThumb = /* @__PURE__ */ React8.forwardRef(function ScrollAreaThumb
 });
 if (true)
   ScrollAreaThumb.displayName = "ScrollAreaThumb";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/scroll-area/corner/ScrollAreaCorner.js
+// node_modules/@base-ui/react/esm/scroll-area/corner/ScrollAreaCorner.js
 import * as React9 from "react";
 "use client";
 var ScrollAreaCorner = /* @__PURE__ */ React9.forwardRef(function ScrollAreaCorner2(componentProps, forwardedRef) {

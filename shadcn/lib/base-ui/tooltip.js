@@ -1,38 +1,43 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   FloatingPortalLite
-} from "./_chunk-qt6r015s.js";
+} from "./_chunk-fdzctasg.js";
 import {
   usePopupViewport
-} from "./_chunk-q7yw9mz4.js";
-import"./_chunk-gfce3j3z.js";
+} from "./_chunk-qbezxj1g.js";
+import"./_chunk-m307wpdj.js";
 import {
   adaptiveOrigin,
   getDisabledMountTransitionStyles,
   useAnchorPositioning,
   usePositioner
-} from "./_chunk-502wngfc.js";
-import"./_chunk-xfagb0fq.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-fqry7pew.js";
+import"./_chunk-xcqbtm2f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   createInitialPopupStoreState,
-  popupStoreSelectors,
-  useImplicitActiveTrigger,
-  useOpenStateTransitions,
-  useTriggerDataForwarding
-} from "./_chunk-7jjzay8b.js";
+  createPopupFloatingRootContext,
+  popupStoreSelectors
+} from "./_chunk-q5cg71p7.js";
 import {
-  useOnFirstRender
-} from "./_chunk-f09cp81f.js";
-import"./_chunk-f9tgee1q.js";
+  FOCUSABLE_POPUP_PROPS,
+  setOpenTriggerState,
+  useImplicitActiveTrigger,
+  useOnFirstRender,
+  useOpenStateTransitions,
+  usePopupInteractionProps,
+  usePopupStore,
+  useTriggerDataForwarding
+} from "./_chunk-242gh8ph.js";
+import"./_chunk-5gaqyne5.js";
 import {
   CommonTriggerDataAttributes,
   popupStateMapping,
   triggerOpenStateMapping
-} from "./_chunk-536jvgeq.js";
-import"./_chunk-9nyxkvte.js";
+} from "./_chunk-t7ppm3t0.js";
+import"./_chunk-3cpd1vjz.js";
 import {
   FloatingDelayGroup,
   POPUP_COLLISION_AVOIDANCE,
@@ -47,48 +52,56 @@ import {
   useDismiss,
   useFocus,
   useHoverFloatingInteraction,
-  useHoverReferenceInteraction,
-  useInteractions,
-  useSyncedFloatingRootContext
-} from "./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import"./_chunk-xb7ph1ka.js";
-import"./_chunk-atnkefgd.js";
-import"./_chunk-drfb9kp2.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-7v1t86x1.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-mvv30fkv.js";
+  useHoverInteractionSharedState,
+  useHoverReferenceInteraction
+} from "./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
+import {
+  contains
+} from "./_chunk-cgptgywc.js";
+import {
+  isMouseLikePointerType
+} from "./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import {
+  useTimeout
+} from "./_chunk-b6dkjkbw.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-ase0ydtt.js";
+import {
+  useValueAsRef
+} from "./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   transitionStatusMapping,
   useOpenChangeComplete
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
-import"./_chunk-mznt6ktj.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
+import {
+  isElement
+} from "./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
-  useRefWithInit,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
-  __export
-} from "./_chunk-1e6khrvm.js";
+  __export,
+  mergeProps
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/index.parts.js
+// node_modules/@base-ui/react/esm/tooltip/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   createHandle: () => createTooltipHandle,
@@ -103,10 +116,10 @@ __export(exports_index_parts, {
   Arrow: () => TooltipArrow
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/root/TooltipRoot.js
+// node_modules/@base-ui/react/esm/tooltip/root/TooltipRoot.js
 import * as React3 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/root/TooltipRootContext.js
+// node_modules/@base-ui/react/esm/tooltip/root/TooltipRootContext.js
 import * as React from "react";
 "use client";
 var TooltipRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -120,7 +133,7 @@ function useTooltipRootContext(optional) {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/store/TooltipStore.js
+// node_modules/@base-ui/react/esm/tooltip/store/TooltipStore.js
 import * as React2 from "react";
 import * as ReactDOM from "react-dom";
 var selectors = {
@@ -137,15 +150,18 @@ var selectors = {
 };
 
 class TooltipStore extends ReactStore {
-  constructor(initialState) {
-    super({
+  constructor(initialState, floatingId, nested = false) {
+    const triggerElements = new PopupTriggerMap;
+    const state = {
       ...createInitialState(),
       ...initialState
-    }, {
+    };
+    state.floatingRootContext = createPopupFloatingRootContext(triggerElements, floatingId, nested);
+    super(state, {
       popupRef: /* @__PURE__ */ React2.createRef(),
       onOpenChange: undefined,
       onOpenChangeComplete: undefined,
-      triggerElements: new PopupTriggerMap
+      triggerElements
     }, selectors);
   }
   setOpen = (nextOpen, eventDetails) => {
@@ -173,11 +189,7 @@ class TooltipStore extends ReactStore {
       } else if (reason === exports_reason_parts.triggerHover) {
         updatedState.instantType = undefined;
       }
-      const newTriggerId = eventDetails.trigger?.id ?? null;
-      if (newTriggerId || nextOpen) {
-        updatedState.activeTriggerId = newTriggerId;
-        updatedState.activeTriggerElement = eventDetails.trigger ?? null;
-      }
+      setOpenTriggerState(updatedState, nextOpen, eventDetails.trigger);
       this.update(updatedState);
     };
     if (isHover) {
@@ -186,16 +198,11 @@ class TooltipStore extends ReactStore {
       changeState();
     }
   };
+  cancelPendingOpen(event) {
+    this.state.floatingRootContext.dispatchOpenChange(false, createChangeEventDetails(exports_reason_parts.triggerPress, event));
+  }
   static useStore(externalStore, initialState) {
-    const internalStore = useRefWithInit(() => {
-      return new TooltipStore(initialState);
-    }).current;
-    const store = externalStore ?? internalStore;
-    const floatingRootContext = useSyncedFloatingRootContext({
-      popupStore: store,
-      onOpenChange: store.setOpen
-    });
-    store.state.floatingRootContext = floatingRootContext;
+    const store = usePopupStore(externalStore, (floatingId, nested) => new TooltipStore(initialState, floatingId, nested)).store;
     return store;
   }
 }
@@ -214,8 +221,8 @@ function createInitialState() {
   };
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/root/TooltipRoot.js
-import { jsx as _jsx } from "react/jsx-runtime";
+// node_modules/@base-ui/react/esm/tooltip/root/TooltipRoot.js
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 var TooltipRoot = fastComponent(function TooltipRoot2(props) {
   const {
@@ -253,27 +260,27 @@ var TooltipRoot = fastComponent(function TooltipRoot2(props) {
   const openState = store.useState("open");
   const open = !disabled && openState;
   const activeTriggerId = store.useState("activeTriggerId");
+  const mounted = store.useState("mounted");
   const payload = store.useState("payload");
   store.useSyncedValues({
     trackCursorAxis,
     disableHoverablePopup
   });
-  useIsoLayoutEffect(() => {
-    if (openState && disabled) {
-      store.setOpen(false, createChangeEventDetails(exports_reason_parts.disabled));
-    }
-  }, [openState, disabled, store]);
   store.useSyncedValue("disabled", disabled);
   useImplicitActiveTrigger(store);
   const {
     forceUnmount,
     transitionStatus
   } = useOpenStateTransitions(open, store);
-  const floatingRootContext = store.select("floatingRootContext");
   const isInstantPhase = store.useState("isInstantPhase");
   const instantType = store.useState("instantType");
   const lastOpenChangeReason = store.useState("lastOpenChangeReason");
   const previousInstantTypeRef = React3.useRef(null);
+  useIsoLayoutEffect(() => {
+    if (openState && disabled) {
+      store.setOpen(false, createChangeEventDetails(exports_reason_parts.disabled));
+    }
+  }, [openState, disabled, store]);
   useIsoLayoutEffect(() => {
     if (transitionStatus === "ending" && lastOpenChangeReason === exports_reason_parts.none || transitionStatus !== "ending" && isInstantPhase) {
       if (instantType !== "delay") {
@@ -299,6 +306,26 @@ var TooltipRoot = fastComponent(function TooltipRoot2(props) {
     unmount: forceUnmount,
     close: handleImperativeClose
   }), [forceUnmount, handleImperativeClose]);
+  const shouldRenderInteractions = open || mounted || !disabled && trackCursorAxis !== "none";
+  return /* @__PURE__ */ _jsxs(TooltipRootContext.Provider, {
+    value: store,
+    children: [shouldRenderInteractions && /* @__PURE__ */ _jsx(TooltipInteractions, {
+      store,
+      disabled,
+      trackCursorAxis
+    }), typeof children === "function" ? children({
+      payload
+    }) : children]
+  });
+});
+if (true)
+  TooltipRoot.displayName = "TooltipRoot";
+function TooltipInteractions({
+  store,
+  disabled,
+  trackCursorAxis
+}) {
+  const floatingRootContext = store.useState("floatingRootContext");
   const dismiss = useDismiss(floatingRootContext, {
     enabled: !disabled,
     referencePress: () => store.select("closeOnClick")
@@ -307,32 +334,20 @@ var TooltipRoot = fastComponent(function TooltipRoot2(props) {
     enabled: !disabled && trackCursorAxis !== "none",
     axis: trackCursorAxis === "none" ? undefined : trackCursorAxis
   });
-  const {
-    getReferenceProps,
-    getFloatingProps,
-    getTriggerProps
-  } = useInteractions([dismiss, clientPoint]);
-  const activeTriggerProps = React3.useMemo(() => getReferenceProps(), [getReferenceProps]);
-  const inactiveTriggerProps = React3.useMemo(() => getTriggerProps(), [getTriggerProps]);
-  const popupProps = React3.useMemo(() => getFloatingProps(), [getFloatingProps]);
-  store.useSyncedValues({
+  const activeTriggerProps = React3.useMemo(() => mergeProps(clientPoint.reference, dismiss.reference), [clientPoint.reference, dismiss.reference]);
+  const inactiveTriggerProps = React3.useMemo(() => mergeProps(clientPoint.trigger, dismiss.trigger), [clientPoint.trigger, dismiss.trigger]);
+  const popupProps = React3.useMemo(() => mergeProps(FOCUSABLE_POPUP_PROPS, clientPoint.floating, dismiss.floating), [clientPoint.floating, dismiss.floating]);
+  usePopupInteractionProps(store, {
     activeTriggerProps,
     inactiveTriggerProps,
     popupProps
   });
-  return /* @__PURE__ */ _jsx(TooltipRootContext.Provider, {
-    value: store,
-    children: typeof children === "function" ? children({
-      payload
-    }) : children
-  });
-});
-if (true)
-  TooltipRoot.displayName = "TooltipRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/trigger/TooltipTrigger.js
+  return null;
+}
+// node_modules/@base-ui/react/esm/tooltip/trigger/TooltipTrigger.js
 import * as React5 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/provider/TooltipProviderContext.js
+// node_modules/@base-ui/react/esm/tooltip/provider/TooltipProviderContext.js
 import * as React4 from "react";
 "use client";
 var TooltipProviderContext = /* @__PURE__ */ React4.createContext(undefined);
@@ -342,22 +357,56 @@ function useTooltipProviderContext() {
   return React4.useContext(TooltipProviderContext);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/trigger/TooltipTriggerDataAttributes.js
+// node_modules/@base-ui/react/esm/tooltip/trigger/TooltipTriggerDataAttributes.js
 var TooltipTriggerDataAttributes = function(TooltipTriggerDataAttributes2) {
   TooltipTriggerDataAttributes2[TooltipTriggerDataAttributes2["popupOpen"] = CommonTriggerDataAttributes.popupOpen] = "popupOpen";
   TooltipTriggerDataAttributes2["triggerDisabled"] = "data-trigger-disabled";
   return TooltipTriggerDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/utils/constants.js
+// node_modules/@base-ui/react/esm/tooltip/utils/constants.js
 var OPEN_DELAY = 600;
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/trigger/TooltipTrigger.js
+// node_modules/@base-ui/react/esm/tooltip/trigger/TooltipTrigger.js
 "use client";
+var TOOLTIP_TRIGGER_IDENTIFIER = "data-base-ui-tooltip-trigger";
+function getTargetElement(event) {
+  if ("composedPath" in event) {
+    const path = event.composedPath();
+    for (let i = 0;i < path.length; i += 1) {
+      const element = path[i];
+      if (isElement(element)) {
+        return element;
+      }
+    }
+  }
+  const target = event.target;
+  if (isElement(target)) {
+    return target;
+  }
+  return null;
+}
+function closestEnabledTooltipTrigger(element) {
+  let current = element;
+  while (current) {
+    if (current.hasAttribute(TOOLTIP_TRIGGER_IDENTIFIER)) {
+      return current;
+    }
+    const parentElement = current.parentElement;
+    if (parentElement) {
+      current = parentElement;
+      continue;
+    }
+    const root = current.getRootNode();
+    current = "host" in root && isElement(root.host) ? root.host : null;
+  }
+  return null;
+}
 var TooltipTrigger = fastComponentRef(function TooltipTrigger2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
+    style,
     handle,
     payload,
     disabled: disabledProp,
@@ -365,7 +414,6 @@ var TooltipTrigger = fastComponentRef(function TooltipTrigger2(componentProps, f
     closeOnClick = true,
     closeDelay,
     id: idProp,
-    style,
     ...elementProps
   } = componentProps;
   const rootContext = useTooltipRootContext(true);
@@ -396,29 +444,54 @@ var TooltipTrigger = fastComponentRef(function TooltipTrigger2(componentProps, f
   } = useDelayGroup(floatingRootContext, {
     open: isOpenedByThisTrigger
   });
+  const hoverInteraction = useHoverInteractionSharedState(floatingRootContext);
   store.useSyncedValue("isInstantPhase", isInstantPhase);
   const rootDisabled = store.useState("disabled");
   const disabled = disabledProp ?? rootDisabled;
+  const disabledRef = useValueAsRef(disabled);
   const trackCursorAxis = store.useState("trackCursorAxis");
   const disableHoverablePopup = store.useState("disableHoverablePopup");
+  const isNestedTriggerHoveredRef = React5.useRef(false);
+  const nestedTriggerOpenTimeout = useTimeout();
+  const pointerTypeRef = React5.useRef(undefined);
+  function getOpenDelay() {
+    const providerDelay = providerContext?.delay;
+    const groupOpenValue = typeof delayRef.current === "object" ? delayRef.current.open : undefined;
+    let computedOpenDelay = delayWithDefault;
+    if (hasProvider) {
+      if (groupOpenValue !== 0) {
+        computedOpenDelay = delay ?? providerDelay ?? delayWithDefault;
+      } else {
+        computedOpenDelay = 0;
+      }
+    }
+    return computedOpenDelay;
+  }
+  function isEnabledNestedTriggerTarget(target) {
+    const triggerEl = triggerElementRef.current;
+    if (!triggerEl || !target) {
+      return false;
+    }
+    const nearestTrigger = closestEnabledTooltipTrigger(target);
+    return nearestTrigger !== null && nearestTrigger !== triggerEl && contains(triggerEl, nearestTrigger);
+  }
+  function detectNestedTriggerHover(target) {
+    const nestedTriggerHovered = isEnabledNestedTriggerTarget(target);
+    isNestedTriggerHoveredRef.current = nestedTriggerHovered;
+    if (nestedTriggerHovered) {
+      hoverInteraction.openChangeTimeout.clear();
+      hoverInteraction.restTimeout.clear();
+      hoverInteraction.restTimeoutPending = false;
+      nestedTriggerOpenTimeout.clear();
+    }
+    return nestedTriggerHovered;
+  }
   const hoverProps = useHoverReferenceInteraction(floatingRootContext, {
     enabled: !disabled,
     mouseOnly: true,
     move: false,
     handleClose: !disableHoverablePopup && trackCursorAxis !== "both" ? safePolygon() : null,
-    restMs() {
-      const providerDelay = providerContext?.delay;
-      const groupOpenValue = typeof delayRef.current === "object" ? delayRef.current.open : undefined;
-      let computedRestMs = delayWithDefault;
-      if (hasProvider) {
-        if (groupOpenValue !== 0) {
-          computedRestMs = delay ?? providerDelay ?? delayWithDefault;
-        } else {
-          computedRestMs = 0;
-        }
-      }
-      return computedRestMs;
-    },
+    restMs: getOpenDelay,
     delay() {
       const closeValue = typeof delayRef.current === "object" ? delayRef.current.close : undefined;
       let computedCloseDelay = closeDelayWithDefault;
@@ -431,24 +504,79 @@ var TooltipTrigger = fastComponentRef(function TooltipTrigger2(componentProps, f
     },
     triggerElementRef,
     isActiveTrigger: isTriggerActive,
-    isClosing: () => store.select("transitionStatus") === "ending"
+    isClosing: () => store.select("transitionStatus") === "ending",
+    shouldOpen() {
+      return !isNestedTriggerHoveredRef.current;
+    }
   });
   const focusProps = useFocus(floatingRootContext, {
     enabled: !disabled
   }).reference;
+  const handleNestedTriggerHover = (event) => {
+    const wasNestedTriggerHovered = isNestedTriggerHoveredRef.current;
+    const target = getTargetElement(event);
+    const nestedTriggerHovered = detectNestedTriggerHover(target);
+    const triggerEl = triggerElementRef.current;
+    const targetInsideTrigger = triggerEl && target && contains(triggerEl, target);
+    if (nestedTriggerHovered && store.select("open") && store.select("lastOpenChangeReason") === exports_reason_parts.triggerHover) {
+      store.setOpen(false, createChangeEventDetails(exports_reason_parts.triggerHover, event));
+      return;
+    }
+    if (wasNestedTriggerHovered && !nestedTriggerHovered && targetInsideTrigger && !disabledRef.current && !store.select("open") && triggerEl && isMouseLikePointerType(pointerTypeRef.current)) {
+      const open = () => {
+        if (!isNestedTriggerHoveredRef.current && !disabledRef.current && !store.select("open")) {
+          store.setOpen(true, createChangeEventDetails(exports_reason_parts.triggerHover, event, triggerEl));
+        }
+      };
+      const openDelay = getOpenDelay();
+      if (openDelay === 0) {
+        nestedTriggerOpenTimeout.clear();
+        open();
+      } else {
+        nestedTriggerOpenTimeout.start(openDelay, open);
+      }
+    }
+  };
+  const rootTriggerProps = store.useState("triggerProps", isMountedByThisTrigger);
+  const shouldApplyRootTriggerProps = isMountedByThisTrigger || trackCursorAxis !== "none";
   const state = {
     open: isOpenedByThisTrigger
   };
-  const rootTriggerProps = store.useState("triggerProps", isMountedByThisTrigger);
   const element = useRenderElement("button", componentProps, {
     state,
     ref: [forwardedRef, registerTrigger, triggerElementRef],
-    props: [hoverProps, focusProps, rootTriggerProps, {
-      onPointerDown() {
+    props: [hoverProps, focusProps, shouldApplyRootTriggerProps ? rootTriggerProps : undefined, {
+      onMouseOver(event) {
+        handleNestedTriggerHover(event.nativeEvent);
+      },
+      onFocus(event) {
+        if (isEnabledNestedTriggerTarget(getTargetElement(event.nativeEvent))) {
+          event.preventBaseUIHandler();
+        }
+      },
+      onMouseLeave() {
+        isNestedTriggerHoveredRef.current = false;
+        nestedTriggerOpenTimeout.clear();
+        pointerTypeRef.current = undefined;
+      },
+      onPointerEnter(event) {
+        pointerTypeRef.current = event.pointerType;
+      },
+      onPointerDown(event) {
+        pointerTypeRef.current = event.pointerType;
         store.set("closeOnClick", closeOnClick);
+        if (closeOnClick && !store.select("open")) {
+          store.cancelPendingOpen(event.nativeEvent);
+        }
+      },
+      onClick(event) {
+        if (closeOnClick && !store.select("open")) {
+          store.cancelPendingOpen(event.nativeEvent);
+        }
       },
       id: thisTriggerId,
-      [TooltipTriggerDataAttributes.triggerDisabled]: disabled ? "" : undefined
+      [TooltipTriggerDataAttributes.triggerDisabled]: disabled ? "" : undefined,
+      [TOOLTIP_TRIGGER_IDENTIFIER]: disabled ? undefined : ""
     }, elementProps],
     stateAttributesMapping: triggerOpenStateMapping
   });
@@ -456,10 +584,10 @@ var TooltipTrigger = fastComponentRef(function TooltipTrigger2(componentProps, f
 });
 if (true)
   TooltipTrigger.displayName = "TooltipTrigger";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/portal/TooltipPortal.js
+// node_modules/@base-ui/react/esm/tooltip/portal/TooltipPortal.js
 import * as React7 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/portal/TooltipPortalContext.js
+// node_modules/@base-ui/react/esm/tooltip/portal/TooltipPortalContext.js
 import * as React6 from "react";
 "use client";
 var TooltipPortalContext = /* @__PURE__ */ React6.createContext(undefined);
@@ -473,7 +601,7 @@ function useTooltipPortalContext() {
   return value;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/portal/TooltipPortal.js
+// node_modules/@base-ui/react/esm/tooltip/portal/TooltipPortal.js
 import { jsx as _jsx2 } from "react/jsx-runtime";
 "use client";
 var TooltipPortal = /* @__PURE__ */ React7.forwardRef(function TooltipPortal2(props, forwardedRef) {
@@ -497,10 +625,10 @@ var TooltipPortal = /* @__PURE__ */ React7.forwardRef(function TooltipPortal2(pr
 });
 if (true)
   TooltipPortal.displayName = "TooltipPortal";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/positioner/TooltipPositioner.js
+// node_modules/@base-ui/react/esm/tooltip/positioner/TooltipPositioner.js
 import * as React9 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/positioner/TooltipPositionerContext.js
+// node_modules/@base-ui/react/esm/tooltip/positioner/TooltipPositionerContext.js
 import * as React8 from "react";
 "use client";
 var TooltipPositionerContext = /* @__PURE__ */ React8.createContext(undefined);
@@ -514,7 +642,7 @@ function useTooltipPositionerContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/positioner/TooltipPositioner.js
+// node_modules/@base-ui/react/esm/tooltip/positioner/TooltipPositioner.js
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
 var TooltipPositioner = /* @__PURE__ */ React9.forwardRef(function TooltipPositioner2(componentProps, forwardedRef) {
@@ -586,7 +714,7 @@ var TooltipPositioner = /* @__PURE__ */ React9.forwardRef(function TooltipPositi
 });
 if (true)
   TooltipPositioner.displayName = "TooltipPositioner";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/popup/TooltipPopup.js
+// node_modules/@base-ui/react/esm/tooltip/popup/TooltipPopup.js
 import * as React10 from "react";
 "use client";
 var stateAttributesMapping = {
@@ -595,8 +723,8 @@ var stateAttributesMapping = {
 };
 var TooltipPopup = /* @__PURE__ */ React10.forwardRef(function TooltipPopup2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -610,6 +738,8 @@ var TooltipPopup = /* @__PURE__ */ React10.forwardRef(function TooltipPopup2(com
   const transitionStatus = store.useState("transitionStatus");
   const popupProps = store.useState("popupProps");
   const floatingContext = store.useState("floatingRootContext");
+  const disabled = store.useState("disabled");
+  const closeDelay = store.useState("closeDelay");
   useOpenChangeComplete({
     open,
     ref: store.context.popupRef,
@@ -619,12 +749,11 @@ var TooltipPopup = /* @__PURE__ */ React10.forwardRef(function TooltipPopup2(com
       }
     }
   });
-  const disabled = store.useState("disabled");
-  const closeDelay = store.useState("closeDelay");
   useHoverFloatingInteraction(floatingContext, {
     enabled: !disabled,
     closeDelay
   });
+  const setPopupElement = store.useStateSetter("popupElement");
   const state = {
     open,
     side,
@@ -634,7 +763,7 @@ var TooltipPopup = /* @__PURE__ */ React10.forwardRef(function TooltipPopup2(com
   };
   const element = useRenderElement("div", componentProps, {
     state,
-    ref: [forwardedRef, store.context.popupRef, store.useStateSetter("popupElement")],
+    ref: [forwardedRef, store.context.popupRef, setPopupElement],
     props: [popupProps, getDisabledMountTransitionStyles(transitionStatus), elementProps],
     stateAttributesMapping
   });
@@ -642,19 +771,17 @@ var TooltipPopup = /* @__PURE__ */ React10.forwardRef(function TooltipPopup2(com
 });
 if (true)
   TooltipPopup.displayName = "TooltipPopup";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/arrow/TooltipArrow.js
+// node_modules/@base-ui/react/esm/tooltip/arrow/TooltipArrow.js
 import * as React11 from "react";
 "use client";
 var TooltipArrow = /* @__PURE__ */ React11.forwardRef(function TooltipArrow2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
   const store = useTooltipRootContext();
-  const open = store.useState("open");
-  const instantType = store.useState("instantType");
   const {
     arrowRef,
     side,
@@ -662,6 +789,8 @@ var TooltipArrow = /* @__PURE__ */ React11.forwardRef(function TooltipArrow2(com
     arrowUncentered,
     arrowStyles
   } = useTooltipPositionerContext();
+  const open = store.useState("open");
+  const instantType = store.useState("instantType");
   const state = {
     open,
     side,
@@ -682,7 +811,7 @@ var TooltipArrow = /* @__PURE__ */ React11.forwardRef(function TooltipArrow2(com
 });
 if (true)
   TooltipArrow.displayName = "TooltipArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/provider/TooltipProvider.js
+// node_modules/@base-ui/react/esm/tooltip/provider/TooltipProvider.js
 import * as React12 from "react";
 import { jsx as _jsx4 } from "react/jsx-runtime";
 "use client";
@@ -711,17 +840,17 @@ var TooltipProvider = function TooltipProvider2(props) {
 };
 if (true)
   TooltipProvider.displayName = "TooltipProvider";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/viewport/TooltipViewport.js
+// node_modules/@base-ui/react/esm/tooltip/viewport/TooltipViewport.js
 import * as React13 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/viewport/TooltipViewportCssVars.js
+// node_modules/@base-ui/react/esm/tooltip/viewport/TooltipViewportCssVars.js
 var TooltipViewportCssVars = /* @__PURE__ */ function(TooltipViewportCssVars2) {
   TooltipViewportCssVars2["popupWidth"] = "--popup-width";
   TooltipViewportCssVars2["popupHeight"] = "--popup-height";
   return TooltipViewportCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/viewport/TooltipViewport.js
+// node_modules/@base-ui/react/esm/tooltip/viewport/TooltipViewport.js
 "use client";
 var stateAttributesMapping2 = {
   activationDirection: (value) => value ? {
@@ -764,7 +893,7 @@ var TooltipViewport = /* @__PURE__ */ React13.forwardRef(function TooltipViewpor
 });
 if (true)
   TooltipViewport.displayName = "TooltipViewport";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tooltip/store/TooltipHandle.js
+// node_modules/@base-ui/react/esm/tooltip/store/TooltipHandle.js
 class TooltipHandle {
   constructor() {
     this.store = new TooltipStore;
@@ -780,7 +909,7 @@ class TooltipHandle {
     this.store.setOpen(false, createChangeEventDetails(exports_reason_parts.imperativeAction, undefined, undefined));
   }
   get isOpen() {
-    return this.store.state.open;
+    return this.store.select("open");
   }
 }
 function createTooltipHandle() {
