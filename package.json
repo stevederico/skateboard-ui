@@ -120,6 +120,10 @@
     }
   },
   "scripts": {
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.json && node scripts/copy-dist-assets.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run clean && npm run build",
     "prod": "npm publish"
   },
   "files": [
@@ -149,5 +153,11 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.16",
+    "@types/react-dom": "19.2.3",
+    "dts-bundle-generator": "9.5.1",
+    "typescript": "5.9.3"
   }
 }
