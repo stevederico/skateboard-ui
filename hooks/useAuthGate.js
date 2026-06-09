@@ -29,7 +29,12 @@ export function useAuthGate() {
     if (state.user) {
       callback();
     } else {
-      dispatch({ type: 'SHOW_AUTH_OVERLAY', payload: callback });
+      // Run the gated action only after successful auth — not when the user
+      // dismisses the overlay (outcome 'cancel').
+      dispatch({
+        type: 'SHOW_AUTH_OVERLAY',
+        payload: (outcome) => { if (outcome !== 'cancel') callback(); },
+      });
     }
   }, [state.user, dispatch]);
 

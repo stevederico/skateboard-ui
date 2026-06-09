@@ -704,11 +704,15 @@ export async function apiRequest(endpoint, options = {}) {
         (options.method || 'GET').toUpperCase()
     );
 
-    // Set up timeout (default 30 seconds)
+    // Set up timeout (default 30 seconds). Always enforced — even when the caller
+    // passes its own signal — by linking both via AbortSignal.any, so a stalled
+    // backend can't hang a caller-cancellable request forever.
     const timeout = options.timeout || 30000;
-    const controller = options.signal ? null : new AbortController();
-    const signal = options.signal || controller?.signal;
-    const timeoutId = controller ? setTimeout(() => controller.abort(), timeout) : null;
+    const timeoutController = new AbortController();
+    const timeoutId = setTimeout(() => timeoutController.abort(), timeout);
+    const signal = options.signal
+        ? AbortSignal.any([options.signal, timeoutController.signal])
+        : timeoutController.signal;
 
     let response;
     try {
@@ -728,7 +732,7 @@ export async function apiRequest(endpoint, options = {}) {
         }
         throw new Error(`Network error: ${error.message}`);
     } finally {
-        if (timeoutId) clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
     }
 
     // Handle 401 (redirect to signout, or show auth overlay and retry)
@@ -738,19 +742,25 @@ export async function apiRequest(endpoint, options = {}) {
             throw new Error('Unauthorized');
         }
 
-        // In authOverlay mode: show sign-in overlay, retry request after auth
+        // In authOverlay mode: show sign-in overlay, retry the request after auth.
+        // The parked callback is invoked by AuthOverlay (not the reducer) with an
+        // outcome: 'success' retries, 'cancel' (overlay dismissed) rejects so the
+        // awaiting caller never hangs.
         const dispatch = getDispatch();
         if (dispatch) {
             return new Promise((resolve, reject) => {
                 dispatch({
                     type: 'SHOW_AUTH_OVERLAY',
-                    payload: async () => {
-                        try {
-                            const result = await apiRequest(endpoint, options);
-                            resolve(result);
-                        } catch (err) {
-                            reject(err);
+                    payload: (outcome) => {
+                        if (outcome === 'cancel') {
+                            reject(new Error('Authentication cancelled'));
+                            return;
                         }
+                        // Drop the original abort signal: the caller that owned it
+                        // may have unmounted while the overlay was open (aborting it).
+                        // A fresh request gets its own timeout signal.
+                        const { signal: _staleSignal, ...retryOptions } = options;
+                        apiRequest(endpoint, retryOptions).then(resolve, reject);
                     }
                 });
             });

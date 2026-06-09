@@ -21,7 +21,7 @@ import SettingsView from './components/views/SettingsView.jsx';
 import NotFound from './components/views/NotFound.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import { useAppSetup, initializeUtilities, validateConstants, isAuthOverlayEnabled } from './components/core/Utilities.js';
+import { useAppSetup, initializeUtilities, validateConstants, isAuthOverlayEnabled, isAuthenticated } from './components/core/Utilities.js';
 import { ContextProvider } from './components/core/Context.jsx';
 import AuthOverlay from './components/AuthOverlay.jsx';
 
@@ -37,7 +37,11 @@ function AuthRedirect() {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch({ type: 'SHOW_AUTH_OVERLAY' });
+    // Already authenticated (e.g. reached /signin via a stale link)? Skip the
+    // overlay — just send them into the app instead of prompting a signed-in user.
+    if (!isAuthenticated()) {
+      dispatch({ type: 'SHOW_AUTH_OVERLAY' });
+    }
     const returnTo = location.state?.from || '/app/home';
     navigate(returnTo, { replace: true });
   }, [dispatch, navigate, location.state]);
@@ -61,13 +65,10 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
   const NotFoundComponent = overrides.notFound || NotFound;
 
   // authOverlay is on by default (except noLogin apps); redirect /signin and
-  // /signup to show the overlay unless explicitly disabled with authOverlay:false
-  const SignInComponent = isAuthOverlayEnabled()
-    ? AuthRedirect
-    : (overrides.signIn || SignInView);
-  const SignUpComponent = isAuthOverlayEnabled()
-    ? AuthRedirect
-    : (overrides.signUp || SignUpView);
+  // /signup to show the overlay unless explicitly disabled with authOverlay:false.
+  // An explicit override always wins, so consumers can supply custom auth pages.
+  const SignInComponent = overrides.signIn || (isAuthOverlayEnabled() ? AuthRedirect : SignInView);
+  const SignUpComponent = overrides.signUp || (isAuthOverlayEnabled() ? AuthRedirect : SignUpView);
 
   return (
     <Routes>

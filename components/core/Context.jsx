@@ -159,9 +159,9 @@ export function ContextProvider({ children, constants }) {
         return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
       }
       case 'AUTH_OVERLAY_SUCCESS': {
-        for (const cb of state.authOverlay.pendingCallbacks) {
-          try { cb(); } catch (e) { console.error('Auth callback error:', e); }
-        }
+        // Pure state transition only. The parked retries are invoked by
+        // AuthOverlay's event handlers, never here — React may double-invoke this
+        // reducer (StrictMode) or discard its result (concurrent renders).
         return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
       }
       default:

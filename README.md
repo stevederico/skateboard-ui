@@ -922,7 +922,7 @@ function SignOutButton() {
 
   authOverlay: {
     visible: boolean,
-    pendingCallbacks: Function[]   // queued 401 retries, all run on sign-in
+    pendingCallbacks: Function[]   // queued 401 retries; run on sign-in, rejected on dismiss
   },
 
   constants: Object  // App configuration
