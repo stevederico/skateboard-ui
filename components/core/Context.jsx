@@ -118,7 +118,7 @@ export function ContextProvider({ children, constants }) {
     },
     authOverlay: {
       visible: false,
-      pendingCallback: null
+      pendingCallbacks: []
     },
     constants
   };
@@ -153,16 +153,16 @@ export function ContextProvider({ children, constants }) {
         return { ...state, ui: { ...state.ui, ...action.payload } };
       }
       case 'SHOW_AUTH_OVERLAY': {
-        return { ...state, authOverlay: { visible: true, pendingCallback: action.payload || null } };
+        return { ...state, authOverlay: { visible: true, pendingCallbacks: action.payload ? [...state.authOverlay.pendingCallbacks, action.payload] : state.authOverlay.pendingCallbacks } };
       }
       case 'HIDE_AUTH_OVERLAY': {
-        return { ...state, authOverlay: { visible: false, pendingCallback: null } };
+        return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
       }
       case 'AUTH_OVERLAY_SUCCESS': {
-        if (state.authOverlay.pendingCallback) {
-          try { state.authOverlay.pendingCallback(); } catch (e) { console.error('Auth callback error:', e); }
+        for (const cb of state.authOverlay.pendingCallbacks) {
+          try { cb(); } catch (e) { console.error('Auth callback error:', e); }
         }
-        return { ...state, authOverlay: { visible: false, pendingCallback: null } };
+        return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
       }
       default:
         return state;

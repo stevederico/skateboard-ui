@@ -192,7 +192,8 @@ const constants = {
 
   // Optional: Authentication
   noLogin: false,      // Set true to disable authentication entirely
-  authOverlay: false,  // Set true to allow unauthenticated /app access (use with useAuthGate)
+  // authOverlay defaults to true: lazy auth via the sign-in overlay.
+  // Set `authOverlay: false` to require eager sign-in before /app access.
 
   // Optional: UI visibility
   hideSidebar: false,
@@ -921,7 +922,7 @@ function SignOutButton() {
 
   authOverlay: {
     visible: boolean,
-    pendingCallback: Function | null
+    pendingCallbacks: Function[]   // queued 401 retries, all run on sign-in
   },
 
   constants: Object  // App configuration
@@ -1005,7 +1006,7 @@ const filtered = await apiRequestWithParams('/deals', { status: 'active', limit:
 **Features:**
 - Auto-includes credentials (cookies)
 - Auto-adds `X-CSRF-Token` header for POST, PUT, DELETE, PATCH
-- Auto-redirects to `/signout` on 401 (unless authOverlay mode)
+- On 401, shows the auth overlay and retries after sign-in (default); redirects to `/signout` only when `authOverlay: false`
 - Auto-retries once on CSRF 403 failure
 
 ### Auth Utilities
@@ -1149,19 +1150,19 @@ const constants = getConstants();
 
 ## Lazy Authentication (Auth Overlay)
 
-Let users explore `/app` without signing in — prompt them only when they perform a protected action.
+Let users explore `/app` without signing in — prompt them only when they perform a protected action. This is the **default** behavior.
 
 ### Setup
 
-Set `authOverlay: true` in your constants to allow unauthenticated access to `/app` routes:
+Lazy auth is on by default — no config needed. The `AuthOverlay` component is rendered automatically by `createSkateboardApp` and unauthenticated visitors can reach `/app` routes.
+
+To opt out and require eager sign-in instead, set `authOverlay: false` in your constants. `ProtectedRoute` then validates the session up front and redirects unauthenticated users to `/signin`:
 
 ```json
 {
-  "authOverlay": true
+  "authOverlay": false
 }
 ```
-
-The `AuthOverlay` component is rendered automatically by `createSkateboardApp` — no additional wiring needed.
 
 ### Usage
 

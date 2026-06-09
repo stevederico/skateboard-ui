@@ -21,7 +21,7 @@ import SettingsView from './components/views/SettingsView.jsx';
 import NotFound from './components/views/NotFound.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import { useAppSetup, initializeUtilities, validateConstants } from './components/core/Utilities.js';
+import { useAppSetup, initializeUtilities, validateConstants, isAuthOverlayEnabled } from './components/core/Utilities.js';
 import { ContextProvider } from './components/core/Context.jsx';
 import AuthOverlay from './components/AuthOverlay.jsx';
 
@@ -60,11 +60,12 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
   const SignOutComponent = overrides.signOut || SignOutView;
   const NotFoundComponent = overrides.notFound || NotFound;
 
-  // When authOverlay is enabled, redirect /signin and /signup to show the overlay instead
-  const SignInComponent = constants.authOverlay
+  // authOverlay is on by default (except noLogin apps); redirect /signin and
+  // /signup to show the overlay unless explicitly disabled with authOverlay:false
+  const SignInComponent = isAuthOverlayEnabled()
     ? AuthRedirect
     : (overrides.signIn || SignInView);
-  const SignUpComponent = constants.authOverlay
+  const SignUpComponent = isAuthOverlayEnabled()
     ? AuthRedirect
     : (overrides.signUp || SignUpView);
 
