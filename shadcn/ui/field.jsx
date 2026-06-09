@@ -2,8 +2,8 @@ import { useMemo } from "react"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
-import { Label } from "./label.jsx"
-import { Separator } from "./separator.jsx"
+import { Label } from "./label.js"
+import { Separator } from "./separator.js"
 
 function FieldSet({
   className,

@@ -4,7 +4,7 @@ import { Radio as RadioPrimitive } from "../lib/base-ui/radio.js"
 import { RadioGroup as RadioGroupPrimitive } from "../lib/base-ui/radio-group.js"
 
 import { cn } from "../lib/utils.js"
-import { CircleIcon } from "../../icons"
+import { CircleIcon } from "../../icons/index.js"
 
 function RadioGroup({
   className,

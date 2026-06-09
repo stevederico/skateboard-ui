@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Command as CommandPrimitive } from "../../components/core/Command.jsx"
+import { Command as CommandPrimitive } from "../../components/core/Command.js"
 
 import { cn } from "../lib/utils.js"
 import {
@@ -8,12 +8,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "./dialog.jsx"
+} from "./dialog.js"
 import {
   InputGroup,
   InputGroupAddon,
-} from "./input-group.jsx"
-import { SearchIcon, CheckIcon } from "../../icons"
+} from "./input-group.js"
+import { SearchIcon, CheckIcon } from "../../icons/index.js"
 
 function Command({
   className,

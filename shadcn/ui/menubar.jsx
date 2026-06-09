@@ -19,8 +19,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./dropdown-menu.jsx"
-import { CheckIcon } from "../../icons"
+} from "./dropdown-menu.js"
+import { CheckIcon } from "../../icons/index.js"
 
 function Menubar({
   className,

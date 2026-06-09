@@ -1,7 +1,7 @@
 import { Accordion as AccordionPrimitive } from "../lib/base-ui/accordion.js"
 
 import { cn } from "../lib/utils.js"
-import { ChevronDownIcon, ChevronUpIcon } from "../../icons"
+import { ChevronDownIcon, ChevronUpIcon } from "../../icons/index.js"
 
 function Accordion({
   className,

@@ -4,7 +4,7 @@ import { useRender } from "../lib/base-ui/use-render.js"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
-import { Separator } from "./separator.jsx"
+import { Separator } from "./separator.js"
 
 function ItemGroup({
   className,

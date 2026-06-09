@@ -3,7 +3,7 @@ import { mergeProps } from "../lib/base-ui/merge-props.js"
 import { useRender } from "../lib/base-ui/use-render.js"
 
 import { cn } from "../lib/utils.js"
-import { ChevronRightIcon, MoreHorizontalIcon } from "../../icons"
+import { ChevronRightIcon, MoreHorizontalIcon } from "../../icons/index.js"
 
 function Breadcrumb({
   className,

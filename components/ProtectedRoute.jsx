@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
-import { isAuthenticated, apiRequest, getAppKey, getConstants, isAuthOverlayEnabled } from './core/Utilities';
-import { Spinner } from '../shadcn/ui/spinner.jsx';
+import { isAuthenticated, apiRequest, getAppKey, getConstants, isAuthOverlayEnabled } from './core/Utilities.js';
+import { Spinner } from '../shadcn/ui/spinner.js';
 
 /**
  * Route guard that validates authentication before rendering child routes.

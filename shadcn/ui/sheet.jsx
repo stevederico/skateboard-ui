@@ -4,8 +4,8 @@ import * as React from "react"
 import { Dialog as SheetPrimitive } from "../lib/base-ui/dialog.js"
 
 import { cn } from "../lib/utils.js"
-import { Button } from "./button.jsx"
-import { XIcon } from "../../icons"
+import { Button } from "./button.js"
+import { XIcon } from "../../icons/index.js"
 
 function Sheet({
   ...props

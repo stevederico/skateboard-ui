@@ -2,7 +2,7 @@ import { NavigationMenu as NavigationMenuPrimitive } from "../lib/base-ui/naviga
 import { cva } from "../lib/cva.js"
 
 import { cn } from "../lib/utils.js"
-import { ChevronDownIcon } from "../../icons"
+import { ChevronDownIcon } from "../../icons/index.js"
 
 function NavigationMenu({
   className,

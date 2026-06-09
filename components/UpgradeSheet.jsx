@@ -6,17 +6,17 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-} from "../shadcn/ui/drawer"
+} from "../shadcn/ui/drawer.js"
 import {
   Card,
   CardContent,
-} from "../shadcn/ui/card"
-import { Badge } from "../shadcn/ui/badge"
-import { Separator } from "../shadcn/ui/separator"
-import { Button } from "../shadcn/ui/button"
-import { getState } from "./core/Context.jsx";
+} from "../shadcn/ui/card.js"
+import { Badge } from "../shadcn/ui/badge.js"
+import { Separator } from "../shadcn/ui/separator.js"
+import { Button } from "../shadcn/ui/button.js"
+import { getState } from "./core/Context.js";
 import { showCheckout } from './core/Utilities.js';
-import { Sparkles, CircleCheck } from '../icons';
+import { Sparkles, CircleCheck } from '../icons/index.js';
 
 /**
  * Premium upgrade drawer with pricing and checkout button.

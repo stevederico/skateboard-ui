@@ -8,22 +8,22 @@ import {
   useNavigate,
 } from 'react-router';
 import { useEffect } from 'react';
-import { getState } from './components/core/Context.jsx';
-import { ThemeProvider } from './components/core/ThemeProvider.jsx';
-import Layout from './components/layout/Layout.jsx';
-import LandingView from './components/views/LandingView.jsx';
-import TextView from './components/views/TextView.jsx';
-import SignUpView from './components/views/SignUpView.jsx';
-import SignInView from './components/views/SignInView.jsx';
-import SignOutView from './components/views/SignOutView.jsx';
-import PaymentView from './components/views/PaymentView.jsx';
-import SettingsView from './components/views/SettingsView.jsx';
-import NotFound from './components/views/NotFound.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import ErrorBoundary from './components/ErrorBoundary.jsx';
+import { getState } from './components/core/Context.js';
+import { ThemeProvider } from './components/core/ThemeProvider.js';
+import Layout from './components/layout/Layout.js';
+import LandingView from './components/views/LandingView.js';
+import TextView from './components/views/TextView.js';
+import SignUpView from './components/views/SignUpView.js';
+import SignInView from './components/views/SignInView.js';
+import SignOutView from './components/views/SignOutView.js';
+import PaymentView from './components/views/PaymentView.js';
+import SettingsView from './components/views/SettingsView.js';
+import NotFound from './components/views/NotFound.js';
+import ProtectedRoute from './components/ProtectedRoute.js';
+import ErrorBoundary from './components/ErrorBoundary.js';
 import { useAppSetup, initializeUtilities, validateConstants, isAuthOverlayEnabled, isAuthenticated } from './components/core/Utilities.js';
-import { ContextProvider } from './components/core/Context.jsx';
-import AuthOverlay from './components/AuthOverlay.jsx';
+import { ContextProvider } from './components/core/Context.js';
+import AuthOverlay from './components/AuthOverlay.js';
 
 /**
  * Redirect component for auth routes when authOverlay mode is enabled.

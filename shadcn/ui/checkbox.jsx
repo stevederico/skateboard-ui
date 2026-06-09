@@ -3,7 +3,7 @@
 import { Checkbox as CheckboxPrimitive } from "../lib/base-ui/checkbox.js"
 
 import { cn } from "../lib/utils.js"
-import { CheckIcon } from "../../icons"
+import { CheckIcon } from "../../icons/index.js"
 
 function Checkbox({
   className,

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../shadcn/ui/dialog.jsx';
-import DynamicIcon from './core/DynamicIcon.jsx';
-import { getState } from './core/Context.jsx';
-import SignInView from './views/SignInView.jsx';
-import SignUpView from './views/SignUpView.jsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../shadcn/ui/dialog.js';
+import DynamicIcon from './core/DynamicIcon.js';
+import { getState } from './core/Context.js';
+import SignInView from './views/SignInView.js';
+import SignUpView from './views/SignUpView.js';
 
 /**
  * Modal authentication overlay with sign-in and sign-up forms.

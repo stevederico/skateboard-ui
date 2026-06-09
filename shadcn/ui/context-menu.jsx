@@ -4,7 +4,7 @@ import * as React from "react"
 import { ContextMenu as ContextMenuPrimitive } from "../lib/base-ui/context-menu.js"
 
 import { cn } from "../lib/utils.js"
-import { ChevronRightIcon, CheckIcon } from "../../icons"
+import { ChevronRightIcon, CheckIcon } from "../../icons/index.js"
 
 function ContextMenu({
   ...props

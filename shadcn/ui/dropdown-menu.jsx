@@ -4,7 +4,7 @@ import * as React from "react"
 import { Menu as MenuPrimitive } from "../lib/base-ui/menu.js"
 
 import { cn } from "../lib/utils.js"
-import { ChevronRightIcon, CheckIcon } from "../../icons"
+import { ChevronRightIcon, CheckIcon } from "../../icons/index.js"
 
 function DropdownMenu({
   ...props

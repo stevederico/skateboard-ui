@@ -3,7 +3,7 @@ import { useRender } from "../lib/base-ui/use-render.js"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
-import { Separator } from "./separator.jsx"
+import { Separator } from "./separator.js"
 
 const buttonGroupVariants = cva(
   "has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md flex w-fit items-stretch [&>*]:focus-visible:z-10 [&>*]:focus-visible:relative [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
