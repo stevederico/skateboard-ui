@@ -1,6 +1,7 @@
+import * as React from "react";
 import { Children } from "react";
 import { Button as ButtonPrimitive } from "../lib/base-ui/button.js"
-import { cva } from "../lib/cva.js";
+import { cva, type VariantProps } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
 
@@ -36,15 +37,15 @@ const buttonVariants = cva(
   }
 )
 
+export interface ButtonProps
+  extends React.ComponentProps<typeof ButtonPrimitive>,
+    VariantProps<typeof buttonVariants> {
+  /** Render the single child element styled as a button (shadcn-style). Bridged onto Base UI's `render` prop. */
+  asChild?: boolean;
+}
+
 /**
  * Primary button component with variant and size support.
- *
- * @param {Object} props
- * @param {string} [props.className] - Additional CSS classes
- * @param {"default"|"outline"|"secondary"|"ghost"|"destructive"|"link"|"gradient"} [props.variant="default"] - Visual style
- * @param {"default"|"xs"|"sm"|"lg"|"icon"|"icon-xs"|"icon-sm"|"icon-lg"|"cta"} [props.size="default"] - Button size
- * @param {boolean} [props.asChild=false] - Render the single child element styled as a button (shadcn-style). Bridged onto Base UI's `render` prop.
- * @returns {JSX.Element}
  */
 function Button({
   className,
@@ -53,7 +54,7 @@ function Button({
   asChild = false,
   children,
   ...props
-}) {
+}: ButtonProps) {
   const classes = cn(buttonVariants({ variant, size, className }));
   // Base UI has no `asChild` — it uses a `render` prop. Bridge the shadcn-style
   // `asChild` API so `<Button asChild><a .../></Button>` renders the child element
@@ -63,7 +64,7 @@ function Button({
       <ButtonPrimitive
         data-slot="button"
         className={classes}
-        render={Children.only(children)}
+        render={Children.only(children) as React.ReactElement<Record<string, unknown>>}
         {...props} />
     );
   }

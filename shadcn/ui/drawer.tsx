@@ -9,7 +9,7 @@ const VELOCITY_THRESHOLD = 0.4
 const CLOSE_THRESHOLD = 0.25
 const TRANSITION = "transform 500ms cubic-bezier(0.32, 0.72, 0, 1)"
 
-function dampenValue(v) {
+function dampenValue(v: number): number {
   return 8 * (Math.log(v + 1) - 2)
 }
 
@@ -17,28 +17,32 @@ function dampenValue(v) {
 // inside a scrollable child that isn't at scrollTop=0 (lets content scroll
 // naturally), on a <select>, on a [data-no-drag] subtree, or when text is
 // highlighted.
-function shouldDrag(el, popup) {
+function shouldDrag(el: HTMLElement | null, popup: HTMLElement): boolean {
   let element = el
   if (window.getSelection()?.toString()) return false
   while (element && element !== popup) {
     if (element.tagName === "SELECT") return false
     if (element.hasAttribute?.("data-no-drag") || element.closest?.("[data-no-drag]")) return false
     if (element.scrollHeight > element.clientHeight && element.scrollTop !== 0) return false
-    element = element.parentNode
+    element = element.parentNode as HTMLElement | null
   }
   return true
 }
 
-const DrawerCtx = React.createContext(null)
+interface DrawerContextValue {
+  onOpenChange: (open: boolean) => void
+}
 
-function Drawer({ open, defaultOpen, onOpenChange, ...props }) {
+const DrawerCtx = React.createContext<DrawerContextValue | null>(null)
+
+function Drawer({ open, defaultOpen, onOpenChange, ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
   const isControlled = open !== undefined
   const actualOpen = isControlled ? open : internalOpen
   const handleOpenChange = React.useCallback(
-    (next) => {
+    (next: boolean) => {
       if (!isControlled) setInternalOpen(next)
-      onOpenChange?.(next)
+      ;(onOpenChange as ((open: boolean) => void) | undefined)?.(next)
     },
     [isControlled, onOpenChange]
   )
@@ -54,19 +58,19 @@ function Drawer({ open, defaultOpen, onOpenChange, ...props }) {
   )
 }
 
-function DrawerTrigger(props) {
+function DrawerTrigger(props: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="drawer-trigger" {...props} />
 }
 
-function DrawerPortal(props) {
+function DrawerPortal(props: React.ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot="drawer-portal" {...props} />
 }
 
-function DrawerClose(props) {
+function DrawerClose(props: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="drawer-close" {...props} />
 }
 
-function DrawerOverlay({ className, ...props }) {
+function DrawerOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Backdrop>) {
   return (
     <DialogPrimitive.Backdrop
       data-slot="drawer-overlay"
@@ -76,10 +80,17 @@ function DrawerOverlay({ className, ...props }) {
   )
 }
 
-function DrawerContent({ className, children, ...props }) {
-  const popupRef = React.useRef(null)
+interface DragState {
+  dragging: boolean
+  startY: number
+  height: number
+  startTime: number
+}
+
+function DrawerContent({ className, children, ...props }: React.ComponentProps<typeof DialogPrimitive.Popup>) {
+  const popupRef = React.useRef<HTMLDivElement | null>(null)
   const ctx = React.useContext(DrawerCtx)
-  const dragState = React.useRef({ dragging: false, startY: 0, height: 0, startTime: 0 })
+  const dragState = React.useRef<DragState>({ dragging: false, startY: 0, height: 0, startTime: 0 })
 
   const snapBack = React.useCallback(() => {
     const el = popupRef.current
@@ -101,10 +112,11 @@ function DrawerContent({ className, children, ...props }) {
     }, 500)
   }, [ctx])
 
-  const handlePointerDown = React.useCallback((event) => {
+  const handlePointerDown = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     const el = popupRef.current
-    if (!el || !shouldDrag(event.target, el)) return
-    event.target.setPointerCapture?.(event.pointerId)
+    const target = event.target as HTMLElement | null
+    if (!el || !shouldDrag(target, el)) return
+    target?.setPointerCapture?.(event.pointerId)
     dragState.current = {
       dragging: true,
       startY: event.clientY,
@@ -114,7 +126,7 @@ function DrawerContent({ className, children, ...props }) {
     el.style.transition = "none"
   }, [])
 
-  const handlePointerMove = React.useCallback((event) => {
+  const handlePointerMove = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     const state = dragState.current
     if (!state.dragging) return
     const el = popupRef.current
@@ -131,7 +143,7 @@ function DrawerContent({ className, children, ...props }) {
   }, [])
 
   const handlePointerUp = React.useCallback(
-    (event) => {
+    (event: React.PointerEvent<HTMLDivElement>) => {
       const state = dragState.current
       if (!state.dragging) return
       state.dragging = false
@@ -178,7 +190,7 @@ function DrawerContent({ className, children, ...props }) {
   )
 }
 
-function DrawerHeader({ className, ...props }) {
+function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="drawer-header"
@@ -188,7 +200,7 @@ function DrawerHeader({ className, ...props }) {
   )
 }
 
-function DrawerFooter({ className, ...props }) {
+function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="drawer-footer"
@@ -198,7 +210,7 @@ function DrawerFooter({ className, ...props }) {
   )
 }
 
-function DrawerTitle({ className, ...props }) {
+function DrawerTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="drawer-title"
@@ -208,7 +220,7 @@ function DrawerTitle({ className, ...props }) {
   )
 }
 
-function DrawerDescription({ className, ...props }) {
+function DrawerDescription({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
       data-slot="drawer-description"
