@@ -1,74 +1,74 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useLabelableId
-} from "./_chunk-k4mc2kan.js";
+} from "./_chunk-23rx7haq.js";
 import {
   useAriaLabelledBy
-} from "./_chunk-a8fwg9d0.js";
+} from "./_chunk-vg16xxmb.js";
 import {
   useFormContext,
   useRegisterFieldControl
-} from "./_chunk-97tas84n.js";
+} from "./_chunk-95tf2rxq.js";
 import {
   fieldValidityMapping,
   useFieldRootContext,
   useLabelableContext
-} from "./_chunk-kfz96xv1.js";
-import"./_chunk-ds8fnpjj.js";
+} from "./_chunk-8ctgmf06.js";
+import"./_chunk-dzvjwv25.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   useValueChanged
-} from "./_chunk-cwr896nf.js";
+} from "./_chunk-s5pwkz8v.js";
 import {
   visuallyHidden,
   visuallyHiddenInput
-} from "./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
+} from "./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
+import"./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
 import {
-  useStableCallback
-} from "./_chunk-mznt6ktj.js";
+  getWindow
+} from "./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   EMPTY_OBJECT,
   useMergedRefs,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export,
   mergeProps
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/index.parts.js
+// node_modules/@base-ui/react/esm/switch/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Thumb: () => SwitchThumb,
   Root: () => SwitchRoot
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/root/SwitchRoot.js
+// node_modules/@base-ui/react/esm/switch/root/SwitchRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/root/SwitchRootContext.js
+// node_modules/@base-ui/react/esm/switch/root/SwitchRootContext.js
 import * as React from "react";
 "use client";
 var SwitchRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -82,7 +82,7 @@ function useSwitchRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/root/SwitchRootDataAttributes.js
+// node_modules/@base-ui/react/esm/switch/root/SwitchRootDataAttributes.js
 var SwitchRootDataAttributes = /* @__PURE__ */ function(SwitchRootDataAttributes2) {
   SwitchRootDataAttributes2["checked"] = "data-checked";
   SwitchRootDataAttributes2["unchecked"] = "data-unchecked";
@@ -98,7 +98,7 @@ var SwitchRootDataAttributes = /* @__PURE__ */ function(SwitchRootDataAttributes
   return SwitchRootDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/switch/stateAttributesMapping.js
 var stateAttributesMapping = {
   ...fieldValidityMapping,
   checked(value) {
@@ -113,7 +113,7 @@ var stateAttributesMapping = {
   }
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/root/SwitchRoot.js
+// node_modules/@base-ui/react/esm/switch/root/SwitchRoot.js
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componentProps, forwardedRef) {
@@ -127,7 +127,7 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
     inputRef: externalInputRef,
     name: nameProp,
     nativeButton = false,
-    onCheckedChange: onCheckedChangeProp,
+    onCheckedChange,
     readOnly = false,
     required = false,
     disabled: disabledProp = false,
@@ -158,7 +158,6 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
   } = useLabelableContext();
   const disabled = fieldDisabled || disabledProp;
   const name = fieldName ?? nameProp;
-  const onCheckedChange = useStableCallback(onCheckedChangeProp);
   const inputRef = React2.useRef(null);
   const handleInputRef = useMergedRefs(inputRef, externalInputRef, validation.inputRef);
   const switchRef = React2.useRef(null);
@@ -175,10 +174,7 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
     name: "Switch",
     state: "checked"
   });
-  useRegisterFieldControl(switchRef, {
-    id,
-    value: checked
-  });
+  useRegisterFieldControl(switchRef, id, checked);
   useIsoLayoutEffect(() => {
     if (inputRef.current) {
       setFilled(inputRef.current.checked);
@@ -230,7 +226,11 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
         return;
       }
       event.preventDefault();
-      inputRef.current?.dispatchEvent(new PointerEvent("click", {
+      const input = inputRef.current;
+      if (!input) {
+        return;
+      }
+      input.dispatchEvent(new (getWindow(input)).PointerEvent("click", {
         bubbles: true,
         shiftKey: event.shiftKey,
         ctrlKey: event.ctrlKey,
@@ -239,7 +239,7 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
       }));
     }
   };
-  const inputProps = React2.useMemo(() => mergeProps({
+  const inputProps = mergeProps({
     checked,
     disabled,
     form,
@@ -272,7 +272,7 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
     }
   }, validation.getInputValidationProps, value !== undefined ? {
     value
-  } : EMPTY_OBJECT), [checked, disabled, form, handleInputRef, hiddenInputId, name, onCheckedChange, readOnly, required, setCheckedState, validation, value]);
+  } : EMPTY_OBJECT);
   const state = React2.useMemo(() => ({
     ...fieldState,
     checked,
@@ -301,7 +301,7 @@ var SwitchRoot = /* @__PURE__ */ React2.forwardRef(function SwitchRoot2(componen
 });
 if (true)
   SwitchRoot.displayName = "SwitchRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/switch/thumb/SwitchThumb.js
+// node_modules/@base-ui/react/esm/switch/thumb/SwitchThumb.js
 import * as React3 from "react";
 "use client";
 var SwitchThumb = /* @__PURE__ */ React3.forwardRef(function SwitchThumb2(componentProps, forwardedRef) {
@@ -311,16 +311,9 @@ var SwitchThumb = /* @__PURE__ */ React3.forwardRef(function SwitchThumb2(compon
     style,
     ...elementProps
   } = componentProps;
-  const {
-    state: fieldState
-  } = useFieldRootContext();
   const state = useSwitchRootContext();
-  const extendedState = {
-    ...fieldState,
-    ...state
-  };
   return useRenderElement("span", componentProps, {
-    state: extendedState,
+    state,
     ref: forwardedRef,
     stateAttributesMapping,
     props: elementProps

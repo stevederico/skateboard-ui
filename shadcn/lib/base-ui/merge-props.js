@@ -1,4 +1,4 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
@@ -6,7 +6,7 @@ import {
   mergeClassNames,
   mergeProps,
   mergePropsN
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 export {
   mergePropsN,
   mergeProps,

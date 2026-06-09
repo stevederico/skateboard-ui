@@ -4,7 +4,8 @@
  * Vendor tailwind-merge as a single ESM file.
  *
  * Fetches the prebuilt ESM bundle from the npm registry at a pinned version
- * and writes it to ./shadcn/lib/tailwind-merge.js with attribution.
+ * and writes it to ./shadcn/lib/tailwind-merge.js with attribution, plus
+ * upstream's bundled type declarations to ./shadcn/lib/tailwind-merge.d.ts.
  *
  * Re-run when bumping the pinned version to track a new Tailwind release.
  *
@@ -19,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 const TM_VERSION = '3.5.0';
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const OUT_FILE = join(ROOT, 'shadcn/lib/tailwind-merge.js');
+const OUT_DTS = join(ROOT, 'shadcn/lib/tailwind-merge.d.ts');
 const TMP_DIR = '/tmp/tailwind-merge-vendor';
 
 function fetchTarball() {
@@ -46,6 +48,9 @@ ${license.split('\n').map(l => ` * ${l}`.trimEnd()).join('\n')}
 `;
   writeFileSync(OUT_FILE, header + bundle);
   console.log(`Wrote ${OUT_FILE} (${(bundle.length / 1024).toFixed(1)} KB)`);
+  const dts = readFileSync(join(TMP_DIR, 'package/dist/types.d.ts'), 'utf8');
+  writeFileSync(OUT_DTS, header + dts);
+  console.log(`Wrote ${OUT_DTS} (${(dts.length / 1024).toFixed(1)} KB)`);
   rmSync(TMP_DIR, { recursive: true, force: true });
 }
 

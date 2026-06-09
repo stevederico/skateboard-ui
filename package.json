@@ -1,138 +1,177 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "3.9.0",
+  "version": "3.10.0",
   "type": "module",
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
     "./Sidebar": {
-      "import": "./components/layout/Sidebar.jsx",
-      "default": "./components/layout/Sidebar.jsx"
+      "types": "./dist/components/layout/Sidebar.d.ts",
+      "import": "./dist/components/layout/Sidebar.js",
+      "default": "./dist/components/layout/Sidebar.js"
     },
     "./DynamicIcon": {
-      "import": "./components/core/DynamicIcon.jsx",
-      "default": "./components/core/DynamicIcon.jsx"
+      "types": "./dist/components/core/DynamicIcon.d.ts",
+      "import": "./dist/components/core/DynamicIcon.js",
+      "default": "./dist/components/core/DynamicIcon.js"
     },
     "./ErrorBoundary": {
-      "import": "./components/ErrorBoundary.jsx",
-      "default": "./components/ErrorBoundary.jsx"
+      "types": "./dist/components/ErrorBoundary.d.ts",
+      "import": "./dist/components/ErrorBoundary.js",
+      "default": "./dist/components/ErrorBoundary.js"
     },
     "./Header": {
-      "import": "./components/layout/Header.jsx",
-      "default": "./components/layout/Header.jsx"
+      "types": "./dist/components/layout/Header.d.ts",
+      "import": "./dist/components/layout/Header.js",
+      "default": "./dist/components/layout/Header.js"
     },
     "./LandingView": {
-      "import": "./components/views/LandingView.jsx",
-      "default": "./components/views/LandingView.jsx"
+      "types": "./dist/components/views/LandingView.d.ts",
+      "import": "./dist/components/views/LandingView.js",
+      "default": "./dist/components/views/LandingView.js"
     },
     "./Layout": {
-      "import": "./components/layout/Layout.jsx",
-      "default": "./components/layout/Layout.jsx"
+      "types": "./dist/components/layout/Layout.d.ts",
+      "import": "./dist/components/layout/Layout.js",
+      "default": "./dist/components/layout/Layout.js"
     },
     "./NotFound": {
-      "import": "./components/views/NotFound.jsx",
-      "default": "./components/views/NotFound.jsx"
+      "types": "./dist/components/views/NotFound.d.ts",
+      "import": "./dist/components/views/NotFound.js",
+      "default": "./dist/components/views/NotFound.js"
     },
     "./SettingsView": {
-      "import": "./components/views/SettingsView.jsx",
-      "default": "./components/views/SettingsView.jsx"
+      "types": "./dist/components/views/SettingsView.d.ts",
+      "import": "./dist/components/views/SettingsView.js",
+      "default": "./dist/components/views/SettingsView.js"
     },
     "./Sheet": {
-      "import": "./components/Sheet.jsx",
-      "default": "./components/Sheet.jsx"
+      "types": "./dist/components/Sheet.d.ts",
+      "import": "./dist/components/Sheet.js",
+      "default": "./dist/components/Sheet.js"
     },
     "./SignInView": {
-      "import": "./components/views/SignInView.jsx",
-      "default": "./components/views/SignInView.jsx"
+      "types": "./dist/components/views/SignInView.d.ts",
+      "import": "./dist/components/views/SignInView.js",
+      "default": "./dist/components/views/SignInView.js"
     },
     "./SignUpView": {
-      "import": "./components/views/SignUpView.jsx",
-      "default": "./components/views/SignUpView.jsx"
+      "types": "./dist/components/views/SignUpView.d.ts",
+      "import": "./dist/components/views/SignUpView.js",
+      "default": "./dist/components/views/SignUpView.js"
     },
     "./SignOutView": {
-      "import": "./components/views/SignOutView.jsx",
-      "default": "./components/views/SignOutView.jsx"
+      "types": "./dist/components/views/SignOutView.d.ts",
+      "import": "./dist/components/views/SignOutView.js",
+      "default": "./dist/components/views/SignOutView.js"
     },
     "./PaymentView": {
-      "import": "./components/views/PaymentView.jsx",
-      "default": "./components/views/PaymentView.jsx"
+      "types": "./dist/components/views/PaymentView.d.ts",
+      "import": "./dist/components/views/PaymentView.js",
+      "default": "./dist/components/views/PaymentView.js"
     },
     "./TabBar": {
-      "import": "./components/layout/TabBar.jsx",
-      "default": "./components/layout/TabBar.jsx"
+      "types": "./dist/components/layout/TabBar.d.ts",
+      "import": "./dist/components/layout/TabBar.js",
+      "default": "./dist/components/layout/TabBar.js"
     },
     "./TextView": {
-      "import": "./components/views/TextView.jsx",
-      "default": "./components/views/TextView.jsx"
+      "types": "./dist/components/views/TextView.d.ts",
+      "import": "./dist/components/views/TextView.js",
+      "default": "./dist/components/views/TextView.js"
     },
     "./ThemeProvider": {
-      "import": "./components/core/ThemeProvider.jsx",
-      "default": "./components/core/ThemeProvider.jsx"
+      "types": "./dist/components/core/ThemeProvider.d.ts",
+      "import": "./dist/components/core/ThemeProvider.js",
+      "default": "./dist/components/core/ThemeProvider.js"
     },
     "./ThemeToggle": {
-      "import": "./components/ThemeToggle.jsx",
-      "default": "./components/ThemeToggle.jsx"
+      "types": "./dist/components/ThemeToggle.d.ts",
+      "import": "./dist/components/ThemeToggle.js",
+      "default": "./dist/components/ThemeToggle.js"
     },
     "./UpgradeSheet": {
-      "import": "./components/UpgradeSheet.jsx",
-      "default": "./components/UpgradeSheet.jsx"
+      "types": "./dist/components/UpgradeSheet.d.ts",
+      "import": "./dist/components/UpgradeSheet.js",
+      "default": "./dist/components/UpgradeSheet.js"
     },
     "./Utilities": {
-      "import": "./components/core/Utilities.js",
-      "default": "./components/core/Utilities.js"
+      "types": "./dist/components/core/Utilities.d.ts",
+      "import": "./dist/components/core/Utilities.js",
+      "default": "./dist/components/core/Utilities.js"
     },
     "./ProtectedRoute": {
-      "import": "./components/ProtectedRoute.jsx",
-      "default": "./components/ProtectedRoute.jsx"
+      "types": "./dist/components/ProtectedRoute.d.ts",
+      "import": "./dist/components/ProtectedRoute.js",
+      "default": "./dist/components/ProtectedRoute.js"
     },
     "./styles.css": {
       "import": "./styles.css",
       "default": "./styles.css"
     },
     "./Context": {
-      "import": "./components/core/Context.jsx",
-      "default": "./components/core/Context.jsx"
+      "types": "./dist/components/core/Context.d.ts",
+      "import": "./dist/components/core/Context.js",
+      "default": "./dist/components/core/Context.js"
     },
     "./App": {
-      "import": "./App.jsx",
-      "default": "./App.jsx"
+      "types": "./dist/App.d.ts",
+      "import": "./dist/App.js",
+      "default": "./dist/App.js"
     },
     "./AuthOverlay": {
-      "import": "./components/AuthOverlay.jsx",
-      "default": "./components/AuthOverlay.jsx"
+      "types": "./dist/components/AuthOverlay.d.ts",
+      "import": "./dist/components/AuthOverlay.js",
+      "default": "./dist/components/AuthOverlay.js"
     },
     "./useAuthGate": {
-      "import": "./hooks/useAuthGate.js",
-      "default": "./hooks/useAuthGate.js"
+      "types": "./dist/hooks/useAuthGate.d.ts",
+      "import": "./dist/hooks/useAuthGate.js",
+      "default": "./dist/hooks/useAuthGate.js"
     },
     "./icons": {
-      "import": "./icons/index.js",
-      "default": "./icons/index.js"
+      "types": "./dist/icons/index.d.ts",
+      "import": "./dist/icons/index.js",
+      "default": "./dist/icons/index.js"
     },
-    "./icons/*": "./icons/*.jsx",
-    "./shadcn/ui/*": "./shadcn/ui/*.jsx",
+    "./icons/*": {
+      "types": "./dist/icons/*.d.ts",
+      "import": "./dist/icons/*.js",
+      "default": "./dist/icons/*.js"
+    },
+    "./shadcn/ui/*": {
+      "types": "./dist/shadcn/ui/*.d.ts",
+      "import": "./dist/shadcn/ui/*.js",
+      "default": "./dist/shadcn/ui/*.js"
+    },
     "./shadcn/lib/utils": {
-      "import": "./shadcn/lib/utils.js",
-      "default": "./shadcn/lib/utils.js"
+      "types": "./dist/shadcn/lib/utils.d.ts",
+      "import": "./dist/shadcn/lib/utils.js",
+      "default": "./dist/shadcn/lib/utils.js"
     },
     "./shadcn/hooks/use-mobile": {
-      "import": "./shadcn/hooks/use-mobile.js",
-      "default": "./shadcn/hooks/use-mobile.js"
+      "types": "./dist/shadcn/hooks/use-mobile.d.ts",
+      "import": "./dist/shadcn/hooks/use-mobile.js",
+      "default": "./dist/shadcn/hooks/use-mobile.js"
     }
   },
   "scripts": {
+    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.json && node scripts/copy-dist-assets.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run clean && npm run build",
     "prod": "npm publish"
   },
   "files": [
-    "App.jsx",
-    "index.js",
+    "dist",
     "styles.css",
-    "CHANGELOG.md",
-    "README.md",
-    "components",
-    "shadcn",
-    "hooks",
     "fonts",
-    "icons"
+    "CHANGELOG.md",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public",
@@ -149,5 +188,11 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.16",
+    "@types/react-dom": "19.2.3",
+    "dts-bundle-generator": "9.5.1",
+    "typescript": "5.9.3"
   }
 }

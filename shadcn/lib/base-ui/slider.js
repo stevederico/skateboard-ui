@@ -1,67 +1,61 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   getDefaultLabelId,
   resolveAriaLabelledBy
-} from "./_chunk-611pz5sm.js";
+} from "./_chunk-b5ya6xds.js";
 import {
   clamp
-} from "./_chunk-szcr6mhk.js";
+} from "./_chunk-yzr7eg4b.js";
 import {
   useIsHydrating
-} from "./_chunk-vjbnhhg1.js";
+} from "./_chunk-p0e2qacz.js";
 import {
   useCSPContext
-} from "./_chunk-ymj1dpqg.js";
+} from "./_chunk-watha94s.js";
 import {
   focusElementWithVisible,
   useLabel
-} from "./_chunk-fch5cba8.js";
+} from "./_chunk-ghn1tzt8.js";
 import {
   useLabelableId
-} from "./_chunk-k4mc2kan.js";
+} from "./_chunk-23rx7haq.js";
 import {
   formatNumber,
   valueToPercent
-} from "./_chunk-tmfmrzwe.js";
-import"./_chunk-w68yxg9d.js";
+} from "./_chunk-ffpjy0ta.js";
+import"./_chunk-vgkfmtbe.js";
 import {
   useFormContext,
   useRegisterFieldControl
-} from "./_chunk-97tas84n.js";
+} from "./_chunk-95tf2rxq.js";
 import {
   fieldValidityMapping,
   useFieldRootContext,
   useLabelableContext
-} from "./_chunk-kfz96xv1.js";
-import"./_chunk-ds8fnpjj.js";
+} from "./_chunk-8ctgmf06.js";
+import"./_chunk-dzvjwv25.js";
 import {
   useCompositeListItem
-} from "./_chunk-ek863ta9.js";
+} from "./_chunk-3enq1vat.js";
 import {
   CompositeList
-} from "./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
+} from "./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
 import {
   useDirection
-} from "./_chunk-wtw745qd.js";
+} from "./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
-import"./_chunk-aqwsk46c.js";
-import {
-  ownerDocument
-} from "./_chunk-xb7ph1ka.js";
+} from "./_chunk-9x63vfqj.js";
+import"./_chunk-1vw45v38.js";
 import {
   activeElement,
   contains,
   getTarget,
   matchesFocusVisible
-} from "./_chunk-atnkefgd.js";
-import {
-  useValueAsRef
-} from "./_chunk-drfb9kp2.js";
+} from "./_chunk-cgptgywc.js";
 import {
   ARROW_DOWN,
   ARROW_LEFT,
@@ -72,53 +66,59 @@ import {
   HOME,
   PAGE_DOWN,
   PAGE_UP
-} from "./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
+} from "./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
 import {
   useValueChanged
-} from "./_chunk-cwr896nf.js";
+} from "./_chunk-s5pwkz8v.js";
 import {
   visuallyHidden
-} from "./_chunk-hzgetm70.js";
+} from "./_chunk-dan0mva4.js";
 import {
   addEventListener
-} from "./_chunk-mvv30fkv.js";
+} from "./_chunk-ase0ydtt.js";
+import {
+  useValueAsRef
+} from "./_chunk-6kqramh9.js";
+import {
+  ownerDocument
+} from "./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   createGenericEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   useAnimationFrame
-} from "./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-71zm6zgv.js";
+} from "./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
+import"./_chunk-hm5h9vsk.js";
 import {
+  getWindow,
   isElement,
   isHTMLElement
-} from "./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   useMergedRefs,
   useRenderElement,
   warn
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export,
   mergeProps
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/index.parts.js
+// node_modules/@base-ui/react/esm/slider/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Value: () => SliderValue,
@@ -130,27 +130,27 @@ __export(exports_index_parts, {
   Control: () => SliderControl
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/root/SliderRoot.js
+// node_modules/@base-ui/react/esm/slider/root/SliderRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/internals/areArraysEqual.js
+// node_modules/@base-ui/react/esm/internals/areArraysEqual.js
 function areArraysEqual(array1, array2, itemComparer = (a, b) => a === b) {
   return array1.length === array2.length && array1.every((value, index) => itemComparer(value, array2[index]));
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/asc.js
+// node_modules/@base-ui/react/esm/slider/utils/asc.js
 function asc(a, b) {
   return a - b;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/replaceArrayItemAtIndex.js
+// node_modules/@base-ui/react/esm/slider/utils/replaceArrayItemAtIndex.js
 function replaceArrayItemAtIndex(array, index, newValue) {
   const output = array.slice();
   output[index] = newValue;
   return output.sort(asc);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/getSliderValue.js
+// node_modules/@base-ui/react/esm/slider/utils/getSliderValue.js
 function getSliderValue(valueInput, index, min, max, range, values) {
   let newValue = valueInput;
   newValue = clamp(newValue, min, max);
@@ -160,7 +160,7 @@ function getSliderValue(valueInput, index, min, max, range, values) {
   return newValue;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/validateMinimumDistance.js
+// node_modules/@base-ui/react/esm/slider/utils/validateMinimumDistance.js
 function validateMinimumDistance(values, step, minStepsBetweenValues) {
   if (!Array.isArray(values)) {
     return true;
@@ -175,7 +175,7 @@ function validateMinimumDistance(values, step, minStepsBetweenValues) {
   return Math.min(...distances) >= step * minStepsBetweenValues;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/root/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/slider/root/stateAttributesMapping.js
 var sliderStateAttributesMapping = {
   activeThumbIndex: () => null,
   max: () => null,
@@ -186,7 +186,7 @@ var sliderStateAttributesMapping = {
   ...fieldValidityMapping
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/root/SliderRootContext.js
+// node_modules/@base-ui/react/esm/slider/root/SliderRootContext.js
 import * as React from "react";
 "use client";
 var SliderRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -200,7 +200,7 @@ function useSliderRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/root/SliderRoot.js
+// node_modules/@base-ui/react/esm/slider/root/SliderRoot.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 function getSliderChangeEventReason(event) {
@@ -291,10 +291,7 @@ var SliderRoot = /* @__PURE__ */ React2.forwardRef(function SliderRoot2(componen
       setLastUsedThumbIndex(value);
     }
   });
-  useRegisterFieldControl(controlRef, {
-    id,
-    value: valueUnwrapped
-  });
+  useRegisterFieldControl(controlRef, id, valueUnwrapped);
   useValueChanged(valueUnwrapped, () => {
     clearErrors(name);
     if (shouldValidateOnChange()) {
@@ -450,7 +447,7 @@ var SliderRoot = /* @__PURE__ */ React2.forwardRef(function SliderRoot2(componen
 });
 if (true)
   SliderRoot.displayName = "SliderRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/label/SliderLabel.js
+// node_modules/@base-ui/react/esm/slider/label/SliderLabel.js
 import * as React3 from "react";
 "use client";
 var SliderLabel = /* @__PURE__ */ React3.forwardRef(function SliderLabel2(componentProps, forwardedRef) {
@@ -496,7 +493,7 @@ var SliderLabel = /* @__PURE__ */ React3.forwardRef(function SliderLabel2(compon
 });
 if (true)
   SliderLabel.displayName = "SliderLabel";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/value/SliderValue.js
+// node_modules/@base-ui/react/esm/slider/value/SliderValue.js
 import * as React4 from "react";
 "use client";
 var SliderValue = /* @__PURE__ */ React4.forwardRef(function SliderValue2(componentProps, forwardedRef) {
@@ -515,15 +512,13 @@ var SliderValue = /* @__PURE__ */ React4.forwardRef(function SliderValue2(compon
     formatOptionsRef,
     locale
   } = useSliderRootContext();
-  const outputFor = React4.useMemo(() => {
-    let htmlFor = "";
-    for (const thumbMetadata of thumbMap.values()) {
-      if (thumbMetadata?.inputId) {
-        htmlFor += `${thumbMetadata.inputId} `;
-      }
+  let htmlFor = "";
+  for (const thumbMetadata of thumbMap.values()) {
+    if (thumbMetadata?.inputId) {
+      htmlFor += `${thumbMetadata.inputId} `;
     }
-    return htmlFor.trim() === "" ? undefined : htmlFor.trim();
-  }, [thumbMap]);
+  }
+  const outputFor = htmlFor.trim() === "" ? undefined : htmlFor.trim();
   const formattedValues = React4.useMemo(() => {
     const arr = [];
     for (let i = 0;i < values.length; i += 1) {
@@ -531,13 +526,7 @@ var SliderValue = /* @__PURE__ */ React4.forwardRef(function SliderValue2(compon
     }
     return arr;
   }, [formatOptionsRef, locale, values]);
-  const defaultDisplayValue = React4.useMemo(() => {
-    const arr = [];
-    for (let i = 0;i < values.length; i += 1) {
-      arr.push(formattedValues[i] || values[i]);
-    }
-    return arr.join(" – ");
-  }, [values, formattedValues]);
+  const defaultDisplayValue = values.map((v, i) => formattedValues[i] || v).join(" – ");
   const element = useRenderElement("output", componentProps, {
     state,
     ref: forwardedRef,
@@ -552,10 +541,10 @@ var SliderValue = /* @__PURE__ */ React4.forwardRef(function SliderValue2(compon
 });
 if (true)
   SliderValue.displayName = "SliderValue";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/control/SliderControl.js
+// node_modules/@base-ui/react/esm/slider/control/SliderControl.js
 import * as React5 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/getMidpoint.js
+// node_modules/@base-ui/react/esm/slider/utils/getMidpoint.js
 function getMidpoint(element) {
   const rect = element.getBoundingClientRect();
   return {
@@ -564,7 +553,7 @@ function getMidpoint(element) {
   };
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/roundValueToStep.js
+// node_modules/@base-ui/react/esm/slider/utils/roundValueToStep.js
 function getDecimalPrecision(num) {
   if (num === 0) {
     return 0;
@@ -582,7 +571,7 @@ function roundValueToStep(value, step, min) {
   return Number(nearest.toFixed(Math.max(getDecimalPrecision(step), getDecimalPrecision(min))));
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/getPushedThumbValues.js
+// node_modules/@base-ui/react/esm/slider/utils/getPushedThumbValues.js
 function getPushedThumbValues({
   values,
   index,
@@ -629,7 +618,7 @@ function getPushedThumbValues({
   return nextValues;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/utils/resolveThumbCollision.js
+// node_modules/@base-ui/react/esm/slider/utils/resolveThumbCollision.js
 function resolveThumbCollision({
   behavior,
   values,
@@ -754,7 +743,7 @@ function resolveThumbCollision({
   }
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/control/SliderControl.js
+// node_modules/@base-ui/react/esm/slider/control/SliderControl.js
 "use client";
 var INTENTIONAL_DRAG_COUNT_THRESHOLD = 2;
 function getControlOffset(styles, vertical) {
@@ -834,16 +823,14 @@ var SliderControl = /* @__PURE__ */ React5.forwardRef(function SliderControl2(co
   const stylesRef = React5.useRef(null);
   const setStylesRef = useStableCallback((element2) => {
     if (element2 && stylesRef.current == null) {
-      if (stylesRef.current == null) {
-        stylesRef.current = getComputedStyle(element2);
-      }
+      stylesRef.current = getWindow(element2).getComputedStyle(element2);
     }
   });
   const touchIdRef = React5.useRef(null);
   const moveCountRef = React5.useRef(0);
   const insetThumbOffsetRef = React5.useRef(0);
   const latestValuesRef = useValueAsRef(values);
-  const updatePressedThumb = useStableCallback((nextIndex) => {
+  function updatePressedThumb(nextIndex) {
     if (pressedThumbIndexRef.current !== nextIndex) {
       pressedThumbIndexRef.current = nextIndex;
     }
@@ -854,8 +841,8 @@ var SliderControl = /* @__PURE__ */ React5.forwardRef(function SliderControl2(co
       return;
     }
     pressedInputRef.current = thumbElement.querySelector('input[type="range"]');
-  });
-  const getFingerState = useStableCallback((fingerCoords) => {
+  }
+  function getFingerState(fingerCoords) {
     const control = controlRef.current;
     if (!control) {
       return null;
@@ -907,8 +894,8 @@ var SliderControl = /* @__PURE__ */ React5.forwardRef(function SliderControl2(co
       pressedThumbIndexRef.current = collisionResult.thumbIndex;
     }
     return collisionResult;
-  });
-  const startPressing = useStableCallback((fingerCoords) => {
+  }
+  function startPressing(fingerCoords) {
     pressedValuesRef.current = range ? values.slice() : null;
     latestValuesRef.current = values;
     const pressedThumbIndex = pressedThumbIndexRef.current;
@@ -948,8 +935,8 @@ var SliderControl = /* @__PURE__ */ React5.forwardRef(function SliderControl2(co
         insetThumbOffsetRef.current = thumbRect[side] / 2;
       }
     }
-  });
-  const focusThumb = useStableCallback((thumbIndex) => {
+  }
+  function focusThumb(thumbIndex) {
     const input = thumbRefs.current?.[thumbIndex]?.querySelector('input[type="range"]');
     if (!input) {
       return;
@@ -958,7 +945,7 @@ var SliderControl = /* @__PURE__ */ React5.forwardRef(function SliderControl2(co
       preventScroll: true,
       focusVisible: false
     });
-  });
+  }
   const handleTouchMove = useStableCallback((nativeEvent) => {
     const fingerCoords = getFingerCoords(nativeEvent, touchIdRef);
     if (fingerCoords == null) {
@@ -1123,7 +1110,7 @@ var SliderControl = /* @__PURE__ */ React5.forwardRef(function SliderControl2(co
 });
 if (true)
   SliderControl.displayName = "SliderControl";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/track/SliderTrack.js
+// node_modules/@base-ui/react/esm/slider/track/SliderTrack.js
 import * as React6 from "react";
 "use client";
 var SliderTrack = /* @__PURE__ */ React6.forwardRef(function SliderTrack2(componentProps, forwardedRef) {
@@ -1150,10 +1137,10 @@ var SliderTrack = /* @__PURE__ */ React6.forwardRef(function SliderTrack2(compon
 });
 if (true)
   SliderTrack.displayName = "SliderTrack";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/thumb/SliderThumb.js
+// node_modules/@base-ui/react/esm/slider/thumb/SliderThumb.js
 import * as React7 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/thumb/SliderThumbDataAttributes.js
+// node_modules/@base-ui/react/esm/slider/thumb/SliderThumbDataAttributes.js
 var SliderThumbDataAttributes = /* @__PURE__ */ function(SliderThumbDataAttributes2) {
   SliderThumbDataAttributes2["index"] = "data-index";
   SliderThumbDataAttributes2["dragging"] = "data-dragging";
@@ -1167,13 +1154,13 @@ var SliderThumbDataAttributes = /* @__PURE__ */ function(SliderThumbDataAttribut
   return SliderThumbDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/thumb/prehydrationScript.min.js
+// node_modules/@base-ui/react/esm/slider/thumb/prehydrationScript.min.js
 var script = '!function(){const t=document.currentScript?.parentElement;if(!t)return;const e=t.closest("[data-base-ui-slider-control]");if(!e)return;const r=e.querySelector("[data-base-ui-slider-indicator]"),i=e.getBoundingClientRect(),n="vertical"===e.getAttribute("data-orientation")?"height":"width",o=e.querySelectorAll(\'input[type="range"]\'),l=o.length>1,s=o.length-1;let a=null,u=null;for(let t=0;t<o.length;t+=1){const e=o[t],y=parseFloat(e.getAttribute("value")??"");if(Number.isNaN(y))return;const c=e.parentElement;if(!c)return;const p=parseFloat(e.getAttribute("max")??"100"),g=parseFloat(e.getAttribute("min")??"0"),b=c?.getBoundingClientRect(),d=i[n]-b[n],m=100*(y-g)/(p-g),v=(b[n]/2+d*m/100)/i[n]*100;c.style.setProperty("--position",`${v}%`),Number.isFinite(v)&&(c.style.removeProperty("visibility"),r&&(0===t?(a=v,r.style.setProperty("--start-position",`${v}%`),l||r.style.removeProperty("visibility")):t===s&&(u=v-(a??0),r.style.setProperty("--end-position",`${v}%`),r.style.setProperty("--relative-size",`${u}%`),r.style.removeProperty("visibility"))))}}();';
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/thumb/SliderThumb.js
+// node_modules/@base-ui/react/esm/slider/thumb/SliderThumb.js
 import { jsx as _jsx2, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
-var ALL_KEYS = new Set([ARROW_UP, ARROW_DOWN, ARROW_LEFT, ARROW_RIGHT, HOME, END, PAGE_UP, PAGE_DOWN]);
+var ALL_KEYS = new Set([...COMPOSITE_KEYS, PAGE_UP, PAGE_DOWN]);
 function getDefaultAriaValueText(values, index, format, locale) {
   if (index < 0) {
     return;
@@ -1307,7 +1294,7 @@ var SliderThumb = /* @__PURE__ */ React7.forwardRef(function SliderThumb2(compon
     }
   }, [getInsetPosition, inset, thumbValuePercent]);
   useIsoLayoutEffect(() => {
-    if (!inset || typeof ResizeObserver !== "function") {
+    if (!inset) {
       return;
     }
     const control = controlRef.current;
@@ -1315,39 +1302,32 @@ var SliderThumb = /* @__PURE__ */ React7.forwardRef(function SliderThumb2(compon
     if (!control || !thumb) {
       return;
     }
-    const resizeObserver = new ResizeObserver(getInsetPosition);
+    const ResizeObserverCtor = getWindow(control).ResizeObserver;
+    if (typeof ResizeObserverCtor !== "function") {
+      return;
+    }
+    const resizeObserver = new ResizeObserverCtor(getInsetPosition);
     resizeObserver.observe(control);
     resizeObserver.observe(thumb);
     return () => {
       resizeObserver.disconnect();
     };
   }, [controlRef, getInsetPosition, inset]);
-  const getThumbStyle = React7.useCallback(() => {
-    const startEdge = vertical ? "bottom" : "insetInlineStart";
-    const crossOffsetProperty = vertical ? "left" : "top";
-    let zIndex;
-    if (range) {
-      if (activeIndex === index) {
-        zIndex = 2;
-      } else if (safeLastUsedThumbIndex === index) {
-        zIndex = 1;
-      }
-    } else if (activeIndex === index) {
+  const startEdge = vertical ? "bottom" : "insetInlineStart";
+  const crossOffsetProperty = vertical ? "left" : "top";
+  let zIndex;
+  if (range) {
+    if (activeIndex === index) {
+      zIndex = 2;
+    } else if (safeLastUsedThumbIndex === index) {
       zIndex = 1;
     }
-    if (!inset) {
-      if (!Number.isFinite(thumbValuePercent)) {
-        return visuallyHidden;
-      }
-      return {
-        position: "absolute",
-        [startEdge]: `${thumbValuePercent}%`,
-        [crossOffsetProperty]: "50%",
-        translate: `${(vertical || !rtl ? -1 : 1) * 50}% ${(vertical ? 1 : -1) * 50}%`,
-        zIndex
-      };
-    }
-    return {
+  } else if (activeIndex === index) {
+    zIndex = 1;
+  }
+  let thumbStyle;
+  if (inset) {
+    thumbStyle = {
       ["--position"]: `${positionPercent ?? 0}%`,
       visibility: renderBeforeHydration && isHydrating || positionPercent === undefined ? "hidden" : undefined,
       position: "absolute",
@@ -1356,7 +1336,15 @@ var SliderThumb = /* @__PURE__ */ React7.forwardRef(function SliderThumb2(compon
       translate: `${(vertical || !rtl ? -1 : 1) * 50}% ${(vertical ? 1 : -1) * 50}%`,
       zIndex
     };
-  }, [activeIndex, index, inset, isHydrating, positionPercent, range, renderBeforeHydration, rtl, safeLastUsedThumbIndex, thumbValuePercent, vertical]);
+  } else {
+    thumbStyle = !Number.isFinite(thumbValuePercent) ? visuallyHidden : {
+      position: "absolute",
+      [startEdge]: `${thumbValuePercent}%`,
+      [crossOffsetProperty]: "50%",
+      translate: `${(vertical || !rtl ? -1 : 1) * 50}% ${(vertical ? 1 : -1) * 50}%`,
+      zIndex
+    };
+  }
   let cssWritingMode;
   if (orientation === "vertical") {
     cssWritingMode = rtl ? "vertical-rl" : "vertical-lr";
@@ -1504,7 +1492,7 @@ var SliderThumb = /* @__PURE__ */ React7.forwardRef(function SliderThumb2(compon
           pressedInputRef.current = inputRef.current;
         }
       },
-      style: getThumbStyle(),
+      style: thumbStyle,
       suppressHydrationWarning: renderBeforeHydration || undefined
     }, elementProps],
     stateAttributesMapping: sliderStateAttributesMapping
@@ -1513,7 +1501,7 @@ var SliderThumb = /* @__PURE__ */ React7.forwardRef(function SliderThumb2(compon
 });
 if (true)
   SliderThumb.displayName = "SliderThumb";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/slider/indicator/SliderIndicator.js
+// node_modules/@base-ui/react/esm/slider/indicator/SliderIndicator.js
 import * as React8 from "react";
 "use client";
 function getInsetStyles(vertical, range, start, end, renderBeforeHydration, hydrating) {

@@ -1,90 +1,89 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useIsHydrating
-} from "./_chunk-vjbnhhg1.js";
+} from "./_chunk-p0e2qacz.js";
 import {
   useCSPContext
-} from "./_chunk-ymj1dpqg.js";
+} from "./_chunk-watha94s.js";
 import {
   CompositeRoot
-} from "./_chunk-0h5sskyw.js";
+} from "./_chunk-cdj8cpx5.js";
 import {
   ACTIVE_COMPOSITE_ITEM
-} from "./_chunk-r0vsdknk.js";
-import"./_chunk-ds8fnpjj.js";
+} from "./_chunk-5tt5hk59.js";
+import"./_chunk-dzvjwv25.js";
 import {
   useCompositeItem
-} from "./_chunk-b5jsqt97.js";
+} from "./_chunk-j3qkyd10.js";
 import {
   getCssDimensions
-} from "./_chunk-xfagb0fq.js";
+} from "./_chunk-xcqbtm2f.js";
 import {
   useCompositeListItem
-} from "./_chunk-ek863ta9.js";
-import"./_chunk-vdc01ss3.js";
+} from "./_chunk-3enq1vat.js";
+import"./_chunk-26cc610z.js";
 import {
   CompositeList
-} from "./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   inertValue
-} from "./_chunk-9nyxkvte.js";
-import"./_chunk-aqwsk46c.js";
-import {
-  ownerDocument
-} from "./_chunk-xb7ph1ka.js";
+} from "./_chunk-3cpd1vjz.js";
+import"./_chunk-1vw45v38.js";
 import {
   activeElement,
   contains
-} from "./_chunk-atnkefgd.js";
-import"./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-f5d01bp9.js";
+} from "./_chunk-cgptgywc.js";
+import"./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import"./_chunk-x11e1k9r.js";
+import {
+  ownerDocument
+} from "./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   TransitionStatusDataAttributes,
   transitionStatusMapping,
   useOpenChangeComplete,
   useTransitionStatus
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   EMPTY_ARRAY,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/index.parts.js
+// node_modules/@base-ui/react/esm/tabs/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Tab: () => TabsTab,
@@ -94,10 +93,10 @@ __export(exports_index_parts, {
   Indicator: () => TabsIndicator
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/root/TabsRoot.js
+// node_modules/@base-ui/react/esm/tabs/root/TabsRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/root/TabsRootContext.js
+// node_modules/@base-ui/react/esm/tabs/root/TabsRootContext.js
 import * as React from "react";
 "use client";
 var TabsRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -111,21 +110,21 @@ function useTabsRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/root/TabsRootDataAttributes.js
+// node_modules/@base-ui/react/esm/tabs/root/TabsRootDataAttributes.js
 var TabsRootDataAttributes = /* @__PURE__ */ function(TabsRootDataAttributes2) {
   TabsRootDataAttributes2["activationDirection"] = "data-activation-direction";
   TabsRootDataAttributes2["orientation"] = "data-orientation";
   return TabsRootDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/root/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/tabs/root/stateAttributesMapping.js
 var tabsStateAttributesMapping = {
   tabActivationDirection: (dir) => ({
     [TabsRootDataAttributes.activationDirection]: dir
   })
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/root/TabsRoot.js
+// node_modules/@base-ui/react/esm/tabs/root/TabsRoot.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var TabsRoot = /* @__PURE__ */ React2.forwardRef(function TabsRoot2(componentProps, forwardedRef) {
@@ -139,7 +138,7 @@ var TabsRoot = /* @__PURE__ */ React2.forwardRef(function TabsRoot2(componentPro
     style,
     ...elementProps
   } = componentProps;
-  const hasExplicitDefaultValueProp = Object.hasOwn(componentProps, "defaultValue");
+  const hasExplicitDefaultValueProp = componentProps.defaultValue !== undefined;
   const tabPanelRefs = React2.useRef([]);
   const [mountedTabPanels, setMountedTabPanels] = React2.useState(() => new Map);
   const [value, setValue] = useControlled({
@@ -194,6 +193,11 @@ var TabsRoot = /* @__PURE__ */ React2.forwardRef(function TabsRoot2(componentPro
       return;
     }
     setValue(newValue);
+  });
+  const notifyAutomaticValueChange = useStableCallback((nextValue, reason) => {
+    onValueChangeProp?.(nextValue, createChangeEventDetails(reason, undefined, undefined, {
+      activationDirection: "none"
+    }));
   });
   const registerMountedTabPanel = useStableCallback((panelValue, panelId) => {
     setMountedTabPanels((prev) => {
@@ -254,34 +258,64 @@ var TabsRoot = /* @__PURE__ */ React2.forwardRef(function TabsRoot2(componentPro
     }
     return;
   }, [tabMap]);
+  const shouldNotifyInitialValueChangeRef = React2.useRef(!hasExplicitDefaultValueProp);
+  const shouldHonorDisabledDefaultValueRef = React2.useRef(hasExplicitDefaultValueProp);
+  const didRegisterTabsRef = React2.useRef(false);
   useIsoLayoutEffect(() => {
-    if (isControlled || tabMap.size === 0) {
+    if (isControlled) {
       return;
     }
+    function commitAutomaticValueChange(fallbackValue, fallbackReason) {
+      setValue(fallbackValue);
+      setActivationDirectionState((prev) => {
+        if (prev.previousValue === fallbackValue && prev.tabActivationDirection === "none") {
+          return prev;
+        }
+        return {
+          previousValue: fallbackValue,
+          tabActivationDirection: "none"
+        };
+      });
+      notifyAutomaticValueChange(fallbackValue, fallbackReason);
+      shouldNotifyInitialValueChangeRef.current = false;
+    }
+    if (tabMap.size === 0) {
+      if (!didRegisterTabsRef.current || value === null) {
+        return;
+      }
+      commitAutomaticValueChange(null, exports_reason_parts.missing);
+      return;
+    }
+    didRegisterTabsRef.current = true;
     const selectionIsDisabled = selectedTabMetadata?.disabled;
     const selectionIsMissing = selectedTabMetadata == null && value !== null;
-    const shouldHonorExplicitDefaultSelection = hasExplicitDefaultValueProp && selectionIsDisabled && value === defaultValueProp;
-    if (shouldHonorExplicitDefaultSelection) {
+    if (!selectionIsDisabled && value === defaultValueProp) {
+      shouldHonorDisabledDefaultValueRef.current = false;
+    }
+    if (shouldHonorDisabledDefaultValueRef.current && selectionIsDisabled && value === defaultValueProp) {
       return;
     }
-    if (!selectionIsDisabled && !selectionIsMissing) {
-      return;
-    }
-    const fallbackValue = firstEnabledTabValue ?? null;
-    if (value === fallbackValue) {
-      return;
-    }
-    setValue(fallbackValue);
-    setActivationDirectionState((prev) => {
-      if (prev.tabActivationDirection === "none") {
-        return prev;
+    const shouldNotifyInitialValueChange = shouldNotifyInitialValueChangeRef.current;
+    if (selectionIsDisabled || selectionIsMissing) {
+      const fallbackValue = firstEnabledTabValue ?? null;
+      if (value === fallbackValue) {
+        shouldNotifyInitialValueChangeRef.current = false;
+        return;
       }
-      return {
-        ...prev,
-        tabActivationDirection: "none"
-      };
-    });
-  }, [defaultValueProp, firstEnabledTabValue, hasExplicitDefaultValueProp, isControlled, selectedTabMetadata, setValue, tabMap, value]);
+      let fallbackReason = exports_reason_parts.missing;
+      if (shouldNotifyInitialValueChange) {
+        fallbackReason = exports_reason_parts.initial;
+      } else if (selectionIsDisabled) {
+        fallbackReason = exports_reason_parts.disabled;
+      }
+      commitAutomaticValueChange(fallbackValue, fallbackReason);
+      return;
+    }
+    if (shouldNotifyInitialValueChange && selectedTabMetadata != null) {
+      notifyAutomaticValueChange(value, exports_reason_parts.initial);
+      shouldNotifyInitialValueChangeRef.current = false;
+    }
+  }, [defaultValueProp, firstEnabledTabValue, isControlled, notifyAutomaticValueChange, selectedTabMetadata, setValue, tabMap, value]);
   const state = {
     orientation,
     tabActivationDirection
@@ -351,10 +385,10 @@ function computeActivationDirection(oldValue, newValue, orientation, tabMap) {
   }
   return "none";
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/tab/TabsTab.js
+// node_modules/@base-ui/react/esm/tabs/tab/TabsTab.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/list/TabsListContext.js
+// node_modules/@base-ui/react/esm/tabs/list/TabsListContext.js
 import * as React3 from "react";
 "use client";
 var TabsListContext = /* @__PURE__ */ React3.createContext(undefined);
@@ -368,7 +402,7 @@ function useTabsListContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/tab/TabsTab.js
+// node_modules/@base-ui/react/esm/tabs/tab/TabsTab.js
 "use client";
 var TabsTab = /* @__PURE__ */ React4.forwardRef(function TabsTab2(componentProps, forwardedRef) {
   const {
@@ -514,10 +548,10 @@ var TabsTab = /* @__PURE__ */ React4.forwardRef(function TabsTab2(componentProps
 });
 if (true)
   TabsTab.displayName = "TabsTab";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/indicator/TabsIndicator.js
+// node_modules/@base-ui/react/esm/tabs/indicator/TabsIndicator.js
 import * as React6 from "react";
 
-// node_modules/.deno/@base-ui+utils@0.2.8/node_modules/@base-ui/utils/esm/useForcedRerendering.js
+// node_modules/@base-ui/utils/esm/useForcedRerendering.js
 import * as React5 from "react";
 "use client";
 function useForcedRerendering() {
@@ -527,10 +561,10 @@ function useForcedRerendering() {
   }, []);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/indicator/prehydrationScript.min.js
+// node_modules/@base-ui/react/esm/tabs/indicator/prehydrationScript.min.js
 var script = '!function(){const t=document.currentScript.previousElementSibling;if(!t)return;const e=t.closest(\'[role="tablist"]\');if(!e)return;const i=e.querySelector("[data-active]");if(!i)return;if(0===i.offsetWidth||0===e.offsetWidth)return;let o=0,n=0,h=0,l=0,r=0,f=0;function s(t){const e=getComputedStyle(t);let i=parseFloat(e.width)||0,o=parseFloat(e.height)||0;return(Math.round(i)!==t.offsetWidth||Math.round(o)!==t.offsetHeight)&&(i=t.offsetWidth,o=t.offsetHeight),{width:i,height:o}}if(null!=i&&null!=e){const{width:t,height:c}=s(i),{width:u,height:d}=s(e),a=i.getBoundingClientRect(),g=e.getBoundingClientRect(),p=u>0?g.width/u:1,b=d>0?g.height/d:1;if(Math.abs(p)>Number.EPSILON&&Math.abs(b)>Number.EPSILON){const t=a.left-g.left,i=a.top-g.top;o=t/p+e.scrollLeft-e.clientLeft,h=i/b+e.scrollTop-e.clientTop}else o=i.offsetLeft,h=i.offsetTop;r=t,f=c,n=e.scrollWidth-o-r,l=e.scrollHeight-h-f}function c(e,i){t.style.setProperty(`--active-tab-${e}`,`${i}px`)}c("left",o),c("right",n),c("top",h),c("bottom",l),c("width",r),c("height",f),r>0&&f>0&&t.removeAttribute("hidden")}();';
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/indicator/TabsIndicatorCssVars.js
+// node_modules/@base-ui/react/esm/tabs/indicator/TabsIndicatorCssVars.js
 var TabsIndicatorCssVars = /* @__PURE__ */ function(TabsIndicatorCssVars2) {
   TabsIndicatorCssVars2["activeTabLeft"] = "--active-tab-left";
   TabsIndicatorCssVars2["activeTabRight"] = "--active-tab-right";
@@ -541,7 +575,7 @@ var TabsIndicatorCssVars = /* @__PURE__ */ function(TabsIndicatorCssVars2) {
   return TabsIndicatorCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/indicator/TabsIndicator.js
+// node_modules/@base-ui/react/esm/tabs/indicator/TabsIndicator.js
 import { jsx as _jsx2, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 var stateAttributesMapping = {
@@ -549,7 +583,7 @@ var stateAttributesMapping = {
   activeTabPosition: () => null,
   activeTabSize: () => null
 };
-var TabsIndicator = /* @__PURE__ */ React6.forwardRef(function TabIndicator(componentProps, forwardedRef) {
+var TabsIndicator = /* @__PURE__ */ React6.forwardRef(function TabsIndicator2(componentProps, forwardedRef) {
   const {
     className,
     render,
@@ -614,29 +648,24 @@ var TabsIndicator = /* @__PURE__ */ React6.forwardRef(function TabIndicator(comp
       bottom = tabsListElement.scrollHeight - top - height;
     }
   }
-  const activeTabPosition = React6.useMemo(() => isTabSelected ? {
+  const activeTabPosition = isTabSelected ? {
     left,
     right,
     top,
     bottom
-  } : null, [left, right, top, bottom, isTabSelected]);
-  const activeTabSize = React6.useMemo(() => isTabSelected ? {
+  } : null;
+  const activeTabSize = isTabSelected ? {
     width,
     height
-  } : null, [width, height, isTabSelected]);
-  const style = React6.useMemo(() => {
-    if (!isTabSelected) {
-      return;
-    }
-    return {
-      [TabsIndicatorCssVars.activeTabLeft]: `${left}px`,
-      [TabsIndicatorCssVars.activeTabRight]: `${right}px`,
-      [TabsIndicatorCssVars.activeTabTop]: `${top}px`,
-      [TabsIndicatorCssVars.activeTabBottom]: `${bottom}px`,
-      [TabsIndicatorCssVars.activeTabWidth]: `${width}px`,
-      [TabsIndicatorCssVars.activeTabHeight]: `${height}px`
-    };
-  }, [left, right, top, bottom, width, height, isTabSelected]);
+  } : null;
+  const style = isTabSelected ? {
+    [TabsIndicatorCssVars.activeTabLeft]: `${left}px`,
+    [TabsIndicatorCssVars.activeTabRight]: `${right}px`,
+    [TabsIndicatorCssVars.activeTabTop]: `${top}px`,
+    [TabsIndicatorCssVars.activeTabBottom]: `${bottom}px`,
+    [TabsIndicatorCssVars.activeTabWidth]: `${width}px`,
+    [TabsIndicatorCssVars.activeTabHeight]: `${height}px`
+  } : undefined;
   const displayIndicator = isTabSelected && width > 0 && height > 0;
   const state = {
     orientation,
@@ -671,10 +700,10 @@ var TabsIndicator = /* @__PURE__ */ React6.forwardRef(function TabIndicator(comp
 });
 if (true)
   TabsIndicator.displayName = "TabsIndicator";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/panel/TabsPanel.js
+// node_modules/@base-ui/react/esm/tabs/panel/TabsPanel.js
 import * as React7 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/panel/TabsPanelDataAttributes.js
+// node_modules/@base-ui/react/esm/tabs/panel/TabsPanelDataAttributes.js
 var TabsPanelDataAttributes = function(TabsPanelDataAttributes2) {
   TabsPanelDataAttributes2["index"] = "data-index";
   TabsPanelDataAttributes2["activationDirection"] = "data-activation-direction";
@@ -685,13 +714,13 @@ var TabsPanelDataAttributes = function(TabsPanelDataAttributes2) {
   return TabsPanelDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/panel/TabsPanel.js
+// node_modules/@base-ui/react/esm/tabs/panel/TabsPanel.js
 "use client";
 var stateAttributesMapping2 = {
   ...tabsStateAttributesMapping,
   ...transitionStatusMapping
 };
-var TabsPanel = /* @__PURE__ */ React7.forwardRef(function TabPanel(componentProps, forwardedRef) {
+var TabsPanel = /* @__PURE__ */ React7.forwardRef(function TabsPanel2(componentProps, forwardedRef) {
   const {
     className,
     value,
@@ -777,7 +806,7 @@ var TabsPanel = /* @__PURE__ */ React7.forwardRef(function TabPanel(componentPro
 });
 if (true)
   TabsPanel.displayName = "TabsPanel";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/tabs/list/TabsList.js
+// node_modules/@base-ui/react/esm/tabs/list/TabsList.js
 import * as React8 from "react";
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
@@ -802,20 +831,14 @@ var TabsList = /* @__PURE__ */ React8.forwardRef(function TabsList2(componentPro
   const indicatorUpdateListenersRef = React8.useRef(new Set);
   const tabResizeObserverElementsRef = React8.useRef(new Set);
   const resizeObserverRef = React8.useRef(null);
-  const notifyIndicatorUpdateListeners = useStableCallback(() => {
-    indicatorUpdateListenersRef.current.forEach((listener) => {
-      listener();
-    });
-  });
   React8.useEffect(() => {
     if (typeof ResizeObserver === "undefined") {
       return;
     }
     const resizeObserver = new ResizeObserver(() => {
-      if (!indicatorUpdateListenersRef.current.size) {
-        return;
-      }
-      notifyIndicatorUpdateListeners();
+      indicatorUpdateListenersRef.current.forEach((listener) => {
+        listener();
+      });
     });
     resizeObserverRef.current = resizeObserver;
     if (tabsListElement) {
@@ -828,7 +851,7 @@ var TabsList = /* @__PURE__ */ React8.forwardRef(function TabsList2(componentPro
       resizeObserver.disconnect();
       resizeObserverRef.current = null;
     };
-  }, [tabsListElement, notifyIndicatorUpdateListeners]);
+  }, [tabsListElement]);
   const registerIndicatorUpdateListener = useStableCallback((listener) => {
     indicatorUpdateListenersRef.current.add(listener);
     return () => {

@@ -1,0 +1,54 @@
+import { getState } from "../core/Context.js";
+import { Card, CardContent } from '../../shadcn/ui/card.js';
+import { ScrollArea } from '../../shadcn/ui/scroll-area.js';
+import { cn } from '../../shadcn/lib/utils.js';
+
+/**
+ * Legal/text document viewer.
+ *
+ * Renders a plain-text document with placeholder replacement for
+ * _COMPANY_, _WEBSITE_, and _EMAIL_ using values from constants.
+ *
+ * @param {Object} props
+ * @param {string} props.details - Raw text content with optional placeholders
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Formatted text page
+ *
+ * @example
+ * import TextView from '@stevederico/skateboard-ui/TextView';
+ *
+ * <Route path="/terms" element={<TextView details={constants.termsOfService} />} />
+ */
+export interface TextViewProps {
+  details: string;
+  className?: string;
+  [key: string]: any;
+}
+
+export default function TextView({ details, className, ...props }: TextViewProps) {
+  const { state } = getState();
+  const constants = state.constants;
+
+  const replacePlaceholders = (text: string) => {
+    return text
+      .replace(/_COMPANY_/g, constants.companyName)
+      .replace(/_WEBSITE_/g, constants.companyWebsite)
+      .replace(/_EMAIL_/g, constants.companyEmail);
+  };
+
+  const formattedText = replacePlaceholders(details);
+
+  return (
+    <ScrollArea className={cn("max-h-screen", className)} {...props}>
+      <div className="p-4">
+        <Card>
+          <CardContent>
+            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+              {formattedText}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </ScrollArea>
+  );
+}

@@ -1,33 +1,33 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
-import"./_chunk-ds8fnpjj.js";
+import"./_chunk-dzvjwv25.js";
 import {
   useTimeout
-} from "./_chunk-7v1t86x1.js";
+} from "./_chunk-b6dkjkbw.js";
 import {
   transitionStatusMapping,
   useOpenChangeComplete,
   useTransitionStatus
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   NOOP,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/index.parts.js
+// node_modules/@base-ui/react/esm/avatar/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Root: () => AvatarRoot,
@@ -35,10 +35,10 @@ __export(exports_index_parts, {
   Fallback: () => AvatarFallback
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/root/AvatarRoot.js
+// node_modules/@base-ui/react/esm/avatar/root/AvatarRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/root/AvatarRootContext.js
+// node_modules/@base-ui/react/esm/avatar/root/AvatarRootContext.js
 import * as React from "react";
 "use client";
 var AvatarRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -52,12 +52,12 @@ function useAvatarRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/root/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/avatar/root/stateAttributesMapping.js
 var avatarStateAttributesMapping = {
   imageLoadingStatus: () => null
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/root/AvatarRoot.js
+// node_modules/@base-ui/react/esm/avatar/root/AvatarRoot.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var AvatarRoot = /* @__PURE__ */ React2.forwardRef(function AvatarRoot2(componentProps, forwardedRef) {
@@ -88,10 +88,10 @@ var AvatarRoot = /* @__PURE__ */ React2.forwardRef(function AvatarRoot2(componen
 });
 if (true)
   AvatarRoot.displayName = "AvatarRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/image/AvatarImage.js
+// node_modules/@base-ui/react/esm/avatar/image/AvatarImage.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/image/useImageLoadingStatus.js
+// node_modules/@base-ui/react/esm/avatar/image/useImageLoadingStatus.js
 import * as React3 from "react";
 "use client";
 function useImageLoadingStatus(src, {
@@ -130,7 +130,7 @@ function useImageLoadingStatus(src, {
   return loadingStatus;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/image/AvatarImage.js
+// node_modules/@base-ui/react/esm/avatar/image/AvatarImage.js
 "use client";
 var stateAttributesMapping = {
   ...avatarStateAttributesMapping,
@@ -167,10 +167,6 @@ var AvatarImage = /* @__PURE__ */ React4.forwardRef(function AvatarImage2(compon
       handleLoadingStatusChange(imageLoadingStatus);
     }
   }, [imageLoadingStatus, handleLoadingStatusChange]);
-  const state = {
-    imageLoadingStatus,
-    transitionStatus
-  };
   useOpenChangeComplete({
     open: isVisible,
     ref: imageRef,
@@ -180,6 +176,10 @@ var AvatarImage = /* @__PURE__ */ React4.forwardRef(function AvatarImage2(compon
       }
     }
   });
+  const state = {
+    imageLoadingStatus,
+    transitionStatus
+  };
   const element = useRenderElement("img", componentProps, {
     state,
     ref: [forwardedRef, imageRef],
@@ -194,7 +194,7 @@ var AvatarImage = /* @__PURE__ */ React4.forwardRef(function AvatarImage2(compon
 });
 if (true)
   AvatarImage.displayName = "AvatarImage";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/avatar/fallback/AvatarFallback.js
+// node_modules/@base-ui/react/esm/avatar/fallback/AvatarFallback.js
 import * as React5 from "react";
 "use client";
 var AvatarFallback = /* @__PURE__ */ React5.forwardRef(function AvatarFallback2(componentProps, forwardedRef) {

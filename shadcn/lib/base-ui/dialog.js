@@ -1,4 +1,4 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
@@ -8,50 +8,50 @@ import {
   DialogHandle,
   DialogPopup,
   DialogPortal,
-  DialogRoot,
   DialogTitle,
   DialogTrigger,
   DialogViewport,
-  createDialogHandle
-} from "./_chunk-atd5kq5q.js";
-import"./_chunk-q3nee19r.js";
-import"./_chunk-7jjzay8b.js";
-import"./_chunk-f09cp81f.js";
-import"./_chunk-f9tgee1q.js";
-import"./_chunk-536jvgeq.js";
-import"./_chunk-9nyxkvte.js";
-import"./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import"./_chunk-xb7ph1ka.js";
-import"./_chunk-atnkefgd.js";
-import"./_chunk-drfb9kp2.js";
-import"./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-7v1t86x1.js";
-import"./_chunk-cwr896nf.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
-import"./_chunk-mvv30fkv.js";
-import"./_chunk-4s0k3h7t.js";
-import"./_chunk-8kh3xk78.js";
-import"./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
-import"./_chunk-mznt6ktj.js";
-import"./_chunk-b40erthe.js";
-import"./_chunk-1s41sngz.js";
+  IsDrawerContext,
+  createDialogHandle,
+  useRenderDialogRoot
+} from "./_chunk-htdj1jps.js";
+import"./_chunk-ytnp24gq.js";
+import"./_chunk-q5cg71p7.js";
+import"./_chunk-242gh8ph.js";
+import"./_chunk-5gaqyne5.js";
+import"./_chunk-t7ppm3t0.js";
+import"./_chunk-3cpd1vjz.js";
+import"./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
+import"./_chunk-cgptgywc.js";
+import"./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import"./_chunk-b6dkjkbw.js";
+import"./_chunk-s5pwkz8v.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
+import"./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
+import"./_chunk-e56mpvk1.js";
+import"./_chunk-wdqynnjf.js";
+import"./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
+import"./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
+import"./_chunk-5tze5c8q.js";
+import"./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/dialog/index.parts.js
+// node_modules/@base-ui/react/esm/dialog/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   createHandle: () => createDialogHandle,
@@ -66,6 +66,14 @@ __export(exports_index_parts, {
   Close: () => DialogClose,
   Backdrop: () => DialogBackdrop
 });
+
+// node_modules/@base-ui/react/esm/dialog/root/DialogRoot.js
+import * as React from "react";
+"use client";
+function DialogRoot(props) {
+  const mode = React.useContext(IsDrawerContext) ? "drawer" : "dialog";
+  return useRenderDialogRoot(props, mode);
+}
 export {
   exports_index_parts as Dialog
 };

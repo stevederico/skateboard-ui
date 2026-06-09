@@ -1,0 +1,12 @@
+import Icon, { type IconProps } from './_Icon.js';
+
+const Form = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M4 14h6" />
+      <path d="M4 2h10" />
+      <rect x="4" y="18" width="16" height="4" rx="1" />
+      <rect x="4" y="6" width="16" height="4" rx="1" />
+  </Icon>
+);
+
+export default Form;

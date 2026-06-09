@@ -1,43 +1,44 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   ToggleGroupContext
-} from "./_chunk-m45547cc.js";
+} from "./_chunk-qmsqz6nt.js";
 import {
   CompositeRoot
-} from "./_chunk-0h5sskyw.js";
-import"./_chunk-r0vsdknk.js";
+} from "./_chunk-cdj8cpx5.js";
+import"./_chunk-5tt5hk59.js";
 import {
   useToolbarRootContext
-} from "./_chunk-y887e46p.js";
-import"./_chunk-vdc01ss3.js";
-import"./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-mnd0j7v9.js";
+import"./_chunk-26cc610z.js";
+import"./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
-import"./_chunk-atnkefgd.js";
-import"./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
+} from "./_chunk-9x63vfqj.js";
+import"./_chunk-cgptgywc.js";
+import"./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
-import"./_chunk-b40erthe.js";
+} from "./_chunk-cwvtvwc7.js";
+import"./_chunk-5tze5c8q.js";
 import {
+  EMPTY_ARRAY,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
-import"./_chunk-1e6khrvm.js";
+} from "./_chunk-x8xehj6d.js";
+import"./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/toggle-group/ToggleGroup.js
+// node_modules/@base-ui/react/esm/toggle-group/ToggleGroup.js
 import * as React from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/toggle-group/ToggleGroupDataAttributes.js
+// node_modules/@base-ui/react/esm/toggle-group/ToggleGroupDataAttributes.js
 var ToggleGroupDataAttributes = /* @__PURE__ */ function(ToggleGroupDataAttributes2) {
   ToggleGroupDataAttributes2["disabled"] = "data-disabled";
   ToggleGroupDataAttributes2["orientation"] = "data-orientation";
@@ -45,7 +46,7 @@ var ToggleGroupDataAttributes = /* @__PURE__ */ function(ToggleGroupDataAttribut
   return ToggleGroupDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/toggle-group/ToggleGroup.js
+// node_modules/@base-ui/react/esm/toggle-group/ToggleGroup.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var stateAttributesMapping = {
@@ -73,17 +74,11 @@ var ToggleGroup = /* @__PURE__ */ React.forwardRef(function ToggleGroup2(compone
     ...elementProps
   } = componentProps;
   const toolbarContext = useToolbarRootContext(true);
-  const defaultValue = React.useMemo(() => {
-    if (valueProp === undefined) {
-      return defaultValueProp ?? [];
-    }
-    return;
-  }, [valueProp, defaultValueProp]);
   const isValueInitialized = React.useMemo(() => valueProp !== undefined || defaultValueProp !== undefined, [valueProp, defaultValueProp]);
   const disabled = (toolbarContext?.disabled ?? false) || disabledProp;
   const [groupValue, setValueState] = useControlled({
     controlled: valueProp,
-    default: defaultValue,
+    default: valueProp === undefined ? defaultValueProp ?? EMPTY_ARRAY : undefined,
     name: "ToggleGroup",
     state: "value"
   });
@@ -99,13 +94,11 @@ var ToggleGroup = /* @__PURE__ */ React.forwardRef(function ToggleGroup2(compone
     } else {
       newGroupValue = nextPressed ? [newValue] : [];
     }
-    if (Array.isArray(newGroupValue)) {
-      onValueChange?.(newGroupValue, eventDetails);
-      if (eventDetails.isCanceled) {
-        return;
-      }
-      setValueState(newGroupValue);
+    onValueChange?.(newGroupValue, eventDetails);
+    if (eventDetails.isCanceled) {
+      return;
     }
+    setValueState(newGroupValue);
   });
   const state = {
     disabled,
