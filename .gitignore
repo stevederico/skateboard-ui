@@ -25,6 +25,7 @@ Thumbs.db
 dist/
 build/
 *.log
+.tsbuildinfo.json
 
 # Test coverage
 coverage/

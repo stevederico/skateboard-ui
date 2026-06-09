@@ -120,6 +120,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* base-vega bridge: base-ui emits data-orientation="horizontal|vertical",
+   these variants let components use data-horizontal:/data-vertical: utilities
+   (group-* and has-* compound forms derive automatically). */
+@custom-variant data-horizontal (&[data-orientation=horizontal]);
+@custom-variant data-vertical (&[data-orientation=vertical]);
+
 @theme {
   --color-app: var(--color-blue-500);
 }

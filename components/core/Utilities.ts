@@ -105,26 +105,23 @@ export interface ApiRequestOptions extends RequestInit {
     timeout?: number;
 }
 
-declare global {
-    interface ImportMetaEnv {
-        DEV: boolean;
-    }
-    interface ImportMeta {
-        readonly env: ImportMetaEnv;
-    }
-    interface Window {
-        /** App constants stash — survives Vite module duplication. */
-        __SKATEBOARD_CONSTANTS__?: SkateboardConstants | null;
-        /** Present inside native WebKit wrappers (iOS/macOS) — see isAppMode(). */
-        webkit?: { messageHandlers?: Record<string, unknown> };
-    }
+// Window extensions used internally. Kept as a local (non-exported) interface
+// and applied via casts so the published .d.ts never augments consumers'
+// global scope (no `declare global` — it would leak ImportMeta/Window types
+// into every consumer compilation).
+interface SkateboardWindow {
+    /** App constants stash — survives Vite module duplication. */
+    __SKATEBOARD_CONSTANTS__?: SkateboardConstants | null;
+    /** Present inside native WebKit wrappers (iOS/macOS) — see isAppMode(). */
+    webkit?: { messageHandlers?: Record<string, unknown> };
 }
 
 // Constants will be initialized by the app shell
 // Use window object to avoid module duplication issues with Vite
 let _constants: SkateboardConstants | null = null;
 if (typeof window !== 'undefined') {
-    window.__SKATEBOARD_CONSTANTS__ = window.__SKATEBOARD_CONSTANTS__ || null;
+    const win = window as unknown as SkateboardWindow;
+    win.__SKATEBOARD_CONSTANTS__ = win.__SKATEBOARD_CONSTANTS__ || null;
 }
 
 // Check if localStorage is available (respects private mode, etc.)
@@ -212,7 +209,7 @@ export function initializeUtilities(constants: SkateboardConstants): void {
     // Store in both module and window to handle module duplication
     _constants = constants;
     if (typeof window !== 'undefined') {
-        window.__SKATEBOARD_CONSTANTS__ = constants;
+        (window as unknown as SkateboardWindow).__SKATEBOARD_CONSTANTS__ = constants;
     }
 }
 
@@ -227,8 +224,9 @@ export function initializeUtilities(constants: SkateboardConstants): void {
  */
 export function getConstants(): SkateboardConstants {
     // Check window object first (handles module duplication)
-    if (typeof window !== 'undefined' && window.__SKATEBOARD_CONSTANTS__) {
-        return window.__SKATEBOARD_CONSTANTS__;
+    if (typeof window !== 'undefined') {
+        const stashed = (window as unknown as SkateboardWindow).__SKATEBOARD_CONSTANTS__;
+        if (stashed) return stashed;
     }
 
     if (!_constants) {
@@ -357,8 +355,10 @@ export function isAuthOverlayEnabled(): boolean {
  * // Prod: "https://api.myapp.com/api/signup"
  */
 export function getBackendURL(): string {
-    let result = import.meta.env.DEV ? getConstants().devBackendURL : getConstants().backendURL;
-    return result
+    // Typed locally (no global ImportMeta augmentation) and guarded at runtime:
+    // outside Vite, import.meta.env is undefined — fall back to production URL.
+    const env = (import.meta as { env?: { DEV?: boolean } }).env;
+    return env?.DEV ? getConstants().devBackendURL : getConstants().backendURL;
 }
 
 /**
@@ -367,12 +367,9 @@ export function getBackendURL(): string {
  * @returns {boolean} True if webkit.messageHandlers is available
  */
 export function isAppMode(): boolean {
-    let a = !!(
-        typeof window !== 'undefined' &&
-        window.webkit &&
-        window.webkit.messageHandlers
-    );
-    return a
+    if (typeof window === 'undefined') return false;
+    const { webkit } = window as unknown as SkateboardWindow;
+    return !!(webkit && webkit.messageHandlers);
 }
 
 /**

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+3.11.0
+
+  Restore spinner animation
+  Bridge orientation variants
+  Restore sidebar sizes
+  Restore overlay background
+  Remove inert classes
+  Guard context hooks
+  Remove global augmentations
+  Compose drawer handlers
+  Slim package tarball
+
 3.10.0
 
   Convert package to TypeScript
