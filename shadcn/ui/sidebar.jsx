@@ -5,24 +5,24 @@ import { useRender } from "../lib/base-ui/use-render.js"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
-import { Button } from "./button.jsx"
-import { Input } from "./input.jsx"
-import { Separator } from "./separator.jsx"
+import { Button } from "./button.js"
+import { Input } from "./input.js"
+import { Separator } from "./separator.js"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "./sheet.jsx"
-import { Skeleton } from "./skeleton.jsx"
+} from "./sheet.js"
+import { Skeleton } from "./skeleton.js"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "./tooltip.jsx"
+} from "./tooltip.js"
 import { useIsMobile } from "../hooks/use-mobile.js"
-import { PanelLeftIcon } from "../../icons"
+import { PanelLeftIcon } from "../../icons/index.js"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

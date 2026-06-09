@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router';
-import DynamicIcon from '../core/DynamicIcon';
-import { getState } from '../core/Context.jsx';
+import DynamicIcon from '../core/DynamicIcon.js';
+import { getState } from '../core/Context.js';
 import { cn } from '../../shadcn/lib/utils.js';
 
 /**

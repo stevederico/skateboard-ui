@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { cn } from "../../shadcn/lib/utils"
-import { Button } from "../../shadcn/ui/button"
-import { Input } from "../../shadcn/ui/input"
-import { Label } from "../../shadcn/ui/label"
-import { Card, CardContent, CardHeader } from "../../shadcn/ui/card"
-import { Alert, AlertDescription } from "../../shadcn/ui/alert"
-import DynamicIcon from '../core/DynamicIcon';
-import { getState } from "../core/Context.jsx";
-import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities'
+import { cn } from "../../shadcn/lib/utils.js"
+import { Button } from "../../shadcn/ui/button.js"
+import { Input } from "../../shadcn/ui/input.js"
+import { Label } from "../../shadcn/ui/label.js"
+import { Card, CardContent, CardHeader } from "../../shadcn/ui/card.js"
+import { Alert, AlertDescription } from "../../shadcn/ui/alert.js"
+import DynamicIcon from '../core/DynamicIcon.js';
+import { getState } from "../core/Context.js";
+import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
 
 /**
  * Sign-up form component.

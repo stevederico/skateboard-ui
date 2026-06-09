@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router';
-import { getState } from '../core/Context.jsx';
-import DynamicIcon from '../core/DynamicIcon.jsx';
-import ThemeToggle from '../ThemeToggle.jsx';
-import { Check, ArrowRight } from '../../icons';
-import { Button } from '../../shadcn/ui/button.jsx';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../shadcn/ui/card.jsx';
-import { Separator } from '../../shadcn/ui/separator.jsx';
+import { getState } from '../core/Context.js';
+import DynamicIcon from '../core/DynamicIcon.js';
+import ThemeToggle from '../ThemeToggle.js';
+import { Check, ArrowRight } from '../../icons/index.js';
+import { Button } from '../../shadcn/ui/button.js';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../shadcn/ui/card.js';
+import { Separator } from '../../shadcn/ui/separator.js';
 import { cn } from '../../shadcn/lib/utils.js';
 
 const CURRENT_YEAR = new Date().getFullYear();

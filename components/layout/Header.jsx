@@ -1,6 +1,6 @@
-import { Separator } from "../../shadcn/ui/separator.jsx";
-import { Button } from "../../shadcn/ui/button.jsx";
-import { Badge } from "../../shadcn/ui/badge.jsx";
+import { Separator } from "../../shadcn/ui/separator.js";
+import { Button } from "../../shadcn/ui/button.js";
+import { Badge } from "../../shadcn/ui/badge.js";
 import { cn } from "../../shadcn/lib/utils.js";
 
 /**

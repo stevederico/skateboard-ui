@@ -1,5 +1,5 @@
 import { cn } from '../../shadcn/lib/utils.js';
-import { Card, CardHeader, CardTitle, CardDescription } from '../../shadcn/ui/card.jsx';
+import { Card, CardHeader, CardTitle, CardDescription } from '../../shadcn/ui/card.js';
 
 /**
  * 404 page displayed for unmatched routes.

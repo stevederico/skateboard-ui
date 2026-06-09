@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useInRouterContext, useNavigate } from 'react-router';
-import { getDispatch } from './Context.jsx';
+import { getDispatch } from './Context.js';
 
 // Constants will be initialized by the app shell
 // Use window object to avoid module duplication issues with Vite

@@ -4,9 +4,9 @@ import * as React from "react"
 import { cva } from "../lib/cva.js";
 
 import { cn } from "../lib/utils.js"
-import { Button } from "./button.jsx"
-import { Input } from "./input.jsx"
-import { Textarea } from "./textarea.jsx"
+import { Button } from "./button.js"
+import { Input } from "./input.js"
+import { Textarea } from "./textarea.js"
 
 function InputGroup({
   className,

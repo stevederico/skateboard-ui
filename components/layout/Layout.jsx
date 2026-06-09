@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router';
-import TabBar from './TabBar.jsx'
-import { SidebarProvider, SidebarInset } from "../../shadcn/ui/sidebar"
-import Sidebar from "./Sidebar"
-import { getState } from '../core/Context.jsx';
+import TabBar from './TabBar.js'
+import { SidebarProvider, SidebarInset } from "../../shadcn/ui/sidebar.js"
+import Sidebar from "./Sidebar.js"
+import { getState } from '../core/Context.js';
 
 /**
  * Page layout wrapper with sidebar and tab bar.

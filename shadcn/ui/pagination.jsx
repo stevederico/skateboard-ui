@@ -1,8 +1,8 @@
 import * as React from "react"
 
 import { cn } from "../lib/utils.js"
-import { Button } from "./button.jsx"
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "../../icons"
+import { Button } from "./button.js"
+import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "../../icons/index.js"
 
 function Pagination({
   className,

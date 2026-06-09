@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router";
-import DynamicIcon from "../core/DynamicIcon.jsx";
-import { getState } from "../core/Context.jsx";
+import DynamicIcon from "../core/DynamicIcon.js";
+import { getState } from "../core/Context.js";
 import {
   Sidebar as SidebarRoot,
   SidebarContent,
@@ -14,8 +14,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "../../shadcn/ui/sidebar";
-import { Settings } from '../../icons';
+} from "../../shadcn/ui/sidebar.js";
+import { Settings } from '../../icons/index.js';
 
 /**
  * Desktop navigation sidebar using shadcn primitives.

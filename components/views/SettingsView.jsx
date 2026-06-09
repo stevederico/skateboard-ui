@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { getState } from '../core/Context.jsx';
-import { useTheme } from '../core/ThemeProvider.jsx';
-import { Sun, Moon } from '../../icons';
-import Header from '../layout/Header.jsx';
-import { Avatar, AvatarFallback } from '../../shadcn/ui/avatar.jsx';
-import { Badge } from '../../shadcn/ui/badge.jsx';
-import { Button } from '../../shadcn/ui/button.jsx';
-import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '../../shadcn/ui/card.jsx';
+import { getState } from '../core/Context.js';
+import { useTheme } from '../core/ThemeProvider.js';
+import { Sun, Moon } from '../../icons/index.js';
+import Header from '../layout/Header.js';
+import { Avatar, AvatarFallback } from '../../shadcn/ui/avatar.js';
+import { Badge } from '../../shadcn/ui/badge.js';
+import { Button } from '../../shadcn/ui/button.js';
+import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '../../shadcn/ui/card.js';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,8 +18,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '../../shadcn/ui/alert-dialog.jsx';
-import { showCheckout, showManage, isAuthOverlayEnabled } from '../core/Utilities';
+} from '../../shadcn/ui/alert-dialog.js';
+import { showCheckout, showManage, isAuthOverlayEnabled } from '../core/Utilities.js';
 
 /**
  * User settings page with account info, sign out, support contact,
