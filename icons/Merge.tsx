@@ -1,0 +1,11 @@
+import Icon, { type IconProps } from './_Icon.js';
+
+const Merge = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="m8 6 4-4 4 4" />
+      <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+      <path d="m20 22-5-5" />
+  </Icon>
+);
+
+export default Merge;

@@ -4,7 +4,7 @@
  * Vendor lucide-icons SVGs as React components.
  *
  * Clones lucide-icons/lucide at a pinned tag, reads every icons/*.svg,
- * generates one ./icons/<Name>.jsx per icon plus an index.js barrel.
+ * generates one ./icons/<Name>.tsx per icon plus an index.ts barrel.
  *
  * Re-run when you want to refresh the icon set against a newer lucide release.
  *
@@ -46,7 +46,13 @@ function ensureLucide() {
 }
 
 function writeIconWrapper() {
-  const code = `const Icon = ({
+  const code = `import type { SVGProps } from 'react';
+
+export interface IconProps extends SVGProps<SVGSVGElement> {
+  size?: number | string;
+}
+
+const Icon = ({
   size = 24,
   color = 'currentColor',
   strokeWidth = 2,
@@ -54,7 +60,7 @@ function writeIconWrapper() {
   children,
   ref,
   ...props
-}) => (
+}: IconProps) => (
   <svg
     ref={ref}
     xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +81,7 @@ function writeIconWrapper() {
 
 export default Icon;
 `;
-  writeFileSync(join(ICONS_DIR, '_Icon.jsx'), code);
+  writeFileSync(join(ICONS_DIR, '_Icon.tsx'), code);
 }
 
 function copyLucideLicense() {
@@ -101,9 +107,9 @@ function generate() {
     const raw = readFileSync(join(TMP_DIR, 'icons', file), 'utf8');
     const inner = camelAttrs(extractInner(raw));
 
-    const code = `import Icon from './_Icon.jsx';
+    const code = `import Icon, { type IconProps } from './_Icon.js';
 
-const ${componentName} = (props) => (
+const ${componentName} = (props: IconProps) => (
   <Icon {...props}>
     ${inner.replace(/\n/g, '\n    ')}
   </Icon>
@@ -111,8 +117,8 @@ const ${componentName} = (props) => (
 
 export default ${componentName};
 `;
-    writeFileSync(join(ICONS_DIR, `${componentName}.jsx`), code);
-    exports.push(`export { default as ${componentName}, default as ${componentName}Icon } from './${componentName}.jsx';`);
+    writeFileSync(join(ICONS_DIR, `${componentName}.tsx`), code);
+    exports.push(`export { default as ${componentName}, default as ${componentName}Icon } from './${componentName}.js';`);
 
     const metaPath = join(TMP_DIR, 'icons', `${name}.json`);
     if (existsSync(metaPath)) {
@@ -120,12 +126,13 @@ export default ${componentName};
       for (const alias of meta.aliases || []) {
         const aliasName = pascal(alias.name);
         if (aliasName === componentName) continue;
-        exports.push(`export { default as ${aliasName}, default as ${aliasName}Icon } from './${componentName}.jsx';`);
+        exports.push(`export { default as ${aliasName}, default as ${aliasName}Icon } from './${componentName}.js';`);
       }
     }
   }
 
-  writeFileSync(join(ICONS_DIR, 'index.js'), exports.join('\n') + '\n');
+  exports.unshift(`export type { IconProps } from './_Icon.js';`);
+  writeFileSync(join(ICONS_DIR, 'index.ts'), exports.join('\n') + '\n');
   console.log(`Vendored ${svgFiles.length} icons → icons/`);
 }
 
