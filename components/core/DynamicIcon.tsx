@@ -6,7 +6,7 @@ import * as LucideIcons from "../../icons/index.js";
  * @param {string} str - Input string
  * @returns {string} PascalCase version
  */
-function toPascalCase(str) {
+function toPascalCase(str: string): string {
   return str
     .split(/[-_\s]/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -19,7 +19,7 @@ function toPascalCase(str) {
  * @param {string} str - Input string
  * @returns {string} kebab-case version
  */
-function toKebabCase(str) {
+function toKebabCase(str: string): string {
   return str
     .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
     .replace(/([A-Z])([A-Z][a-z])/g, "$1-$2")
@@ -36,7 +36,7 @@ function toKebabCase(str) {
  * @param {string} name - Icon name in any case format
  * @returns {{ pascal: string, kebab: string }} Resolved icon name pair
  */
-function toIconName(name) {
+function toIconName(name: string): { pascal: string; kebab: string } {
   let stripped = name;
   if (stripped.startsWith("Icon") && stripped.length > 4 && stripped[4] === stripped[4].toUpperCase()) {
     stripped = stripped.slice(4);
@@ -52,9 +52,9 @@ function toIconName(name) {
  * @param {string} name - Icon name to check
  * @returns {boolean} True if icon exists in the Lucide library
  */
-export function canResolveIcon(name) {
+export function canResolveIcon(name: string): boolean {
   const { pascal } = toIconName(name);
-  const icon = LucideIcons[pascal];
+  const icon = (LucideIcons as Record<string, any>)[pascal];
   return !!icon && (typeof icon === "function" || typeof icon?.render === "function");
 }
 
@@ -83,6 +83,15 @@ export function canResolveIcon(name) {
  * <DynamicIcon name="arrow-right" size={20} color="red" />
  * <DynamicIcon name="settings" className="text-muted-foreground" />
  */
+export interface DynamicIconProps {
+  name: string;
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+  className?: string;
+  [key: string]: unknown;
+}
+
 const DynamicIcon = ({
   name,
   size = 24,
@@ -90,9 +99,9 @@ const DynamicIcon = ({
   strokeWidth = 2,
   className,
   ...props
-}) => {
+}: DynamicIconProps) => {
   const { pascal } = toIconName(name);
-  const Icon = LucideIcons[pascal];
+  const Icon = (LucideIcons as Record<string, any>)[pascal];
 
   if (!Icon || (typeof Icon !== "function" && typeof Icon?.render !== "function")) return null;
 

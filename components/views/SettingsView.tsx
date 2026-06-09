@@ -54,8 +54,8 @@ export default function SettingsView() {
   function getBillingDescription() {
     const status = subscription?.status;
     if (status === null || typeof status === 'undefined') return "Free plan";
-    if (status === "active") return `Renews ${new Date(subscription.expires * 1000).toLocaleDateString('en-US')}`;
-    if (status === "canceled") return `Ends ${new Date(subscription.expires * 1000).toLocaleDateString('en-US')}`;
+    if (status === "active") return `Renews ${new Date(subscription!.expires! * 1000).toLocaleDateString('en-US')}`;
+    if (status === "canceled") return `Ends ${new Date(subscription!.expires! * 1000).toLocaleDateString('en-US')}`;
     return `Plan ${status}`;
   }
 
@@ -114,6 +114,7 @@ export default function SettingsView() {
               </CardTitle>
               <CardAction>
                 <AlertDialog>
+                  {/* @ts-ignore -- base-ui Trigger.Props (untyped JS this phase) doesn't know asChild */}
                   <AlertDialogTrigger asChild>
                     <Button variant="outline" size="sm">Sign Out</Button>
                   </AlertDialogTrigger>
@@ -172,7 +173,7 @@ export default function SettingsView() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => { showManage(subscription.stripeID) }}
+                    onClick={() => { showManage(subscription!.stripeID!) }}
                   >
                     Manage
                   </Button>

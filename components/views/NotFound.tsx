@@ -13,7 +13,12 @@ import { Card, CardHeader, CardTitle, CardDescription } from '../../shadcn/ui/ca
  *
  * <Route path="*" element={<NotFound />} />
  */
-export default function NotFound({ className, ...props }) {
+export interface NotFoundProps {
+  className?: string;
+  [key: string]: any;
+}
+
+export default function NotFound({ className, ...props }: NotFoundProps) {
   return (
     <div className={cn("flex items-center justify-center min-h-screen bg-background p-4", className)} {...props}>
       <Card className="max-w-md w-full text-center">

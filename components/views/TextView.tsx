@@ -19,11 +19,17 @@ import { cn } from '../../shadcn/lib/utils.js';
  *
  * <Route path="/terms" element={<TextView details={constants.termsOfService} />} />
  */
-export default function TextView({ details, className, ...props }) {
+export interface TextViewProps {
+  details: string;
+  className?: string;
+  [key: string]: any;
+}
+
+export default function TextView({ details, className, ...props }: TextViewProps) {
   const { state } = getState();
   const constants = state.constants;
 
-  const replacePlaceholders = (text) => {
+  const replacePlaceholders = (text: string) => {
     return text
       .replace(/_COMPANY_/g, constants.companyName)
       .replace(/_WEBSITE_/g, constants.companyWebsite)

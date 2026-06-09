@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router';
+import type * as React from 'react';
 import TabBar from './TabBar.js'
 import { SidebarProvider, SidebarInset } from "../../shadcn/ui/sidebar.js"
 import Sidebar from "./Sidebar.js"
@@ -29,7 +30,11 @@ import { getState } from '../core/Context.js';
  *   <Route path="home" element={<HomeView />} />
  * </Route>
  */
-export default function Layout({ children }) {
+export interface LayoutProps {
+  children?: React.ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   const { state } = getState();
   const { sidebarVisible, tabBarVisible } = state.ui;
   const constants = state.constants;
@@ -48,7 +53,7 @@ export default function Layout({ children }) {
         style={{
           '--sidebar-width': '12rem',
           '--header-height': '3.5rem',
-        }}>
+        } as React.CSSProperties}>
         {showSidebar && <Sidebar variant="inset" />}
         <SidebarInset id="main" className={`border border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
           <Outlet />

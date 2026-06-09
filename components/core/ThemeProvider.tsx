@@ -1,14 +1,23 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import type { ReactNode } from 'react';
+
+/** Theme state exposed by useTheme(). */
+export interface ThemeContextValue {
+  theme: string;
+  setTheme: (t: string) => void;
+  resolvedTheme: string;
+  systemTheme: string;
+}
 
 const STORAGE_KEY = 'theme';
-const ThemeContext = createContext(null);
+const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function getSystemTheme() {
+function getSystemTheme(): string {
   if (typeof window === 'undefined') return 'light';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function applyClass(resolved) {
+function applyClass(resolved: string) {
   const root = document.documentElement;
   root.classList.remove('light', 'dark');
   root.classList.add(resolved);
@@ -27,7 +36,16 @@ function applyClass(resolved) {
  *
  * @component
  */
-export function ThemeProvider({ children, defaultTheme = 'system' }) {
+export interface ThemeProviderProps {
+  children?: ReactNode;
+  defaultTheme?: string;
+  /** next-themes compat — accepted but unused (class strategy is built in). */
+  attribute?: string;
+  /** next-themes compat — accepted but unused (system theme always supported). */
+  enableSystem?: boolean;
+}
+
+export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProviderProps) {
   const [theme, setThemeState] = useState(() => {
     if (typeof window === 'undefined') return defaultTheme;
     return localStorage.getItem(STORAGE_KEY) || defaultTheme;
@@ -42,12 +60,12 @@ export function ThemeProvider({ children, defaultTheme = 'system' }) {
 
   useEffect(() => {
     const mql = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e) => setSystemTheme(e.matches ? 'dark' : 'light');
+    const handler = (e: MediaQueryListEvent) => setSystemTheme(e.matches ? 'dark' : 'light');
     mql.addEventListener('change', handler);
     return () => mql.removeEventListener('change', handler);
   }, []);
 
-  const setTheme = useCallback((next) => {
+  const setTheme = useCallback((next: string) => {
     setThemeState(next);
     try {
       localStorage.setItem(STORAGE_KEY, next);
@@ -68,7 +86,7 @@ export function ThemeProvider({ children, defaultTheme = 'system' }) {
  *
  * @returns {{ theme: string, setTheme: (t: string) => void, resolvedTheme: string, systemTheme: string }}
  */
-export function useTheme() {
+export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
     return { theme: 'system', setTheme: () => {}, resolvedTheme: 'light', systemTheme: 'light' };

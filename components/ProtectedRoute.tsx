@@ -23,7 +23,7 @@ import { Spinner } from '../shadcn/ui/spinner.js';
 const ProtectedRoute = () => {
     const constants = getConstants();
     const skipProtection = isAuthOverlayEnabled();
-    const [status, setStatus] = useState(skipProtection ? 'valid' : 'checking');
+    const [status, setStatus] = useState<'checking' | 'valid' | 'invalid'>(skipProtection ? 'valid' : 'checking');
 
     useEffect(() => {
         if (skipProtection) return;

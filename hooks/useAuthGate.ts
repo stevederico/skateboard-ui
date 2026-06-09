@@ -22,10 +22,10 @@ import { getState } from '../components/core/Context.js';
  *   }
  * }
  */
-export function useAuthGate() {
+export function useAuthGate(): (callback: () => void) => void {
   const { state, dispatch } = getState();
 
-  const requireAuth = useCallback((callback) => {
+  const requireAuth = useCallback((callback: () => void) => {
     if (state.user) {
       callback();
     } else {

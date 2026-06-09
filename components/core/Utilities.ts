@@ -1,17 +1,135 @@
 import { useEffect, useState } from 'react';
 import { useInRouterContext, useNavigate } from 'react-router';
 import { getDispatch } from './Context.js';
+import type { Location } from 'react-router';
+import type { ChangeEvent, FormEvent, RefObject } from 'react';
+
+/** A navigation item rendered in the Sidebar and TabBar (constants.pages). */
+export interface ConstantsPage {
+    title: string;
+    url: string;
+    icon: string;
+    [key: string]: unknown;
+}
+
+/** A feature card on the landing page (constants.features.items). */
+export interface ConstantsFeatureItem {
+    title: string;
+    description: string;
+    icon?: string;
+    [key: string]: unknown;
+}
+
+/** A nav/footer link on the landing page (constants.navLinks / footerLinks). */
+export interface ConstantsLink {
+    label: string;
+    href: string;
+}
+
+/** A Stripe product entry (constants.stripeProducts). */
+export interface StripeProduct {
+    title: string;
+    price: string;
+    interval: string;
+    lookup_key?: string;
+    features?: string[];
+    [key: string]: unknown;
+}
+
+/**
+ * App configuration object passed to createSkateboardApp / initializeUtilities.
+ * Required fields are enforced at runtime by validateConstants(); everything
+ * else is optional. Unknown keys are allowed (consumers extend constants.json).
+ */
+export interface SkateboardConstants {
+    appName: string;
+    appIcon: string;
+    tagline: string;
+    cta: string;
+    backendURL: string;
+    devBackendURL: string;
+    features: { title: string; items: ConstantsFeatureItem[] };
+    companyName: string;
+    companyWebsite: string;
+    companyEmail: string;
+    pages?: ConstantsPage[];
+    stripeProducts?: StripeProduct[];
+    noLogin?: boolean;
+    authOverlay?: boolean;
+    version?: string;
+    termsOfService?: string;
+    privacyPolicy?: string;
+    EULA?: string;
+    subscriptionDetails?: string;
+    navLinks?: ConstantsLink[];
+    footerLinks?: ConstantsLink[];
+    pricing?: { title?: string; extras?: string[] };
+    ctaHeading?: string;
+    copyrightText?: string;
+    hideSidebar?: boolean;
+    hideTabBar?: boolean;
+    hideSidebarHeader?: boolean;
+    hideSidebarInsetRounding?: boolean;
+    sidebarCollapsed?: boolean;
+    [key: string]: unknown;
+}
+
+/** Subscription info attached to a user by the backend. */
+export interface UserSubscription {
+    status?: string | null;
+    expires?: number;
+    stripeID?: string;
+    [key: string]: unknown;
+}
+
+/** Authenticated user object returned by the backend (/me, /signin, /signup). */
+export interface User {
+    name?: string;
+    email?: string;
+    stripeID?: string;
+    csrfToken?: string;
+    subscription?: UserSubscription;
+    [key: string]: unknown;
+}
+
+/** Usage quota data returned by POST /usage. */
+export interface UsageData {
+    remaining: number;
+    total: number;
+    isSubscriber: boolean;
+    [key: string]: unknown;
+}
+
+/** Fetch options for apiRequest, plus an optional timeout in milliseconds. */
+export interface ApiRequestOptions extends RequestInit {
+    timeout?: number;
+}
+
+declare global {
+    interface ImportMetaEnv {
+        DEV: boolean;
+    }
+    interface ImportMeta {
+        readonly env: ImportMetaEnv;
+    }
+    interface Window {
+        /** App constants stash — survives Vite module duplication. */
+        __SKATEBOARD_CONSTANTS__?: SkateboardConstants | null;
+        /** Present inside native WebKit wrappers (iOS/macOS) — see isAppMode(). */
+        webkit?: { messageHandlers?: Record<string, unknown> };
+    }
+}
 
 // Constants will be initialized by the app shell
 // Use window object to avoid module duplication issues with Vite
-let _constants = null;
+let _constants: SkateboardConstants | null = null;
 if (typeof window !== 'undefined') {
     window.__SKATEBOARD_CONSTANTS__ = window.__SKATEBOARD_CONSTANTS__ || null;
 }
 
 // Check if localStorage is available (respects private mode, etc.)
-let _localStorageAvailable = null;
-function isLocalStorageAvailable() {
+let _localStorageAvailable: boolean | null = null;
+function isLocalStorageAvailable(): boolean {
     if (_localStorageAvailable !== null) return _localStorageAvailable;
     try {
         const test = '__storage_test__';
@@ -19,7 +137,7 @@ function isLocalStorageAvailable() {
         localStorage.removeItem(test);
         _localStorageAvailable = true;
         return true;
-    } catch (e) {
+    } catch (e: any) {
         console.warn('localStorage not available (private mode or quota exceeded):', e.message);
         _localStorageAvailable = false;
         return false;
@@ -27,7 +145,7 @@ function isLocalStorageAvailable() {
 }
 
 // Safe localStorage wrapper with error handling
-function safeSetItem(key, value) {
+function safeSetItem(key: string, value: string): boolean {
     if (!isLocalStorageAvailable()) {
         console.warn(`Could not save to localStorage: ${key} (storage unavailable)`);
         return false;
@@ -35,7 +153,7 @@ function safeSetItem(key, value) {
     try {
         localStorage.setItem(key, value);
         return true;
-    } catch (error) {
+    } catch (error: any) {
         if (error.name === 'QuotaExceededError') {
             console.error('localStorage quota exceeded - data not persisted');
         } else {
@@ -45,22 +163,22 @@ function safeSetItem(key, value) {
     }
 }
 
-function safeGetItem(key) {
+function safeGetItem(key: string): string | null {
     if (!isLocalStorageAvailable()) return null;
     try {
         return localStorage.getItem(key);
-    } catch (error) {
+    } catch (error: any) {
         console.error('localStorage getItem error:', error.message);
         return null;
     }
 }
 
-function safeRemoveItem(key) {
+function safeRemoveItem(key: string): boolean {
     if (!isLocalStorageAvailable()) return false;
     try {
         localStorage.removeItem(key);
         return true;
-    } catch (error) {
+    } catch (error: any) {
         console.error('localStorage removeItem error:', error.message);
         return false;
     }
@@ -87,7 +205,7 @@ function safeRemoveItem(key) {
  *   backendURL: "https://api.myapp.com/api"
  * });
  */
-export function initializeUtilities(constants) {
+export function initializeUtilities(constants: SkateboardConstants): void {
     if (!constants) {
         throw new Error('initializeUtilities called with null/undefined constants');
     }
@@ -107,7 +225,7 @@ export function initializeUtilities(constants) {
  * @returns {Object} App constants
  * @throws {Error} If initializeUtilities() hasn't been called
  */
-export function getConstants() {
+export function getConstants(): SkateboardConstants {
     // Check window object first (handles module duplication)
     if (typeof window !== 'undefined' && window.__SKATEBOARD_CONSTANTS__) {
         return window.__SKATEBOARD_CONSTANTS__;
@@ -127,7 +245,7 @@ export function getConstants() {
  * @param {string} name - Cookie name
  * @returns {string|null} Cookie value or null
  */
-export function getCookie(name) {
+export function getCookie(name: string): string | null {
     // For token cookies, use app-specific name
     let cookieName = name;
     if (name === 'token') {
@@ -136,7 +254,7 @@ export function getCookie(name) {
 
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${cookieName}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+    if (parts.length === 2) return parts.pop()!.split(';').shift()!;
     return null;
 }
 
@@ -155,7 +273,7 @@ export function getCookie(name) {
  *   headers: { 'X-CSRF-Token': csrfToken }
  * });
  */
-export function getCSRFToken() {
+export function getCSRFToken(): string | null {
     // Try cookie first (source of truth from backend)
     const csrfCookie = getCookie('csrf_token');
     if (csrfCookie) return csrfCookie;
@@ -178,7 +296,7 @@ export function getCSRFToken() {
  * getAppKey('user')  // "myapp_user"
  * getAppKey('theme') // "myapp_theme"
  */
-export function getAppKey(suffix) {
+export function getAppKey(suffix: string): string {
     const appName = getConstants().appName || 'skateboard';
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_${suffix}`;
 }
@@ -204,7 +322,7 @@ export function getAppKey(suffix) {
  *   // Redirect to signin
  * }
  */
-export function isAuthenticated() {
+export function isAuthenticated(): boolean {
     if (getConstants().noLogin === true) {
         return true;
     }
@@ -220,7 +338,7 @@ export function isAuthenticated() {
  *
  * @returns {boolean}
  */
-export function isAuthOverlayEnabled() {
+export function isAuthOverlayEnabled(): boolean {
     const c = getConstants();
     return c.noLogin !== true && c.authOverlay !== false;
 }
@@ -238,7 +356,7 @@ export function isAuthOverlayEnabled() {
  * // Dev:  "http://localhost:8000/api/signup"
  * // Prod: "https://api.myapp.com/api/signup"
  */
-export function getBackendURL() {
+export function getBackendURL(): string {
     let result = import.meta.env.DEV ? getConstants().devBackendURL : getConstants().backendURL;
     return result
 }
@@ -248,7 +366,7 @@ export function getBackendURL() {
  *
  * @returns {boolean} True if webkit.messageHandlers is available
  */
-export function isAppMode() {
+export function isAppMode(): boolean {
     let a = !!(
         typeof window !== 'undefined' &&
         window.webkit &&
@@ -269,7 +387,7 @@ export function isAppMode() {
  * const user = await getCurrentUser();
  * if (user) dispatch({ type: 'SET_USER', payload: user });
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<User | null> {
 
     if (getConstants().noLogin == true) {
         return {}
@@ -306,7 +424,7 @@ export async function getCurrentUser() {
  *
  * @returns {Promise<boolean>} True if user is an active subscriber
  */
-export async function isSubscriber() {
+export async function isSubscriber(): Promise<boolean> {
     if (getConstants().noLogin == true) {
         return false
     }
@@ -343,7 +461,7 @@ export async function isSubscriber() {
  * @param {string} event - Event name to log
  * @returns {Promise<void>}
  */
-export async function logEvent(event) {
+export async function logEvent(event: string): Promise<void> {
     //insert analytics code here
 }
 
@@ -356,7 +474,7 @@ export async function logEvent(event) {
  * @param {string} stripeID - Stripe customer ID
  * @returns {Promise<void>}
  */
-export async function showManage(stripeID) {
+export async function showManage(stripeID: string): Promise<void> {
     try {
         const csrfToken = getCSRFToken();
         const uri = `${getBackendURL()}/portal`;
@@ -396,12 +514,12 @@ export async function showManage(stripeID) {
  * @param {number} [productIndex=0] - Index into constants.stripeProducts
  * @returns {Promise<boolean>} True if redirect initiated, false on error
  */
-export async function showCheckout(email, productIndex = 0) {
+export async function showCheckout(email: string | undefined, productIndex = 0): Promise<boolean> {
     try {
         const csrfToken = getCSRFToken();
 
         const params = {
-            lookup_key: getConstants().stripeProducts[productIndex].lookup_key,
+            lookup_key: getConstants().stripeProducts![productIndex].lookup_key,
             email: email
         };
 
@@ -447,7 +565,7 @@ export async function showCheckout(email, productIndex = 0) {
  * @param {string} action - Action type to check usage for
  * @returns {Promise<{remaining: number, total: number, isSubscriber: boolean}>}
  */
-export async function getRemainingUsage(action) {
+export async function getRemainingUsage(action: string): Promise<UsageData> {
     if (getConstants().noLogin === true) {
         return { remaining: -1, total: -1, isSubscriber: true };
     }
@@ -486,7 +604,7 @@ export async function getRemainingUsage(action) {
  * @param {string} action - Action type to track
  * @returns {Promise<{remaining: number, total: number, isSubscriber: boolean}>}
  */
-export async function trackUsage(action) {
+export async function trackUsage(action: string): Promise<UsageData> {
     if (getConstants().noLogin === true) {
         return { remaining: -1, total: -1, isSubscriber: true };
     }
@@ -531,7 +649,7 @@ export async function trackUsage(action) {
  * @param {React.RefObject} upgradeSheetRef - Ref to UpgradeSheet component
  * @returns {Promise<void>}
  */
-export async function showUpgradeSheet(upgradeSheetRef) {
+export async function showUpgradeSheet(upgradeSheetRef: RefObject<{ show: () => void } | null> | null | undefined): Promise<void> {
     // Check subscription from user data in localStorage instead of API call
     const storedUser = safeGetItem(getAppKey('user'));
 
@@ -541,7 +659,7 @@ export async function showUpgradeSheet(upgradeSheetRef) {
             const user = JSON.parse(storedUser);
             subscriber = user?.subscription?.status === 'active' &&
                 (!user?.subscription?.expires || user?.subscription?.expires > Math.floor(Date.now() / 1000));
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error parsing user data from storage:', error.message);
             subscriber = false;
         }
@@ -574,7 +692,7 @@ export async function showUpgradeSheet(upgradeSheetRef) {
  * timestampToString(Date.now(), 'DOBT')   // "3:45 PM"
  * timestampToString(new Date(), 'full')   // "Monday, November 13 2023 10:00 AM"
  */
-export function timestampToString(input, format = "DOB") {
+export function timestampToString(input: number | Date, format: string = "DOB"): string | number | Date {
 
     let seconds = 0
 
@@ -602,7 +720,7 @@ export function timestampToString(input, format = "DOB") {
             return date.toLocaleString();
         case "ago": {
             const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
+            const diffInSeconds = Math.floor(((now as unknown as number) - (date as unknown as number)) / 1000);
             const minute = 60, hour = minute * 60, day = hour * 24;
             const week = day * 7, month = day * 30, year = day * 365;
 
@@ -678,7 +796,7 @@ export function timestampToString(input, format = "DOB") {
  *
  * @param {Object} location - react-router location object
  */
-export function useAppSetup(location) {
+export function useAppSetup(location: Location): void {
     useEffect(() => {
         document.title = getConstants().appName;
         if (!location.pathname.toLowerCase().includes('app')) {
@@ -698,7 +816,7 @@ export function useAppSetup(location) {
  * @param {RequestInit} options - Fetch options (method, body, headers, etc.)
  * @returns {Promise<any>} - Parsed JSON response
  */
-export async function apiRequest(endpoint, options = {}) {
+export async function apiRequest<T = any>(endpoint: string, options: ApiRequestOptions = {}): Promise<T> {
     const csrfToken = getCSRFToken();
     const needsCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(
         (options.method || 'GET').toUpperCase()
@@ -726,7 +844,7 @@ export async function apiRequest(endpoint, options = {}) {
                 ...options.headers
             }
         });
-    } catch (error) {
+    } catch (error: any) {
         if (error.name === 'AbortError') {
             throw error; // Re-throw abort errors for useListData to handle
         }
@@ -748,7 +866,7 @@ export async function apiRequest(endpoint, options = {}) {
         // awaiting caller never hangs.
         const dispatch = getDispatch();
         if (dispatch) {
-            return new Promise((resolve, reject) => {
+            return new Promise<T>((resolve, reject) => {
                 dispatch({
                     type: 'SHOW_AUTH_OVERLAY',
                     payload: (outcome) => {
@@ -817,7 +935,7 @@ export async function apiRequest(endpoint, options = {}) {
     // Parse JSON with error handling
     try {
         return await response.json();
-    } catch (error) {
+    } catch (error: any) {
         throw new Error(`Invalid JSON response from server: ${error.message}`);
     }
 }
@@ -830,7 +948,7 @@ export async function apiRequest(endpoint, options = {}) {
  * @param {RequestInit} options - Fetch options
  * @returns {Promise<any>}
  */
-export async function apiRequestWithParams(endpoint, params = {}, options = {}) {
+export async function apiRequestWithParams<T = any>(endpoint: string, params: Record<string, string> = {}, options: ApiRequestOptions = {}): Promise<T> {
     const queryString = new URLSearchParams(params).toString();
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
     return apiRequest(url, options);
@@ -844,7 +962,7 @@ export async function apiRequestWithParams(endpoint, params = {}, options = {}) 
  * @returns {object} - Same constants if valid
  * @throws {Error} - If required fields are missing or invalid
  */
-export function validateConstants(constants) {
+export function validateConstants(constants: SkateboardConstants): SkateboardConstants {
     const required = [
         { key: 'appName', type: 'string' },
         { key: 'appIcon', type: 'string' },
@@ -860,7 +978,7 @@ export function validateConstants(constants) {
     ];
 
     const errors = required.filter(({ key, type }) => {
-        const value = key.split('.').reduce((obj, k) => obj?.[k], constants);
+        const value = key.split('.').reduce<any>((obj, k) => obj?.[k], constants);
 
         if (type === 'string') {
             // Must be non-empty string
@@ -888,19 +1006,19 @@ export function validateConstants(constants) {
  * @param {function} sortFn - Optional sort function for results
  * @returns {object} - { data, loading, error, refetch }
  */
-export function useListData(endpoint, sortFn = null) {
-    const [data, setData] = useState([]);
+export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => number) | null = null) {
+    const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
-    const fetchData = async (signal) => {
+    const fetchData = async (signal?: AbortSignal) => {
         setLoading(true);
         try {
-            const result = await apiRequest(endpoint, { signal });
+            const result = await apiRequest<T[]>(endpoint, { signal });
             const sorted = sortFn ? result.sort(sortFn) : result;
             setData(sorted);
             setError(null);
-        } catch (err) {
+        } catch (err: any) {
             // Ignore abort errors
             if (err.name === 'AbortError') return;
             setError(err.message);
@@ -924,23 +1042,23 @@ export function useListData(endpoint, sortFn = null) {
  * @param {function} onSubmit - Submit handler function
  * @returns {object} - { values, handleChange, handleSubmit, reset, submitting, error }
  */
-export function useForm(initialValues, onSubmit) {
+export function useForm(initialValues: Record<string, any>, onSubmit: (values: Record<string, any>) => unknown) {
     const [values, setValues] = useState(initialValues);
     const [submitting, setSubmitting] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (field) => (e) => {
+    const handleChange = (field: string) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setValues(prev => ({ ...prev, [field]: e.target.value }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e?: FormEvent) => {
         e?.preventDefault();
         setSubmitting(true);
         setError(null);
         try {
             await onSubmit(values);
             setValues(initialValues);
-        } catch (err) {
+        } catch (err: any) {
             setError(err.message);
         } finally {
             setSubmitting(false);
@@ -959,7 +1077,7 @@ export function useForm(initialValues, onSubmit) {
  * Programmatically show/hide the sidebar
  * @param {boolean} visible - Whether sidebar should be visible
  */
-export function setSidebarVisible(visible) {
+export function setSidebarVisible(visible: boolean): void {
     const dispatch = getDispatch();
     if (dispatch) {
         dispatch({ type: 'SET_SIDEBAR_VISIBLE', payload: visible });
@@ -972,7 +1090,7 @@ export function setSidebarVisible(visible) {
  * Programmatically show/hide the tab bar
  * @param {boolean} visible - Whether tab bar should be visible
  */
-export function setTabBarVisible(visible) {
+export function setTabBarVisible(visible: boolean): void {
     const dispatch = getDispatch();
     if (dispatch) {
         dispatch({ type: 'SET_TABBAR_VISIBLE', payload: visible });
@@ -1013,10 +1131,10 @@ export function hideTabBar() {
  * Set visibility for both sidebar and tab bar at once
  * @param {object} options - { sidebar: boolean, tabBar: boolean }
  */
-export function setUIVisibility({ sidebar, tabBar }) {
+export function setUIVisibility({ sidebar, tabBar }: { sidebar?: boolean; tabBar?: boolean }): void {
     const dispatch = getDispatch();
     if (dispatch) {
-        const payload = {};
+        const payload: { sidebarVisible?: boolean; tabBarVisible?: boolean } = {};
         if (sidebar !== undefined) payload.sidebarVisible = sidebar;
         if (tabBar !== undefined) payload.tabBarVisible = tabBar;
         dispatch({ type: 'SET_UI_VISIBILITY', payload });
@@ -1038,7 +1156,7 @@ export function setUIVisibility({ sidebar, tabBar }) {
  * navigate('/app');
  * navigate('/app', { replace: true });
  */
-export function useSafeNavigate() {
+export function useSafeNavigate(): (path: string, options?: { replace?: boolean; state?: unknown }) => void {
     const inRouter = useInRouterContext();
     // Router presence is stable for a given component instance, so the
     // conditional useNavigate call respects the rules of hooks at runtime.

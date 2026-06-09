@@ -31,13 +31,21 @@ import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
  * // Embedded in dialog
  * <SignUpView embedded onSuccess={handleSuccess} onSwitchMode={() => setMode('signin')} />
  */
+export interface SignUpViewProps {
+  className?: string;
+  embedded?: boolean;
+  onSuccess?: () => void;
+  onSwitchMode?: () => void;
+  [key: string]: any;
+}
+
 export default function SignUpView({
   className,
   embedded = false,
   onSuccess,
   onSwitchMode,
   ...props
-}) {
+}: SignUpViewProps) {
   const { state, dispatch } = getState();
   const constants = state.constants;
   const [email, setEmail] = useState('');
@@ -45,7 +53,7 @@ export default function SignUpView({
   const [name, setName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useSafeNavigate();
-  const nameInputRef = useRef(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Focus the first input on mount
   useEffect(() => {
@@ -54,7 +62,7 @@ export default function SignUpView({
     }
   }, [])
 
-  async function signUpClicked(e) {
+  async function signUpClicked(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     // Client-side password validation (matches backend: 6-72 chars)
     if (password.length < 6) {

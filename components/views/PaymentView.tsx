@@ -8,7 +8,7 @@ import { Spinner } from '../../shadcn/ui/spinner.js';
 const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
 const DEFAULT_REDIRECT = '/app/home';
 
-function isAllowedRedirect(path) {
+function isAllowedRedirect(path: string): boolean {
   try {
     // Resolve relative to current origin; reject anything that escapes it.
     const url = new URL(path, window.location.origin);
