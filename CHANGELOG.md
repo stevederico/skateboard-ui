@@ -4,6 +4,11 @@
 
   Auth overlay on by default
   Retry all parked 401s after sign-in
+  Reject parked 401s when overlay is dismissed (no more hung requests)
+  Invoke auth retries outside the reducer (StrictMode-safe)
+  Sign-out lands on landing page; honor signIn/signUp overrides
+  Skip overlay for already-signed-in visitors to /signin
+  Always enforce request timeout even with a caller signal
   Sign-out clears local session
   Sign-in autocomplete attributes
 

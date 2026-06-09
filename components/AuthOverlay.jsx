@@ -34,11 +34,23 @@ export default function AuthOverlay() {
     }
   }, [visible]);
 
+  // Invoke parked 401 retries (apiRequest, Utilities.js) here in event handlers —
+  // not in the reducer, which must stay pure. Each callback settles the awaiting
+  // apiRequest promise: 'success' retries the request, 'cancel' rejects it so a
+  // dismissed overlay never leaves a caller hanging.
+  function runPendingCallbacks(outcome) {
+    for (const cb of state.authOverlay.pendingCallbacks) {
+      try { cb(outcome); } catch (e) { console.error('Auth callback error:', e); }
+    }
+  }
+
   function handleClose() {
+    runPendingCallbacks('cancel');
     dispatch({ type: 'HIDE_AUTH_OVERLAY' });
   }
 
   function handleSuccess() {
+    runPendingCallbacks('success');
     dispatch({ type: 'AUTH_OVERLAY_SUCCESS' });
   }
 

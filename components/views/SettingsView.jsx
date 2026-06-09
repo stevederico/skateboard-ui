@@ -19,7 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../../shadcn/ui/alert-dialog.jsx';
-import { showCheckout, showManage } from '../core/Utilities';
+import { showCheckout, showManage, isAuthOverlayEnabled } from '../core/Utilities';
 
 /**
  * User settings page with account info, sign out, support contact,
@@ -46,8 +46,9 @@ export default function SettingsView() {
   const showAuth = (constants.noLogin === false || typeof constants.noLogin === 'undefined') && user;
 
   function signOutClicked() {
-    dispatch({ type: 'CLEAR_USER', payload: null });
-    navigate('/signin');
+    // Route through the canonical /signout flow (clears the server session and
+    // local user, then lands on the landing page) instead of a local-only clear.
+    navigate('/signout');
   }
 
   function getBillingDescription() {
@@ -79,7 +80,7 @@ export default function SettingsView() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    if (constants.authOverlay !== false) {
+                    if (isAuthOverlayEnabled()) {
                       dispatch({ type: 'SHOW_AUTH_OVERLAY' });
                     } else {
                       navigate('/signin');

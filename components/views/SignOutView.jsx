@@ -7,8 +7,8 @@ import { Spinner } from '../../shadcn/ui/spinner.jsx';
 /**
  * Sign-out handler page.
  *
- * Calls POST /signout on mount to clear the server session,
- * then redirects to /signin.
+ * Calls POST /signout on mount to clear the server session and local user
+ * state, then redirects to the landing page ("/").
  *
  * @returns {JSX.Element} Sign-out loading screen
  *
@@ -37,7 +37,7 @@ function SignOutView() {
         console.error('Sign out error:', error);
       } finally {
         dispatch({ type: 'CLEAR_USER' });
-        navigate('/signin', { replace: true });
+        navigate('/', { replace: true });
       }
     };
 
