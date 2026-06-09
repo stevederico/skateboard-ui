@@ -1,4 +1,4 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
@@ -8,74 +8,74 @@ import {
   useCollapsiblePanel,
   useCollapsibleRoot,
   useCollapsibleRootContext
-} from "./_chunk-wana68v3.js";
+} from "./_chunk-6adaer33.js";
 import {
   useCompositeListItem
-} from "./_chunk-ek863ta9.js";
+} from "./_chunk-3enq1vat.js";
 import {
   isElementDisabled
-} from "./_chunk-vdc01ss3.js";
+} from "./_chunk-26cc610z.js";
 import {
   CompositeList
-} from "./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
+} from "./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
 import {
   useDirection
-} from "./_chunk-wtw745qd.js";
+} from "./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   ARROW_DOWN,
   ARROW_LEFT,
   ARROW_RIGHT,
   ARROW_UP,
-  END,
-  HOME
-} from "./_chunk-qce0xt57.js";
+  COMPOSITE_KEYS
+} from "./_chunk-pv7b791x.js";
 import {
   stopEvent
-} from "./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-f5d01bp9.js";
-import"./_chunk-mvv30fkv.js";
+} from "./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import"./_chunk-x11e1k9r.js";
+import"./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
-  transitionStatusMapping,
-  useOpenChangeComplete
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+  transitionStatusMapping
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
+  resolveStyle,
   useMergedRefs,
   useRenderElement,
   warn
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/index.parts.js
+// node_modules/@base-ui/react/esm/accordion/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Trigger: () => AccordionTrigger,
@@ -85,10 +85,10 @@ __export(exports_index_parts, {
   Header: () => AccordionHeader
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/root/AccordionRoot.js
+// node_modules/@base-ui/react/esm/accordion/root/AccordionRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/root/AccordionRootContext.js
+// node_modules/@base-ui/react/esm/accordion/root/AccordionRootContext.js
 import * as React from "react";
 "use client";
 var AccordionRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -102,7 +102,7 @@ function useAccordionRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/root/AccordionRoot.js
+// node_modules/@base-ui/react/esm/accordion/root/AccordionRoot.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var rootStateAttributesMapping = {
@@ -116,7 +116,7 @@ var AccordionRoot = /* @__PURE__ */ React2.forwardRef(function AccordionRoot2(co
     hiddenUntilFound: hiddenUntilFoundProp,
     keepMounted: keepMountedProp,
     loopFocus = true,
-    onValueChange: onValueChangeProp,
+    onValueChange,
     multiple = false,
     orientation = "vertical",
     value: valueProp,
@@ -128,7 +128,7 @@ var AccordionRoot = /* @__PURE__ */ React2.forwardRef(function AccordionRoot2(co
   if (true) {
     useIsoLayoutEffect(() => {
       if (hiddenUntilFoundProp && keepMountedProp === false) {
-        warn("The `keepMounted={false}` prop on a Accordion.Root will be ignored when using `hiddenUntilFound` since it requires Panels to remain mounted when closed.");
+        warn("The `keepMounted={false}` prop on `Accordion.Root` is ignored when `hiddenUntilFound` is enabled, since panels must remain mounted while closed.");
       }
     }, [hiddenUntilFoundProp, keepMountedProp]);
   }
@@ -138,7 +138,6 @@ var AccordionRoot = /* @__PURE__ */ React2.forwardRef(function AccordionRoot2(co
     }
     return;
   }, [valueProp, defaultValueProp]);
-  const onValueChange = useStableCallback(onValueChangeProp);
   const accordionItemRefs = React2.useRef([]);
   const [value, setValue] = useControlled({
     controlled: valueProp,
@@ -150,7 +149,7 @@ var AccordionRoot = /* @__PURE__ */ React2.forwardRef(function AccordionRoot2(co
     const details = createChangeEventDetails(exports_reason_parts.none);
     if (!multiple) {
       const nextValue = value[0] === newValue ? [] : [newValue];
-      onValueChange(nextValue, details);
+      onValueChange?.(nextValue, details);
       if (details.isCanceled) {
         return;
       }
@@ -158,14 +157,14 @@ var AccordionRoot = /* @__PURE__ */ React2.forwardRef(function AccordionRoot2(co
     } else if (nextOpen) {
       const nextOpenValues = value.slice();
       nextOpenValues.push(newValue);
-      onValueChange(nextOpenValues, details);
+      onValueChange?.(nextOpenValues, details);
       if (details.isCanceled) {
         return;
       }
       setValue(nextOpenValues);
     } else {
       const nextOpenValues = value.filter((v) => v !== newValue);
-      onValueChange(nextOpenValues, details);
+      onValueChange?.(nextOpenValues, details);
       if (details.isCanceled) {
         return;
       }
@@ -208,10 +207,10 @@ var AccordionRoot = /* @__PURE__ */ React2.forwardRef(function AccordionRoot2(co
 });
 if (true)
   AccordionRoot.displayName = "AccordionRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/item/AccordionItem.js
+// node_modules/@base-ui/react/esm/accordion/item/AccordionItem.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/item/AccordionItemContext.js
+// node_modules/@base-ui/react/esm/accordion/item/AccordionItemContext.js
 import * as React3 from "react";
 "use client";
 var AccordionItemContext = /* @__PURE__ */ React3.createContext(undefined);
@@ -225,7 +224,7 @@ function useAccordionItemContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/item/AccordionItemDataAttributes.js
+// node_modules/@base-ui/react/esm/accordion/item/AccordionItemDataAttributes.js
 var AccordionItemDataAttributes = /* @__PURE__ */ function(AccordionItemDataAttributes2) {
   AccordionItemDataAttributes2["index"] = "data-index";
   AccordionItemDataAttributes2["disabled"] = "data-disabled";
@@ -233,7 +232,7 @@ var AccordionItemDataAttributes = /* @__PURE__ */ function(AccordionItemDataAttr
   return AccordionItemDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/item/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/accordion/item/stateAttributesMapping.js
 var accordionStateAttributesMapping = {
   ...collapsibleOpenStateMapping,
   index: (value) => {
@@ -245,7 +244,7 @@ var accordionStateAttributesMapping = {
   value: () => null
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/item/AccordionItem.js
+// node_modules/@base-ui/react/esm/accordion/item/AccordionItem.js
 import { jsx as _jsx2 } from "react/jsx-runtime";
 "use client";
 var AccordionItem = /* @__PURE__ */ React4.forwardRef(function AccordionItem2(componentProps, forwardedRef) {
@@ -298,9 +297,8 @@ var AccordionItem = /* @__PURE__ */ React4.forwardRef(function AccordionItem2(co
   const collapsibleState = React4.useMemo(() => ({
     open: collapsible.open,
     disabled: collapsible.disabled,
-    hidden: !collapsible.mounted,
     transitionStatus: collapsible.transitionStatus
-  }), [collapsible.open, collapsible.disabled, collapsible.mounted, collapsible.transitionStatus]);
+  }), [collapsible.open, collapsible.disabled, collapsible.transitionStatus]);
   const collapsibleContext = React4.useMemo(() => ({
     ...collapsible,
     onOpenChange,
@@ -308,11 +306,13 @@ var AccordionItem = /* @__PURE__ */ React4.forwardRef(function AccordionItem2(co
   }), [collapsible, collapsibleState, onOpenChange]);
   const state = React4.useMemo(() => ({
     ...rootState,
+    hidden: !isOpen && !collapsible.mounted,
     index,
     disabled,
     open: isOpen
-  }), [disabled, index, isOpen, rootState]);
-  const [triggerId, setTriggerId] = React4.useState(useBaseUiId());
+  }), [collapsible.mounted, disabled, index, isOpen, rootState]);
+  const defaultTriggerId = useBaseUiId();
+  const [triggerId, setTriggerId] = React4.useState(defaultTriggerId);
   const accordionItemContext = React4.useMemo(() => ({
     open: isOpen,
     state,
@@ -335,7 +335,7 @@ var AccordionItem = /* @__PURE__ */ React4.forwardRef(function AccordionItem2(co
 });
 if (true)
   AccordionItem.displayName = "AccordionItem";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/header/AccordionHeader.js
+// node_modules/@base-ui/react/esm/accordion/header/AccordionHeader.js
 import * as React5 from "react";
 "use client";
 var AccordionHeader = /* @__PURE__ */ React5.forwardRef(function AccordionHeader2(componentProps, forwardedRef) {
@@ -358,10 +358,9 @@ var AccordionHeader = /* @__PURE__ */ React5.forwardRef(function AccordionHeader
 });
 if (true)
   AccordionHeader.displayName = "AccordionHeader";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/trigger/AccordionTrigger.js
+// node_modules/@base-ui/react/esm/accordion/trigger/AccordionTrigger.js
 import * as React6 from "react";
 "use client";
-var SUPPORTED_KEYS = new Set([ARROW_DOWN, ARROW_UP, ARROW_RIGHT, ARROW_LEFT, HOME, END]);
 function getActiveTriggers(accordionItemRefs) {
   const {
     current: accordionItemElements
@@ -425,14 +424,14 @@ var AccordionTrigger = /* @__PURE__ */ React6.forwardRef(function AccordionTrigg
       setTriggerId(undefined);
     };
   }, [idProp, setTriggerId]);
-  const props = React6.useMemo(() => ({
+  const props = {
     "aria-controls": open ? panelId : undefined,
     "aria-expanded": open,
     id,
     tabIndex: 0,
     onClick: handleTrigger,
     onKeyDown(event) {
-      if (!SUPPORTED_KEYS.has(event.key)) {
+      if (!COMPOSITE_KEYS.has(event.key)) {
         return;
       }
       stopEvent(event);
@@ -497,7 +496,7 @@ var AccordionTrigger = /* @__PURE__ */ React6.forwardRef(function AccordionTrigg
         triggers[nextIndex].focus();
       }
     }
-  }), [accordionItemRefs, handleTrigger, id, isHorizontal, isRtl, loopFocus, open, panelId]);
+  };
   const element = useRenderElement("button", componentProps, {
     state,
     ref: [forwardedRef, buttonRef],
@@ -508,17 +507,17 @@ var AccordionTrigger = /* @__PURE__ */ React6.forwardRef(function AccordionTrigg
 });
 if (true)
   AccordionTrigger.displayName = "AccordionTrigger";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/panel/AccordionPanel.js
+// node_modules/@base-ui/react/esm/accordion/panel/AccordionPanel.js
 import * as React7 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/panel/AccordionPanelCssVars.js
+// node_modules/@base-ui/react/esm/accordion/panel/AccordionPanelCssVars.js
 var AccordionPanelCssVars = /* @__PURE__ */ function(AccordionPanelCssVars2) {
   AccordionPanelCssVars2["accordionPanelHeight"] = "--accordion-panel-height";
   AccordionPanelCssVars2["accordionPanelWidth"] = "--accordion-panel-width";
   return AccordionPanelCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/accordion/panel/AccordionPanel.js
+// node_modules/@base-ui/react/esm/accordion/panel/AccordionPanel.js
 "use client";
 var AccordionPanel = /* @__PURE__ */ React7.forwardRef(function AccordionPanel2(componentProps, forwardedRef) {
   const {
@@ -535,24 +534,12 @@ var AccordionPanel = /* @__PURE__ */ React7.forwardRef(function AccordionPanel2(
     keepMounted: contextKeepMounted
   } = useAccordionRootContext();
   const {
-    abortControllerRef,
-    animationTypeRef,
-    height,
     mounted,
     onOpenChange,
     open,
     panelId,
-    panelRef,
-    runOnceAnimationsFinish,
-    setDimensions,
-    setHiddenUntilFound,
-    setKeepMounted,
     setMounted,
     setOpen,
-    setVisible,
-    transitionDimensionRef,
-    visible,
-    width,
     setPanelIdState,
     transitionStatus
   } = useCollapsibleRootContext();
@@ -561,7 +548,7 @@ var AccordionPanel = /* @__PURE__ */ React7.forwardRef(function AccordionPanel2(
   if (true) {
     useIsoLayoutEffect(() => {
       if (keepMountedProp === false && hiddenUntilFound) {
-        warn("The `keepMounted={false}` prop on a Accordion.Panel will be ignored when using `contextHiddenUntilFound` on the Panel or the Root since it requires the panel to remain mounted when closed.");
+        warn("The `keepMounted={false}` prop on an `Accordion.Panel` is ignored when `hiddenUntilFound` is enabled on the panel or root, since the panel must remain mounted while closed.");
       }
     }, [hiddenUntilFound, keepMountedProp]);
   }
@@ -574,70 +561,63 @@ var AccordionPanel = /* @__PURE__ */ React7.forwardRef(function AccordionPanel2(
     }
     return;
   }, [idProp, setPanelIdState]);
-  useIsoLayoutEffect(() => {
-    setHiddenUntilFound(hiddenUntilFound);
-  }, [setHiddenUntilFound, hiddenUntilFound]);
-  useIsoLayoutEffect(() => {
-    setKeepMounted(keepMounted);
-  }, [setKeepMounted, keepMounted]);
-  useOpenChangeComplete({
-    open: open && transitionStatus === "idle",
-    ref: panelRef,
-    onComplete() {
-      if (!open) {
-        return;
-      }
-      setDimensions({
-        width: undefined,
-        height: undefined
-      });
-    }
-  });
   const {
-    props
-  } = useCollapsiblePanel({
-    abortControllerRef,
-    animationTypeRef,
-    externalRef: forwardedRef,
     height,
+    props,
+    ref,
+    shouldPreventOpenAnimation,
+    shouldRender,
+    transitionStatus: panelTransitionStatus,
+    width
+  } = useCollapsiblePanel({
+    externalRef: forwardedRef,
     hiddenUntilFound,
     id: idProp ?? panelId,
     keepMounted,
     mounted,
     onOpenChange,
     open,
-    panelRef,
-    runOnceAnimationsFinish,
-    setDimensions,
     setMounted,
     setOpen,
-    setVisible,
-    transitionDimensionRef,
-    visible,
-    width
+    transitionStatus
   });
   const {
     state,
     triggerId
   } = useAccordionItemContext();
-  const panelState = React7.useMemo(() => ({
+  const panelState = {
     ...state,
-    transitionStatus
-  }), [state, transitionStatus]);
-  const element = useRenderElement("div", componentProps, {
+    transitionStatus: panelTransitionStatus
+  };
+  const resolvedStyle = resolveStyle(style, panelState);
+  const element = useRenderElement("div", {
+    ...componentProps,
+    style: undefined
+  }, {
     state: panelState,
-    ref: [forwardedRef, panelRef],
-    props: [props, {
-      "aria-labelledby": triggerId,
-      role: "region",
-      style: {
-        [AccordionPanelCssVars.accordionPanelHeight]: height === undefined ? "auto" : `${height}px`,
-        [AccordionPanelCssVars.accordionPanelWidth]: width === undefined ? "auto" : `${width}px`
-      }
-    }, elementProps],
+    ref,
+    props: [
+      props,
+      {
+        "aria-labelledby": triggerId,
+        role: "region",
+        style: {
+          [AccordionPanelCssVars.accordionPanelHeight]: height === undefined ? "auto" : `${height}px`,
+          [AccordionPanelCssVars.accordionPanelWidth]: width === undefined ? "auto" : `${width}px`
+        }
+      },
+      elementProps,
+      resolvedStyle ? {
+        style: resolvedStyle
+      } : undefined,
+      shouldPreventOpenAnimation ? {
+        style: {
+          animationName: "none"
+        }
+      } : undefined
+    ],
     stateAttributesMapping: accordionStateAttributesMapping
   });
-  const shouldRender = keepMounted || hiddenUntilFound || mounted;
   if (!shouldRender) {
     return null;
   }

@@ -1,50 +1,56 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useTriggerFocusGuards
-} from "./_chunk-0xhx4g7r.js";
+} from "./_chunk-8ganmsbg.js";
 import {
   useAnchoredPopupScrollLock
-} from "./_chunk-agc6ew3g.js";
+} from "./_chunk-ebyxgtb4.js";
 import {
   useToolbarRootContext
-} from "./_chunk-y887e46p.js";
+} from "./_chunk-mnd0j7v9.js";
 import {
   usePopupViewport
-} from "./_chunk-q7yw9mz4.js";
-import"./_chunk-gfce3j3z.js";
+} from "./_chunk-qbezxj1g.js";
+import"./_chunk-m307wpdj.js";
 import {
   adaptiveOrigin,
   getDisabledMountTransitionStyles,
   useAnchorPositioning,
   usePositioner
-} from "./_chunk-502wngfc.js";
-import"./_chunk-xfagb0fq.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-fqry7pew.js";
+import"./_chunk-xcqbtm2f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   InternalBackdrop,
-  useOpenInteractionType
-} from "./_chunk-q3nee19r.js";
+  useOpenMethodTriggerProps
+} from "./_chunk-ytnp24gq.js";
 import {
   createInitialPopupStoreState,
-  popupStoreSelectors,
-  useImplicitActiveTrigger,
-  useOpenStateTransitions,
-  useTriggerDataForwarding
-} from "./_chunk-7jjzay8b.js";
+  createPopupFloatingRootContext,
+  popupStoreSelectors
+} from "./_chunk-q5cg71p7.js";
 import {
-  useOnFirstRender
-} from "./_chunk-f09cp81f.js";
-import"./_chunk-f9tgee1q.js";
+  FOCUSABLE_POPUP_PROPS,
+  setOpenTriggerState,
+  useImplicitActiveTrigger,
+  useOnFirstRender,
+  useOpenStateTransitions,
+  usePopupInteractionProps,
+  usePopupRootSync,
+  usePopupStore,
+  useTriggerDataForwarding
+} from "./_chunk-242gh8ph.js";
+import"./_chunk-5gaqyne5.js";
 import {
   popupStateMapping,
   pressableTriggerOpenStateMapping,
   triggerOpenStateMapping
-} from "./_chunk-536jvgeq.js";
+} from "./_chunk-t7ppm3t0.js";
 import {
   inertValue
-} from "./_chunk-9nyxkvte.js";
+} from "./_chunk-3cpd1vjz.js";
 import {
   CLICK_TRIGGER_IDENTIFIER,
   FloatingFocusManager,
@@ -63,68 +69,63 @@ import {
   useFloatingNodeId,
   useFloatingParentNodeId,
   useHoverFloatingInteraction,
-  useHoverReferenceInteraction,
-  useInteractions,
-  useRole,
-  useSyncedFloatingRootContext
-} from "./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import"./_chunk-xb7ph1ka.js";
-import"./_chunk-atnkefgd.js";
-import"./_chunk-drfb9kp2.js";
+  useHoverReferenceInteraction
+} from "./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
+import"./_chunk-cgptgywc.js";
 import {
   COMPOSITE_KEYS
-} from "./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
+} from "./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
 import {
   Timeout
-} from "./_chunk-7v1t86x1.js";
-import"./_chunk-cwr896nf.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
-import"./_chunk-mvv30fkv.js";
+} from "./_chunk-b6dkjkbw.js";
+import"./_chunk-s5pwkz8v.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
+import"./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   transitionStatusMapping,
   useAnimationsFinished,
   useOpenChangeComplete
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import {
-  useOnMount
-} from "./_chunk-8jz3hb7q.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
 import {
   isHTMLElement
-} from "./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
-  useRefWithInit,
+  EMPTY_OBJECT,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
-  __export
-} from "./_chunk-1e6khrvm.js";
+  __export,
+  mergeProps
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/index.parts.js
+// node_modules/@base-ui/react/esm/popover/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   createHandle: () => createPopoverHandle,
@@ -142,10 +143,10 @@ __export(exports_index_parts, {
   Arrow: () => PopoverArrow
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/root/PopoverRoot.js
+// node_modules/@base-ui/react/esm/popover/root/PopoverRoot.js
 import * as React3 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/root/PopoverRootContext.js
+// node_modules/@base-ui/react/esm/popover/root/PopoverRootContext.js
 import * as React from "react";
 "use client";
 var PopoverRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -159,9 +160,10 @@ function usePopoverRootContext(optional) {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/store/PopoverStore.js
+// node_modules/@base-ui/react/esm/popover/store/PopoverStore.js
 import * as React2 from "react";
 import * as ReactDOM from "react-dom";
+"use client";
 function createInitialState() {
   return {
     ...createInitialPopupStoreState(),
@@ -197,14 +199,16 @@ var selectors = {
 };
 
 class PopoverStore extends ReactStore {
-  constructor(initialState) {
+  constructor(initialState, floatingId, nested = false) {
     const initial = {
       ...createInitialState(),
       ...initialState
     };
+    const triggerElements = new PopupTriggerMap;
     if (initial.open && initialState?.mounted === undefined) {
       initial.mounted = true;
     }
+    initial.floatingRootContext = createPopupFloatingRootContext(triggerElements, floatingId, nested);
     super(initial, {
       popupRef: /* @__PURE__ */ React2.createRef(),
       backdropRef: /* @__PURE__ */ React2.createRef(),
@@ -214,7 +218,7 @@ class PopoverStore extends ReactStore {
       triggerFocusTargetRef: /* @__PURE__ */ React2.createRef(),
       beforeContentFocusGuardRef: /* @__PURE__ */ React2.createRef(),
       stickIfOpenTimeout: new Timeout,
-      triggerElements: new PopupTriggerMap
+      triggerElements
     }, selectors);
   }
   setOpen = (nextOpen, eventDetails) => {
@@ -224,6 +228,10 @@ class PopoverStore extends ReactStore {
     eventDetails.preventUnmountOnClose = () => {
       this.set("preventUnmountingOnClose", true);
     };
+    const activeTriggerId = this.select("activeTriggerId");
+    if (!nextOpen && eventDetails.reason === exports_reason_parts.closePress && eventDetails.trigger == null && activeTriggerId != null) {
+      eventDetails.trigger = this.context.triggerElements.getById(activeTriggerId) ?? this.select("activeTriggerElement") ?? undefined;
+    }
     this.context.onOpenChange?.(nextOpen, eventDetails);
     if (eventDetails.isCanceled) {
       return;
@@ -234,11 +242,7 @@ class PopoverStore extends ReactStore {
         open: nextOpen,
         openChangeReason: eventDetails.reason
       };
-      const newTriggerId = eventDetails.trigger?.id ?? null;
-      if (newTriggerId || nextOpen) {
-        updatedState.activeTriggerId = newTriggerId;
-        updatedState.activeTriggerElement = eventDetails.trigger ?? null;
-      }
+      setOpenTriggerState(updatedState, nextOpen, eventDetails.trigger);
       this.update(updatedState);
     };
     if (isHover) {
@@ -259,11 +263,11 @@ class PopoverStore extends ReactStore {
     }
   };
   static useStore(externalStore, initialState) {
-    const internalStore = useRefWithInit(() => {
-      return new PopoverStore(initialState);
-    }).current;
-    const store = externalStore ?? internalStore;
-    useOnMount(internalStore.disposeEffect);
+    const {
+      store,
+      internalStore
+    } = usePopupStore(externalStore, (floatingId, nested) => new PopoverStore(initialState, floatingId, nested));
+    React2.useEffect(() => internalStore?.disposeEffect(), [internalStore]);
     return store;
   }
   disposeEffect = () => {
@@ -271,8 +275,8 @@ class PopoverStore extends ReactStore {
   };
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/root/PopoverRoot.js
-import { jsx as _jsx } from "react/jsx-runtime";
+// node_modules/@base-ui/react/esm/popover/root/PopoverRoot.js
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 function PopoverRootComponent({
   props
@@ -306,13 +310,12 @@ function PopoverRootComponent({
   store.useControlledProp("openProp", openProp);
   store.useControlledProp("triggerIdProp", triggerIdProp);
   const open = store.useState("open");
+  const mounted = store.useState("mounted");
   const payload = store.useState("payload");
+  const nested = useFloatingParentNodeId() != null;
   store.useContextCallback("onOpenChange", onOpenChange);
   store.useContextCallback("onOpenChangeComplete", onOpenChangeComplete);
-  const {
-    openMethod,
-    triggerProps: interactionTypeTriggerProps
-  } = useOpenInteractionType(open);
+  usePopupRootSync(store, open);
   useImplicitActiveTrigger(store);
   const {
     forceUnmount
@@ -321,6 +324,10 @@ function PopoverRootComponent({
       stickIfOpen: true,
       openChangeReason: null
     });
+  });
+  store.useSyncedValues({
+    modal,
+    nested
   });
   React3.useEffect(() => {
     if (!open) {
@@ -334,48 +341,18 @@ function PopoverRootComponent({
     unmount: forceUnmount,
     close: handleImperativeClose
   }), [forceUnmount, handleImperativeClose]);
-  const floatingRootContext = useSyncedFloatingRootContext({
-    popupStore: store,
-    onOpenChange: store.setOpen
-  });
-  const dismiss = useDismiss(floatingRootContext, {
-    outsidePressEvent: {
-      mouse: modal === "trap-focus" ? "sloppy" : "intentional",
-      touch: "sloppy"
-    }
-  });
-  const role = useRole(floatingRootContext);
-  const {
-    getReferenceProps,
-    getFloatingProps,
-    getTriggerProps
-  } = useInteractions([dismiss, role]);
-  const activeTriggerProps = React3.useMemo(() => {
-    return getReferenceProps(interactionTypeTriggerProps);
-  }, [getReferenceProps, interactionTypeTriggerProps]);
-  const inactiveTriggerProps = React3.useMemo(() => {
-    return getTriggerProps(interactionTypeTriggerProps);
-  }, [getTriggerProps, interactionTypeTriggerProps]);
-  const popupProps = React3.useMemo(() => {
-    return getFloatingProps();
-  }, [getFloatingProps]);
-  store.useSyncedValues({
-    modal,
-    openMethod,
-    activeTriggerProps,
-    inactiveTriggerProps,
-    popupProps,
-    floatingRootContext,
-    nested: useFloatingParentNodeId() != null
-  });
+  const shouldRenderInteractions = open || mounted;
   const popoverContext = React3.useMemo(() => ({
     store
   }), [store]);
-  return /* @__PURE__ */ _jsx(PopoverRootContext.Provider, {
+  return /* @__PURE__ */ _jsxs(PopoverRootContext.Provider, {
     value: popoverContext,
-    children: typeof children === "function" ? children({
+    children: [shouldRenderInteractions && /* @__PURE__ */ _jsx(PopoverInteractions, {
+      store,
+      modal
+    }), typeof children === "function" ? children({
       payload
-    }) : children
+    }) : children]
   });
 }
 function PopoverRoot(props) {
@@ -390,19 +367,41 @@ function PopoverRoot(props) {
     })
   });
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/trigger/PopoverTrigger.js
+function PopoverInteractions({
+  store,
+  modal
+}) {
+  const floatingRootContext = store.useState("floatingRootContext");
+  const dismiss = useDismiss(floatingRootContext, {
+    outsidePressEvent: {
+      mouse: modal === "trap-focus" ? "sloppy" : "intentional",
+      touch: "sloppy"
+    }
+  });
+  const activeTriggerProps = dismiss.reference ?? EMPTY_OBJECT;
+  const inactiveTriggerProps = dismiss.trigger ?? EMPTY_OBJECT;
+  const popupProps = React3.useMemo(() => mergeProps(FOCUSABLE_POPUP_PROPS, dismiss.floating), [dismiss.floating]);
+  usePopupInteractionProps(store, {
+    activeTriggerProps,
+    inactiveTriggerProps,
+    popupProps
+  });
+  return null;
+}
+// node_modules/@base-ui/react/esm/popover/trigger/PopoverTrigger.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/utils/constants.js
+// node_modules/@base-ui/react/esm/popover/utils/constants.js
 var OPEN_DELAY = 300;
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/trigger/PopoverTrigger.js
-import { jsx as _jsx2, jsxs as _jsxs } from "react/jsx-runtime";
+// node_modules/@base-ui/react/esm/popover/trigger/PopoverTrigger.js
+import { jsx as _jsx2, jsxs as _jsxs2 } from "react/jsx-runtime";
 "use client";
 var PopoverTrigger = /* @__PURE__ */ React4.forwardRef(function PopoverTrigger2(componentProps, forwardedRef) {
   const {
     render,
     className,
+    style,
     disabled = false,
     nativeButton = true,
     handle,
@@ -411,7 +410,6 @@ var PopoverTrigger = /* @__PURE__ */ React4.forwardRef(function PopoverTrigger2(
     delay = OPEN_DELAY,
     closeDelay = 0,
     id: idProp,
-    style,
     ...elementProps
   } = componentProps;
   const rootContext = usePopoverRootContext(true);
@@ -423,6 +421,7 @@ var PopoverTrigger = /* @__PURE__ */ React4.forwardRef(function PopoverTrigger2(
   const isTriggerActive = store.useState("isTriggerActive", thisTriggerId);
   const floatingContext = store.useState("floatingRootContext");
   const isOpenedByThisTrigger = store.useState("isOpenedByTrigger", thisTriggerId);
+  const popupId = store.useState("triggerPopupId", thisTriggerId);
   const triggerElementRef = React4.useRef(null);
   const {
     registerTrigger,
@@ -454,12 +453,10 @@ var PopoverTrigger = /* @__PURE__ */ React4.forwardRef(function PopoverTrigger2(
     enabled: floatingContext != null,
     stickIfOpen
   });
-  const localProps = useInteractions([click]);
+  const interactionTypeProps = useOpenMethodTriggerProps(() => store.select("open"), (interactionType) => {
+    store.set("openMethod", interactionType);
+  });
   const rootTriggerProps = store.useState("triggerProps", isMountedByThisTrigger);
-  const state = {
-    disabled,
-    open: isOpenedByThisTrigger
-  };
   const {
     getButtonProps,
     buttonRef
@@ -467,30 +464,37 @@ var PopoverTrigger = /* @__PURE__ */ React4.forwardRef(function PopoverTrigger2(
     disabled,
     native: nativeButton
   });
-  const stateAttributesMapping = React4.useMemo(() => ({
+  const stateAttributesMapping = {
     open(value) {
       if (value && openReason === exports_reason_parts.triggerPress) {
         return pressableTriggerOpenStateMapping.open(value);
       }
       return triggerOpenStateMapping.open(value);
     }
-  }), [openReason]);
-  const element = useRenderElement("button", componentProps, {
-    state,
-    ref: [buttonRef, forwardedRef, registerTrigger, triggerElementRef],
-    props: [localProps.getReferenceProps(), hoverProps, rootTriggerProps, {
-      [CLICK_TRIGGER_IDENTIFIER]: "",
-      id: thisTriggerId
-    }, elementProps, getButtonProps],
-    stateAttributesMapping
-  });
+  };
   const {
     preFocusGuardRef,
     handlePreFocusGuardFocus,
     handleFocusTargetFocus
   } = useTriggerFocusGuards(store, triggerElementRef);
-  if (isTriggerActive && !focusManagerModal) {
-    return /* @__PURE__ */ _jsxs(React4.Fragment, {
+  const state = {
+    disabled,
+    open: isOpenedByThisTrigger
+  };
+  const element = useRenderElement("button", componentProps, {
+    state,
+    ref: [buttonRef, forwardedRef, registerTrigger, triggerElementRef],
+    props: [click.reference, hoverProps, rootTriggerProps, interactionTypeProps, {
+      [CLICK_TRIGGER_IDENTIFIER]: "",
+      id: thisTriggerId,
+      "aria-haspopup": "dialog",
+      "aria-expanded": isOpenedByThisTrigger,
+      "aria-controls": popupId
+    }, elementProps, getButtonProps],
+    stateAttributesMapping
+  });
+  if (isMountedByThisTrigger && !focusManagerModal) {
+    return /* @__PURE__ */ _jsxs2(React4.Fragment, {
       children: [/* @__PURE__ */ _jsx2(FocusGuard, {
         ref: preFocusGuardRef,
         onFocus: handlePreFocusGuardFocus
@@ -508,10 +512,10 @@ var PopoverTrigger = /* @__PURE__ */ React4.forwardRef(function PopoverTrigger2(
 });
 if (true)
   PopoverTrigger.displayName = "PopoverTrigger";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/portal/PopoverPortal.js
+// node_modules/@base-ui/react/esm/popover/portal/PopoverPortal.js
 import * as React6 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/portal/PopoverPortalContext.js
+// node_modules/@base-ui/react/esm/popover/portal/PopoverPortalContext.js
 import * as React5 from "react";
 "use client";
 var PopoverPortalContext = /* @__PURE__ */ React5.createContext(undefined);
@@ -525,7 +529,7 @@ function usePopoverPortalContext() {
   return value;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/portal/PopoverPortal.js
+// node_modules/@base-ui/react/esm/popover/portal/PopoverPortal.js
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
 var PopoverPortal = /* @__PURE__ */ React6.forwardRef(function PopoverPortal2(props, forwardedRef) {
@@ -551,10 +555,10 @@ var PopoverPortal = /* @__PURE__ */ React6.forwardRef(function PopoverPortal2(pr
 });
 if (true)
   PopoverPortal.displayName = "PopoverPortal";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/positioner/PopoverPositioner.js
+// node_modules/@base-ui/react/esm/popover/positioner/PopoverPositioner.js
 import * as React8 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/positioner/PopoverPositionerContext.js
+// node_modules/@base-ui/react/esm/popover/positioner/PopoverPositionerContext.js
 import * as React7 from "react";
 "use client";
 var PopoverPositionerContext = /* @__PURE__ */ React7.createContext(undefined);
@@ -568,13 +572,14 @@ function usePopoverPositionerContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/positioner/PopoverPositioner.js
-import { jsx as _jsx4, jsxs as _jsxs2 } from "react/jsx-runtime";
+// node_modules/@base-ui/react/esm/popover/positioner/PopoverPositioner.js
+import { jsx as _jsx4, jsxs as _jsxs3 } from "react/jsx-runtime";
 "use client";
 var PopoverPositioner = /* @__PURE__ */ React8.forwardRef(function PopoverPositioner2(componentProps, forwardedRef) {
   const {
     render,
     className,
+    style,
     anchor,
     positionMethod = "absolute",
     side = "bottom",
@@ -587,7 +592,6 @@ var PopoverPositioner = /* @__PURE__ */ React8.forwardRef(function PopoverPositi
     sticky = false,
     disableAnchorTracking = false,
     collisionAvoidance = POPUP_COLLISION_AVOIDANCE,
-    style,
     ...elementProps
   } = componentProps;
   const {
@@ -646,6 +650,10 @@ var PopoverPositioner = /* @__PURE__ */ React8.forwardRef(function PopoverPositi
     }
     return;
   }, [domReference, runOnceAnimationsFinish, store]);
+  useAnchoredPopupScrollLock(open && modal === true && openReason !== exports_reason_parts.triggerHover, openMethod === "touch", positionerElement, triggerElement);
+  const setPositionerElement = React8.useCallback((element2) => {
+    store.set("positionerElement", element2);
+  }, [store]);
   const state = {
     open,
     side: positioning.side,
@@ -653,10 +661,6 @@ var PopoverPositioner = /* @__PURE__ */ React8.forwardRef(function PopoverPositi
     anchorHidden: positioning.anchorHidden,
     instant: instantType
   };
-  useAnchoredPopupScrollLock(open && modal === true && openReason !== exports_reason_parts.triggerHover, openMethod === "touch", positionerElement, triggerElement);
-  const setPositionerElement = React8.useCallback((element2) => {
-    store.set("positionerElement", element2);
-  }, [store]);
   const element = usePositioner(componentProps, state, {
     styles: positioning.positionerStyles,
     transitionStatus,
@@ -665,7 +669,7 @@ var PopoverPositioner = /* @__PURE__ */ React8.forwardRef(function PopoverPositi
     hidden: !mounted,
     inert: !open
   });
-  return /* @__PURE__ */ _jsxs2(PopoverPositionerContext.Provider, {
+  return /* @__PURE__ */ _jsxs3(PopoverPositionerContext.Provider, {
     value: positioning,
     children: [mounted && modal === true && openReason !== exports_reason_parts.triggerHover && /* @__PURE__ */ _jsx4(InternalBackdrop, {
       ref: store.context.internalBackdropRef,
@@ -679,10 +683,10 @@ var PopoverPositioner = /* @__PURE__ */ React8.forwardRef(function PopoverPositi
 });
 if (true)
   PopoverPositioner.displayName = "PopoverPositioner";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/popup/PopoverPopup.js
+// node_modules/@base-ui/react/esm/popover/popup/PopoverPopup.js
 import * as React10 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/utils/closePart.js
+// node_modules/@base-ui/react/esm/utils/closePart.js
 import * as React9 from "react";
 import { jsx as _jsx5 } from "react/jsx-runtime";
 "use client";
@@ -722,7 +726,7 @@ function useClosePartRegistration() {
   }, [context]);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/popup/PopoverPopup.js
+// node_modules/@base-ui/react/esm/popover/popup/PopoverPopup.js
 import { jsx as _jsx6 } from "react/jsx-runtime";
 "use client";
 var stateAttributesMapping = {
@@ -731,11 +735,11 @@ var stateAttributesMapping = {
 };
 var PopoverPopup = /* @__PURE__ */ React10.forwardRef(function PopoverPopup2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
+    style,
     initialFocus,
     finalFocus,
-    style,
     ...elementProps
   } = componentProps;
   const {
@@ -759,6 +763,11 @@ var PopoverPopup = /* @__PURE__ */ React10.forwardRef(function PopoverPopup2(com
   const openReason = store.useState("openChangeReason");
   const activeTriggerElement = store.useState("activeTriggerElement");
   const floatingContext = store.useState("floatingRootContext");
+  const floatingId = floatingContext.useState("floatingId");
+  const disabled = store.useState("disabled");
+  const openOnHover = store.useState("openOnHover");
+  const closeDelay = store.useState("closeDelay");
+  const popupId = elementProps.id ?? floatingId;
   useOpenChangeComplete({
     open,
     ref: store.context.popupRef,
@@ -768,9 +777,6 @@ var PopoverPopup = /* @__PURE__ */ React10.forwardRef(function PopoverPopup2(com
       }
     }
   });
-  const disabled = store.useState("disabled");
-  const openOnHover = store.useState("openOnHover");
-  const closeDelay = store.useState("closeDelay");
   useHoverFloatingInteraction(floatingContext, {
     enabled: openOnHover && !disabled,
     closeDelay
@@ -782,6 +788,11 @@ var PopoverPopup = /* @__PURE__ */ React10.forwardRef(function PopoverPopup2(com
     return true;
   }
   const resolvedInitialFocus = initialFocus === undefined ? defaultInitialFocus : initialFocus;
+  const focusManagerModal = modal !== false && hasClosePart;
+  store.useSyncedValue("focusManagerModal", focusManagerModal);
+  const setPopupElement = React10.useCallback((element2) => {
+    store.set("popupElement", element2);
+  }, [store]);
   const state = {
     open,
     side: positioner.side,
@@ -789,15 +800,13 @@ var PopoverPopup = /* @__PURE__ */ React10.forwardRef(function PopoverPopup2(com
     instant: instantType,
     transitionStatus
   };
-  const focusManagerModal = modal !== false && hasClosePart;
-  store.useSyncedValue("focusManagerModal", focusManagerModal);
-  const setPopupElement = React10.useCallback((element2) => {
-    store.set("popupElement", element2);
-  }, [store]);
   const element = useRenderElement("div", componentProps, {
     state,
     ref: [forwardedRef, store.context.popupRef, setPopupElement],
     props: [popupProps, {
+      id: popupId,
+      role: "dialog",
+      ...FOCUSABLE_POPUP_PROPS,
       "aria-labelledby": titleId,
       "aria-describedby": descriptionId,
       onKeyDown(event) {
@@ -827,13 +836,13 @@ var PopoverPopup = /* @__PURE__ */ React10.forwardRef(function PopoverPopup2(com
 });
 if (true)
   PopoverPopup.displayName = "PopoverPopup";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/arrow/PopoverArrow.js
+// node_modules/@base-ui/react/esm/popover/arrow/PopoverArrow.js
 import * as React11 from "react";
 "use client";
 var PopoverArrow = /* @__PURE__ */ React11.forwardRef(function PopoverArrow2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -867,7 +876,7 @@ var PopoverArrow = /* @__PURE__ */ React11.forwardRef(function PopoverArrow2(com
 });
 if (true)
   PopoverArrow.displayName = "PopoverArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/backdrop/PopoverBackdrop.js
+// node_modules/@base-ui/react/esm/popover/backdrop/PopoverBackdrop.js
 import * as React12 from "react";
 "use client";
 var stateAttributesMapping2 = {
@@ -876,8 +885,8 @@ var stateAttributesMapping2 = {
 };
 var PopoverBackdrop = /* @__PURE__ */ React12.forwardRef(function PopoverBackdrop2(props, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = props;
@@ -910,7 +919,7 @@ var PopoverBackdrop = /* @__PURE__ */ React12.forwardRef(function PopoverBackdro
 });
 if (true)
   PopoverBackdrop.displayName = "PopoverBackdrop";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/title/PopoverTitle.js
+// node_modules/@base-ui/react/esm/popover/title/PopoverTitle.js
 import * as React13 from "react";
 "use client";
 var PopoverTitle = /* @__PURE__ */ React13.forwardRef(function PopoverTitle2(componentProps, forwardedRef) {
@@ -924,12 +933,7 @@ var PopoverTitle = /* @__PURE__ */ React13.forwardRef(function PopoverTitle2(com
     store
   } = usePopoverRootContext();
   const id = useBaseUiId(elementProps.id);
-  useIsoLayoutEffect(() => {
-    store.set("titleElementId", id);
-    return () => {
-      store.set("titleElementId", undefined);
-    };
-  }, [store, id]);
+  store.useSyncedValueWithCleanup("titleElementId", id);
   const element = useRenderElement("h2", componentProps, {
     ref: forwardedRef,
     props: [{
@@ -940,7 +944,7 @@ var PopoverTitle = /* @__PURE__ */ React13.forwardRef(function PopoverTitle2(com
 });
 if (true)
   PopoverTitle.displayName = "PopoverTitle";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/description/PopoverDescription.js
+// node_modules/@base-ui/react/esm/popover/description/PopoverDescription.js
 import * as React14 from "react";
 "use client";
 var PopoverDescription = /* @__PURE__ */ React14.forwardRef(function PopoverDescription2(componentProps, forwardedRef) {
@@ -954,12 +958,7 @@ var PopoverDescription = /* @__PURE__ */ React14.forwardRef(function PopoverDesc
     store
   } = usePopoverRootContext();
   const id = useBaseUiId(elementProps.id);
-  useIsoLayoutEffect(() => {
-    store.set("descriptionElementId", id);
-    return () => {
-      store.set("descriptionElementId", undefined);
-    };
-  }, [store, id]);
+  store.useSyncedValueWithCleanup("descriptionElementId", id);
   const element = useRenderElement("p", componentProps, {
     ref: forwardedRef,
     props: [{
@@ -970,16 +969,16 @@ var PopoverDescription = /* @__PURE__ */ React14.forwardRef(function PopoverDesc
 });
 if (true)
   PopoverDescription.displayName = "PopoverDescription";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/close/PopoverClose.js
+// node_modules/@base-ui/react/esm/popover/close/PopoverClose.js
 import * as React15 from "react";
 "use client";
 var PopoverClose = /* @__PURE__ */ React15.forwardRef(function PopoverClose2(componentProps, forwardedRef) {
   const {
     render,
     className,
+    style,
     disabled = false,
     nativeButton = true,
-    style,
     ...elementProps
   } = componentProps;
   const {
@@ -998,7 +997,7 @@ var PopoverClose = /* @__PURE__ */ React15.forwardRef(function PopoverClose2(com
     ref: [forwardedRef, buttonRef],
     props: [{
       onClick(event) {
-        store.setOpen(false, createChangeEventDetails(exports_reason_parts.closePress, event.nativeEvent, event.currentTarget));
+        store.setOpen(false, createChangeEventDetails(exports_reason_parts.closePress, event.nativeEvent));
       }
     }, elementProps, getButtonProps]
   });
@@ -1006,17 +1005,17 @@ var PopoverClose = /* @__PURE__ */ React15.forwardRef(function PopoverClose2(com
 });
 if (true)
   PopoverClose.displayName = "PopoverClose";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/viewport/PopoverViewport.js
+// node_modules/@base-ui/react/esm/popover/viewport/PopoverViewport.js
 import * as React16 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/viewport/PopoverViewportCssVars.js
+// node_modules/@base-ui/react/esm/popover/viewport/PopoverViewportCssVars.js
 var PopoverViewportCssVars = /* @__PURE__ */ function(PopoverViewportCssVars2) {
   PopoverViewportCssVars2["popupWidth"] = "--popup-width";
   PopoverViewportCssVars2["popupHeight"] = "--popup-height";
   return PopoverViewportCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/viewport/PopoverViewport.js
+// node_modules/@base-ui/react/esm/popover/viewport/PopoverViewport.js
 "use client";
 var stateAttributesMapping3 = {
   activationDirection: (value) => value ? {
@@ -1063,7 +1062,7 @@ var PopoverViewport = /* @__PURE__ */ React16.forwardRef(function PopoverViewpor
 });
 if (true)
   PopoverViewport.displayName = "PopoverViewport";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/popover/store/PopoverHandle.js
+// node_modules/@base-ui/react/esm/popover/store/PopoverHandle.js
 class PopoverHandle {
   constructor() {
     this.store = new PopoverStore;
@@ -1079,7 +1078,7 @@ class PopoverHandle {
     this.store.setOpen(false, createChangeEventDetails(exports_reason_parts.imperativeAction, undefined, undefined));
   }
   get isOpen() {
-    return this.store.state.open;
+    return this.store.select("open");
   }
 }
 function createPopoverHandle() {

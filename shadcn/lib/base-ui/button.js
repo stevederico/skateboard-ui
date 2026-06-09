@@ -1,21 +1,20 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
-import"./_chunk-mznt6ktj.js";
-import"./_chunk-b40erthe.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
+import"./_chunk-5tze5c8q.js";
 import {
   useRenderElement
-} from "./_chunk-1s41sngz.js";
-import"./_chunk-1e6khrvm.js";
+} from "./_chunk-x8xehj6d.js";
+import"./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/button/Button.js
+// node_modules/@base-ui/react/esm/button/Button.js
 import * as React from "react";
 "use client";
 var Button = /* @__PURE__ */ React.forwardRef(function Button2(componentProps, forwardedRef) {

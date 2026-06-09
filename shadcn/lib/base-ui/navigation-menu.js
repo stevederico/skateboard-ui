@@ -1,43 +1,43 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   CompositeRoot
-} from "./_chunk-0h5sskyw.js";
-import"./_chunk-r0vsdknk.js";
+} from "./_chunk-cdj8cpx5.js";
+import"./_chunk-5tt5hk59.js";
 import {
   CompositeItem
-} from "./_chunk-j0eqdjta.js";
-import"./_chunk-b5jsqt97.js";
+} from "./_chunk-f2wttwrf.js";
+import"./_chunk-j3qkyd10.js";
 import {
   adaptiveOrigin,
   useAnchorPositioning,
   usePositioner
-} from "./_chunk-502wngfc.js";
+} from "./_chunk-fqry7pew.js";
 import {
   getCssDimensions
-} from "./_chunk-xfagb0fq.js";
-import"./_chunk-ek863ta9.js";
-import"./_chunk-vdc01ss3.js";
-import"./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
+} from "./_chunk-xcqbtm2f.js";
+import"./_chunk-3enq1vat.js";
+import"./_chunk-26cc610z.js";
+import"./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
 import {
   useDirection
-} from "./_chunk-wtw745qd.js";
+} from "./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   getEmptyRootContext
-} from "./_chunk-f9tgee1q.js";
+} from "./_chunk-5gaqyne5.js";
 import {
   popupStateMapping,
   pressableTriggerOpenStateMapping,
   triggerOpenStateMapping
-} from "./_chunk-536jvgeq.js";
+} from "./_chunk-t7ppm3t0.js";
 import {
   inertValue
-} from "./_chunk-9nyxkvte.js";
+} from "./_chunk-3cpd1vjz.js";
 import {
   DROPDOWN_COLLISION_AVOIDANCE,
   FloatingNode,
@@ -66,80 +66,79 @@ import {
   useFloatingTree,
   useHoverFloatingInteraction,
   useHoverInteractionSharedState,
-  useHoverReferenceInteraction,
-  useInteractions
-} from "./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import {
-  ownerDocument
-} from "./_chunk-xb7ph1ka.js";
+  useHoverReferenceInteraction
+} from "./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
 import {
   activeElement,
   contains,
   getTarget
-} from "./_chunk-atnkefgd.js";
-import {
-  useValueAsRef
-} from "./_chunk-drfb9kp2.js";
-import"./_chunk-qce0xt57.js";
+} from "./_chunk-cgptgywc.js";
+import"./_chunk-pv7b791x.js";
 import {
   stopEvent
-} from "./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
+} from "./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
 import {
   useTimeout
-} from "./_chunk-7v1t86x1.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
+} from "./_chunk-b6dkjkbw.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
 import {
   addEventListener
-} from "./_chunk-mvv30fkv.js";
+} from "./_chunk-ase0ydtt.js";
+import {
+  useValueAsRef
+} from "./_chunk-6kqramh9.js";
+import {
+  ownerDocument
+} from "./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId,
   useId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   TransitionStatusDataAttributes,
   transitionStatusMapping,
   useAnimationsFinished,
   useOpenChangeComplete,
   useTransitionStatus
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
 import {
   useAnimationFrame
-} from "./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+} from "./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
 import {
   getWindow,
   isHTMLElement
-} from "./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   EMPTY_ARRAY,
   EMPTY_OBJECT,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
-  __export
-} from "./_chunk-1e6khrvm.js";
+  __export,
+  mergeProps
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/index.parts.js
+// node_modules/@base-ui/react/esm/navigation-menu/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Viewport: () => NavigationMenuViewport,
@@ -157,10 +156,10 @@ __export(exports_index_parts, {
   Arrow: () => NavigationMenuArrow
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/root/NavigationMenuRoot.js
+// node_modules/@base-ui/react/esm/navigation-menu/root/NavigationMenuRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/root/NavigationMenuRootContext.js
+// node_modules/@base-ui/react/esm/navigation-menu/root/NavigationMenuRootContext.js
 import * as React from "react";
 "use client";
 var NavigationMenuRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -183,14 +182,14 @@ function useNavigationMenuTreeContext() {
   return React.useContext(NavigationMenuTreeContext);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/popup/NavigationMenuPopupCssVars.js
+// node_modules/@base-ui/react/esm/navigation-menu/popup/NavigationMenuPopupCssVars.js
 var NavigationMenuPopupCssVars = /* @__PURE__ */ function(NavigationMenuPopupCssVars2) {
   NavigationMenuPopupCssVars2["popupWidth"] = "--popup-width";
   NavigationMenuPopupCssVars2["popupHeight"] = "--popup-height";
   return NavigationMenuPopupCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositionerCssVars.js
+// node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositionerCssVars.js
 var NavigationMenuPositionerCssVars = /* @__PURE__ */ function(NavigationMenuPositionerCssVars2) {
   NavigationMenuPositionerCssVars2["availableWidth"] = "--available-width";
   NavigationMenuPositionerCssVars2["availableHeight"] = "--available-height";
@@ -202,7 +201,7 @@ var NavigationMenuPositionerCssVars = /* @__PURE__ */ function(NavigationMenuPos
   return NavigationMenuPositionerCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/root/NavigationMenuRoot.js
+// node_modules/@base-ui/react/esm/navigation-menu/root/NavigationMenuRoot.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var blockedReturnFocusReasons = new Set([exports_reason_parts.triggerHover, exports_reason_parts.outsidePress, exports_reason_parts.focusOut]);
@@ -395,9 +394,7 @@ function TreeContext(props) {
   const nodeId = useFloatingNodeId();
   const {
     rootRef,
-    nested
-  } = useNavigationMenuRootContext();
-  const {
+    nested,
     open
   } = useNavigationMenuRootContext();
   const state = {
@@ -417,13 +414,13 @@ function TreeContext(props) {
     })
   });
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/list/NavigationMenuList.js
+// node_modules/@base-ui/react/esm/navigation-menu/list/NavigationMenuList.js
 import * as React4 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/utils/constants.js
+// node_modules/@base-ui/react/esm/navigation-menu/utils/constants.js
 var NAVIGATION_MENU_TRIGGER_IDENTIFIER = "data-base-ui-navigation-menu-trigger";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/list/NavigationMenuDismissContext.js
+// node_modules/@base-ui/react/esm/navigation-menu/list/NavigationMenuDismissContext.js
 import * as React3 from "react";
 "use client";
 var NavigationMenuDismissContext = /* @__PURE__ */ React3.createContext(undefined);
@@ -433,13 +430,13 @@ function useNavigationMenuDismissContext() {
   return React3.useContext(NavigationMenuDismissContext);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/list/NavigationMenuList.js
+// node_modules/@base-ui/react/esm/navigation-menu/list/NavigationMenuList.js
 import { jsx as _jsx2 } from "react/jsx-runtime";
 "use client";
 var NavigationMenuList = /* @__PURE__ */ React4.forwardRef(function NavigationMenuList2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -516,10 +513,10 @@ var NavigationMenuList = /* @__PURE__ */ React4.forwardRef(function NavigationMe
 });
 if (true)
   NavigationMenuList.displayName = "NavigationMenuList";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/item/NavigationMenuItem.js
+// node_modules/@base-ui/react/esm/navigation-menu/item/NavigationMenuItem.js
 import * as React6 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/item/NavigationMenuItemContext.js
+// node_modules/@base-ui/react/esm/navigation-menu/item/NavigationMenuItemContext.js
 import * as React5 from "react";
 "use client";
 var NavigationMenuItemContext = /* @__PURE__ */ React5.createContext(undefined);
@@ -533,15 +530,15 @@ function useNavigationMenuItemContext() {
   return value;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/item/NavigationMenuItem.js
+// node_modules/@base-ui/react/esm/navigation-menu/item/NavigationMenuItem.js
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
 var NavigationMenuItem = /* @__PURE__ */ React6.forwardRef(function NavigationMenuItem2(componentProps, forwardedRef) {
   const {
-    className,
     render,
-    value: valueProp,
+    className,
     style,
+    value: valueProp,
     ...elementProps
   } = componentProps;
   const fallbackValue = useBaseUiId();
@@ -560,7 +557,7 @@ var NavigationMenuItem = /* @__PURE__ */ React6.forwardRef(function NavigationMe
 });
 if (true)
   NavigationMenuItem.displayName = "NavigationMenuItem";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/content/NavigationMenuContent.js
+// node_modules/@base-ui/react/esm/navigation-menu/content/NavigationMenuContent.js
 import * as React7 from "react";
 import * as ReactDOM from "react-dom";
 import { jsx as _jsx4 } from "react/jsx-runtime";
@@ -579,10 +576,10 @@ var stateAttributesMapping = {
 };
 var NavigationMenuContent = /* @__PURE__ */ React7.forwardRef(function NavigationMenuContent2(componentProps, forwardedRef) {
   const {
-    className,
     render,
-    keepMounted = false,
+    className,
     style,
+    keepMounted = false,
     ...elementProps
   } = componentProps;
   const {
@@ -628,11 +625,11 @@ var NavigationMenuContent = /* @__PURE__ */ React7.forwardRef(function Navigatio
     transitionStatus,
     activationDirection
   };
-  const handleCurrentContentRef = React7.useCallback((node) => {
-    if (node) {
+  const handleCurrentContentRef = useStableCallback((node) => {
+    if (node && open) {
       currentContentRef.current = node;
     }
-  }, [currentContentRef]);
+  });
   const commonProps = {
     onFocus(event) {
       const target = getTarget(event.nativeEvent);
@@ -695,18 +692,17 @@ var NavigationMenuContent = /* @__PURE__ */ React7.forwardRef(function Navigatio
 });
 if (true)
   NavigationMenuContent.displayName = "NavigationMenuContent";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/trigger/NavigationMenuTrigger.js
+// node_modules/@base-ui/react/esm/navigation-menu/trigger/NavigationMenuTrigger.js
 import * as React8 from "react";
 import * as ReactDOM2 from "react-dom";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/utils/isOutsideMenuEvent.js
+// node_modules/@base-ui/react/esm/navigation-menu/utils/isOutsideMenuEvent.js
 function isOutsideMenuEvent({
   currentTarget,
   relatedTarget
 }, params) {
   const {
     popupElement,
-    viewportElement,
     rootRef,
     tree,
     nodeId
@@ -715,11 +711,10 @@ function isOutsideMenuEvent({
   if (!popupElement) {
     return !contains(rootRef.current, relatedTarget) && !nodeChildrenContains;
   }
-  const floatingElement = popupElement || viewportElement;
-  return !contains(floatingElement, currentTarget) && !contains(floatingElement, relatedTarget) && !contains(rootRef.current, relatedTarget) && !nodeChildrenContains && !(contains(floatingElement, relatedTarget) && relatedTarget?.hasAttribute("data-base-ui-focus-guard"));
+  return !contains(popupElement, currentTarget) && !contains(popupElement, relatedTarget) && !contains(rootRef.current, relatedTarget) && !nodeChildrenContains && !(contains(popupElement, relatedTarget) && relatedTarget?.hasAttribute("data-base-ui-focus-guard"));
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/trigger/NavigationMenuTrigger.js
+// node_modules/@base-ui/react/esm/navigation-menu/trigger/NavigationMenuTrigger.js
 import { jsx as _jsx5, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 var DEFAULT_SIZE = {
@@ -728,11 +723,11 @@ var DEFAULT_SIZE = {
 };
 var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function NavigationMenuTrigger2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
+    style,
     nativeButton = true,
     disabled,
-    style,
     ...elementProps
   } = componentProps;
   const {
@@ -766,6 +761,7 @@ var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function Navigatio
   const nodeId = useNavigationMenuTreeContext();
   const tree = useFloatingTree();
   const dismissProps = useNavigationMenuDismissContext();
+  const direction = useDirection();
   const stickIfOpenTimeout = useTimeout();
   const focusFrame = useAnimationFrame();
   const mutationFrame = useAnimationFrame();
@@ -1025,7 +1021,9 @@ var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function Navigatio
     mutationObserver.observe(observedElement, {
       childList: true,
       subtree: true,
-      characterData: true
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["hidden"]
     });
     return () => {
       mutationObserver.disconnect();
@@ -1044,14 +1042,12 @@ var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function Navigatio
   }, [beforeOutsideRef, focusFrame, isActiveItem, open, popupElement]);
   useIsoLayoutEffect(() => {
     if (isActiveItemRef.current && open && popupElement) {
-      if (transitionStatus === "starting") {
-        const hasNestedMenu = currentContentRef.current?.querySelector("[data-nested]") != null;
-        if (hasNestedMenu) {
-          sizeFrame.request(syncCurrentSize);
-          return () => {
-            sizeFrame.cancel();
-          };
-        }
+      const hasNestedMenu = currentContentRef.current?.querySelector("[data-nested]") != null;
+      if (transitionStatus === "starting" && hasNestedMenu) {
+        sizeFrame.request(syncCurrentSize);
+        return () => {
+          sizeFrame.cancel();
+        };
       }
       if (skipAutoSizeSyncRef.current) {
         skipAutoSizeSyncRef.current = false;
@@ -1152,9 +1148,7 @@ var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function Navigatio
     stickIfOpen,
     toggle: isActiveItem
   });
-  const {
-    getReferenceProps
-  } = useInteractions([hover, click]);
+  const referenceProps = React8.useMemo(() => mergeProps(click.reference, hover?.reference), [click.reference, hover]);
   useIsoLayoutEffect(() => {
     if (isActiveItem) {
       setFloatingRootContext(context);
@@ -1250,8 +1244,9 @@ var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function Navigatio
       if (nested) {
         return;
       }
+      const verticalOpenKey = direction === "rtl" ? "ArrowLeft" : "ArrowRight";
       const openHorizontal = orientation === "horizontal" && event.key === "ArrowDown";
-      const openVertical = orientation === "vertical" && event.key === "ArrowRight";
+      const openVertical = orientation === "vertical" && event.key === verticalOpenKey;
       if (openHorizontal || openVertical) {
         setValue(itemValue, createChangeEventDetails(exports_reason_parts.listNavigation, event.nativeEvent));
         handleOpenEvent(event);
@@ -1290,7 +1285,7 @@ var NavigationMenuTrigger = /* @__PURE__ */ React8.forwardRef(function Navigatio
       state,
       stateAttributesMapping: pressableTriggerOpenStateMapping,
       refs: [forwardedRef, handleTriggerElement, buttonRef],
-      props: [getReferenceProps, dismissProps?.reference || EMPTY_ARRAY, defaultProps, elementProps, getButtonProps]
+      props: [referenceProps, dismissProps?.reference || EMPTY_ARRAY, defaultProps, elementProps, getButtonProps]
     }), isActiveItem && /* @__PURE__ */ _jsxs(React8.Fragment, {
       children: [/* @__PURE__ */ _jsx5(FocusGuard, {
         ref: beforeOutsideRef,
@@ -1355,10 +1350,10 @@ function getHandleCloseContext(domReferenceElement, floatingElement, nodeId) {
     nodeId
   };
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/portal/NavigationMenuPortal.js
+// node_modules/@base-ui/react/esm/navigation-menu/portal/NavigationMenuPortal.js
 import * as React10 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/portal/NavigationMenuPortalContext.js
+// node_modules/@base-ui/react/esm/navigation-menu/portal/NavigationMenuPortalContext.js
 import * as React9 from "react";
 "use client";
 var NavigationMenuPortalContext = /* @__PURE__ */ React9.createContext(undefined);
@@ -1372,7 +1367,7 @@ function useNavigationMenuPortalContext() {
   return value;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/portal/NavigationMenuPortal.js
+// node_modules/@base-ui/react/esm/navigation-menu/portal/NavigationMenuPortal.js
 import { jsx as _jsx6 } from "react/jsx-runtime";
 "use client";
 var NavigationMenuPortal = /* @__PURE__ */ React10.forwardRef(function NavigationMenuPortal2(props, forwardedRef) {
@@ -1397,11 +1392,11 @@ var NavigationMenuPortal = /* @__PURE__ */ React10.forwardRef(function Navigatio
 });
 if (true)
   NavigationMenuPortal.displayName = "NavigationMenuPortal";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositioner.js
+// node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositioner.js
 import * as React12 from "react";
 import * as ReactDOM3 from "react-dom";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositionerContext.js
+// node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositionerContext.js
 import * as React11 from "react";
 "use client";
 var NavigationMenuPositionerContext = /* @__PURE__ */ React11.createContext(undefined);
@@ -1415,7 +1410,7 @@ function useNavigationMenuPositionerContext(optional = false) {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositioner.js
+// node_modules/@base-ui/react/esm/navigation-menu/positioner/NavigationMenuPositioner.js
 import { jsx as _jsx7 } from "react/jsx-runtime";
 "use client";
 var EMPTY_ROOT_CONTEXT = getEmptyRootContext();
@@ -1523,7 +1518,7 @@ var NavigationMenuPositioner = /* @__PURE__ */ React12.forwardRef(function Navig
 });
 if (true)
   NavigationMenuPositioner.displayName = "NavigationMenuPositioner";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/viewport/NavigationMenuViewport.js
+// node_modules/@base-ui/react/esm/navigation-menu/viewport/NavigationMenuViewport.js
 import * as React13 from "react";
 import { jsx as _jsx8, jsxs as _jsxs2 } from "react/jsx-runtime";
 "use client";
@@ -1569,11 +1564,11 @@ function Guards({
 }
 var NavigationMenuViewport = /* @__PURE__ */ React13.forwardRef(function NavigationMenuViewport2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
+    style,
     children,
     id: idProp,
-    style,
     ...elementProps
   } = componentProps;
   const id = useId(idProp);
@@ -1621,7 +1616,7 @@ var NavigationMenuViewport = /* @__PURE__ */ React13.forwardRef(function Navigat
 });
 if (true)
   NavigationMenuViewport.displayName = "NavigationMenuViewport";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/backdrop/NavigationMenuBackdrop.js
+// node_modules/@base-ui/react/esm/navigation-menu/backdrop/NavigationMenuBackdrop.js
 import * as React14 from "react";
 "use client";
 var stateAttributesMapping2 = {
@@ -1630,8 +1625,8 @@ var stateAttributesMapping2 = {
 };
 var NavigationMenuBackdrop = /* @__PURE__ */ React14.forwardRef(function NavigationMenuBackdrop2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -1661,7 +1656,7 @@ var NavigationMenuBackdrop = /* @__PURE__ */ React14.forwardRef(function Navigat
 });
 if (true)
   NavigationMenuBackdrop.displayName = "NavigationMenuBackdrop";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/popup/NavigationMenuPopup.js
+// node_modules/@base-ui/react/esm/navigation-menu/popup/NavigationMenuPopup.js
 import * as React15 from "react";
 "use client";
 var stateAttributesMapping3 = {
@@ -1670,10 +1665,10 @@ var stateAttributesMapping3 = {
 };
 var NavigationMenuPopup = /* @__PURE__ */ React15.forwardRef(function NavigationMenuPopup2(componentProps, forwardedRef) {
   const {
-    className,
     render,
-    id: idProp,
+    className,
     style,
+    id: idProp,
     ...elementProps
   } = componentProps;
   const {
@@ -1718,13 +1713,13 @@ var NavigationMenuPopup = /* @__PURE__ */ React15.forwardRef(function Navigation
 });
 if (true)
   NavigationMenuPopup.displayName = "NavigationMenuPopup";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/arrow/NavigationMenuArrow.js
+// node_modules/@base-ui/react/esm/navigation-menu/arrow/NavigationMenuArrow.js
 import * as React16 from "react";
 "use client";
 var NavigationMenuArrow = /* @__PURE__ */ React16.forwardRef(function NavigationMenuArrow2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -1757,7 +1752,7 @@ var NavigationMenuArrow = /* @__PURE__ */ React16.forwardRef(function Navigation
 });
 if (true)
   NavigationMenuArrow.displayName = "NavigationMenuArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/link/NavigationMenuLink.js
+// node_modules/@base-ui/react/esm/navigation-menu/link/NavigationMenuLink.js
 import * as React17 from "react";
 import { jsx as _jsx9 } from "react/jsx-runtime";
 "use client";
@@ -1815,13 +1810,13 @@ var NavigationMenuLink = /* @__PURE__ */ React17.forwardRef(function NavigationM
 });
 if (true)
   NavigationMenuLink.displayName = "NavigationMenuLink";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/navigation-menu/icon/NavigationMenuIcon.js
+// node_modules/@base-ui/react/esm/navigation-menu/icon/NavigationMenuIcon.js
 import * as React18 from "react";
 "use client";
 var NavigationMenuIcon = /* @__PURE__ */ React18.forwardRef(function NavigationMenuIcon2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;

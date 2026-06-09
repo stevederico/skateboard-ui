@@ -1,37 +1,42 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   FloatingPortalLite
-} from "./_chunk-qt6r015s.js";
+} from "./_chunk-fdzctasg.js";
 import {
   usePopupViewport
-} from "./_chunk-q7yw9mz4.js";
-import"./_chunk-gfce3j3z.js";
+} from "./_chunk-qbezxj1g.js";
+import"./_chunk-m307wpdj.js";
 import {
   adaptiveOrigin,
   getDisabledMountTransitionStyles,
   useAnchorPositioning,
   usePositioner
-} from "./_chunk-502wngfc.js";
-import"./_chunk-xfagb0fq.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-fqry7pew.js";
+import"./_chunk-xcqbtm2f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   createInitialPopupStoreState,
-  popupStoreSelectors,
-  useImplicitActiveTrigger,
-  useOpenStateTransitions,
-  useTriggerDataForwarding
-} from "./_chunk-7jjzay8b.js";
+  createPopupFloatingRootContext,
+  popupStoreSelectors
+} from "./_chunk-q5cg71p7.js";
 import {
-  useOnFirstRender
-} from "./_chunk-f09cp81f.js";
-import"./_chunk-f9tgee1q.js";
+  FOCUSABLE_POPUP_PROPS,
+  setOpenTriggerState,
+  useImplicitActiveTrigger,
+  useOnFirstRender,
+  useOpenStateTransitions,
+  usePopupInteractionProps,
+  usePopupStore,
+  useTriggerDataForwarding
+} from "./_chunk-242gh8ph.js";
+import"./_chunk-5gaqyne5.js";
 import {
   popupStateMapping,
   triggerOpenStateMapping
-} from "./_chunk-536jvgeq.js";
-import"./_chunk-9nyxkvte.js";
+} from "./_chunk-t7ppm3t0.js";
+import"./_chunk-3cpd1vjz.js";
 import {
   FloatingNode,
   FloatingTree,
@@ -39,55 +44,57 @@ import {
   PopupTriggerMap,
   ReactStore,
   createSelector,
+  fastComponent,
+  fastComponentRef,
   safePolygon,
   useDismiss,
   useFloatingNodeId,
   useFocus,
   useHoverFloatingInteraction,
-  useHoverReferenceInteraction,
-  useInteractions,
-  useSyncedFloatingRootContext
-} from "./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import"./_chunk-xb7ph1ka.js";
-import"./_chunk-atnkefgd.js";
-import"./_chunk-drfb9kp2.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-7v1t86x1.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-mvv30fkv.js";
+  useHoverReferenceInteraction
+} from "./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
+import"./_chunk-cgptgywc.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import"./_chunk-b6dkjkbw.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   transitionStatusMapping,
   useOpenChangeComplete
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
+import {
+  isElement
+} from "./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
-  useRefWithInit,
+  EMPTY_OBJECT,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
-  __export
-} from "./_chunk-1e6khrvm.js";
+  __export,
+  mergeProps
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/index.parts.js
+// node_modules/@base-ui/react/esm/preview-card/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   createHandle: () => createPreviewCardHandle,
@@ -102,10 +109,197 @@ __export(exports_index_parts, {
   Arrow: () => PreviewCardArrow
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/root/PreviewCardRoot.js
+// node_modules/@base-ui/react/esm/preview-card/root/PreviewCardRoot.js
 import * as React3 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/root/PreviewCardContext.js
+// node_modules/@base-ui/react/esm/utils/popups/inlineRect.js
+function createRect(left, top, right, bottom) {
+  return {
+    left,
+    top,
+    right,
+    bottom,
+    x: left,
+    y: top,
+    width: right - left,
+    height: bottom - top
+  };
+}
+function copyRect(rect) {
+  return {
+    left: rect.left,
+    top: rect.top,
+    right: rect.right,
+    bottom: rect.bottom,
+    width: rect.width,
+    height: rect.height
+  };
+}
+function getLineRects(rects) {
+  const lines = [];
+  let previousRect;
+  let left = Number.POSITIVE_INFINITY;
+  let top = Number.POSITIVE_INFINITY;
+  let right = Number.NEGATIVE_INFINITY;
+  let bottom = Number.NEGATIVE_INFINITY;
+  for (const rect of Array.from(rects).sort((a, b) => a.top - b.top)) {
+    left = Math.min(left, rect.left);
+    top = Math.min(top, rect.top);
+    right = Math.max(right, rect.right);
+    bottom = Math.max(bottom, rect.bottom);
+    if (!previousRect || rect.top - previousRect.top > previousRect.height / 2) {
+      lines.push(copyRect(rect));
+    } else {
+      const line = lines[lines.length - 1];
+      line.left = Math.min(line.left, rect.left);
+      line.right = Math.max(line.right, rect.right);
+      line.bottom = Math.max(line.bottom, rect.bottom);
+      line.width = line.right - line.left;
+      line.height = line.bottom - line.top;
+    }
+    previousRect = rect;
+  }
+  return {
+    lines,
+    fallback: createRect(left, top, right, bottom)
+  };
+}
+function findLineIndex(lines, x, y) {
+  return lines.findIndex((lineRect) => x > lineRect.left - 2 && x < lineRect.right + 2 && y > lineRect.top - 2 && y < lineRect.bottom + 2);
+}
+function createClientRect(rect) {
+  return createRect(rect.left, rect.top, rect.right, rect.bottom);
+}
+function getInlineRectCoords(element, clientX, clientY) {
+  const {
+    lines
+  } = getLineRects(element.getClientRects());
+  if (lines.length < 2) {
+    return;
+  }
+  const lineIndex = findLineIndex(lines, clientX, clientY);
+  return {
+    x: clientX,
+    y: clientY,
+    lineIndex: lineIndex === -1 ? undefined : lineIndex,
+    element
+  };
+}
+function getInlineReferenceRect(reference, placement, coords) {
+  const {
+    lines,
+    fallback
+  } = getLineRects(reference.getClientRects());
+  if (lines.length < 2) {
+    return null;
+  }
+  const x = coords?.x;
+  const y = coords?.y;
+  const side = placement[0];
+  if (coords?.lineIndex != null && lines[coords.lineIndex]) {
+    return createClientRect(lines[coords.lineIndex]);
+  }
+  if (x != null && y != null) {
+    const lineIndex = findLineIndex(lines, x, y);
+    if (lineIndex !== -1) {
+      return createClientRect(lines[lineIndex]);
+    }
+  }
+  if (lines.length === 2 && lines[0].left > lines[1].right && x != null && y != null) {
+    return fallback;
+  }
+  if (side === "t" || side === "b") {
+    const firstRect = lines[0];
+    const lastRect = lines[lines.length - 1];
+    const targetRect = side === "t" ? firstRect : lastRect;
+    return createRect(targetRect.left, firstRect.top, targetRect.right, lastRect.bottom);
+  }
+  const isLeft = side === "l";
+  let left = lines[0].left;
+  let right = lines[0].right;
+  let edge = isLeft ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+  let targetFirstRect = lines[0];
+  let targetLastRect = lines[0];
+  for (const rect of lines) {
+    left = Math.min(left, rect.left);
+    right = Math.max(right, rect.right);
+    const nextEdge = isLeft ? rect.left : rect.right;
+    if (isLeft && nextEdge < edge || !isLeft && nextEdge > edge) {
+      edge = nextEdge;
+      targetFirstRect = rect;
+      targetLastRect = rect;
+    } else if (nextEdge === edge) {
+      targetLastRect = rect;
+    }
+  }
+  return createRect(left, targetFirstRect.top, right, targetLastRect.bottom);
+}
+function getContextElement(reference) {
+  if ("contextElement" in reference && reference.contextElement) {
+    return reference.contextElement;
+  }
+  return isElement(reference) ? reference : undefined;
+}
+function getInlineRectTriggerProps(coordsRef, isOpen) {
+  function updateCoords(event) {
+    updateInlineRectCoords(coordsRef, event.currentTarget, event.clientX, event.clientY);
+  }
+  function updateCoordsOnMove(event) {
+    if (!isOpen) {
+      updateCoords(event);
+    }
+  }
+  return {
+    onFocus() {
+      coordsRef.current = undefined;
+    },
+    onMouseEnter: updateCoords,
+    onMouseMove: updateCoordsOnMove
+  };
+}
+function updateInlineRectCoords(coordsRef, element, clientX, clientY) {
+  const nextCoords = getInlineRectCoords(element, clientX, clientY);
+  coordsRef.current = nextCoords;
+  return nextCoords;
+}
+function createInlineMiddleware(coordsRef) {
+  return {
+    name: "inline",
+    async fn(state) {
+      const reference = state.elements.reference;
+      if (typeof reference?.getClientRects !== "function") {
+        return {};
+      }
+      const contextElement = getContextElement(reference);
+      const coords = coordsRef.current;
+      const currentCoords = coords?.element === reference || coords?.element === contextElement ? coords : undefined;
+      const rect = getInlineReferenceRect(reference, state.placement, currentCoords);
+      if (!rect || typeof state.platform.getElementRects !== "function") {
+        return {};
+      }
+      const resetRects = await state.platform.getElementRects({
+        reference: {
+          contextElement,
+          getBoundingClientRect() {
+            return rect;
+          }
+        },
+        floating: state.elements.floating,
+        strategy: state.strategy
+      });
+      if (state.rects.reference.x === resetRects.reference.x && state.rects.reference.y === resetRects.reference.y && state.rects.reference.width === resetRects.reference.width && state.rects.reference.height === resetRects.reference.height) {
+        return {};
+      }
+      return {
+        reset: {
+          rects: resetRects
+        }
+      };
+    }
+  };
+}
+
+// node_modules/@base-ui/react/esm/preview-card/root/PreviewCardContext.js
 import * as React from "react";
 "use client";
 var PreviewCardRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -119,15 +313,15 @@ function usePreviewCardRootContext(optional) {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/store/PreviewCardStore.js
+// node_modules/@base-ui/react/esm/preview-card/store/PreviewCardStore.js
 import * as React2 from "react";
 import * as ReactDOM from "react-dom";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/utils/constants.js
+// node_modules/@base-ui/react/esm/preview-card/utils/constants.js
 var OPEN_DELAY = 600;
 var CLOSE_DELAY = 300;
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/store/PreviewCardStore.js
+// node_modules/@base-ui/react/esm/preview-card/store/PreviewCardStore.js
 var selectors = {
   ...popupStoreSelectors,
   instantType: createSelector((state) => state.instantType),
@@ -135,17 +329,23 @@ var selectors = {
 };
 
 class PreviewCardStore extends ReactStore {
-  constructor(initialState) {
-    super({
+  constructor(initialState, floatingId, nested = false) {
+    const triggerElements = new PopupTriggerMap;
+    const state = {
       ...createInitialState(),
       ...initialState
-    }, {
+    };
+    state.floatingRootContext = createPopupFloatingRootContext(triggerElements, floatingId, nested);
+    super(state, {
       popupRef: /* @__PURE__ */ React2.createRef(),
       onOpenChange: undefined,
       onOpenChangeComplete: undefined,
-      triggerElements: new PopupTriggerMap,
+      triggerElements,
       closeDelayRef: {
         current: CLOSE_DELAY
+      },
+      inlineRectCoordsRef: {
+        current: undefined
       }
     }, selectors);
   }
@@ -161,6 +361,10 @@ class PreviewCardStore extends ReactStore {
     if (eventDetails.isCanceled) {
       return;
     }
+    const event = eventDetails.event;
+    if (nextOpen && isHover && eventDetails.trigger && "clientX" in event && "clientY" in event && this.context.inlineRectCoordsRef.current?.element !== eventDetails.trigger) {
+      updateInlineRectCoords(this.context.inlineRectCoordsRef, eventDetails.trigger, event.clientX, event.clientY);
+    }
     this.state.floatingRootContext.dispatchOpenChange(nextOpen, eventDetails);
     const changeState = () => {
       const updatedState = {
@@ -173,11 +377,7 @@ class PreviewCardStore extends ReactStore {
       } else if (reason === exports_reason_parts.triggerHover) {
         updatedState.instantType = undefined;
       }
-      const newTriggerId = eventDetails.trigger?.id ?? null;
-      if (newTriggerId || nextOpen) {
-        updatedState.activeTriggerId = newTriggerId;
-        updatedState.activeTriggerElement = eventDetails.trigger ?? null;
-      }
+      setOpenTriggerState(updatedState, nextOpen, eventDetails.trigger);
       this.update(updatedState);
     };
     if (isHover) {
@@ -187,15 +387,7 @@ class PreviewCardStore extends ReactStore {
     }
   };
   static useStore(externalStore, initialState) {
-    const internalStore = useRefWithInit(() => {
-      return new PreviewCardStore(initialState);
-    }).current;
-    const store = externalStore ?? internalStore;
-    const floatingRootContext = useSyncedFloatingRootContext({
-      popupStore: store,
-      onOpenChange: store.setOpen
-    });
-    store.state.floatingRootContext = floatingRootContext;
+    const store = usePopupStore(externalStore, (floatingId, nested) => new PreviewCardStore(initialState, floatingId, nested)).store;
     return store;
   }
 }
@@ -207,8 +399,8 @@ function createInitialState() {
   };
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/root/PreviewCardRoot.js
-import { jsx as _jsx } from "react/jsx-runtime";
+// node_modules/@base-ui/react/esm/preview-card/root/PreviewCardRoot.js
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 function PreviewCardRootComponent(props) {
   const {
@@ -241,13 +433,15 @@ function PreviewCardRootComponent(props) {
   store.useContextCallback("onOpenChange", onOpenChange);
   store.useContextCallback("onOpenChangeComplete", onOpenChangeComplete);
   const open = store.useState("open");
-  const floatingRootContext = store.select("floatingRootContext");
   const activeTriggerId = store.useState("activeTriggerId");
+  const mounted = store.useState("mounted");
   const payload = store.useState("payload");
   useImplicitActiveTrigger(store);
   const {
     forceUnmount
-  } = useOpenStateTransitions(open, store);
+  } = useOpenStateTransitions(open, store, () => {
+    store.context.inlineRectCoordsRef.current = undefined;
+  });
   useIsoLayoutEffect(() => {
     if (open) {
       if (activeTriggerId == null) {
@@ -262,28 +456,32 @@ function PreviewCardRootComponent(props) {
     unmount: forceUnmount,
     close: handleImperativeClose
   }), [forceUnmount, handleImperativeClose]);
+  const shouldRenderInteractions = open || mounted;
+  return /* @__PURE__ */ _jsxs(PreviewCardRootContext.Provider, {
+    value: store,
+    children: [shouldRenderInteractions && /* @__PURE__ */ _jsx(PreviewCardInteractions, {
+      store
+    }), typeof children === "function" ? children({
+      payload
+    }) : children]
+  });
+}
+function PreviewCardInteractions({
+  store
+}) {
+  const floatingRootContext = store.useState("floatingRootContext");
   const dismiss = useDismiss(floatingRootContext);
-  const {
-    getReferenceProps,
-    getTriggerProps,
-    getFloatingProps
-  } = useInteractions([dismiss]);
-  const activeTriggerProps = React3.useMemo(() => getReferenceProps(), [getReferenceProps]);
-  const inactiveTriggerProps = React3.useMemo(() => getTriggerProps(), [getTriggerProps]);
-  const popupProps = React3.useMemo(() => getFloatingProps(), [getFloatingProps]);
-  store.useSyncedValues({
+  const activeTriggerProps = dismiss.reference ?? EMPTY_OBJECT;
+  const inactiveTriggerProps = dismiss.trigger ?? EMPTY_OBJECT;
+  const popupProps = React3.useMemo(() => mergeProps(FOCUSABLE_POPUP_PROPS, dismiss.floating), [dismiss.floating]);
+  usePopupInteractionProps(store, {
     activeTriggerProps,
     inactiveTriggerProps,
     popupProps
   });
-  return /* @__PURE__ */ _jsx(PreviewCardRootContext.Provider, {
-    value: store,
-    children: typeof children === "function" ? children({
-      payload
-    }) : children
-  });
+  return null;
 }
-function PreviewCardRoot(props) {
+var PreviewCardRoot = fastComponent(function PreviewCardRoot2(props) {
   if (usePreviewCardRootContext(true)) {
     return /* @__PURE__ */ _jsx(PreviewCardRootComponent, {
       ...props
@@ -294,11 +492,13 @@ function PreviewCardRoot(props) {
       ...props
     })
   });
-}
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/portal/PreviewCardPortal.js
+});
+if (true)
+  PreviewCardRoot.displayName = "PreviewCardRoot";
+// node_modules/@base-ui/react/esm/preview-card/portal/PreviewCardPortal.js
 import * as React5 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/portal/PreviewCardPortalContext.js
+// node_modules/@base-ui/react/esm/preview-card/portal/PreviewCardPortalContext.js
 import * as React4 from "react";
 "use client";
 var PreviewCardPortalContext = /* @__PURE__ */ React4.createContext(undefined);
@@ -312,7 +512,7 @@ function usePreviewCardPortalContext() {
   return value;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/portal/PreviewCardPortal.js
+// node_modules/@base-ui/react/esm/preview-card/portal/PreviewCardPortal.js
 import { jsx as _jsx2 } from "react/jsx-runtime";
 "use client";
 var PreviewCardPortal = /* @__PURE__ */ React5.forwardRef(function PreviewCardPortal2(props, forwardedRef) {
@@ -336,10 +536,10 @@ var PreviewCardPortal = /* @__PURE__ */ React5.forwardRef(function PreviewCardPo
 });
 if (true)
   PreviewCardPortal.displayName = "PreviewCardPortal";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/trigger/PreviewCardTrigger.js
+// node_modules/@base-ui/react/esm/preview-card/trigger/PreviewCardTrigger.js
 import * as React6 from "react";
 "use client";
-var PreviewCardTrigger = /* @__PURE__ */ React6.forwardRef(function PreviewCardTrigger2(componentProps, forwardedRef) {
+var PreviewCardTrigger = fastComponentRef(function PreviewCardTrigger2(componentProps, forwardedRef) {
   const {
     render,
     className,
@@ -360,6 +560,7 @@ var PreviewCardTrigger = /* @__PURE__ */ React6.forwardRef(function PreviewCardT
   const isTriggerActive = store.useState("isTriggerActive", thisTriggerId);
   const isOpenedByThisTrigger = store.useState("isOpenedByTrigger", thisTriggerId);
   const floatingRootContext = store.useState("floatingRootContext");
+  const inlineRectCoordsRef = store.context.inlineRectCoordsRef;
   const triggerElementRef = React6.useRef(null);
   const delayWithDefault = delay ?? OPEN_DELAY;
   const closeDelayWithDefault = closeDelay ?? CLOSE_DELAY;
@@ -393,10 +594,11 @@ var PreviewCardTrigger = /* @__PURE__ */ React6.forwardRef(function PreviewCardT
     open: isOpenedByThisTrigger
   };
   const rootTriggerProps = store.useState("triggerProps", isMountedByThisTrigger);
+  const inlineRectTriggerProps = getInlineRectTriggerProps(inlineRectCoordsRef, isOpenedByThisTrigger);
   const element = useRenderElement("a", componentProps, {
     state,
     ref: [forwardedRef, registerTrigger, triggerElementRef],
-    props: [hoverProps, focusProps.reference, rootTriggerProps, {
+    props: [hoverProps, focusProps.reference, rootTriggerProps, inlineRectTriggerProps, {
       id: thisTriggerId
     }, elementProps],
     stateAttributesMapping: triggerOpenStateMapping
@@ -405,10 +607,10 @@ var PreviewCardTrigger = /* @__PURE__ */ React6.forwardRef(function PreviewCardT
 });
 if (true)
   PreviewCardTrigger.displayName = "PreviewCardTrigger";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/positioner/PreviewCardPositioner.js
+// node_modules/@base-ui/react/esm/preview-card/positioner/PreviewCardPositioner.js
 import * as React8 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/positioner/PreviewCardPositionerContext.js
+// node_modules/@base-ui/react/esm/preview-card/positioner/PreviewCardPositionerContext.js
 import * as React7 from "react";
 "use client";
 var PreviewCardPositionerContext = /* @__PURE__ */ React7.createContext(undefined);
@@ -422,7 +624,7 @@ function usePreviewCardPositionerContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/positioner/PreviewCardPositioner.js
+// node_modules/@base-ui/react/esm/preview-card/positioner/PreviewCardPositioner.js
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
 var PreviewCardPositioner = /* @__PURE__ */ React8.forwardRef(function PreviewCardPositioner2(componentProps, forwardedRef) {
@@ -453,6 +655,7 @@ var PreviewCardPositioner = /* @__PURE__ */ React8.forwardRef(function PreviewCa
   const instantType = store.useState("instantType");
   const transitionStatus = store.useState("transitionStatus");
   const hasViewport = store.useState("hasViewport");
+  const inlineRectCoordsRef = store.context.inlineRectCoordsRef;
   const positioning = useAnchorPositioning({
     anchor,
     floatingRootContext,
@@ -470,8 +673,15 @@ var PreviewCardPositioner = /* @__PURE__ */ React8.forwardRef(function PreviewCa
     keepMounted,
     nodeId,
     collisionAvoidance,
-    adaptiveOrigin: hasViewport ? adaptiveOrigin : undefined
+    adaptiveOrigin: hasViewport ? adaptiveOrigin : undefined,
+    inline: createInlineMiddleware(inlineRectCoordsRef)
   });
+  const updatePosition = positioning.update;
+  useIsoLayoutEffect(() => {
+    if (open && mounted) {
+      updatePosition();
+    }
+  }, [open, mounted, updatePosition]);
   const state = {
     open,
     side: positioning.side,
@@ -497,7 +707,7 @@ var PreviewCardPositioner = /* @__PURE__ */ React8.forwardRef(function PreviewCa
 });
 if (true)
   PreviewCardPositioner.displayName = "PreviewCardPositioner";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/popup/PreviewCardPopup.js
+// node_modules/@base-ui/react/esm/preview-card/popup/PreviewCardPopup.js
 import * as React9 from "react";
 "use client";
 var stateAttributesMapping = {
@@ -551,7 +761,7 @@ var PreviewCardPopup = /* @__PURE__ */ React9.forwardRef(function PreviewCardPop
 });
 if (true)
   PreviewCardPopup.displayName = "PreviewCardPopup";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/arrow/PreviewCardArrow.js
+// node_modules/@base-ui/react/esm/preview-card/arrow/PreviewCardArrow.js
 import * as React10 from "react";
 "use client";
 var PreviewCardArrow = /* @__PURE__ */ React10.forwardRef(function PreviewCardArrow2(componentProps, forwardedRef) {
@@ -589,7 +799,7 @@ var PreviewCardArrow = /* @__PURE__ */ React10.forwardRef(function PreviewCardAr
 });
 if (true)
   PreviewCardArrow.displayName = "PreviewCardArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/backdrop/PreviewCardBackdrop.js
+// node_modules/@base-ui/react/esm/preview-card/backdrop/PreviewCardBackdrop.js
 import * as React11 from "react";
 "use client";
 var stateAttributesMapping2 = {
@@ -629,17 +839,17 @@ var PreviewCardBackdrop = /* @__PURE__ */ React11.forwardRef(function PreviewCar
 });
 if (true)
   PreviewCardBackdrop.displayName = "PreviewCardBackdrop";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/viewport/PreviewCardViewport.js
+// node_modules/@base-ui/react/esm/preview-card/viewport/PreviewCardViewport.js
 import * as React12 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/viewport/PreviewCardViewportCssVars.js
+// node_modules/@base-ui/react/esm/preview-card/viewport/PreviewCardViewportCssVars.js
 var PreviewCardViewportCssVars = /* @__PURE__ */ function(PreviewCardViewportCssVars2) {
   PreviewCardViewportCssVars2["popupWidth"] = "--popup-width";
   PreviewCardViewportCssVars2["popupHeight"] = "--popup-height";
   return PreviewCardViewportCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/viewport/PreviewCardViewport.js
+// node_modules/@base-ui/react/esm/preview-card/viewport/PreviewCardViewport.js
 "use client";
 var stateAttributesMapping3 = {
   activationDirection: (value) => value ? {
@@ -682,7 +892,7 @@ var PreviewCardViewport = /* @__PURE__ */ React12.forwardRef(function PreviewCar
 });
 if (true)
   PreviewCardViewport.displayName = "PreviewCardViewport";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/preview-card/store/PreviewCardHandle.js
+// node_modules/@base-ui/react/esm/preview-card/store/PreviewCardHandle.js
 class PreviewCardHandle {
   constructor() {
     this.store = new PreviewCardStore;
@@ -698,7 +908,7 @@ class PreviewCardHandle {
     this.store.setOpen(false, createChangeEventDetails(exports_reason_parts.imperativeAction, undefined, undefined));
   }
   get isOpen() {
-    return this.store.state.open;
+    return this.store.select("open");
   }
 }
 function createPreviewCardHandle() {
