@@ -3309,4 +3309,3 @@ const mergeArrayProperties = (baseObject, mergeObject, key) => {
 const extendTailwindMerge = (configExtension, ...createConfig) => typeof configExtension === 'function' ? createTailwindMerge(getDefaultConfig, configExtension, ...createConfig) : createTailwindMerge(() => mergeConfigs(getDefaultConfig(), configExtension), ...createConfig);
 const twMerge = /*#__PURE__*/createTailwindMerge(getDefaultConfig);
 export { createTailwindMerge, extendTailwindMerge, fromTheme, getDefaultConfig, mergeConfigs, twJoin, twMerge, validators };
-//# sourceMappingURL=bundle-mjs.mjs.map

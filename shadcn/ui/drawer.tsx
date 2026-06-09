@@ -87,10 +87,39 @@ interface DragState {
   startTime: number
 }
 
-function DrawerContent({ className, children, ...props }: React.ComponentProps<typeof DialogPrimitive.Popup>) {
+// Pointer event type as seen by DialogPrimitive.Popup handlers (Base UI wraps
+// React's PointerEvent with preventBaseUIHandler) — consumer handlers expect it.
+type PopupPointerEvent = Parameters<
+  NonNullable<React.ComponentProps<typeof DialogPrimitive.Popup>["onPointerDown"]>
+>[0]
+
+function DrawerContent({
+  className,
+  children,
+  ref,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Popup>) {
   const popupRef = React.useRef<HTMLDivElement | null>(null)
   const ctx = React.useContext(DrawerCtx)
   const dragState = React.useRef<DragState>({ dragging: false, startY: 0, height: 0, startTime: 0 })
+
+  // Merge the internal popup ref with a consumer-supplied ref (function or
+  // object form) so passing `ref` doesn't disconnect the drag machinery.
+  const mergedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      popupRef.current = node
+      if (typeof ref === "function") {
+        ref(node)
+      } else if (ref) {
+        ref.current = node
+      }
+    },
+    [ref]
+  )
 
   const snapBack = React.useCallback(() => {
     const el = popupRef.current
@@ -112,7 +141,7 @@ function DrawerContent({ className, children, ...props }: React.ComponentProps<t
     }, 500)
   }, [ctx])
 
-  const handlePointerDown = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = React.useCallback((event: PopupPointerEvent) => {
     const el = popupRef.current
     const target = event.target as HTMLElement | null
     if (!el || !shouldDrag(target, el)) return
@@ -126,7 +155,7 @@ function DrawerContent({ className, children, ...props }: React.ComponentProps<t
     el.style.transition = "none"
   }, [])
 
-  const handlePointerMove = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = React.useCallback((event: PopupPointerEvent) => {
     const state = dragState.current
     if (!state.dragging) return
     const el = popupRef.current
@@ -143,7 +172,7 @@ function DrawerContent({ className, children, ...props }: React.ComponentProps<t
   }, [])
 
   const handlePointerUp = React.useCallback(
-    (event: React.PointerEvent<HTMLDivElement>) => {
+    (event: PopupPointerEvent) => {
       const state = dragState.current
       if (!state.dragging) return
       state.dragging = false
@@ -170,17 +199,64 @@ function DrawerContent({ className, children, ...props }: React.ComponentProps<t
     snapBack()
   }, [snapBack])
 
+  // Chain consumer pointer handlers with the internal drag handlers instead of
+  // letting {...props} clobber them: consumer runs first and can opt out of
+  // the drag logic via event.preventDefault().
+  const composedPointerDown = React.useCallback(
+    (event: PopupPointerEvent) => {
+      if (onPointerDown) {
+        onPointerDown(event)
+        if (event.defaultPrevented) return
+      }
+      handlePointerDown(event)
+    },
+    [onPointerDown, handlePointerDown]
+  )
+
+  const composedPointerMove = React.useCallback(
+    (event: PopupPointerEvent) => {
+      if (onPointerMove) {
+        onPointerMove(event)
+        if (event.defaultPrevented) return
+      }
+      handlePointerMove(event)
+    },
+    [onPointerMove, handlePointerMove]
+  )
+
+  const composedPointerUp = React.useCallback(
+    (event: PopupPointerEvent) => {
+      if (onPointerUp) {
+        onPointerUp(event)
+        if (event.defaultPrevented) return
+      }
+      handlePointerUp(event)
+    },
+    [onPointerUp, handlePointerUp]
+  )
+
+  const composedPointerCancel = React.useCallback(
+    (event: PopupPointerEvent) => {
+      if (onPointerCancel) {
+        onPointerCancel(event)
+        if (event.defaultPrevented) return
+      }
+      handlePointerCancel()
+    },
+    [onPointerCancel, handlePointerCancel]
+  )
+
   return (
     <DrawerPortal>
       <DrawerOverlay />
       <DialogPrimitive.Popup
-        ref={popupRef}
+        ref={mergedRef}
         data-slot="drawer-content"
         className={cn("drawer-popup bg-background text-sm", className)}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerCancel}
+        onPointerDown={composedPointerDown}
+        onPointerMove={composedPointerMove}
+        onPointerUp={composedPointerUp}
+        onPointerCancel={composedPointerCancel}
         {...props}
       >
         <div className="bg-muted mx-auto mt-4 h-1.5 w-[100px] shrink-0 rounded-full" />

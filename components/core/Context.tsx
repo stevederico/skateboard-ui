@@ -38,7 +38,19 @@ export interface ContextValue {
   dispatch: React.Dispatch<Action>;
 }
 
-const context = createContext<ContextValue>(undefined!);
+const context = createContext<ContextValue | undefined>(undefined);
+
+/**
+ * Internal hook: read the skateboard context and fail loudly when the
+ * provider is missing, instead of letting callers destructure undefined.
+ *
+ * @throws {Error} If called outside a ContextProvider
+ */
+function useSkateboardContext(): ContextValue {
+  const ctx = useContext(context);
+  if (!ctx) throw new Error('skateboard-ui components must be rendered inside ContextProvider (createSkateboardApp does this automatically)');
+  return ctx;
+}
 
 // Store dispatch reference for programmatic access outside components
 let _dispatch: React.Dispatch<Action> | null = null;
@@ -247,7 +259,7 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
  * }
  */
 export function getState(): ContextValue {
-  return useContext(context);
+  return useSkateboardContext();
 }
 
 /**
@@ -268,7 +280,7 @@ export function getState(): ContextValue {
  * }
  */
 export function useUser(): User | null {
-  const { state } = useContext(context);
+  const { state } = useSkateboardContext();
   return state.user;
 }
 
@@ -289,6 +301,6 @@ export function useUser(): User | null {
  * }
  */
 export function useDispatch(): React.Dispatch<Action> {
-  const { dispatch } = useContext(context);
+  const { dispatch } = useSkateboardContext();
   return dispatch;
 }
