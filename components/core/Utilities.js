@@ -213,6 +213,19 @@ export function isAuthenticated() {
 }
 
 /**
+ * Whether lazy auth (the sign-in overlay) is active.
+ *
+ * Overlay mode is the default: enabled unless explicitly turned off with
+ * `authOverlay: false`, and never for `noLogin` apps (which have no auth).
+ *
+ * @returns {boolean}
+ */
+export function isAuthOverlayEnabled() {
+    const c = getConstants();
+    return c.noLogin !== true && c.authOverlay !== false;
+}
+
+/**
  * Get the backend API base URL based on environment.
  *
  * Returns devBackendURL in development mode, backendURL in production.
@@ -720,7 +733,7 @@ export async function apiRequest(endpoint, options = {}) {
 
     // Handle 401 (redirect to signout, or show auth overlay and retry)
     if (response.status === 401) {
-        if (getConstants().authOverlay !== true) {
+        if (!isAuthOverlayEnabled()) {
             window.location.href = '/signout';
             throw new Error('Unauthorized');
         }

@@ -79,7 +79,7 @@ export default function SettingsView() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    if (constants.authOverlay) {
+                    if (constants.authOverlay !== false) {
                       dispatch({ type: 'SHOW_AUTH_OVERLAY' });
                     } else {
                       navigate('/signin');

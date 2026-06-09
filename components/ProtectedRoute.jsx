@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
-import { isAuthenticated, apiRequest, getAppKey, getConstants } from './core/Utilities';
+import { isAuthenticated, apiRequest, getAppKey, getConstants, isAuthOverlayEnabled } from './core/Utilities';
 import { Spinner } from '../shadcn/ui/spinner.jsx';
 
 /**
@@ -8,7 +8,7 @@ import { Spinner } from '../shadcn/ui/spinner.jsx';
  *
  * Checks client-side auth via isAuthenticated(), then validates the
  * session with the backend via /me. Redirects to /signin if invalid.
- * Bypassed when constants.authOverlay is true (for lazy auth).
+ * Bypassed for lazy auth (the default) unless constants.authOverlay is false.
  * Bypassed when constants.noLogin is true (no auth required).
  *
  * @returns {JSX.Element} Outlet if authenticated, Navigate to /signin otherwise
@@ -22,7 +22,7 @@ import { Spinner } from '../shadcn/ui/spinner.jsx';
  */
 const ProtectedRoute = () => {
     const constants = getConstants();
-    const skipProtection = constants.authOverlay === true;
+    const skipProtection = isAuthOverlayEnabled();
     const [status, setStatus] = useState(skipProtection ? 'valid' : 'checking');
 
     useEffect(() => {

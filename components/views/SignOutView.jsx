@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { getBackendURL, getCSRFToken } from '../core/Utilities';
+import { useDispatch } from '../core/Context.jsx';
 import { Spinner } from '../../shadcn/ui/spinner.jsx';
 
 /**
@@ -18,6 +19,7 @@ import { Spinner } from '../../shadcn/ui/spinner.jsx';
  */
 function SignOutView() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const signOut = async () => {
@@ -34,12 +36,13 @@ function SignOutView() {
       } catch (error) {
         console.error('Sign out error:', error);
       } finally {
+        dispatch({ type: 'CLEAR_USER' });
         navigate('/signin', { replace: true });
       }
     };
 
     signOut();
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
