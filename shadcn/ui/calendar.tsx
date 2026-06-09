@@ -1,9 +1,15 @@
 import * as React from "react"
 import { DayPicker, getDefaultClassNames } from "../../components/core/Calendar.js";
+import type { DayPickerProps, CalendarDay, DayModifiers } from "../../components/core/Calendar.js";
+import type { ButtonProps } from "./button.js";
 
 import { cn } from "../lib/utils.js"
 import { Button, buttonVariants } from "./button.js"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "../../icons/index.js"
+
+export interface CalendarProps extends DayPickerProps {
+  buttonVariant?: ButtonProps["variant"]
+}
 
 function Calendar({
   className,
@@ -14,7 +20,7 @@ function Calendar({
   formatters,
   components,
   ...props
-}) {
+}: CalendarProps) {
   const defaultClassNames = getDefaultClassNames()
 
   return (
@@ -138,15 +144,20 @@ function Calendar({
   );
 }
 
+export interface CalendarDayButtonProps extends Omit<ButtonProps, "size" | "variant"> {
+  day: CalendarDay
+  modifiers: DayModifiers
+}
+
 function CalendarDayButton({
   className,
   day,
   modifiers,
   ...props
-}) {
+}: CalendarDayButtonProps) {
   const defaultClassNames = getDefaultClassNames()
 
-  const ref = React.useRef(null)
+  const ref = React.useRef<HTMLButtonElement | null>(null)
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus()
   }, [modifiers.focused])
