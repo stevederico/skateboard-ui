@@ -1,5 +1,23 @@
 # CHANGELOG
 
+3.10.0
+
+  Convert package to TypeScript
+  Publish compiled dist with types
+  Exports map points to dist
+  Consumer import paths unchanged
+  Add tsconfig and build
+  Regenerate icons as TSX
+  Re-vendor base-ui 1.5.0
+  Bundle base-ui type declarations
+  Adopt official base-vega shadcn
+  Keep sidebar 12rem width
+  Keep cursor-pointer interactions
+  Preserve button asChild bridge
+  Type cva with VariantProps
+  Export public type surfaces
+  Add root package export
+
 3.9.0
 
   Auth overlay on by default
