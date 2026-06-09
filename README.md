@@ -1,8 +1,10 @@
 # skateboard-ui
 
-React component library for rapid application development. Built with TailwindCSS v4 and shadcn/ui.
+React component library for rapid application development. Built with TypeScript, TailwindCSS v4, and shadcn/ui.
 
 **Zero runtime npm dependencies.** Only React, React-DOM, and React Router are peer-resolved. Everything else — base-ui primitives, lucide icons, tailwind-merge, drag physics, command palette, date picker, theme provider — is vendored, ported, or recreated inside the repo.
+
+**TypeScript with full type declarations.** Source is TypeScript, compiled to plain JavaScript + `.d.ts` in `dist/` (`npm run build`). JavaScript apps consume the compiled JS exactly as before — import paths are unchanged — and TypeScript apps get real types for every export (`SkateboardConstants`, `User`, component props, `VariantProps`, typed icons).
 
 **Node.js 24+** is required in the app repo for build tooling and backend (see `engines` in `package.json`). The UI package itself runs in the browser.
 
@@ -46,7 +48,9 @@ Across the v3.x series, every npm runtime dep was either vendored, recreated, or
 | v3.3 | 2 | 0 | 2 |
 | v3.4 | 1 | 0 | 1 |
 | v3.5 | 0 | 0 | 0 |
-| **Now (v3.6)** | **0** | **0** | **0** |
+| **Now (v3.6+)** | **0** | **0** | **0** |
+
+v3.10 converts the package to TypeScript — compiled JS + `.d.ts` ship in `dist/`; the dependency count is unchanged (`typescript` is a devDependency only).
 
 **No hard deps remain.** React + React-DOM + React Router are the only `peerDependencies`. Every other piece of code that runs in a consumer browser is either authored here, recreated as a drop-in, or vendored from upstream.
 
@@ -56,20 +60,20 @@ Pre-built copies live in this repo so consumers don't pull them from npm. Refres
 
 | Source | Lives at | Refresh script |
 |---|---|---|
-| `@base-ui/react` + 5 transitive deps (`@floating-ui/react-dom`, `@floating-ui/utils`, `@babel/runtime`, `use-sync-external-store`, `@base-ui/utils`) | `shadcn/lib/base-ui/*.js` (28 entry points + shared chunks) | `node scripts/vendor-base-ui.js` (requires `bun`; bump `BASE_UI_VERSION`) |
-| `lucide` icons (1700+) | `icons/*.jsx` | `node scripts/vendor-icons.js` (bump `LUCIDE_TAG`) |
+| `@base-ui/react` + 5 transitive deps (`@floating-ui/react-dom`, `@floating-ui/utils`, `@babel/runtime`, `use-sync-external-store`, `@base-ui/utils`) | `shadcn/lib/base-ui/*.js` + `*.d.ts` (28 entry points + shared chunks) | `node scripts/vendor-base-ui.js` (requires `bun`; bump `BASE_UI_VERSION`) |
+| `lucide` icons (1700+) | `icons/*.tsx` | `node scripts/vendor-icons.js` (bump `LUCIDE_TAG`) |
 | `tailwind-merge` | `shadcn/lib/tailwind-merge.js` | `node scripts/vendor-tailwind-merge.js` (bump `TM_VERSION`) |
 
 ### Ported / recreated / inlined
 
 | Replaces | Lives at | Approach |
 |---|---|---|
-| `vaul` (drag gesture) | `shadcn/ui/drawer.jsx` | ported — drag math copied from vaul `src/index.tsx` (MIT, Emil Kowalski); base-ui Dialog as modal shell |
-| `cmdk` | `components/core/Command.jsx` | rewritten drop-in |
-| `react-day-picker` | `components/core/Calendar.jsx` | rewritten drop-in |
-| `next-themes` | `components/core/ThemeProvider.jsx` | rewritten drop-in |
-| `class-variance-authority` | `shadcn/lib/cva.js` | rewritten drop-in |
-| `clsx` | `shadcn/lib/clsx.js` | rewritten drop-in |
+| `vaul` (drag gesture) | `shadcn/ui/drawer.tsx` | ported — drag math copied from vaul `src/index.tsx` (MIT, Emil Kowalski); base-ui Dialog as modal shell |
+| `cmdk` | `components/core/Command.tsx` | rewritten drop-in |
+| `react-day-picker` | `components/core/Calendar.tsx` | rewritten drop-in |
+| `next-themes` | `components/core/ThemeProvider.tsx` | rewritten drop-in |
+| `class-variance-authority` | `shadcn/lib/cva.ts` | rewritten drop-in |
+| `clsx` | `shadcn/lib/clsx.ts` | rewritten drop-in |
 | `tailwindcss-animate` | `styles.css` | inlined as plain CSS utilities |
 | `sonner` | — | removed; use `Dialog` / `Alert` |
 
@@ -280,7 +284,7 @@ createSkateboardApp({
 
 - **Routes:** Landing, signin, signup, signout, app routes, settings, payment, legal pages (terms, privacy, EULA, subscription)
 - **Authentication:** ProtectedRoute wrapping `/app/*`, AuthOverlay for lazy auth
-- **Theming:** in-house `ThemeProvider` (system / light / dark) — `components/core/ThemeProvider.jsx`
+- **Theming:** in-house `ThemeProvider` (system / light / dark) — `components/core/ThemeProvider.tsx`
 - **State:** ContextProvider with user, UI, and auth overlay state
 - **Error Boundary:** Catches render errors, unhandled rejections, and global errors
 
@@ -1224,7 +1228,7 @@ Import base theme and override as needed:
 | `--accent` | Secondary backgrounds |
 | `--radius` | Border radius |
 
-Dark mode is automatic via CSS custom properties and the in-house `ThemeProvider` (`components/core/ThemeProvider.jsx`).
+Dark mode is automatic via CSS custom properties and the in-house `ThemeProvider` (`components/core/ThemeProvider.tsx`).
 
 ## shadcn/ui Components
 
