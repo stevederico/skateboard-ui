@@ -1,4 +1,4 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
@@ -8,41 +8,42 @@ import {
   useCollapsiblePanel,
   useCollapsibleRoot,
   useCollapsibleRootContext
-} from "./_chunk-wana68v3.js";
-import"./_chunk-01rqe37g.js";
-import"./_chunk-f5d01bp9.js";
-import"./_chunk-mvv30fkv.js";
-import"./_chunk-4s0k3h7t.js";
-import"./_chunk-8kh3xk78.js";
+} from "./_chunk-6adaer33.js";
+import"./_chunk-9x63vfqj.js";
+import"./_chunk-x11e1k9r.js";
+import"./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
+import"./_chunk-e56mpvk1.js";
+import"./_chunk-wdqynnjf.js";
 import {
-  transitionStatusMapping,
-  useOpenChangeComplete
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+  transitionStatusMapping
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
+  resolveStyle,
   useRenderElement,
   warn
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/index.parts.js
+// node_modules/@base-ui/react/esm/collapsible/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Trigger: () => CollapsibleTrigger,
@@ -50,16 +51,16 @@ __export(exports_index_parts, {
   Panel: () => CollapsiblePanel
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRoot.js
+// node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRoot.js
 import * as React from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/root/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/collapsible/root/stateAttributesMapping.js
 var collapsibleStateAttributesMapping = {
   ...collapsibleOpenStateMapping,
   ...transitionStatusMapping
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRoot.js
+// node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRoot.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var CollapsibleRoot = /* @__PURE__ */ React.forwardRef(function CollapsibleRoot2(componentProps, forwardedRef) {
@@ -103,7 +104,7 @@ var CollapsibleRoot = /* @__PURE__ */ React.forwardRef(function CollapsibleRoot2
 });
 if (true)
   CollapsibleRoot.displayName = "CollapsibleRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/trigger/CollapsibleTrigger.js
+// node_modules/@base-ui/react/esm/collapsible/trigger/CollapsibleTrigger.js
 import * as React2 from "react";
 "use client";
 var stateAttributesMapping = {
@@ -135,32 +136,31 @@ var CollapsibleTrigger = /* @__PURE__ */ React2.forwardRef(function CollapsibleT
     focusableWhenDisabled: true,
     native: nativeButton
   });
-  const props = React2.useMemo(() => ({
-    "aria-controls": open ? panelId : undefined,
-    "aria-expanded": open,
-    onClick: handleTrigger
-  }), [panelId, open, handleTrigger]);
   const element = useRenderElement("button", componentProps, {
     state,
     ref: [forwardedRef, buttonRef],
-    props: [props, elementProps, getButtonProps],
+    props: [{
+      "aria-controls": open ? panelId : undefined,
+      "aria-expanded": open,
+      onClick: handleTrigger
+    }, elementProps, getButtonProps],
     stateAttributesMapping
   });
   return element;
 });
 if (true)
   CollapsibleTrigger.displayName = "CollapsibleTrigger";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanel.js
+// node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanel.js
 import * as React3 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanelCssVars.js
+// node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanelCssVars.js
 var CollapsiblePanelCssVars = /* @__PURE__ */ function(CollapsiblePanelCssVars2) {
   CollapsiblePanelCssVars2["collapsiblePanelHeight"] = "--collapsible-panel-height";
   CollapsiblePanelCssVars2["collapsiblePanelWidth"] = "--collapsible-panel-width";
   return CollapsiblePanelCssVars2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanel.js
+// node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanel.js
 "use client";
 var CollapsiblePanel = /* @__PURE__ */ React3.forwardRef(function CollapsiblePanel2(componentProps, forwardedRef) {
   const {
@@ -175,31 +175,19 @@ var CollapsiblePanel = /* @__PURE__ */ React3.forwardRef(function CollapsiblePan
   if (true) {
     useIsoLayoutEffect(() => {
       if (hiddenUntilFoundProp && keepMountedProp === false) {
-        warn("The `keepMounted={false}` prop on a Collapsible will be ignored when using `hiddenUntilFound` since it requires the Panel to remain mounted even when closed.");
+        warn("The `keepMounted={false}` prop on `Collapsible.Panel` is ignored when `hiddenUntilFound` is enabled, since the panel must remain mounted while closed.");
       }
     }, [hiddenUntilFoundProp, keepMountedProp]);
   }
   const {
-    abortControllerRef,
-    animationTypeRef,
-    height,
     mounted,
     onOpenChange,
     open,
     panelId,
-    panelRef,
-    runOnceAnimationsFinish,
-    setDimensions,
-    setHiddenUntilFound,
-    setKeepMounted,
     setMounted,
     setPanelIdState,
     setOpen,
-    setVisible,
     state,
-    transitionDimensionRef,
-    visible,
-    width,
     transitionStatus
   } = useCollapsibleRootContext();
   const hiddenUntilFound = hiddenUntilFoundProp ?? false;
@@ -213,64 +201,57 @@ var CollapsiblePanel = /* @__PURE__ */ React3.forwardRef(function CollapsiblePan
     }
     return;
   }, [idProp, setPanelIdState]);
-  useIsoLayoutEffect(() => {
-    setHiddenUntilFound(hiddenUntilFound);
-  }, [setHiddenUntilFound, hiddenUntilFound]);
-  useIsoLayoutEffect(() => {
-    setKeepMounted(keepMounted);
-  }, [setKeepMounted, keepMounted]);
   const {
-    props
-  } = useCollapsiblePanel({
-    abortControllerRef,
-    animationTypeRef,
-    externalRef: forwardedRef,
     height,
+    props,
+    ref,
+    shouldPreventOpenAnimation,
+    shouldRender,
+    transitionStatus: panelTransitionStatus,
+    width
+  } = useCollapsiblePanel({
+    externalRef: forwardedRef,
     hiddenUntilFound,
     id: panelId,
     keepMounted,
     mounted,
     onOpenChange,
     open,
-    panelRef,
-    runOnceAnimationsFinish,
-    setDimensions,
     setMounted,
     setOpen,
-    setVisible,
-    transitionDimensionRef,
-    visible,
-    width
-  });
-  useOpenChangeComplete({
-    open: open && transitionStatus === "idle",
-    ref: panelRef,
-    onComplete() {
-      if (!open) {
-        return;
-      }
-      setDimensions({
-        height: undefined,
-        width: undefined
-      });
-    }
-  });
-  const panelState = React3.useMemo(() => ({
-    ...state,
     transitionStatus
-  }), [state, transitionStatus]);
-  const element = useRenderElement("div", componentProps, {
+  });
+  const panelState = {
+    ...state,
+    transitionStatus: panelTransitionStatus
+  };
+  const resolvedStyle = resolveStyle(style, panelState);
+  const element = useRenderElement("div", {
+    ...componentProps,
+    style: undefined
+  }, {
     state: panelState,
-    ref: [forwardedRef, panelRef],
-    props: [props, {
-      style: {
-        [CollapsiblePanelCssVars.collapsiblePanelHeight]: height === undefined ? "auto" : `${height}px`,
-        [CollapsiblePanelCssVars.collapsiblePanelWidth]: width === undefined ? "auto" : `${width}px`
-      }
-    }, elementProps],
+    ref,
+    props: [
+      props,
+      {
+        style: {
+          [CollapsiblePanelCssVars.collapsiblePanelHeight]: height === undefined ? "auto" : `${height}px`,
+          [CollapsiblePanelCssVars.collapsiblePanelWidth]: width === undefined ? "auto" : `${width}px`
+        }
+      },
+      elementProps,
+      resolvedStyle ? {
+        style: resolvedStyle
+      } : undefined,
+      shouldPreventOpenAnimation ? {
+        style: {
+          animationName: "none"
+        }
+      } : undefined
+    ],
     stateAttributesMapping: collapsibleStateAttributesMapping
   });
-  const shouldRender = keepMounted || hiddenUntilFound || mounted;
   if (!shouldRender) {
     return null;
   }

@@ -1,91 +1,92 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   serializeValue
-} from "./_chunk-xxhqanfd.js";
+} from "./_chunk-4zhfq4d3.js";
 import {
   SCROLL_EDGE_TOLERANCE_PX,
   getMaxScrollOffset,
   normalizeScrollOffset,
   styleDisableScrollbar
-} from "./_chunk-k1e5fvcj.js";
+} from "./_chunk-e6k2ecs7.js";
 import {
   getDefaultLabelId,
   resolveAriaLabelledBy
-} from "./_chunk-611pz5sm.js";
+} from "./_chunk-b5ya6xds.js";
 import {
   clamp
-} from "./_chunk-szcr6mhk.js";
+} from "./_chunk-yzr7eg4b.js";
 import {
   useCSPContext
-} from "./_chunk-ymj1dpqg.js";
+} from "./_chunk-watha94s.js";
 import {
   useLabel
-} from "./_chunk-fch5cba8.js";
+} from "./_chunk-ghn1tzt8.js";
 import {
   useLabelableId
-} from "./_chunk-k4mc2kan.js";
-import"./_chunk-w68yxg9d.js";
+} from "./_chunk-23rx7haq.js";
+import"./_chunk-vgkfmtbe.js";
 import {
   useFormContext,
   useRegisterFieldControl
-} from "./_chunk-97tas84n.js";
+} from "./_chunk-95tf2rxq.js";
 import {
   fieldValidityMapping,
   useFieldRootContext,
   useLabelableContext
-} from "./_chunk-kfz96xv1.js";
-import"./_chunk-ds8fnpjj.js";
+} from "./_chunk-8ctgmf06.js";
+import"./_chunk-dzvjwv25.js";
 import {
   getPseudoElementBounds
-} from "./_chunk-6b17g8t7.js";
+} from "./_chunk-b0nc8wq7.js";
 import {
   Separator
-} from "./_chunk-7fmjymvh.js";
+} from "./_chunk-n11h505c.js";
 import {
   useAnchoredPopupScrollLock
-} from "./_chunk-agc6ew3g.js";
+} from "./_chunk-ebyxgtb4.js";
 import {
   useToolbarRootContext
-} from "./_chunk-y887e46p.js";
+} from "./_chunk-mnd0j7v9.js";
 import {
   usePreviousValue
-} from "./_chunk-gfce3j3z.js";
+} from "./_chunk-m307wpdj.js";
 import {
   getDisabledMountTransitionStyles,
   useAnchorPositioning,
   usePositioner
-} from "./_chunk-502wngfc.js";
+} from "./_chunk-fqry7pew.js";
 import {
   IndexGuessBehavior,
   useCompositeListItem
-} from "./_chunk-ek863ta9.js";
+} from "./_chunk-3enq1vat.js";
 import {
   CompositeList
-} from "./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
+} from "./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
 import {
   useDirection
-} from "./_chunk-wtw745qd.js";
+} from "./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   InternalBackdrop,
   useOpenInteractionType
-} from "./_chunk-q3nee19r.js";
+} from "./_chunk-ytnp24gq.js";
 import {
+  FOCUSABLE_POPUP_PROPS,
   useOnFirstRender
-} from "./_chunk-f09cp81f.js";
+} from "./_chunk-242gh8ph.js";
 import {
   popupStateMapping,
   pressableTriggerOpenStateMapping,
   triggerOpenStateMapping
-} from "./_chunk-536jvgeq.js";
+} from "./_chunk-t7ppm3t0.js";
 import {
   inertValue
-} from "./_chunk-9nyxkvte.js";
+} from "./_chunk-3cpd1vjz.js";
 import {
   DROPDOWN_COLLISION_AVOIDANCE,
   FloatingFocusManager,
@@ -96,90 +97,89 @@ import {
   useClick,
   useDismiss,
   useFloatingRootContext,
-  useInteractions,
   useListNavigation,
   useStore,
   useTypeahead
-} from "./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import {
-  ownerDocument
-} from "./_chunk-xb7ph1ka.js";
+} from "./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
 import {
   contains,
   getFloatingFocusElement
-} from "./_chunk-atnkefgd.js";
-import {
-  useValueAsRef
-} from "./_chunk-drfb9kp2.js";
+} from "./_chunk-cgptgywc.js";
 import {
   COMPOSITE_KEYS
-} from "./_chunk-qce0xt57.js";
+} from "./_chunk-pv7b791x.js";
 import {
+  isVirtualClick,
   rectToClientRect
-} from "./_chunk-nya71ccw.js";
+} from "./_chunk-kw8nnq00.js";
 import {
   isWebKit
-} from "./_chunk-t7j3rbpv.js";
+} from "./_chunk-rrh8rt4v.js";
 import {
   useTimeout
-} from "./_chunk-7v1t86x1.js";
+} from "./_chunk-b6dkjkbw.js";
 import {
   useValueChanged
-} from "./_chunk-cwr896nf.js";
+} from "./_chunk-s5pwkz8v.js";
 import {
   visuallyHidden,
   visuallyHiddenInput
-} from "./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
+} from "./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
 import {
   addEventListener
-} from "./_chunk-mvv30fkv.js";
+} from "./_chunk-ase0ydtt.js";
+import {
+  useValueAsRef
+} from "./_chunk-6kqramh9.js";
+import {
+  ownerDocument
+} from "./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   transitionStatusMapping,
   useOpenChangeComplete,
   useTransitionStatus
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
 import {
   useAnimationFrame
-} from "./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+} from "./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
 import {
   getWindow
-} from "./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   EMPTY_ARRAY,
   EMPTY_OBJECT,
   useMergedRefs,
   useRefWithInit,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export,
   mergeProps
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/index.parts.js
+// node_modules/@base-ui/react/esm/select/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Value: () => SelectValue,
@@ -203,10 +203,10 @@ __export(exports_index_parts, {
   Arrow: () => SelectArrow
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/root/SelectRoot.js
+// node_modules/@base-ui/react/esm/select/root/SelectRoot.js
 import * as React3 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/root/SelectRootContext.js
+// node_modules/@base-ui/react/esm/select/root/SelectRootContext.js
 import * as React from "react";
 "use client";
 var SelectRootContext = /* @__PURE__ */ React.createContext(null);
@@ -230,7 +230,7 @@ function useSelectFloatingContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/internals/itemEquality.js
+// node_modules/@base-ui/react/esm/internals/itemEquality.js
 var defaultItemEquality = (itemValue, selectedValue) => Object.is(itemValue, selectedValue);
 function compareItemEquality(itemValue, selectedValue, comparer) {
   if (itemValue == null || selectedValue == null) {
@@ -264,7 +264,7 @@ function removeItem(selectedValues, itemValue, comparer) {
   return selectedValues.filter((selectedValue) => !compareItemEquality(itemValue, selectedValue, comparer));
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/internals/resolveValueLabel.js
+// node_modules/@base-ui/react/esm/internals/resolveValueLabel.js
 import * as React2 from "react";
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
@@ -360,7 +360,7 @@ function resolveMultipleLabels(values, items, itemToStringLabel) {
   }, []);
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/store.js
+// node_modules/@base-ui/react/esm/select/store.js
 var selectors = {
   id: createSelector((state) => state.id),
   labelId: createSelector((state) => state.labelId),
@@ -415,12 +415,13 @@ var selectors = {
   triggerElement: createSelector((state) => state.triggerElement),
   positionerElement: createSelector((state) => state.positionerElement),
   listElement: createSelector((state) => state.listElement),
+  popupSide: createSelector((state) => state.popupSide),
   scrollUpArrowVisible: createSelector((state) => state.scrollUpArrowVisible),
   scrollDownArrowVisible: createSelector((state) => state.scrollDownArrowVisible),
   hasScrollArrows: createSelector((state) => state.hasScrollArrows)
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/root/SelectRoot.js
+// node_modules/@base-ui/react/esm/select/root/SelectRoot.js
 import { jsx as _jsx2, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 function SelectRoot(props) {
@@ -491,10 +492,12 @@ function SelectRoot(props) {
   const valuesRef = React3.useRef([]);
   const typingRef = React3.useRef(false);
   const keyboardActiveRef = React3.useRef(false);
+  const firstItemTextRef = React3.useRef(null);
   const selectedItemTextRef = React3.useRef(null);
   const selectionRef = React3.useRef({
     allowSelectedMouseUp: false,
-    allowUnselectedMouseUp: false
+    allowUnselectedMouseUp: false,
+    dragY: 0
   });
   const alignItemWithTriggerActiveRef = React3.useRef(false);
   const {
@@ -528,6 +531,7 @@ function SelectRoot(props) {
     triggerElement: null,
     positionerElement: null,
     listElement: null,
+    popupSide: null,
     scrollUpArrowVisible: false,
     scrollDownArrowVisible: false,
     hasScrollArrows: false
@@ -551,40 +555,42 @@ function SelectRoot(props) {
     return stringifyAsValue(value, itemToStringValue);
   }, [multiple, value, itemToStringValue]);
   const controlRef = useValueAsRef(store.state.triggerElement);
-  const getFieldValue = useStableCallback(() => fieldStringValue);
-  useRegisterFieldControl(controlRef, {
-    id: generatedId,
-    value,
-    getValue: getFieldValue
-  });
+  const getStringifiedValueForForm = useStableCallback(() => fieldStringValue);
+  useRegisterFieldControl(controlRef, generatedId, value, getStringifiedValueForForm);
   const initialValueRef = React3.useRef(value);
+  const hasSelectedValue = multiple ? Array.isArray(value) && value.length > 0 : value != null;
   useIsoLayoutEffect(() => {
     if (value !== initialValueRef.current) {
       store.set("forceMount", true);
     }
   }, [store, value]);
   useIsoLayoutEffect(() => {
-    setFilled(multiple ? Array.isArray(value) && value.length > 0 : value != null);
-  }, [multiple, value, setFilled]);
+    setFilled(hasSelectedValue);
+  }, [hasSelectedValue, setFilled]);
   useIsoLayoutEffect(function syncSelectedIndex() {
-    if (open) {
-      return;
-    }
     const registry = valuesRef.current;
+    let nextIndex;
     if (multiple) {
       const currentValue = Array.isArray(value) ? value : [];
       if (currentValue.length === 0) {
-        store.set("selectedIndex", null);
-        return;
+        nextIndex = null;
+      } else {
+        const lastValue = currentValue[currentValue.length - 1];
+        const lastIndex = findItemIndex(registry, lastValue, isItemEqualToValue);
+        nextIndex = lastIndex === -1 ? null : lastIndex;
       }
-      const lastValue = currentValue[currentValue.length - 1];
-      const lastIndex = findItemIndex(registry, lastValue, isItemEqualToValue);
-      store.set("selectedIndex", lastIndex === -1 ? null : lastIndex);
+    } else {
+      const index = findItemIndex(registry, value, isItemEqualToValue);
+      nextIndex = index === -1 ? null : index;
+    }
+    if (nextIndex === null) {
+      selectedItemTextRef.current = null;
+    }
+    if (open) {
       return;
     }
-    const index = findItemIndex(registry, value, isItemEqualToValue);
-    store.set("selectedIndex", index === -1 ? null : index);
-  }, [multiple, open, value, valuesRef, isItemEqualToValue, store]);
+    store.set("selectedIndex", nextIndex);
+  }, [hasSelectedValue, multiple, open, value, valuesRef, isItemEqualToValue, store, selectedItemTextRef]);
   useValueChanged(value, () => {
     clearErrors(name);
     setDirty(value !== validityData.initialValue);
@@ -670,9 +676,7 @@ function SelectRoot(props) {
     enabled: !readOnly && !disabled,
     event: "mousedown"
   });
-  const dismiss = useDismiss(floatingContext, {
-    bubbles: false
-  });
+  const dismiss = useDismiss(floatingContext);
   const listNavigation = useListNavigation(floatingContext, {
     enabled: !readOnly && !disabled,
     listRef,
@@ -699,23 +703,22 @@ function SelectRoot(props) {
         setValue(valuesRef.current[index], createChangeEventDetails("none"));
       }
     },
-    onTypingChange(typing) {
+    onTyping(typing) {
       typingRef.current = typing;
     }
   });
-  const {
-    getReferenceProps,
-    getFloatingProps,
-    getItemProps
-  } = useInteractions([click, dismiss, listNavigation, typeahead]);
   const mergedTriggerProps = React3.useMemo(() => {
-    return mergeProps(getReferenceProps(), interactionTypeProps, generatedId ? {
-      id: generatedId
-    } : EMPTY_OBJECT);
-  }, [getReferenceProps, interactionTypeProps, generatedId]);
+    const triggerInteractionProps = mergeProps(typeahead.reference, listNavigation.reference, dismiss.reference, click.reference, interactionTypeProps);
+    if (generatedId) {
+      triggerInteractionProps.id = generatedId;
+    }
+    return triggerInteractionProps;
+  }, [click.reference, typeahead.reference, listNavigation.reference, dismiss.reference, interactionTypeProps, generatedId]);
+  const popupProps = React3.useMemo(() => mergeProps(FOCUSABLE_POPUP_PROPS, typeahead.floating, listNavigation.floating, dismiss.floating), [typeahead.floating, listNavigation.floating, dismiss.floating]);
+  const itemProps = listNavigation.item ?? EMPTY_OBJECT;
   useOnFirstRender(() => {
     store.update({
-      popupProps: getFloatingProps(),
+      popupProps,
       triggerProps: mergedTriggerProps
     });
   });
@@ -728,7 +731,7 @@ function SelectRoot(props) {
       open,
       mounted,
       transitionStatus,
-      popupProps: getFloatingProps(),
+      popupProps,
       triggerProps: mergedTriggerProps,
       items,
       itemToStringLabel,
@@ -736,7 +739,7 @@ function SelectRoot(props) {
       isItemEqualToValue,
       openMethod: renderedOpenMethod
     });
-  }, [store, generatedId, modal, multiple, value, open, mounted, transitionStatus, getFloatingProps, mergedTriggerProps, items, itemToStringLabel, itemToStringValue, isItemEqualToValue, renderedOpenMethod]);
+  }, [store, generatedId, modal, multiple, value, open, mounted, transitionStatus, popupProps, mergedTriggerProps, items, itemToStringLabel, itemToStringValue, isItemEqualToValue, renderedOpenMethod]);
   const contextValue = React3.useMemo(() => ({
     store,
     name,
@@ -752,20 +755,21 @@ function SelectRoot(props) {
     scrollHandlerRef,
     handleScrollArrowVisibility,
     scrollArrowsMountedCountRef,
-    getItemProps,
+    itemProps,
     events: floatingContext.context.events,
     valueRef,
     valuesRef,
     labelsRef,
     typingRef,
     selectionRef,
+    firstItemTextRef,
     selectedItemTextRef,
     validation,
     onOpenChangeComplete,
     keyboardActiveRef,
     alignItemWithTriggerActiveRef,
     initialValueRef
-  }), [store, name, required, disabled, readOnly, multiple, highlightItemOnHover, setValue, setOpen, getItemProps, floatingContext.context.events, validation, onOpenChangeComplete, handleScrollArrowVisibility]);
+  }), [store, name, required, disabled, readOnly, multiple, highlightItemOnHover, setValue, setOpen, itemProps, floatingContext.context.events, validation, onOpenChangeComplete, handleScrollArrowVisibility]);
   const ref = useMergedRefs(inputRef, validation.inputRef);
   const hasMultipleSelection = multiple && Array.isArray(value) && value.length > 0;
   const hiddenInputName = multiple ? undefined : name;
@@ -795,7 +799,8 @@ function SelectRoot(props) {
             });
           },
           onChange(event) {
-            if (event.nativeEvent.defaultPrevented) {
+            if (event.nativeEvent.defaultPrevented || disabled || readOnly) {
+              event.preventBaseUIHandler?.();
               return;
             }
             const nextValue = event.currentTarget.value;
@@ -844,7 +849,7 @@ function SelectRoot(props) {
     })
   });
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/label/SelectLabel.js
+// node_modules/@base-ui/react/esm/select/label/SelectLabel.js
 import * as React4 from "react";
 "use client";
 var SelectLabel = /* @__PURE__ */ React4.forwardRef(function SelectLabel2(componentProps, forwardedRef) {
@@ -879,15 +884,17 @@ var SelectLabel = /* @__PURE__ */ React4.forwardRef(function SelectLabel2(compon
 });
 if (true)
   SelectLabel.displayName = "SelectLabel";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/trigger/SelectTrigger.js
+// node_modules/@base-ui/react/esm/select/trigger/SelectTrigger.js
 import * as React5 from "react";
 "use client";
 var BOUNDARY_OFFSET = 2;
 var SELECTED_DELAY = 400;
-var UNSELECTED_DELAY = 200;
 var stateAttributesMapping = {
   ...pressableTriggerOpenStateMapping,
   ...fieldValidityMapping,
+  popupSide: (side) => side ? {
+    "data-popup-side": side
+  } : null,
   value: () => null
 };
 var SelectTrigger = /* @__PURE__ */ React5.forwardRef(function SelectTrigger2(componentProps, forwardedRef) {
@@ -923,15 +930,16 @@ var SelectTrigger = /* @__PURE__ */ React5.forwardRef(function SelectTrigger2(co
   } = useSelectRootContext();
   const disabled = fieldDisabled || selectDisabled || disabledProp;
   const open = useStore(store, selectors.open);
+  const mounted = useStore(store, selectors.mounted);
   const value = useStore(store, selectors.value);
   const triggerProps = useStore(store, selectors.triggerProps);
   const positionerElement = useStore(store, selectors.positionerElement);
   const listElement = useStore(store, selectors.listElement);
+  const popupSideValue = useStore(store, selectors.popupSide);
   const rootId = useStore(store, selectors.id);
   const selectLabelId = useStore(store, selectors.labelId);
   const hasSelectedValue = useStore(store, selectors.hasSelectedValue);
-  const shouldCheckNullItemLabel = !hasSelectedValue && open;
-  const hasNullItemLabel2 = useStore(store, selectors.hasNullItemLabel, shouldCheckNullItemLabel);
+  const popupSide = mounted && positionerElement ? popupSideValue : null;
   const id = idProp ?? rootId;
   const ariaLabelledBy = resolveAriaLabelledBy(fieldLabelId, selectLabelId);
   useLabelableId({
@@ -953,45 +961,30 @@ var SelectTrigger = /* @__PURE__ */ React5.forwardRef(function SelectTrigger2(co
   const timeoutFocus = useTimeout();
   const timeoutMouseDown = useTimeout();
   const selectedDelayTimeout = useTimeout();
-  const unselectedDelayTimeout = useTimeout();
   React5.useEffect(() => {
     if (open) {
-      const hasSelectedItemInList = hasSelectedValue || hasNullItemLabel2;
-      const shouldDelayUnselectedMouseUpLonger = !hasSelectedItemInList;
-      if (shouldDelayUnselectedMouseUpLonger) {
-        selectedDelayTimeout.start(SELECTED_DELAY, () => {
-          selectionRef.current.allowUnselectedMouseUp = true;
-          selectionRef.current.allowSelectedMouseUp = true;
-        });
-      } else {
-        unselectedDelayTimeout.start(UNSELECTED_DELAY, () => {
-          selectionRef.current.allowUnselectedMouseUp = true;
-          selectedDelayTimeout.start(UNSELECTED_DELAY, () => {
-            selectionRef.current.allowSelectedMouseUp = true;
-          });
-        });
-      }
+      selectedDelayTimeout.start(SELECTED_DELAY, () => {
+        selectionRef.current.allowUnselectedMouseUp = true;
+        selectionRef.current.allowSelectedMouseUp = true;
+      });
       return () => {
         selectedDelayTimeout.clear();
-        unselectedDelayTimeout.clear();
       };
     }
     selectionRef.current = {
       allowSelectedMouseUp: false,
-      allowUnselectedMouseUp: false
+      allowUnselectedMouseUp: false,
+      dragY: 0
     };
     timeoutMouseDown.clear();
     return;
-  }, [open, hasSelectedValue, hasNullItemLabel2, selectionRef, timeoutMouseDown, selectedDelayTimeout, unselectedDelayTimeout]);
-  const ariaControlsId = React5.useMemo(() => {
-    return listElement?.id ?? getFloatingFocusElement(positionerElement)?.id;
-  }, [listElement, positionerElement]);
+  }, [open, selectionRef, timeoutMouseDown, selectedDelayTimeout]);
   const props = mergeProps(triggerProps, {
     id,
     role: "combobox",
     "aria-expanded": open ? "true" : "false",
     "aria-haspopup": "listbox",
-    "aria-controls": open ? ariaControlsId : undefined,
+    "aria-controls": open ? listElement?.id ?? getFloatingFocusElement(positionerElement)?.id : undefined,
     "aria-labelledby": ariaLabelledBy,
     "aria-readonly": readOnly || undefined,
     "aria-required": required || undefined,
@@ -1055,6 +1048,7 @@ var SelectTrigger = /* @__PURE__ */ React5.forwardRef(function SelectTrigger2(co
     disabled,
     value,
     readOnly,
+    popupSide,
     placeholder: !hasSelectedValue
   };
   return useRenderElement("button", componentProps, {
@@ -1066,7 +1060,7 @@ var SelectTrigger = /* @__PURE__ */ React5.forwardRef(function SelectTrigger2(co
 });
 if (true)
   SelectTrigger.displayName = "SelectTrigger";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/value/SelectValue.js
+// node_modules/@base-ui/react/esm/select/value/SelectValue.js
 import * as React6 from "react";
 "use client";
 var stateAttributesMapping2 = {
@@ -1119,13 +1113,13 @@ var SelectValue = /* @__PURE__ */ React6.forwardRef(function SelectValue2(compon
 });
 if (true)
   SelectValue.displayName = "SelectValue";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/icon/SelectIcon.js
+// node_modules/@base-ui/react/esm/select/icon/SelectIcon.js
 import * as React7 from "react";
 "use client";
 var SelectIcon = /* @__PURE__ */ React7.forwardRef(function SelectIcon2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -1149,17 +1143,17 @@ var SelectIcon = /* @__PURE__ */ React7.forwardRef(function SelectIcon2(componen
 });
 if (true)
   SelectIcon.displayName = "SelectIcon";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/portal/SelectPortal.js
+// node_modules/@base-ui/react/esm/select/portal/SelectPortal.js
 import * as React9 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/portal/SelectPortalContext.js
+// node_modules/@base-ui/react/esm/select/portal/SelectPortalContext.js
 import * as React8 from "react";
 "use client";
 var SelectPortalContext = /* @__PURE__ */ React8.createContext(undefined);
 if (true)
   SelectPortalContext.displayName = "SelectPortalContext";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/portal/SelectPortal.js
+// node_modules/@base-ui/react/esm/select/portal/SelectPortal.js
 import { jsx as _jsx3 } from "react/jsx-runtime";
 "use client";
 var SelectPortal = /* @__PURE__ */ React9.forwardRef(function SelectPortal2(portalProps, forwardedRef) {
@@ -1182,7 +1176,7 @@ var SelectPortal = /* @__PURE__ */ React9.forwardRef(function SelectPortal2(port
 });
 if (true)
   SelectPortal.displayName = "SelectPortal";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/backdrop/SelectBackdrop.js
+// node_modules/@base-ui/react/esm/select/backdrop/SelectBackdrop.js
 import * as React10 from "react";
 "use client";
 var stateAttributesMapping3 = {
@@ -1191,8 +1185,8 @@ var stateAttributesMapping3 = {
 };
 var SelectBackdrop = /* @__PURE__ */ React10.forwardRef(function SelectBackdrop2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -1223,10 +1217,10 @@ var SelectBackdrop = /* @__PURE__ */ React10.forwardRef(function SelectBackdrop2
 });
 if (true)
   SelectBackdrop.displayName = "SelectBackdrop";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/positioner/SelectPositioner.js
+// node_modules/@base-ui/react/esm/select/positioner/SelectPositioner.js
 import * as React12 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/positioner/SelectPositionerContext.js
+// node_modules/@base-ui/react/esm/select/positioner/SelectPositionerContext.js
 import * as React11 from "react";
 "use client";
 var SelectPositionerContext = /* @__PURE__ */ React11.createContext(undefined);
@@ -1240,7 +1234,7 @@ function useSelectPositionerContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/popup/utils.js
+// node_modules/@base-ui/react/esm/select/popup/utils.js
 function clearStyles(element, originalStyles) {
   if (element) {
     Object.assign(element.style, originalStyles);
@@ -1253,7 +1247,7 @@ var LIST_FUNCTIONAL_STYLES = {
   overflowY: "auto"
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/positioner/SelectPositioner.js
+// node_modules/@base-ui/react/esm/select/positioner/SelectPositioner.js
 import { jsx as _jsx4, jsxs as _jsxs2 } from "react/jsx-runtime";
 "use client";
 var FIXED = {
@@ -1344,6 +1338,9 @@ var SelectPositioner = /* @__PURE__ */ React12.forwardRef(function SelectPositio
     align: positioning.align,
     anchorHidden: positioning.anchorHidden
   };
+  useIsoLayoutEffect(() => {
+    store.set("popupSide", positioning.side);
+  }, [store, positioning.side]);
   const setPositionerElement = useStableCallback((element2) => {
     store.set("positionerElement", element2);
   });
@@ -1428,7 +1425,7 @@ var SelectPositioner = /* @__PURE__ */ React12.forwardRef(function SelectPositio
 });
 if (true)
   SelectPositioner.displayName = "SelectPositioner";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/popup/SelectPopup.js
+// node_modules/@base-ui/react/esm/select/popup/SelectPopup.js
 import * as React13 from "react";
 import { jsx as _jsx5, jsxs as _jsxs3 } from "react/jsx-runtime";
 "use client";
@@ -1450,6 +1447,7 @@ var SelectPopup = /* @__PURE__ */ React13.forwardRef(function SelectPopup2(compo
     onOpenChangeComplete,
     setOpen,
     valueRef,
+    firstItemTextRef,
     selectedItemTextRef,
     keyboardActiveRef,
     multiple,
@@ -1618,7 +1616,11 @@ var SelectPopup = /* @__PURE__ */ React13.forwardRef(function SelectPopup2(compo
     const restoreTransformStyles = unsetTransformStyles(popupElement);
     popupElement.style.removeProperty("--transform-origin");
     try {
-      const textElement = selectedItemTextRef.current;
+      let textElement = selectedItemTextRef.current;
+      if (!textElement?.isConnected) {
+        const hasSelectedValue = selectors.hasSelectedValue(store.state);
+        textElement = !hasSelectedValue && firstItemTextRef.current?.isConnected ? firstItemTextRef.current : null;
+      }
       const valueElement = valueRef.current;
       const positionerStyles = getComputedStyle(positionerElement);
       const popupStyles = getComputedStyle(popupElement);
@@ -1705,7 +1707,7 @@ var SelectPopup = /* @__PURE__ */ React13.forwardRef(function SelectPopup2(compo
     } finally {
       restoreTransformStyles();
     }
-  }, [store, open, positionerElement, triggerElement, valueRef, selectedItemTextRef, popupRef, handleScrollArrowVisibility, alignItemWithTriggerActive, setControlledAlignItemWithTrigger, scrollArrowFrame, scrollDownArrowRef, scrollUpArrowRef, listElement, listRef, highlightItemOnHover, direction, isPositioned]);
+  }, [store, open, positionerElement, triggerElement, valueRef, firstItemTextRef, selectedItemTextRef, popupRef, handleScrollArrowVisibility, alignItemWithTriggerActive, setControlledAlignItemWithTrigger, scrollArrowFrame, scrollDownArrowRef, scrollUpArrowRef, listElement, listRef, highlightItemOnHover, direction, isPositioned]);
   React13.useEffect(() => {
     if (!alignItemWithTriggerActive || !positionerElement || !open) {
       return;
@@ -1809,13 +1811,13 @@ function unsetTransformStyles(popupElement) {
     }
   };
 }
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/list/SelectList.js
+// node_modules/@base-ui/react/esm/select/list/SelectList.js
 import * as React14 from "react";
 "use client";
 var SelectList = /* @__PURE__ */ React14.forwardRef(function SelectList2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -1852,10 +1854,10 @@ var SelectList = /* @__PURE__ */ React14.forwardRef(function SelectList2(compone
 });
 if (true)
   SelectList.displayName = "SelectList";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/item/SelectItem.js
+// node_modules/@base-ui/react/esm/select/item/SelectItem.js
 import * as React16 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/item/SelectItemContext.js
+// node_modules/@base-ui/react/esm/select/item/SelectItemContext.js
 import * as React15 from "react";
 "use client";
 var SelectItemContext = /* @__PURE__ */ React15.createContext(undefined);
@@ -1869,18 +1871,18 @@ function useSelectItemContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/item/SelectItem.js
+// node_modules/@base-ui/react/esm/select/item/SelectItem.js
 import { jsx as _jsx6 } from "react/jsx-runtime";
 "use client";
 var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef(function SelectItem2(componentProps, forwardedRef) {
   const {
     render,
     className,
+    style,
     value: itemValue = null,
     label,
     disabled = false,
     nativeButton = false,
-    style,
     ...elementProps
   } = componentProps;
   const textRef = React16.useRef(null);
@@ -1891,7 +1893,7 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
   });
   const {
     store,
-    getItemProps,
+    itemProps,
     setOpen,
     setValue,
     selectionRef,
@@ -1907,7 +1909,6 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
   const index = listItem.index;
   const hasRegistered = index !== -1;
   const itemRef = React16.useRef(null);
-  const indexRef = useValueAsRef(index);
   useIsoLayoutEffect(() => {
     if (!hasRegistered) {
       return;
@@ -1934,19 +1935,9 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
       }
     }
   }, [hasRegistered, index, multiple, isItemEqualToValue, store, itemValue, selectedItemTextRef]);
-  const state = {
-    disabled,
-    selected,
-    highlighted
-  };
-  const rootProps = getItemProps({
-    active: highlighted,
-    selected
-  });
-  rootProps.id = undefined;
   const lastKeyRef = React16.useRef(null);
   const pointerTypeRef = React16.useRef("mouse");
-  const didPointerDownRef = React16.useRef(false);
+  const allowMouseSelectionRef = React16.useRef(false);
   const {
     getButtonProps,
     buttonRef
@@ -1956,6 +1947,11 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
     native: nativeButton,
     composite: true
   });
+  const state = {
+    disabled,
+    selected,
+    highlighted
+  };
   function commitSelection(event) {
     const selectedValue = store.state.value;
     if (multiple) {
@@ -1967,16 +1963,13 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
       setOpen(false, createChangeEventDetails(exports_reason_parts.itemPress, event));
     }
   }
+  function resetDragMovement() {
+    selectionRef.current.dragY = 0;
+  }
   const defaultProps = {
     role: "option",
     "aria-selected": selected,
     tabIndex: highlighted ? 0 : -1,
-    onTouchStart() {
-      selectionRef.current = {
-        allowSelectedMouseUp: false,
-        allowUnselectedMouseUp: false
-      };
-    },
     onKeyDown(event) {
       lastKeyRef.current = event.key;
       store.set("activeIndex", index);
@@ -1985,11 +1978,15 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
       }
     },
     onClick(event) {
-      didPointerDownRef.current = false;
+      const isMouseClick = event.type === "click" && pointerTypeRef.current !== "touch";
+      const clickPointerType = event.nativeEvent.pointerType;
+      const isVirtualMouseClick = isMouseClick && isVirtualClick(event.nativeEvent) && (clickPointerType !== undefined || highlighted);
+      const isInvalidMouseClick = isMouseClick && !isVirtualMouseClick && !allowMouseSelectionRef.current;
+      allowMouseSelectionRef.current = false;
       if (event.type === "keydown" && lastKeyRef.current === null) {
         return;
       }
-      if (disabled || event.type === "keydown" && lastKeyRef.current === " " && typingRef.current || pointerTypeRef.current !== "touch" && !highlighted) {
+      if (disabled || event.type === "keydown" && lastKeyRef.current === " " && typingRef.current || isInvalidMouseClick) {
         return;
       }
       lastKeyRef.current = null;
@@ -1998,38 +1995,50 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
     onPointerEnter(event) {
       pointerTypeRef.current = event.pointerType;
     },
+    onPointerMove(event) {
+      if (event.pointerType === "mouse" && event.buttons === 1) {
+        const selection = selectionRef.current;
+        selection.dragY += event.movementY;
+        if (selection.dragY ** 2 >= 64) {
+          selection.allowUnselectedMouseUp = true;
+        }
+      }
+    },
     onPointerDown(event) {
       pointerTypeRef.current = event.pointerType;
-      didPointerDownRef.current = true;
+      allowMouseSelectionRef.current = true;
+      resetDragMovement();
     },
     onMouseUp() {
-      if (disabled) {
+      resetDragMovement();
+      if (disabled || pointerTypeRef.current === "touch") {
         return;
       }
-      if (didPointerDownRef.current) {
-        didPointerDownRef.current = false;
+      if (allowMouseSelectionRef.current) {
         return;
       }
       const disallowSelectedMouseUp = !selectionRef.current.allowSelectedMouseUp && selected;
       const disallowUnselectedMouseUp = !selectionRef.current.allowUnselectedMouseUp && !selected;
-      if (disallowSelectedMouseUp || disallowUnselectedMouseUp || pointerTypeRef.current !== "touch" && !highlighted) {
+      if (disallowSelectedMouseUp || disallowUnselectedMouseUp) {
         return;
       }
+      allowMouseSelectionRef.current = true;
       itemRef.current?.click();
+      allowMouseSelectionRef.current = false;
     }
   };
   const element = useRenderElement("div", componentProps, {
     ref: [buttonRef, forwardedRef, listItem.ref, itemRef],
     state,
-    props: [rootProps, defaultProps, elementProps, getButtonProps]
+    props: [itemProps, defaultProps, elementProps, getButtonProps]
   });
   const contextValue = React16.useMemo(() => ({
     selected,
-    indexRef,
+    index,
     textRef,
     selectedByFocus,
     hasRegistered
-  }), [selected, indexRef, textRef, selectedByFocus, hasRegistered]);
+  }), [selected, index, textRef, selectedByFocus, hasRegistered]);
   return /* @__PURE__ */ _jsx6(SelectItemContext.Provider, {
     value: contextValue,
     children: element
@@ -2037,7 +2046,7 @@ var SelectItem = /* @__PURE__ */ React16.memo(/* @__PURE__ */ React16.forwardRef
 }));
 if (true)
   SelectItem.displayName = "SelectItem";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/item-indicator/SelectItemIndicator.js
+// node_modules/@base-ui/react/esm/select/item-indicator/SelectItemIndicator.js
 import * as React17 from "react";
 import { jsx as _jsx7 } from "react/jsx-runtime";
 "use client";
@@ -2099,34 +2108,37 @@ var Inner = /* @__PURE__ */ React17.memo(/* @__PURE__ */ React17.forwardRef((com
 }));
 if (true)
   Inner.displayName = "Inner";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/item-text/SelectItemText.js
+// node_modules/@base-ui/react/esm/select/item-text/SelectItemText.js
 import * as React18 from "react";
 "use client";
 var SelectItemText = /* @__PURE__ */ React18.memo(/* @__PURE__ */ React18.forwardRef(function SelectItemText2(componentProps, forwardedRef) {
   const {
-    indexRef,
+    index,
     textRef,
     selectedByFocus,
     hasRegistered
   } = useSelectItemContext();
   const {
+    firstItemTextRef,
     selectedItemTextRef
   } = useSelectRootContext();
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
   const localRef = React18.useCallback((node) => {
-    if (!node || !hasRegistered) {
+    if (!node) {
       return;
     }
-    const hasNoSelectedItemText = selectedItemTextRef.current === null || !selectedItemTextRef.current.isConnected;
-    if (selectedByFocus || hasNoSelectedItemText && indexRef.current === 0) {
+    if (hasRegistered && index === 0) {
+      firstItemTextRef.current = node;
+    }
+    if (hasRegistered && selectedByFocus) {
       selectedItemTextRef.current = node;
     }
-  }, [selectedItemTextRef, indexRef, selectedByFocus, hasRegistered]);
+  }, [firstItemTextRef, selectedItemTextRef, index, selectedByFocus, hasRegistered]);
   const element = useRenderElement("div", componentProps, {
     ref: [localRef, forwardedRef, textRef],
     props: elementProps
@@ -2135,7 +2147,7 @@ var SelectItemText = /* @__PURE__ */ React18.memo(/* @__PURE__ */ React18.forwar
 }));
 if (true)
   SelectItemText.displayName = "SelectItemText";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/arrow/SelectArrow.js
+// node_modules/@base-ui/react/esm/select/arrow/SelectArrow.js
 import * as React19 from "react";
 "use client";
 var stateAttributesMapping5 = {
@@ -2144,8 +2156,8 @@ var stateAttributesMapping5 = {
 };
 var SelectArrow = /* @__PURE__ */ React19.forwardRef(function SelectArrow2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -2183,10 +2195,10 @@ var SelectArrow = /* @__PURE__ */ React19.forwardRef(function SelectArrow2(compo
 });
 if (true)
   SelectArrow.displayName = "SelectArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/scroll-down-arrow/SelectScrollDownArrow.js
+// node_modules/@base-ui/react/esm/select/scroll-down-arrow/SelectScrollDownArrow.js
 import * as React21 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/scroll-arrow/SelectScrollArrow.js
+// node_modules/@base-ui/react/esm/select/scroll-arrow/SelectScrollArrow.js
 import * as React20 from "react";
 "use client";
 var SelectScrollArrow = /* @__PURE__ */ React20.forwardRef(function SelectScrollArrow2(componentProps, forwardedRef) {
@@ -2334,7 +2346,7 @@ function getTargetScrollTop(items, isUp, scrollTop, clientHeight, scrollArrowHei
   return targetIndex > lastVisibleIndex && targetItem ? normalizeScrollOffset(targetItem.offsetTop + targetItem.offsetHeight - clientHeight + scrollArrowHeight, maxScrollTop) : maxScrollTop;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/scroll-down-arrow/SelectScrollDownArrow.js
+// node_modules/@base-ui/react/esm/select/scroll-down-arrow/SelectScrollDownArrow.js
 import { jsx as _jsx8 } from "react/jsx-runtime";
 "use client";
 var SelectScrollDownArrow = /* @__PURE__ */ React21.forwardRef(function SelectScrollDownArrow2(props, forwardedRef) {
@@ -2346,7 +2358,7 @@ var SelectScrollDownArrow = /* @__PURE__ */ React21.forwardRef(function SelectSc
 });
 if (true)
   SelectScrollDownArrow.displayName = "SelectScrollDownArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/scroll-up-arrow/SelectScrollUpArrow.js
+// node_modules/@base-ui/react/esm/select/scroll-up-arrow/SelectScrollUpArrow.js
 import * as React22 from "react";
 import { jsx as _jsx9 } from "react/jsx-runtime";
 "use client";
@@ -2359,10 +2371,10 @@ var SelectScrollUpArrow = /* @__PURE__ */ React22.forwardRef(function SelectScro
 });
 if (true)
   SelectScrollUpArrow.displayName = "SelectScrollUpArrow";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/group/SelectGroup.js
+// node_modules/@base-ui/react/esm/select/group/SelectGroup.js
 import * as React24 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/group/SelectGroupContext.js
+// node_modules/@base-ui/react/esm/select/group/SelectGroupContext.js
 import * as React23 from "react";
 "use client";
 var SelectGroupContext = /* @__PURE__ */ React23.createContext(undefined);
@@ -2376,13 +2388,13 @@ function useSelectGroupContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/group/SelectGroup.js
+// node_modules/@base-ui/react/esm/select/group/SelectGroup.js
 import { jsx as _jsx10 } from "react/jsx-runtime";
 "use client";
 var SelectGroup = /* @__PURE__ */ React24.forwardRef(function SelectGroup2(componentProps, forwardedRef) {
   const {
-    className,
     render,
+    className,
     style,
     ...elementProps
   } = componentProps;
@@ -2405,15 +2417,15 @@ var SelectGroup = /* @__PURE__ */ React24.forwardRef(function SelectGroup2(compo
 });
 if (true)
   SelectGroup.displayName = "SelectGroup";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/select/group-label/SelectGroupLabel.js
+// node_modules/@base-ui/react/esm/select/group-label/SelectGroupLabel.js
 import * as React25 from "react";
 "use client";
 var SelectGroupLabel = /* @__PURE__ */ React25.forwardRef(function SelectGroupLabel2(componentProps, forwardedRef) {
   const {
-    className,
     render,
-    id: idProp,
+    className,
     style,
+    id: idProp,
     ...elementProps
   } = componentProps;
   const {

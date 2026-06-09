@@ -1,0 +1,219 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { cn } from "../../shadcn/lib/utils.js"
+import { Button } from "../../shadcn/ui/button.js"
+import { Input } from "../../shadcn/ui/input.js"
+import { Label } from "../../shadcn/ui/label.js"
+import { Card, CardContent, CardHeader } from "../../shadcn/ui/card.js"
+import { Alert, AlertDescription } from "../../shadcn/ui/alert.js"
+import DynamicIcon from '../core/DynamicIcon.js';
+import { getState } from "../core/Context.js";
+import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
+
+/**
+ * Sign-up form component.
+ *
+ * Creates account via POST to /signup with name, email, and password.
+ * Validates password length (6-72 chars), dispatches SET_USER on success.
+ * In full-page mode, navigates to /app. In embedded mode, calls onSuccess.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.embedded=false] - Render without page wrapper (for dialogs)
+ * @param {function} [props.onSuccess] - Called after successful sign-up (embedded mode)
+ * @param {function} [props.onSwitchMode] - Called when user clicks "Sign In" (embedded mode)
+ * @returns {JSX.Element} Sign-up form
+ *
+ * @example
+ * // Full page
+ * <Route path="/signup" element={<SignUpView />} />
+ *
+ * @example
+ * // Embedded in dialog
+ * <SignUpView embedded onSuccess={handleSuccess} onSwitchMode={() => setMode('signin')} />
+ */
+export interface SignUpViewProps {
+  className?: string;
+  embedded?: boolean;
+  onSuccess?: () => void;
+  onSwitchMode?: () => void;
+  [key: string]: any;
+}
+
+export default function SignUpView({
+  className,
+  embedded = false,
+  onSuccess,
+  onSwitchMode,
+  ...props
+}: SignUpViewProps) {
+  const { state, dispatch } = getState();
+  const constants = state.constants;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useSafeNavigate();
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  // Focus the first input on mount
+  useEffect(() => {
+    if (!name && nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  }, [])
+
+  async function signUpClicked(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // Client-side password validation (matches backend: 6-72 chars)
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters');
+      return;
+    }
+    if (password.length > 72) {
+      setErrorMessage('Password must be 72 characters or less');
+      return;
+    }
+    try {
+      const response = await fetch(`${getBackendURL()}/signup`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Save CSRF token to localStorage for isAuthenticated() check
+        const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
+        const csrfToken = csrfCookie ? csrfCookie.split('=')[1] : data.csrfToken;
+        if (csrfToken) {
+          localStorage.setItem(getAppKey('csrf'), csrfToken);
+        }
+        dispatch({ type: 'SET_USER', payload: data });
+        if (embedded && onSuccess) {
+          onSuccess();
+        } else {
+          navigate('/app');
+        }
+      } else {
+        setErrorMessage('Invalid Credentials')
+      }
+    } catch (error) {
+      console.error('Signup failed:', error);
+      setErrorMessage('Server Error')
+    }
+  }
+
+  const formContent = (
+    <>
+      {errorMessage !== '' && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription className="text-center">{errorMessage}</AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={signUpClicked} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            ref={nameInputRef}
+            id="name"
+            placeholder="John Doe"
+            autoComplete="name"
+            required
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="john@example.com"
+            autoComplete="username"
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            autoComplete="new-password"
+            required
+            minLength={6}
+            maxLength={72}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessage('');
+            }}
+          />
+          <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
+        </div>
+
+        <Button
+          type="submit"
+          variant="gradient"
+          size="cta"
+          className="w-full"
+        >
+          <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
+            <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
+            Sign Up
+          </span>
+        </Button>
+
+        <div className="text-center text-sm">
+          <span className="text-muted-foreground">Already have an account?</span>{" "}
+          <Button variant="link" className="p-0 h-auto" onClick={(e) => { e.preventDefault(); embedded && onSwitchMode ? onSwitchMode() : navigate('/signin'); }}>
+            Sign In
+          </Button>
+        </div>
+      </form>
+
+      <div className="mt-4 text-center text-xs text-muted-foreground">
+        By registering you agree to our{" "}
+        <a href="/terms" className="underline underline-offset-4 hover:text-foreground">Terms of Service</a>,{" "}
+        <a href="/eula" className="underline underline-offset-4 hover:text-foreground">EULA</a>,{" "}
+        <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy Policy</a>
+      </div>
+    </>
+  );
+
+  if (embedded) {
+    return formContent;
+  }
+
+  return (
+    <div className="fixed inset-0 bg-background overflow-auto">
+      <div className={cn("flex flex-col items-center justify-center min-h-screen p-4", className)} {...props}>
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="bg-app rounded-2xl flex aspect-square size-12 items-center justify-center">
+                <DynamicIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
+              </div>
+              <span className="text-3xl font-bold">{constants.appName}</span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {formContent}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

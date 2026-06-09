@@ -1,59 +1,58 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   RadioGroupContext
-} from "./_chunk-3f31ka8n.js";
+} from "./_chunk-4maf6pas.js";
 import {
   useFieldsetRootContext
-} from "./_chunk-c3572b5x.js";
+} from "./_chunk-c2bz952e.js";
 import {
   CompositeRoot
-} from "./_chunk-0h5sskyw.js";
-import"./_chunk-r0vsdknk.js";
+} from "./_chunk-cdj8cpx5.js";
+import"./_chunk-5tt5hk59.js";
 import {
   useFormContext,
   useRegisterFieldControl
-} from "./_chunk-97tas84n.js";
+} from "./_chunk-95tf2rxq.js";
 import {
   fieldValidityMapping,
   useFieldRootContext,
   useLabelableContext
-} from "./_chunk-kfz96xv1.js";
-import"./_chunk-ds8fnpjj.js";
-import"./_chunk-vdc01ss3.js";
-import"./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-8ctgmf06.js";
+import"./_chunk-dzvjwv25.js";
+import"./_chunk-26cc610z.js";
+import"./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   useControlled
-} from "./_chunk-01rqe37g.js";
+} from "./_chunk-9x63vfqj.js";
 import {
   contains
-} from "./_chunk-atnkefgd.js";
+} from "./_chunk-cgptgywc.js";
 import {
   SHIFT
-} from "./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
+} from "./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
 import {
   useValueChanged
-} from "./_chunk-cwr896nf.js";
+} from "./_chunk-s5pwkz8v.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-wdqynnjf.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
-import"./_chunk-b40erthe.js";
-import"./_chunk-1s41sngz.js";
-import"./_chunk-1e6khrvm.js";
+} from "./_chunk-cwvtvwc7.js";
+import"./_chunk-5tze5c8q.js";
+import"./_chunk-x8xehj6d.js";
+import"./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio-group/RadioGroup.js
+// node_modules/@base-ui/react/esm/radio-group/RadioGroup.js
 import * as React from "react";
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
@@ -104,9 +103,9 @@ var RadioGroup = /* @__PURE__ */ React.forwardRef(function RadioGroup2(component
     name: "RadioGroup",
     state: "value"
   });
-  const onValueChange = useStableCallback(onValueChangeProp);
+  const [touched, setTouched] = React.useState(false);
   const setCheckedValue = useStableCallback((value, eventDetails) => {
-    onValueChange(value, eventDetails);
+    onValueChangeProp?.(value, eventDetails);
     if (eventDetails.isCanceled) {
       return;
     }
@@ -155,12 +154,7 @@ var RadioGroup = /* @__PURE__ */ React.forwardRef(function RadioGroup2(component
     }
     return;
   });
-  const getFieldValue = useStableCallback(() => checkedValue ?? null);
-  useRegisterFieldControl(controlRef, {
-    id,
-    value: checkedValue,
-    getValue: getFieldValue
-  });
+  useRegisterFieldControl(controlRef, id, checkedValue ?? null);
   useValueChanged(checkedValue, () => {
     clearErrors(name);
     setDirty(checkedValue !== validityData.initialValue);
@@ -175,7 +169,6 @@ var RadioGroup = /* @__PURE__ */ React.forwardRef(function RadioGroup2(component
       setInputRef(fallbackInput);
     }
   });
-  const [touched, setTouched] = React.useState(false);
   const ariaLabelledby = elementProps["aria-labelledby"] ?? labelId ?? fieldsetContext?.legendId;
   const state = {
     ...fieldState,
@@ -190,7 +183,6 @@ var RadioGroup = /* @__PURE__ */ React.forwardRef(function RadioGroup2(component
     form,
     validation,
     name,
-    onValueChange,
     readOnly,
     registerControlRef,
     registerInputRef,
@@ -198,7 +190,7 @@ var RadioGroup = /* @__PURE__ */ React.forwardRef(function RadioGroup2(component
     setCheckedValue,
     setTouched,
     touched
-  }), [checkedValue, disabled, form, validation, fieldState, name, onValueChange, readOnly, registerControlRef, registerInputRef, required, setCheckedValue, setTouched, touched]);
+  }), [checkedValue, disabled, form, validation, fieldState, name, readOnly, registerControlRef, registerInputRef, required, setCheckedValue, setTouched, touched]);
   const defaultProps = {
     role: "radiogroup",
     "aria-required": required || undefined,

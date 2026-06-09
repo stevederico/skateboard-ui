@@ -1,30 +1,29 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   formatNumberValue,
   valueToPercent
-} from "./_chunk-tmfmrzwe.js";
+} from "./_chunk-ffpjy0ta.js";
 import {
   useRegisteredLabelId
-} from "./_chunk-w68yxg9d.js";
-import {
-  useValueAsRef
-} from "./_chunk-drfb9kp2.js";
+} from "./_chunk-vgkfmtbe.js";
 import {
   visuallyHidden
-} from "./_chunk-hzgetm70.js";
-import"./_chunk-8kh3xk78.js";
-import"./_chunk-n7dnqnbw.js";
-import"./_chunk-b40erthe.js";
+} from "./_chunk-dan0mva4.js";
+import {
+  useValueAsRef
+} from "./_chunk-6kqramh9.js";
+import"./_chunk-wdqynnjf.js";
+import"./_chunk-5tze5c8q.js";
 import {
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/index.parts.js
+// node_modules/@base-ui/react/esm/progress/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Value: () => ProgressValue,
@@ -34,10 +33,10 @@ __export(exports_index_parts, {
   Indicator: () => ProgressIndicator
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/root/ProgressRoot.js
+// node_modules/@base-ui/react/esm/progress/root/ProgressRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/root/ProgressRootContext.js
+// node_modules/@base-ui/react/esm/progress/root/ProgressRootContext.js
 import * as React from "react";
 "use client";
 var ProgressRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -51,7 +50,7 @@ function useProgressRootContext() {
   return context;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/root/ProgressRootDataAttributes.js
+// node_modules/@base-ui/react/esm/progress/root/ProgressRootDataAttributes.js
 var ProgressRootDataAttributes = /* @__PURE__ */ function(ProgressRootDataAttributes2) {
   ProgressRootDataAttributes2["complete"] = "data-complete";
   ProgressRootDataAttributes2["indeterminate"] = "data-indeterminate";
@@ -59,7 +58,7 @@ var ProgressRootDataAttributes = /* @__PURE__ */ function(ProgressRootDataAttrib
   return ProgressRootDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/root/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/progress/root/stateAttributesMapping.js
 var progressStateAttributesMapping = {
   status(value) {
     if (value === "progressing") {
@@ -81,7 +80,7 @@ var progressStateAttributesMapping = {
   }
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/root/ProgressRoot.js
+// node_modules/@base-ui/react/esm/progress/root/ProgressRoot.js
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 function getDefaultAriaValueText(formattedValue, value) {
@@ -151,7 +150,7 @@ var ProgressRoot = /* @__PURE__ */ React2.forwardRef(function ProgressRoot2(comp
 });
 if (true)
   ProgressRoot.displayName = "ProgressRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/track/ProgressTrack.js
+// node_modules/@base-ui/react/esm/progress/track/ProgressTrack.js
 import * as React3 from "react";
 "use client";
 var ProgressTrack = /* @__PURE__ */ React3.forwardRef(function ProgressTrack2(componentProps, forwardedRef) {
@@ -174,7 +173,7 @@ var ProgressTrack = /* @__PURE__ */ React3.forwardRef(function ProgressTrack2(co
 });
 if (true)
   ProgressTrack.displayName = "ProgressTrack";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/indicator/ProgressIndicator.js
+// node_modules/@base-ui/react/esm/progress/indicator/ProgressIndicator.js
 import * as React4 from "react";
 "use client";
 var ProgressIndicator = /* @__PURE__ */ React4.forwardRef(function ProgressIndicator2(componentProps, forwardedRef) {
@@ -191,21 +190,16 @@ var ProgressIndicator = /* @__PURE__ */ React4.forwardRef(function ProgressIndic
     state
   } = useProgressRootContext();
   const percentageValue = Number.isFinite(value) && value !== null ? valueToPercent(value, min, max) : null;
-  const getStyles = React4.useCallback(() => {
-    if (percentageValue == null) {
-      return {};
-    }
-    return {
-      insetInlineStart: 0,
-      height: "inherit",
-      width: `${percentageValue}%`
-    };
-  }, [percentageValue]);
+  const indicatorStyle = percentageValue == null ? {} : {
+    insetInlineStart: 0,
+    height: "inherit",
+    width: `${percentageValue}%`
+  };
   const element = useRenderElement("div", componentProps, {
     state,
     ref: forwardedRef,
     props: [{
-      style: getStyles()
+      style: indicatorStyle
     }, elementProps],
     stateAttributesMapping: progressStateAttributesMapping
   });
@@ -213,7 +207,7 @@ var ProgressIndicator = /* @__PURE__ */ React4.forwardRef(function ProgressIndic
 });
 if (true)
   ProgressIndicator.displayName = "ProgressIndicator";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/value/ProgressValue.js
+// node_modules/@base-ui/react/esm/progress/value/ProgressValue.js
 import * as React5 from "react";
 "use client";
 var ProgressValue = /* @__PURE__ */ React5.forwardRef(function ProgressValue2(componentProps, forwardedRef) {
@@ -244,7 +238,7 @@ var ProgressValue = /* @__PURE__ */ React5.forwardRef(function ProgressValue2(co
 });
 if (true)
   ProgressValue.displayName = "ProgressValue";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/progress/label/ProgressLabel.js
+// node_modules/@base-ui/react/esm/progress/label/ProgressLabel.js
 import * as React6 from "react";
 "use client";
 var ProgressLabel = /* @__PURE__ */ React6.forwardRef(function ProgressLabel2(componentProps, forwardedRef) {

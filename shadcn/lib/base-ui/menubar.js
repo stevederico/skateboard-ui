@@ -1,53 +1,52 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   CompositeRoot
-} from "./_chunk-0h5sskyw.js";
-import"./_chunk-r0vsdknk.js";
+} from "./_chunk-cdj8cpx5.js";
+import"./_chunk-5tt5hk59.js";
 import {
   MenubarContext,
   useMenubarContext
-} from "./_chunk-65zw5gs2.js";
-import"./_chunk-vdc01ss3.js";
-import"./_chunk-p6qynd6r.js";
-import"./_chunk-20rtfsz9.js";
-import"./_chunk-wtw745qd.js";
+} from "./_chunk-wx2nxg0p.js";
+import"./_chunk-26cc610z.js";
+import"./_chunk-j29xjete.js";
+import"./_chunk-3xpke33f.js";
+import"./_chunk-gy0bpkmx.js";
 import {
   FloatingNode,
   FloatingTree,
   useFloatingNodeId,
   useFloatingTree
-} from "./_chunk-2tyt8f8r.js";
-import"./_chunk-aqwsk46c.js";
-import"./_chunk-xb7ph1ka.js";
-import"./_chunk-atnkefgd.js";
-import"./_chunk-drfb9kp2.js";
-import"./_chunk-qce0xt57.js";
-import"./_chunk-nya71ccw.js";
-import"./_chunk-t7j3rbpv.js";
-import"./_chunk-7v1t86x1.js";
-import"./_chunk-hzgetm70.js";
-import"./_chunk-mvv30fkv.js";
-import"./_chunk-4s0k3h7t.js";
+} from "./_chunk-2z044bba.js";
+import"./_chunk-1vw45v38.js";
+import"./_chunk-cgptgywc.js";
+import"./_chunk-pv7b791x.js";
+import"./_chunk-kw8nnq00.js";
+import"./_chunk-rrh8rt4v.js";
+import"./_chunk-b6dkjkbw.js";
+import"./_chunk-dan0mva4.js";
+import"./_chunk-ase0ydtt.js";
+import"./_chunk-6kqramh9.js";
+import"./_chunk-451nqgsa.js";
+import"./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
-import"./_chunk-mznt6ktj.js";
-import"./_chunk-b40erthe.js";
-import"./_chunk-1s41sngz.js";
-import"./_chunk-1e6khrvm.js";
+} from "./_chunk-wdqynnjf.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
+import"./_chunk-cdgfsr3q.js";
+import"./_chunk-000kmre8.js";
+import"./_chunk-cwvtvwc7.js";
+import"./_chunk-5tze5c8q.js";
+import"./_chunk-x8xehj6d.js";
+import"./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/menubar/Menubar.js
+// node_modules/@base-ui/react/esm/menubar/Menubar.js
 import * as React from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/menubar/MenubarDataAttributes.js
+// node_modules/@base-ui/react/esm/menubar/MenubarDataAttributes.js
 var MenubarDataAttributes = /* @__PURE__ */ function(MenubarDataAttributes2) {
   MenubarDataAttributes2["modal"] = "data-modal";
   MenubarDataAttributes2["orientation"] = "data-orientation";
@@ -55,7 +54,7 @@ var MenubarDataAttributes = /* @__PURE__ */ function(MenubarDataAttributes2) {
   return MenubarDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/menubar/Menubar.js
+// node_modules/@base-ui/react/esm/menubar/Menubar.js
 import { jsx as _jsx } from "react/jsx-runtime";
 "use client";
 var menubarStateAttributesMapping = {

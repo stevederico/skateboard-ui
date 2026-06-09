@@ -1,90 +1,92 @@
-/* @base-ui/react 1.4.1 — vendored (MIT — MUI Inc).
+/* @base-ui/react 1.5.0 — vendored (MIT — MUI Inc).
  * Refresh: scripts/vendor-base-ui.js (see header for instructions).
  * Do not edit by hand. */
 import {
   useRadioGroupContext
-} from "./_chunk-3f31ka8n.js";
+} from "./_chunk-4maf6pas.js";
 import {
   serializeValue
-} from "./_chunk-xxhqanfd.js";
+} from "./_chunk-4zhfq4d3.js";
 import {
   useLabelableId
-} from "./_chunk-k4mc2kan.js";
+} from "./_chunk-23rx7haq.js";
 import {
   ACTIVE_COMPOSITE_ITEM
-} from "./_chunk-r0vsdknk.js";
+} from "./_chunk-5tt5hk59.js";
 import {
   useAriaLabelledBy
-} from "./_chunk-a8fwg9d0.js";
+} from "./_chunk-vg16xxmb.js";
 import {
   useFieldItemContext
-} from "./_chunk-qgzhcjsj.js";
+} from "./_chunk-7b9dc493.js";
 import {
   fieldValidityMapping,
   useFieldRootContext,
   useLabelableContext
-} from "./_chunk-kfz96xv1.js";
-import"./_chunk-ds8fnpjj.js";
+} from "./_chunk-8ctgmf06.js";
+import"./_chunk-dzvjwv25.js";
 import {
   CompositeItem
-} from "./_chunk-j0eqdjta.js";
-import"./_chunk-b5jsqt97.js";
-import"./_chunk-ek863ta9.js";
-import"./_chunk-20rtfsz9.js";
+} from "./_chunk-f2wttwrf.js";
+import"./_chunk-j3qkyd10.js";
+import"./_chunk-3enq1vat.js";
+import"./_chunk-3xpke33f.js";
 import {
   visuallyHidden,
   visuallyHiddenInput
-} from "./_chunk-hzgetm70.js";
-import"./_chunk-f5d01bp9.js";
+} from "./_chunk-dan0mva4.js";
+import"./_chunk-x11e1k9r.js";
+import"./_chunk-451nqgsa.js";
 import {
   createChangeEventDetails,
   exports_reason_parts
-} from "./_chunk-4s0k3h7t.js";
+} from "./_chunk-e56mpvk1.js";
 import {
   useBaseUiId
-} from "./_chunk-8kh3xk78.js";
+} from "./_chunk-wdqynnjf.js";
 import {
   transitionStatusMapping,
   useOpenChangeComplete,
   useTransitionStatus
-} from "./_chunk-mbn76q14.js";
-import"./_chunk-v92ycsfj.js";
-import"./_chunk-3h6zpchb.js";
-import"./_chunk-8jz3hb7q.js";
+} from "./_chunk-e13rsb6b.js";
+import"./_chunk-zk4mtm9m.js";
+import"./_chunk-8a9vv8am.js";
+import"./_chunk-6ejf1z1r.js";
 import {
   useButton
-} from "./_chunk-85vrgzwr.js";
-import"./_chunk-71zm6zgv.js";
-import"./_chunk-6xevjepc.js";
-import"./_chunk-sx6vkz01.js";
-import"./_chunk-n7dnqnbw.js";
+} from "./_chunk-5xmdvndx.js";
+import"./_chunk-hm5h9vsk.js";
+import"./_chunk-cdgfsr3q.js";
+import {
+  getWindow
+} from "./_chunk-000kmre8.js";
 import {
   useStableCallback
-} from "./_chunk-mznt6ktj.js";
+} from "./_chunk-cwvtvwc7.js";
 import {
   useIsoLayoutEffect
-} from "./_chunk-b40erthe.js";
+} from "./_chunk-5tze5c8q.js";
 import {
   EMPTY_OBJECT,
   NOOP,
   useMergedRefs,
   useRenderElement
-} from "./_chunk-1s41sngz.js";
+} from "./_chunk-x8xehj6d.js";
 import {
   __export
-} from "./_chunk-1e6khrvm.js";
+} from "./_chunk-svxv97ph.js";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/index.parts.js
+// node_modules/@base-ui/react/esm/radio/index.parts.js
 var exports_index_parts = {};
 __export(exports_index_parts, {
   Root: () => RadioRoot,
   Indicator: () => RadioIndicator
 });
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/root/RadioRoot.js
+// node_modules/@base-ui/react/esm/radio/root/RadioRoot.js
 import * as React2 from "react";
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/root/RadioRootDataAttributes.js
+// node_modules/@base-ui/react/esm/radio/root/RadioRootDataAttributes.js
 var RadioRootDataAttributes = /* @__PURE__ */ function(RadioRootDataAttributes2) {
   RadioRootDataAttributes2["checked"] = "data-checked";
   RadioRootDataAttributes2["unchecked"] = "data-unchecked";
@@ -100,7 +102,7 @@ var RadioRootDataAttributes = /* @__PURE__ */ function(RadioRootDataAttributes2)
   return RadioRootDataAttributes2;
 }({});
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/utils/stateAttributesMapping.js
+// node_modules/@base-ui/react/esm/radio/utils/stateAttributesMapping.js
 var stateAttributesMapping = {
   checked(value) {
     if (value) {
@@ -116,7 +118,7 @@ var stateAttributesMapping = {
   ...fieldValidityMapping
 };
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/root/RadioRootContext.js
+// node_modules/@base-ui/react/esm/radio/root/RadioRootContext.js
 import * as React from "react";
 "use client";
 var RadioRootContext = /* @__PURE__ */ React.createContext(undefined);
@@ -130,7 +132,7 @@ function useRadioRootContext() {
   return value;
 }
 
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/root/RadioRoot.js
+// node_modules/@base-ui/react/esm/radio/root/RadioRoot.js
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 "use client";
 var RadioRoot = /* @__PURE__ */ React2.forwardRef(function RadioRoot2(componentProps, forwardedRef) {
@@ -181,7 +183,6 @@ var RadioRoot = /* @__PURE__ */ React2.forwardRef(function RadioRoot2(componentP
   const required = requiredGroup || requiredProp;
   const form = formGroup;
   const checked = groupContext ? checkedValue === value : value === "";
-  const serializedValue = React2.useMemo(() => serializeValue(value), [value]);
   const radioRef = React2.useRef(null);
   const inputRef = React2.useRef(null);
   const handleControlRef = useStableCallback((element2) => {
@@ -235,7 +236,11 @@ var RadioRoot = /* @__PURE__ */ React2.forwardRef(function RadioRoot2(componentP
         return;
       }
       event.preventDefault();
-      inputRef.current?.dispatchEvent(new PointerEvent("click", {
+      const input = inputRef.current;
+      if (!input) {
+        return;
+      }
+      input.dispatchEvent(new (getWindow(input)).PointerEvent("click", {
         bubbles: true,
         shiftKey: event.shiftKey,
         ctrlKey: event.ctrlKey,
@@ -268,7 +273,7 @@ var RadioRoot = /* @__PURE__ */ React2.forwardRef(function RadioRoot2(componentP
     style: name ? visuallyHiddenInput : visuallyHidden,
     "aria-hidden": true,
     ...value !== undefined ? {
-      value: serializedValue
+      value: serializeValue(value)
     } : EMPTY_OBJECT,
     disabled,
     checked,
@@ -331,7 +336,7 @@ var RadioRoot = /* @__PURE__ */ React2.forwardRef(function RadioRoot2(componentP
 });
 if (true)
   RadioRoot.displayName = "RadioRoot";
-// node_modules/.deno/@base-ui+react@1.4.1/node_modules/@base-ui/react/esm/radio/indicator/RadioIndicator.js
+// node_modules/@base-ui/react/esm/radio/indicator/RadioIndicator.js
 import * as React3 from "react";
 "use client";
 var RadioIndicator = /* @__PURE__ */ React3.forwardRef(function RadioIndicator2(componentProps, forwardedRef) {
