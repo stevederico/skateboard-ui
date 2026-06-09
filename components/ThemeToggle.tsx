@@ -22,7 +22,14 @@ import { cn } from '../shadcn/lib/utils.js';
  * <ThemeToggle />
  * <ThemeToggle variant="landing" iconSize={18} />
  */
-export default function ThemeToggle({ className = "", iconSize = 16, variant = "settings", ...props }) {
+export interface ThemeToggleProps {
+  className?: string;
+  iconSize?: number;
+  variant?: 'settings' | 'landing';
+  [key: string]: any;
+}
+
+export default function ThemeToggle({ className = "", iconSize = 16, variant = "settings", ...props }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 

@@ -4,6 +4,7 @@ import DynamicIcon from './core/DynamicIcon.js';
 import { getState } from './core/Context.js';
 import SignInView from './views/SignInView.js';
 import SignUpView from './views/SignUpView.js';
+import type { AuthOverlayOutcome } from './core/Context.js';
 
 /**
  * Modal authentication overlay with sign-in and sign-up forms.
@@ -25,7 +26,7 @@ export default function AuthOverlay() {
   const constants = state.constants;
   const { visible } = state.authOverlay;
 
-  const [mode, setMode] = useState('signin');
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
 
   // Reset mode when dialog opens
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function AuthOverlay() {
   // not in the reducer, which must stay pure. Each callback settles the awaiting
   // apiRequest promise: 'success' retries the request, 'cancel' rejects it so a
   // dismissed overlay never leaves a caller hanging.
-  function runPendingCallbacks(outcome) {
+  function runPendingCallbacks(outcome: AuthOverlayOutcome) {
     for (const cb of state.authOverlay.pendingCallbacks) {
       try { cb(outcome); } catch (e) { console.error('Auth callback error:', e); }
     }
@@ -55,7 +56,7 @@ export default function AuthOverlay() {
   }
 
   return (
-    <Dialog open={visible} onOpenChange={(open) => { if (!open) handleClose(); }}>
+    <Dialog open={visible} onOpenChange={(open: boolean) => { if (!open) handleClose(); }}>
       <DialogContent>
         <DialogHeader className="items-center text-center">
           <div className="flex items-center justify-center gap-3">

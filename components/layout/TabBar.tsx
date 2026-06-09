@@ -20,7 +20,12 @@ import { cn } from '../../shadcn/lib/utils.js';
  * // Used internally by Layout component
  * <TabBar />
  */
-export default function TabBar({ className, ...props }) {
+export interface TabBarProps {
+  className?: string;
+  [key: string]: any;
+}
+
+export default function TabBar({ className, ...props }: TabBarProps) {
   const location = useLocation();
   const { state } = getState();
   const constants = state.constants;

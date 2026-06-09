@@ -22,22 +22,34 @@ import { Badge } from '../shadcn/ui/badge.js';
  *   <App />
  * </ErrorBoundary>
  */
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+export interface ErrorBoundaryProps {
+  children?: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  declare unsubscribeRejection?: () => void;
+  declare unsubscribeError?: () => void;
+
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
   }
 
   componentDidMount() {
-    const handleUnhandledRejection = (event) => {
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
       console.error('Unhandled promise rejection:', event.reason);
       this.setState({
         hasError: true,
@@ -45,7 +57,7 @@ class ErrorBoundary extends React.Component {
       });
     };
 
-    const handleError = (event) => {
+    const handleError = (event: ErrorEvent) => {
       if (event.error && !(this.state.hasError)) {
         console.error('Global error:', event.error);
         this.setState({ hasError: true, error: event.error });

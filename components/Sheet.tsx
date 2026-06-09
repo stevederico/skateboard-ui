@@ -1,10 +1,26 @@
 import { useState, useImperativeHandle, forwardRef } from 'react';
+import type { ReactNode } from 'react';
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
 } from "../shadcn/ui/drawer.js"
+
+/** Imperative API exposed via ref: { show, hide, open, close, toggle }. */
+export interface SheetHandle {
+  show: () => void;
+  hide: () => void;
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+}
+
+export interface SheetProps {
+  title?: string;
+  minHeight?: string;
+  children?: ReactNode;
+}
 
 /**
  * Bottom sheet (drawer) component with imperative open/close API.
@@ -34,7 +50,7 @@ import {
  *   );
  * }
  */
-const MySheet = forwardRef(function MySheet(props, ref) {
+const MySheet = forwardRef<SheetHandle, SheetProps>(function MySheet(props, ref) {
   const { title = "", minHeight = "auto", children } = props;
   const [isOpen, setIsOpen] = useState(false);
 

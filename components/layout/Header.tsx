@@ -2,6 +2,7 @@ import { Separator } from "../../shadcn/ui/separator.js";
 import { Button } from "../../shadcn/ui/button.js";
 import { Badge } from "../../shadcn/ui/badge.js";
 import { cn } from "../../shadcn/lib/utils.js";
+import type { ReactNode } from "react";
 
 /**
  * App header bar built on shadcn primitives (Button, Separator, Badge).
@@ -18,7 +19,17 @@ import { cn } from "../../shadcn/lib/utils.js";
  * @param {React.ReactNode} [props.children] - Custom right-side content
  * @returns {JSX.Element} Header bar with separator
  */
-function Header({ title, buttonTitle, onButtonTitleClick, buttonClass, className, children, ...props }) {
+export interface HeaderProps {
+  title: string;
+  buttonTitle?: string;
+  onButtonTitleClick?: () => void;
+  buttonClass?: string;
+  className?: string;
+  children?: ReactNode;
+  [key: string]: any;
+}
+
+function Header({ title, buttonTitle, onButtonTitleClick, buttonClass, className, children, ...props }: HeaderProps) {
   return (
     <>
       <header

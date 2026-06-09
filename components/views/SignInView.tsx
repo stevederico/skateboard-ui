@@ -30,20 +30,28 @@ import { getBackendURL, useSafeNavigate } from '../core/Utilities.js'
  * // Embedded in dialog
  * <SignInView embedded onSuccess={handleSuccess} onSwitchMode={() => setMode('signup')} />
  */
+export interface SignInViewProps {
+  className?: string;
+  embedded?: boolean;
+  onSuccess?: () => void;
+  onSwitchMode?: () => void;
+  [key: string]: any;
+}
+
 export default function SignInView({
   className,
   embedded = false,
   onSuccess,
   onSwitchMode,
   ...props
-}) {
+}: SignInViewProps) {
   const { state, dispatch } = getState();
   const constants = state.constants;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useSafeNavigate();
-  const emailInputRef = useRef(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -54,7 +62,7 @@ export default function SignInView({
     }
   }, [])
 
-  async function signInClicked(e) {
+  async function signInClicked(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);

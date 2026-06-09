@@ -7,6 +7,7 @@ import { Button } from '../../shadcn/ui/button.js';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../shadcn/ui/card.js';
 import { Separator } from '../../shadcn/ui/separator.js';
 import { cn } from '../../shadcn/lib/utils.js';
+import type { SkateboardConstants } from '../core/Utilities.js';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -25,7 +26,7 @@ const EULA_LINK = { label: 'EULA', href: '/eula' };
  * @param {number} [props.strokeWidth] - Stroke width for Lucide icons
  * @returns {JSX.Element|null}
  */
-function ConstantIcon({ name, size, strokeWidth }) {
+function ConstantIcon({ name, size, strokeWidth }: { name?: string; size: number; strokeWidth?: number }) {
   if (!name) return null;
   if (/^[a-z][a-z0-9-]*$/i.test(name)) return <DynamicIcon name={name} size={size} strokeWidth={strokeWidth} />;
   return <span className="leading-none" style={{ fontSize: size }}>{name}</span>;
@@ -47,13 +48,13 @@ function ConstantIcon({ name, size, strokeWidth }) {
  */
 export default function LandingView() {
   const { state } = getState();
-  const constants = state.constants || {};
+  const constants: Partial<SkateboardConstants> = state.constants || {};
   const navigate = useNavigate();
   const goApp = () => navigate('/app');
 
   const navLinks = constants.navLinks || [
     { label: 'Features', href: '#features' },
-    ...(constants.stripeProducts?.length > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
+    ...((constants.stripeProducts?.length as number) > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
   ];
   const footerLinks = constants.footerLinks || [
     ...(constants.privacyPolicy ? [PRIVACY_LINK] : []),

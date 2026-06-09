@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type * as React from 'react';
 
 /**
  * Drop-in replacement for the subset of react-day-picker that shadcn's
@@ -32,42 +33,114 @@ const SLOT_KEYS = [
   'table', 'weekdays', 'weekday', 'week', 'week_number_header', 'week_number',
   'day', 'range_start', 'range_middle', 'range_end', 'today', 'outside',
   'disabled', 'hidden'
-];
+] as const;
+
+/** Slot name accepted by the classNames prop. */
+export type CalendarSlot = (typeof SLOT_KEYS)[number];
+
+/** Map of slot name → class string for every classNames slot. */
+export type CalendarClassNames = Record<CalendarSlot, string>;
+
+/** Selected range for mode="range". */
+export interface DateRange {
+  from?: Date;
+  to?: Date;
+}
+
+/** Matchers accepted by the disabled prop. */
+export type DisabledMatcher =
+  | Date
+  | Date[]
+  | ((date: Date) => boolean)
+  | { from?: Date; to?: Date; before?: Date; after?: Date };
+
+/** Day wrapper passed to the DayButton component override. */
+export interface CalendarDay {
+  date: Date;
+}
+
+/** Modifier flags passed to the DayButton component override. */
+export interface DayModifiers {
+  selected: boolean;
+  range_start: boolean;
+  range_middle: boolean;
+  range_end: boolean;
+  today: boolean;
+  outside: boolean;
+  disabled: boolean;
+  focused: boolean | null;
+}
+
+/** Props for the Root component override. */
+export interface CalendarRootProps {
+  className?: string;
+  rootRef?: React.Ref<HTMLDivElement>;
+  children?: React.ReactNode;
+  [key: string]: any;
+}
+
+/** Props for the Chevron component override. */
+export interface CalendarChevronProps {
+  className?: string;
+  orientation?: 'left' | 'right' | 'down' | 'up';
+  [key: string]: any;
+}
+
+/** Props for the DayButton component override. */
+export interface CalendarDayButtonProps {
+  day: CalendarDay;
+  modifiers: DayModifiers;
+  className?: string;
+  [key: string]: any;
+}
+
+/** Sub-renderer overrides (components prop). */
+export interface CalendarComponents {
+  Root?: React.ComponentType<CalendarRootProps>;
+  Chevron?: React.ComponentType<CalendarChevronProps>;
+  DayButton?: React.ComponentType<CalendarDayButtonProps>;
+  WeekNumber?: React.ComponentType<any>;
+}
+
+/** Formatter overrides (formatters prop). */
+export interface CalendarFormatters {
+  formatMonthDropdown?: (month: Date) => string;
+}
 
 /**
  * Returns an object with empty strings for every classNames slot.
  * Lets consumers spread defaults safely without depending on internal class names.
  */
-export function getDefaultClassNames() {
-  const out = {};
+export function getDefaultClassNames(): CalendarClassNames {
+  const out = {} as CalendarClassNames;
   for (const k of SLOT_KEYS) out[k] = '';
   return out;
 }
 
 // ===== Date utilities =====
 
-const startOfDay = (d) => {
+const startOfDay = (d: Date) => {
   const x = new Date(d);
   x.setHours(0, 0, 0, 0);
   return x;
 };
-const sameDay = (a, b) =>
+const sameDay = (a: Date, b: Date) =>
   a.getFullYear() === b.getFullYear() &&
   a.getMonth() === b.getMonth() &&
   a.getDate() === b.getDate();
-const addDays = (d, n) => {
+const addDays = (d: Date, n: number) => {
   const x = new Date(d);
   x.setDate(x.getDate() + n);
   return x;
 };
-const addMonths = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, 1);
-const startOfMonth = (d) => new Date(d.getFullYear(), d.getMonth(), 1);
-const isSameMonth = (a, b) =>
+const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth() + n, 1);
+const startOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
+const isSameMonth = (a: Date, b: Date) =>
   a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
-const isBefore = (a, b) => startOfDay(a).getTime() < startOfDay(b).getTime();
-const isAfter = (a, b) => startOfDay(a).getTime() > startOfDay(b).getTime();
+const isBefore = (a: Date, b: Date) => startOfDay(a).getTime() < startOfDay(b).getTime();
+const isAfter = (a: Date, b: Date) => startOfDay(a).getTime() > startOfDay(b).getTime();
 
-function isDisabled(date, disabled) {
+function isDisabled(date: Date, disabled: DisabledMatcher | undefined): boolean {
   if (!disabled) return false;
   if (disabled instanceof Date) return sameDay(date, disabled);
   if (Array.isArray(disabled)) return disabled.some((d) => sameDay(date, d));
@@ -87,13 +160,13 @@ function isDisabled(date, disabled) {
  * Build a 6-row grid of Date objects covering the displayed month plus
  * leading/trailing outside-month days so every row has 7 cells.
  */
-function buildGrid(displayMonth, weekStartsOn) {
+function buildGrid(displayMonth: Date, weekStartsOn: number): Date[][] {
   const first = startOfMonth(displayMonth);
   const dayOfWeek = (first.getDay() - weekStartsOn + 7) % 7;
   const start = addDays(first, -dayOfWeek);
-  const weeks = [];
+  const weeks: Date[][] = [];
   for (let w = 0; w < 6; w++) {
-    const week = [];
+    const week: Date[] = [];
     for (let d = 0; d < 7; d++) week.push(addDays(start, w * 7 + d));
     weeks.push(week);
   }
@@ -102,11 +175,11 @@ function buildGrid(displayMonth, weekStartsOn) {
 
 // ===== Selection helpers =====
 
-function isSelectedSingle(date, selected) {
+function isSelectedSingle(date: Date, selected: Date | DateRange | undefined): boolean {
   return selected instanceof Date && sameDay(date, selected);
 }
 
-function rangeModifiers(date, range) {
+function rangeModifiers(date: Date, range: DateRange | undefined) {
   if (!range || !range.from) {
     return { selected: false, range_start: false, range_middle: false, range_end: false };
   }
@@ -130,7 +203,7 @@ function rangeModifiers(date, range) {
 
 // ===== Default sub-renderers (overridable via components prop) =====
 
-function DefaultRoot({ className, rootRef, children, ...props }) {
+function DefaultRoot({ className, rootRef, children, ...props }: CalendarRootProps) {
   return (
     <div ref={rootRef} className={className} {...props}>
       {children}
@@ -138,7 +211,7 @@ function DefaultRoot({ className, rootRef, children, ...props }) {
   );
 }
 
-function DefaultChevron({ className, orientation }) {
+function DefaultChevron({ className, orientation }: CalendarChevronProps) {
   // Inline SVG fallback if no override supplied
   const rotate = orientation === 'left' ? 180 : orientation === 'down' ? 90 : 0;
   return (
@@ -159,7 +232,7 @@ function DefaultChevron({ className, orientation }) {
   );
 }
 
-function DefaultDayButton({ day, modifiers, className, ...props }) {
+function DefaultDayButton({ day, modifiers, className, ...props }: CalendarDayButtonProps) {
   return (
     <button
       type="button"
@@ -172,13 +245,19 @@ function DefaultDayButton({ day, modifiers, className, ...props }) {
   );
 }
 
-function DefaultWeekNumber({ children, ...props }) {
+function DefaultWeekNumber({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) {
   return <td {...props}>{children}</td>;
 }
 
 // ===== Caption (label vs dropdown) =====
 
-function CaptionLabel({ displayMonth, classNames, format, captionLayout, ChevronCmp }) {
+function CaptionLabel({ displayMonth, classNames, format, captionLayout, ChevronCmp }: {
+  displayMonth: Date;
+  classNames: CalendarClassNames;
+  format?: (month: Date) => string;
+  captionLayout?: string;
+  ChevronCmp: React.ComponentType<CalendarChevronProps>;
+}) {
   const monthYear = format
     ? format(displayMonth)
     : displayMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -196,16 +275,22 @@ function CaptionLabel({ displayMonth, classNames, format, captionLayout, Chevron
 
 function CaptionDropdowns({
   displayMonth, onMonthChange, classNames, formatters, ChevronCmp
+}: {
+  displayMonth: Date;
+  onMonthChange?: (month: Date) => void;
+  classNames: CalendarClassNames;
+  formatters: CalendarFormatters;
+  ChevronCmp: React.ComponentType<CalendarChevronProps>;
 }) {
   const yearNow = new Date().getFullYear();
-  const years = [];
+  const years: number[] = [];
   for (let y = yearNow - 100; y <= yearNow + 10; y++) years.push(y);
 
-  const handleMonth = (e) => {
+  const handleMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const next = new Date(displayMonth.getFullYear(), Number(e.target.value), 1);
     onMonthChange?.(next);
   };
-  const handleYear = (e) => {
+  const handleYear = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const next = new Date(Number(e.target.value), displayMonth.getMonth(), 1);
     onMonthChange?.(next);
   };
@@ -273,6 +358,24 @@ function CaptionDropdowns({
  * @param {string} [props.className]
  * @param {Date|Date[]|Function|{from,to}|{before:Date}|{after:Date}} [props.disabled]
  */
+export interface DayPickerProps {
+  mode?: 'single' | 'range';
+  selected?: Date | DateRange;
+  onSelect?: (value: any) => void;
+  month?: Date;
+  onMonthChange?: (month: Date) => void;
+  defaultMonth?: Date;
+  showOutsideDays?: boolean;
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  captionLayout?: 'label' | 'dropdown';
+  formatters?: CalendarFormatters;
+  components?: CalendarComponents;
+  classNames?: Partial<CalendarClassNames>;
+  className?: string;
+  disabled?: DisabledMatcher;
+  [key: string]: any;
+}
+
 export function DayPicker({
   mode = 'single',
   selected,
@@ -289,20 +392,20 @@ export function DayPicker({
   className,
   disabled,
   ...rest
-}) {
+}: DayPickerProps) {
   const [internalMonth, setInternalMonth] = useState(() =>
     startOfMonth(controlledMonth || defaultMonth || (selected instanceof Date ? selected : new Date()))
   );
   const displayMonth = controlledMonth ? startOfMonth(controlledMonth) : internalMonth;
 
-  const setMonth = useCallback((m) => {
+  const setMonth = useCallback((m: Date) => {
     const sm = startOfMonth(m);
     if (!controlledMonth) setInternalMonth(sm);
     onMonthChange?.(sm);
   }, [controlledMonth, onMonthChange]);
 
-  const [focusedDay, setFocusedDay] = useState(null);
-  const rootRef = useRef(null);
+  const [focusedDay, setFocusedDay] = useState<Date | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const cls = useMemo(
     () => ({ ...getDefaultClassNames(), ...classNamesProp }),
@@ -318,13 +421,13 @@ export function DayPicker({
   const grid = useMemo(() => buildGrid(displayMonth, weekStartsOn), [displayMonth, weekStartsOn]);
 
   // Selection handler
-  const handleSelect = useCallback((date) => {
+  const handleSelect = useCallback((date: Date) => {
     if (mode === 'single') {
-      onSelect?.(sameDay(selected, date) ? undefined : date);
+      onSelect?.(sameDay(selected as Date, date) ? undefined : date);
       return;
     }
     if (mode === 'range') {
-      const range = selected || {};
+      const range = (selected || {}) as DateRange;
       if (!range.from || (range.from && range.to)) {
         onSelect?.({ from: date });
       } else if (isBefore(date, range.from)) {
@@ -336,9 +439,9 @@ export function DayPicker({
   }, [mode, selected, onSelect]);
 
   // Keyboard navigation
-  const handleKeyDown = useCallback((e) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (!focusedDay) return;
-    let next = null;
+    let next: Date | null = null;
     switch (e.key) {
       case 'ArrowLeft':  next = addDays(focusedDay, -1); break;
       case 'ArrowRight': next = addDays(focusedDay, 1); break;
@@ -370,10 +473,10 @@ export function DayPicker({
   }, [focusedDay, displayMonth, weekStartsOn, disabled, handleSelect, setMonth]);
 
   // Initialize focused day on first interaction with grid
-  const handleDayFocus = (date) => setFocusedDay(date);
+  const handleDayFocus = (date: Date) => setFocusedDay(date);
 
   const weekdayLabels = useMemo(() => {
-    const labels = [];
+    const labels: string[] = [];
     for (let i = 0; i < 7; i++) {
       const d = new Date(2024, 0, 7 + ((i + weekStartsOn) % 7)); // 2024-01-07 was a Sunday
       labels.push(d.toLocaleString('default', { weekday: 'short' }));
@@ -449,7 +552,7 @@ export function DayPicker({
                     if (mode === 'single') {
                       modSel = isSelectedSingle(date, selected);
                     } else if (mode === 'range') {
-                      const rmods = rangeModifiers(date, selected);
+                      const rmods = rangeModifiers(date, selected as DateRange | undefined);
                       modSel = rmods.selected;
                       rs = rmods.range_start;
                       rm = rmods.range_middle;

@@ -1,9 +1,47 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import type { SkateboardConstants, User } from './Utilities.js';
 
-const context = createContext();
+/** Outcome passed to parked auth-overlay callbacks when the overlay settles. */
+export type AuthOverlayOutcome = 'success' | 'cancel';
+
+/** Callback parked by SHOW_AUTH_OVERLAY, invoked by AuthOverlay on settle. */
+export type AuthOverlayCallback = (outcome: AuthOverlayOutcome) => void;
+
+/** Global skateboard-ui state shape held by ContextProvider. */
+export interface AppState {
+  user: User | null;
+  ui: {
+    sidebarVisible: boolean;
+    tabBarVisible: boolean;
+  };
+  authOverlay: {
+    visible: boolean;
+    pendingCallbacks: AuthOverlayCallback[];
+  };
+  constants: SkateboardConstants;
+}
+
+/** Actions accepted by the skateboard-ui reducer. */
+export type Action =
+  | { type: 'SET_USER'; payload: User }
+  | { type: 'CLEAR_USER' }
+  | { type: 'SET_SIDEBAR_VISIBLE'; payload: boolean }
+  | { type: 'SET_TABBAR_VISIBLE'; payload: boolean }
+  | { type: 'SET_UI_VISIBILITY'; payload: { sidebarVisible?: boolean; tabBarVisible?: boolean } }
+  | { type: 'SHOW_AUTH_OVERLAY'; payload?: AuthOverlayCallback }
+  | { type: 'HIDE_AUTH_OVERLAY' }
+  | { type: 'AUTH_OVERLAY_SUCCESS' };
+
+/** Value provided by ContextProvider: { state, dispatch }. */
+export interface ContextValue {
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
+}
+
+const context = createContext<ContextValue>(undefined!);
 
 // Store dispatch reference for programmatic access outside components
-let _dispatch = null;
+let _dispatch: React.Dispatch<Action> | null = null;
 
 /**
  * Get dispatch function for programmatic state updates outside components.
@@ -21,25 +59,25 @@ let _dispatch = null;
  *   dispatch({ type: 'CLEAR_USER' });
  * }
  */
-export function getDispatch() {
+export function getDispatch(): React.Dispatch<Action> | null {
   return _dispatch;
 }
 
 // Check if localStorage is available
-function isLocalStorageAvailable() {
+function isLocalStorageAvailable(): boolean {
   try {
     const test = '__storage_test__';
     localStorage.setItem(test, test);
     localStorage.removeItem(test);
     return true;
-  } catch (e) {
+  } catch (e: any) {
     console.warn('localStorage not available:', e.message);
     return false;
   }
 }
 
 // Safe localStorage operations for Context
-function safeLSSetItem(key, value) {
+function safeLSSetItem(key: string, value: string): boolean {
   if (!isLocalStorageAvailable()) {
     console.warn(`Could not save to localStorage: ${key}`);
     return false;
@@ -47,28 +85,28 @@ function safeLSSetItem(key, value) {
   try {
     localStorage.setItem(key, value);
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('localStorage setItem error:', error.message);
     return false;
   }
 }
 
-function safeLSGetItem(key) {
+function safeLSGetItem(key: string): string | null {
   if (!isLocalStorageAvailable()) return null;
   try {
     return localStorage.getItem(key);
-  } catch (error) {
+  } catch (error: any) {
     console.error('localStorage getItem error:', error.message);
     return null;
   }
 }
 
-function safeLSRemoveItem(key) {
+function safeLSRemoveItem(key: string): boolean {
   if (!isLocalStorageAvailable()) return false;
   try {
     localStorage.removeItem(key);
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('localStorage removeItem error:', error.message);
     return false;
   }
@@ -92,25 +130,30 @@ function safeLSRemoveItem(key) {
  *   <App />
  * </ContextProvider>
  */
-export function ContextProvider({ children, constants }) {
+export interface ContextProviderProps {
+  children?: React.ReactNode;
+  constants: SkateboardConstants;
+}
+
+export function ContextProvider({ children, constants }: ContextProviderProps) {
   const getStorageKey = () => {
     const appName = constants.appName || 'skateboard';
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_user`;
   };
 
-  const getInitialUser = () => {
+  const getInitialUser = (): User | null => {
     try {
       const storageKey = getStorageKey();
       const storedUser = safeLSGetItem(storageKey);
       if (!storedUser || storedUser === "undefined") return null;
       return JSON.parse(storedUser);
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error parsing user data:', e.message);
       return null;
     }
   };
 
-  const initialState = {
+  const initialState: AppState = {
     user: getInitialUser(),
     ui: {
       sidebarVisible: true,
@@ -123,7 +166,7 @@ export function ContextProvider({ children, constants }) {
     constants
   };
 
-  function reducer(state, action) {
+  function reducer(state: AppState, action: Action): AppState {
     const storageKey = getStorageKey();
 
     switch (action.type) {
@@ -133,7 +176,7 @@ export function ContextProvider({ children, constants }) {
           if (!success) {
             console.error('Failed to persist user data to localStorage');
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error('Error setting user:', error.message);
         }
         return { ...state, user: action.payload };
@@ -203,7 +246,7 @@ export function ContextProvider({ children, constants }) {
  *   dispatch({ type: 'SET_USER', payload: userData });
  * }
  */
-export function getState() {
+export function getState(): ContextValue {
   return useContext(context);
 }
 
@@ -224,7 +267,7 @@ export function getState() {
  *   return <div>{user.name}</div>;
  * }
  */
-export function useUser() {
+export function useUser(): User | null {
   const { state } = useContext(context);
   return state.user;
 }
@@ -245,7 +288,7 @@ export function useUser() {
  *   return <button onClick={() => dispatch({ type: 'CLEAR_USER' })}>Sign Out</button>;
  * }
  */
-export function useDispatch() {
+export function useDispatch(): React.Dispatch<Action> {
   const { dispatch } = useContext(context);
   return dispatch;
 }

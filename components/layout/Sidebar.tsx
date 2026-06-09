@@ -30,7 +30,12 @@ import { Settings } from '../../icons/index.js';
  *
  * <Sidebar />
  */
-export default function Sidebar({ variant = "inset", ...props }) {
+export interface SidebarProps {
+  variant?: 'sidebar' | 'floating' | 'inset';
+  [key: string]: any;
+}
+
+export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
   const { open } = useSidebar();
   const navigate = useNavigate();
   const location = useLocation();
@@ -72,7 +77,7 @@ export default function Sidebar({ variant = "inset", ...props }) {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {constants.pages.map((item) => {
+              {constants.pages!.map((item) => {
                 const isActive = currentPage === item.url.toLowerCase();
                 return (
                   <SidebarMenuItem key={item.title}>

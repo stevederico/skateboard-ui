@@ -24,6 +24,35 @@ import ErrorBoundary from './components/ErrorBoundary.js';
 import { useAppSetup, initializeUtilities, validateConstants, isAuthOverlayEnabled, isAuthenticated } from './components/core/Utilities.js';
 import { ContextProvider } from './components/core/Context.js';
 import AuthOverlay from './components/AuthOverlay.js';
+import type { ComponentType, ReactNode } from 'react';
+import type { SkateboardConstants } from './components/core/Utilities.js';
+
+/** A route rendered under /app (config.appRoutes). */
+export interface AppRoute {
+  path: string;
+  element: ReactNode;
+}
+
+/** Built-in view components that can be replaced via config.overrides. */
+export interface AppOverrides {
+  layout?: ComponentType<any>;
+  settings?: ComponentType<any>;
+  payment?: ComponentType<any>;
+  signIn?: ComponentType<any>;
+  signUp?: ComponentType<any>;
+  signOut?: ComponentType<any>;
+  notFound?: ComponentType<any>;
+}
+
+/** Configuration accepted by createSkateboardApp. */
+export interface CreateSkateboardAppConfig {
+  constants: SkateboardConstants;
+  appRoutes: AppRoute[];
+  defaultRoute?: string;
+  landingPage?: ReactNode;
+  wrapper?: ComponentType<{ children?: ReactNode }>;
+  overrides?: AppOverrides;
+}
 
 /**
  * Redirect component for auth routes when authOverlay mode is enabled.
@@ -49,7 +78,13 @@ function AuthRedirect() {
   return null;
 }
 
-function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }) {
+function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }: {
+  constants: SkateboardConstants;
+  appRoutes: AppRoute[];
+  defaultRoute: string;
+  landingPage?: ReactNode;
+  overrides?: AppOverrides;
+}) {
   const location = useLocation();
 
   useEffect(() => {
@@ -87,10 +122,10 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
       <Route path="/signin" element={<SignInComponent />} />
       <Route path="/signup" element={<SignUpComponent />} />
       <Route path="/signout" element={<SignOutComponent />} />
-      <Route path="/terms" element={<TextView details={constants.termsOfService} />} />
-      <Route path="/privacy" element={<TextView details={constants.privacyPolicy} />} />
-      <Route path="/eula" element={<TextView details={constants.EULA} />} />
-      <Route path="/subs" element={<TextView details={constants.subscriptionDetails} />} />
+      <Route path="/terms" element={<TextView details={constants.termsOfService!} />} />
+      <Route path="/privacy" element={<TextView details={constants.privacyPolicy!} />} />
+      <Route path="/eula" element={<TextView details={constants.EULA!} />} />
+      <Route path="/subs" element={<TextView details={constants.subscriptionDetails!} />} />
       <Route path="*" element={<NotFoundComponent />} />
     </Routes>
   );
@@ -137,7 +172,7 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
  *   }
  * });
  */
-export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper, overrides }) {
+export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper, overrides }: CreateSkateboardAppConfig) {
   // Validate constants before initialization
   validateConstants(constants);
 
@@ -153,7 +188,7 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   document.documentElement.classList.toggle('dark', isDark);
 
   const container = document.getElementById('root');
-  const root = createRoot(container);
+  const root = createRoot(container!);
 
   root.render(
     <ErrorBoundary>

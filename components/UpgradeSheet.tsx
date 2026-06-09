@@ -18,6 +18,19 @@ import { getState } from "./core/Context.js";
 import { showCheckout } from './core/Utilities.js';
 import { Sparkles, CircleCheck } from '../icons/index.js';
 
+/** Imperative API exposed via ref: { show, hide, open, close, toggle }. */
+export interface UpgradeSheetHandle {
+  show: () => void;
+  hide: () => void;
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+}
+
+export interface UpgradeSheetProps {
+  userEmail?: string;
+}
+
 /**
  * Premium upgrade drawer with pricing and checkout button.
  *
@@ -43,7 +56,7 @@ import { Sparkles, CircleCheck } from '../icons/index.js';
  *   );
  * }
  */
-const UpgradeSheet = forwardRef(function UpgradeSheet(props, ref) {
+const UpgradeSheet = forwardRef<UpgradeSheetHandle, UpgradeSheetProps>(function UpgradeSheet(props, ref) {
   const { userEmail = "" } = props;
   const [isOpen, setIsOpen] = useState(false);
   const { state } = getState();
