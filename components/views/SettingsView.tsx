@@ -114,10 +114,7 @@ export default function SettingsView() {
               </CardTitle>
               <CardAction>
                 <AlertDialog>
-                  {/* @ts-ignore -- base-ui Trigger.Props (untyped JS this phase) doesn't know asChild */}
-                  <AlertDialogTrigger asChild>
-                    <Button variant="outline" size="sm">Sign Out</Button>
-                  </AlertDialogTrigger>
+                  <AlertDialogTrigger render={<Button variant="outline" size="sm">Sign Out</Button>} />
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Sign Out</AlertDialogTitle>

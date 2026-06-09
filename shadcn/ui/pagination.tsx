@@ -48,7 +48,7 @@ function PaginationLink({
     <Button
       variant={isActive ? "outline" : "ghost"}
       size={size}
-      className={cn(className)}
+      className={cn("cursor-pointer", className)}
       nativeButton={false}
       render={
         <a
@@ -71,7 +71,7 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn("cursor-pointer pl-2!", className)}
+      className={cn("pl-2!", className)}
       {...props}
     >
       <ChevronLeftIcon />

@@ -3,6 +3,9 @@
 3.10.0
 
   Convert package to TypeScript
+  Fix sign-out trigger render
+  Fix calendar day focus
+  Fix misplaced cursor-pointer
   Publish compiled dist with types
   Exports map points to dist
   Consumer import paths unchanged
