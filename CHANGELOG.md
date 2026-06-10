@@ -1,5 +1,10 @@
 # CHANGELOG
 
+3.12.0
+
+  Fix asChild button
+  Infer nativeButton semantics
+
 3.11.0
 
   Restore spinner animation
