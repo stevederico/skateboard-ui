@@ -60,11 +60,17 @@ function Button({
   // `asChild` API so `<Button asChild><a .../></Button>` renders the child element
   // (merged with button props) instead of leaking `asChild` onto the DOM <button>.
   if (asChild) {
+    const child = Children.only(children) as React.ReactElement<Record<string, unknown>>;
+    // Base UI defaults `nativeButton` to true and warns when the rendered element
+    // isn't a real <button>. Infer it from the child so `<Button asChild><a/></Button>`
+    // reports the correct semantics; an explicit `nativeButton` in props still wins.
+    const isNativeButton = child.type === "button";
     return (
       <ButtonPrimitive
         data-slot="button"
         className={classes}
-        render={Children.only(children) as React.ReactElement<Record<string, unknown>>}
+        nativeButton={isNativeButton}
+        render={child}
         {...props} />
     );
   }
