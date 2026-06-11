@@ -87,6 +87,10 @@ export interface PopoverContentProps extends React.ComponentProps<"div"> {
   alignOffset?: number
 }
 
+// Tabbable descendants, in DOM order, for focus-in and the Tab trap.
+const FOCUSABLE_SELECTOR =
+  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+
 function PopoverContent({
   className,
   style,
@@ -95,6 +99,7 @@ function PopoverContent({
   alignOffset = 0,
   side = "bottom",
   sideOffset = 4,
+  onKeyDown,
   ...props
 }: PopoverContentProps) {
   const { open, setOpen, triggerRef, contentId } = usePopover()
@@ -105,20 +110,76 @@ function PopoverContent({
     sideOffset,
     alignOffset,
   })
+  const contentRef = React.useRef<HTMLDivElement>(null)
   useDismiss(open, () => setOpen(false), [triggerRef, floatingRef])
+
+  // Move focus into the popover when it opens and restore it to the trigger on
+  // close — a role="dialog" must manage focus (native <dialog> does this for
+  // free; this portaled div does not).
+  React.useEffect(() => {
+    if (!open) return
+    const trigger = triggerRef.current
+    let raf = 0
+    // Retry across frames until the content is mounted AND visible: presence
+    // mounts it a tick after `open` flips, and it stays visibility:hidden until
+    // useFloating positions it — focus() on a missing or hidden node is a silent
+    // no-op. The effect cleanup cancels this when the popover closes.
+    const focusIn = () => {
+      const node = contentRef.current
+      if (!node || getComputedStyle(node).visibility === "hidden") {
+        raf = requestAnimationFrame(focusIn)
+        return
+      }
+      const first = node.querySelector<HTMLElement>(FOCUSABLE_SELECTOR)
+      ;(first ?? node).focus()
+    }
+    raf = requestAnimationFrame(focusIn)
+    return () => {
+      cancelAnimationFrame(raf)
+      // Only reclaim focus if it is still inside the popover (an outside click
+      // already moved it elsewhere — don't yank it back).
+      const node = contentRef.current
+      if (trigger && node && node.contains(document.activeElement)) trigger.focus()
+    }
+  }, [open, triggerRef])
 
   if (!mounted) return null
   return (
     <Portal>
       <div
-        ref={mergeRefs(floatingRef, presenceRef, ref as React.Ref<HTMLDivElement>)}
+        ref={mergeRefs(floatingRef, presenceRef, contentRef, ref as React.Ref<HTMLDivElement>)}
         id={contentId}
         role="dialog"
+        tabIndex={-1}
         data-slot="popover-content"
         data-state={open ? "open" : "closed"}
         data-open={open ? "" : undefined}
         data-closed={open ? undefined : ""}
         data-side={pos?.side ?? side}
+        onKeyDown={(e) => {
+          onKeyDown?.(e)
+          if (e.defaultPrevented || e.key !== "Tab") return
+          const node = contentRef.current
+          if (!node) return
+          const focusables = Array.from(
+            node.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+          ).filter((el) => el.offsetParent !== null || el === document.activeElement)
+          if (focusables.length === 0) {
+            e.preventDefault()
+            node.focus()
+            return
+          }
+          const first = focusables[0]
+          const last = focusables[focusables.length - 1]
+          const activeEl = document.activeElement
+          if (e.shiftKey && (activeEl === first || activeEl === node)) {
+            e.preventDefault()
+            last.focus()
+          } else if (!e.shiftKey && activeEl === last) {
+            e.preventDefault()
+            first.focus()
+          }
+        }}
         style={{
           ...style,
           position: "fixed",
