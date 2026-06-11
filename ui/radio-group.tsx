@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
+import { mergeRefs } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
 
 type RadioGroupContextValue = {
@@ -98,15 +99,29 @@ function RadioGroupItem({
   value,
   onClick,
   disabled,
+  ref,
   ...props
 }: RadioGroupItemProps) {
   const { value: selected, setValue } = useRadioGroup()
   const checked = selected === value
-  // Roving tab index: the checked radio is tabbable; if none checked, the first
-  // item is reachable (handled by Base UI semantics via tabIndex below).
-  const tabbable = checked || selected === undefined
+  const btnRef = React.useRef<HTMLButtonElement>(null)
+  // Roving tab index: the checked radio is the single tab stop. When nothing is
+  // checked, only the first enabled radio is tabbable — making every radio
+  // tabbable would put multiple stops in Tab order, breaking the radiogroup
+  // pattern.
+  const [isFirstEnabled, setIsFirstEnabled] = React.useState(false)
+  React.useLayoutEffect(() => {
+    if (selected !== undefined) return
+    const el = btnRef.current
+    const first = el?.parentElement?.querySelector(
+      '[role="radio"]:not([disabled]):not([data-disabled])'
+    )
+    setIsFirstEnabled(first === el)
+  })
+  const tabbable = checked || (selected === undefined && isFirstEnabled)
   return (
     <button
+      ref={mergeRefs(btnRef, ref)}
       type="button"
       role="radio"
       aria-checked={checked}

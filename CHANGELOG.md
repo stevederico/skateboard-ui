@@ -1,5 +1,18 @@
 # CHANGELOG
 
+4.1.0
+
+  Add menu/select typeahead
+  Fix popover focus management
+  Fix navigation-menu keyboard entry
+  Fix Command combobox ARIA
+  Fix tabs first tab-stop
+  Fix radio single tab-stop
+  Set menu available-height
+  Fix sheet/drawer exit animations
+  Reset floating position on close
+  Add a11y regression tests
+
 4.0.0
 
   Self-contained ui/ component tier (47 components, zero base-ui)

@@ -22,6 +22,14 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../dist/ui/tabs.js"
 import { RadioGroup, RadioGroupItem } from "../dist/ui/radio-group.js"
 import { Slider } from "../dist/ui/slider.js"
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "../dist/ui/navigation-menu.js"
 
 function SlotCompose() {
   // Counts consumer-handler invocations to prove Slot composes (doesn't clobber).
@@ -125,6 +133,76 @@ function SliderFx() {
   )
 }
 
+// Popover whose content holds a focusable control — proves the popover moves
+// focus into its content on open and restores it to the trigger on close.
+function PopoverFocus() {
+  return (
+    <section data-testid="fx-popover-focus">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button>Open popover</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <Button data-testid="inside-button">Inside</Button>
+        </PopoverContent>
+      </Popover>
+    </section>
+  )
+}
+
+// Tabs with NO selected value — the first tab must stay in Tab order so the
+// tablist is reachable by keyboard (roving tab index fallback).
+function TabsNoDefault() {
+  return (
+    <section data-testid="fx-tabs-nodefault">
+      <Tabs>
+        <TabsList>
+          <TabsTrigger value="one">One</TabsTrigger>
+          <TabsTrigger value="two">Two</TabsTrigger>
+        </TabsList>
+        <TabsContent value="one">One panel</TabsContent>
+        <TabsContent value="two">Two panel</TabsContent>
+      </Tabs>
+    </section>
+  )
+}
+
+// RadioGroup with NO selection — only the first radio may be tabbable (a single
+// tab stop), otherwise Tab would stop on every radio.
+function RadioNoDefault() {
+  return (
+    <section data-testid="fx-radio-nodefault">
+      <RadioGroup>
+        <RadioGroupItem value="free" />
+        <RadioGroupItem value="pro" />
+        <RadioGroupItem value="team" />
+      </RadioGroup>
+    </section>
+  )
+}
+
+// NavigationMenu — proves keyboard entry: ArrowDown from the trigger moves focus
+// into the portaled panel's first link.
+function NavMenu() {
+  return (
+    <section data-testid="fx-navmenu">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="flex w-48 flex-col gap-1">
+                <NavigationMenuLink href="#a">Analytics</NavigationMenuLink>
+                <NavigationMenuLink href="#b">Engagement</NavigationMenuLink>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </section>
+  )
+}
+
 const FIXTURES: Record<string, React.ReactNode> = {
   "slot-compose": <SlotCompose />,
   "escape-stack": <EscapeStack />,
@@ -132,6 +210,10 @@ const FIXTURES: Record<string, React.ReactNode> = {
   "tab-space": <TabSpace />,
   "radio-form": <RadioForm />,
   slider: <SliderFx />,
+  "popover-focus": <PopoverFocus />,
+  "tabs-nodefault": <TabsNoDefault />,
+  "radio-nodefault": <RadioNoDefault />,
+  navmenu: <NavMenu />,
 }
 
 /**

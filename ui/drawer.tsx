@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot, resolveRender } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { usePresence } from "./use-presence.js"
 
@@ -164,8 +164,13 @@ function DrawerContent({
   const { open, setOpen, titleId, descriptionId } = useDrawer()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
-  const [mounted] = usePresence(open)
+  const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
   const dragState = React.useRef<DragState>({ dragging: false, startY: 0, height: 0, startTime: 0 })
+  // A drag-dismiss already slides the panel out via an inline transform, so the
+  // CSS `animate-out` slide must be suppressed for that path — otherwise its
+  // keyframes would override the transform and snap the panel back into view.
+  // Programmatic closes (backdrop, Escape, controlled) keep the CSS animation.
+  const dismissingByDrag = React.useRef(false)
 
   React.useEffect(() => {
     const node = ref.current
@@ -188,6 +193,7 @@ function DrawerContent({
     if (open && ref.current) {
       ref.current.style.transition = ""
       ref.current.style.transform = ""
+      dismissingByDrag.current = false
     }
   }, [open])
 
@@ -204,6 +210,7 @@ function DrawerContent({
       setOpen(false)
       return
     }
+    dismissingByDrag.current = true
     el.style.transition = TRANSITION
     el.style.transform = "translate3d(0, 100%, 0)"
     window.setTimeout(() => setOpen(false), 500)
@@ -274,7 +281,7 @@ function DrawerContent({
   return (
     <dialog
       {...props}
-      ref={ref}
+      ref={mergeRefs(ref, presenceRef)}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
       data-slot="drawer-content"
@@ -306,7 +313,9 @@ function DrawerContent({
         "fixed inset-x-0 top-auto bottom-0 z-50 m-0 flex max-h-[80vh] w-full max-w-none touch-none flex-col rounded-t-xl border-t border-border bg-background p-0 text-sm outline-none backdrop:bg-black/10 backdrop:transition-opacity backdrop:duration-250 supports-backdrop-filter:backdrop:backdrop-blur-xs",
         open
           ? "animate-in fade-in-0 slide-in-from-bottom-52 duration-300"
-          : "animate-out fade-out-0 slide-out-to-bottom-52 duration-300",
+          : dismissingByDrag.current
+            ? ""
+            : "animate-out fade-out-0 slide-out-to-bottom-52 duration-300",
         className
       )}
     >

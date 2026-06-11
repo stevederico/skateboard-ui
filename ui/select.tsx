@@ -8,6 +8,7 @@ import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
+import { useTypeahead } from "./use-typeahead.js"
 import { ChevronDownIcon, CheckIcon } from "../icons/index.js"
 
 type SelectContextValue = {
@@ -210,6 +211,7 @@ function SelectContent({
     alignOffset,
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const { onTypeaheadKeyDown } = useTypeahead()
 
   // Focus the selected (or first) option once the popup is actually visible.
   const didFocus = React.useRef(false)
@@ -278,6 +280,7 @@ function SelectContent({
           minWidth: triggerWidth,
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
+          ["--available-height" as string]: pos ? `${pos.availableHeight}px` : undefined,
         }}
         onPointerMove={(e) => {
           const opt = (e.target as HTMLElement).closest(
@@ -312,6 +315,12 @@ function SelectContent({
             if (active && c.contains(active) && active.getAttribute("role") === "option") {
               e.preventDefault()
               active.click()
+            }
+          } else {
+            const match = onTypeaheadKeyDown(e, opts, idx)
+            if (match) {
+              e.preventDefault()
+              match.focus()
             }
           }
         }}

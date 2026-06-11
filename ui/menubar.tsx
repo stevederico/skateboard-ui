@@ -7,6 +7,7 @@ import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
+import { useTypeahead } from "./use-typeahead.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -230,6 +231,7 @@ function MenubarContent({
     alignOffset,
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const { onTypeaheadKeyDown } = useTypeahead()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -336,6 +338,16 @@ function MenubarContent({
             if (active && c.contains(active) && active.getAttribute("role")?.startsWith("menuitem")) {
               e.preventDefault()
               active.click()
+            }
+          } else {
+            // Printable-character typeahead: jump to the menu item whose label
+            // matches the typed buffer (WAI-ARIA menu pattern).
+            const items = itemsOf(c)
+            const idx = items.indexOf(document.activeElement as HTMLElement)
+            const match = onTypeaheadKeyDown(e, items, idx)
+            if (match) {
+              e.preventDefault()
+              match.focus()
             }
           }
         }}

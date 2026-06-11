@@ -82,3 +82,70 @@ test("Slider responds to keyboard (ArrowRight increments aria-valuenow)", async 
   await page.keyboard.press("ArrowRight")
   await expect(thumb).toHaveAttribute("aria-valuenow", "41")
 })
+
+// --- 4.0.0 accessibility-regression fixes (keyboard a11y the in-house rewrite
+// dropped vs base-ui). Each pins one fix so it can't silently regress. ---
+
+test("Select typeahead focuses the option matching the typed character", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=select-default")
+  await page.getByRole("combobox").click()
+  // Wait until the listbox has focused the selected option, then type "c" to
+  // jump to Cherry (typing before focus lands would hit the trigger, not the list).
+  await expect(
+    page.locator('[role="option"][data-value="banana"]')
+  ).toBeFocused()
+  await page.keyboard.press("c")
+  await expect(
+    page.locator('[role="option"][data-value="cherry"]')
+  ).toBeFocused()
+})
+
+test("Popover moves focus into its content on open and restores it on Escape", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=popover-focus")
+  const trigger = page.getByRole("button", { name: "Open popover" })
+  await trigger.click()
+  // Focus moves into the popover (to its first focusable control).
+  await expect(page.getByTestId("inside-button")).toBeFocused()
+  await page.keyboard.press("Escape")
+  // Closing returns focus to the trigger.
+  await expect(trigger).toBeFocused()
+})
+
+test("Tabs: the first tab stays tabbable when no tab is selected", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=tabs-nodefault")
+  // Exactly one tab stop (WAI-ARIA): first tab tabbable, the rest removed.
+  await expect(page.getByRole("tab", { name: "One" })).toHaveAttribute(
+    "tabindex",
+    "0"
+  )
+  await expect(page.getByRole("tab", { name: "Two" })).toHaveAttribute(
+    "tabindex",
+    "-1"
+  )
+})
+
+test("RadioGroup: only the first radio is tabbable when none is selected", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=radio-nodefault")
+  const radios = page.getByRole("radio")
+  await expect(radios.nth(0)).toHaveAttribute("tabindex", "0")
+  await expect(radios.nth(1)).toHaveAttribute("tabindex", "-1")
+  await expect(radios.nth(2)).toHaveAttribute("tabindex", "-1")
+})
+
+test("NavigationMenu: ArrowDown from the trigger moves focus into the panel", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=navmenu")
+  await page.getByRole("button", { name: "Products" }).focus()
+  await page.keyboard.press("ArrowDown")
+  // Keyboard users can now reach the links inside the portaled panel.
+  await expect(page.getByRole("link", { name: "Analytics" })).toBeFocused()
+})
