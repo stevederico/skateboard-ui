@@ -82,8 +82,8 @@ function isLocalStorageAvailable(): boolean {
     localStorage.setItem(test, test);
     localStorage.removeItem(test);
     return true;
-  } catch (e: any) {
-    console.warn('localStorage not available:', e.message);
+  } catch (e) {
+    console.warn('localStorage not available:', e instanceof Error ? e.message : String(e));
     return false;
   }
 }
@@ -97,8 +97,8 @@ function safeLSSetItem(key: string, value: string): boolean {
   try {
     localStorage.setItem(key, value);
     return true;
-  } catch (error: any) {
-    console.error('localStorage setItem error:', error.message);
+  } catch (error) {
+    console.error('localStorage setItem error:', error instanceof Error ? error.message : String(error));
     return false;
   }
 }
@@ -107,8 +107,8 @@ function safeLSGetItem(key: string): string | null {
   if (!isLocalStorageAvailable()) return null;
   try {
     return localStorage.getItem(key);
-  } catch (error: any) {
-    console.error('localStorage getItem error:', error.message);
+  } catch (error) {
+    console.error('localStorage getItem error:', error instanceof Error ? error.message : String(error));
     return null;
   }
 }
@@ -118,8 +118,8 @@ function safeLSRemoveItem(key: string): boolean {
   try {
     localStorage.removeItem(key);
     return true;
-  } catch (error: any) {
-    console.error('localStorage removeItem error:', error.message);
+  } catch (error) {
+    console.error('localStorage removeItem error:', error instanceof Error ? error.message : String(error));
     return false;
   }
 }
@@ -159,8 +159,8 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
       const storedUser = safeLSGetItem(storageKey);
       if (!storedUser || storedUser === "undefined") return null;
       return JSON.parse(storedUser);
-    } catch (e: any) {
-      console.error('Error parsing user data:', e.message);
+    } catch (e) {
+      console.error('Error parsing user data:', e instanceof Error ? e.message : String(e));
       return null;
     }
   };
@@ -188,8 +188,8 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
           if (!success) {
             console.error('Failed to persist user data to localStorage');
           }
-        } catch (error: any) {
-          console.error('Error setting user:', error.message);
+        } catch (error) {
+          console.error('Error setting user:', error instanceof Error ? error.message : String(error));
         }
         return { ...state, user: action.payload };
       }

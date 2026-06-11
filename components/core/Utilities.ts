@@ -134,8 +134,8 @@ function isLocalStorageAvailable(): boolean {
         localStorage.removeItem(test);
         _localStorageAvailable = true;
         return true;
-    } catch (e: any) {
-        console.warn('localStorage not available (private mode or quota exceeded):', e.message);
+    } catch (e) {
+        console.warn('localStorage not available (private mode or quota exceeded):', e instanceof Error ? e.message : String(e));
         _localStorageAvailable = false;
         return false;
     }
@@ -150,11 +150,13 @@ function safeSetItem(key: string, value: string): boolean {
     try {
         localStorage.setItem(key, value);
         return true;
-    } catch (error: any) {
-        if (error.name === 'QuotaExceededError') {
+    } catch (error) {
+        // DOMException (browser storage/abort errors) does not extend Error in
+        // the browser, so match either to read `.name` safely without a cast.
+        if ((error instanceof DOMException || error instanceof Error) && error.name === 'QuotaExceededError') {
             console.error('localStorage quota exceeded - data not persisted');
         } else {
-            console.error('localStorage setItem error:', error.message);
+            console.error('localStorage setItem error:', error instanceof Error ? error.message : String(error));
         }
         return false;
     }
@@ -164,8 +166,8 @@ function safeGetItem(key: string): string | null {
     if (!isLocalStorageAvailable()) return null;
     try {
         return localStorage.getItem(key);
-    } catch (error: any) {
-        console.error('localStorage getItem error:', error.message);
+    } catch (error) {
+        console.error('localStorage getItem error:', error instanceof Error ? error.message : String(error));
         return null;
     }
 }
@@ -175,8 +177,8 @@ function safeRemoveItem(key: string): boolean {
     try {
         localStorage.removeItem(key);
         return true;
-    } catch (error: any) {
-        console.error('localStorage removeItem error:', error.message);
+    } catch (error) {
+        console.error('localStorage removeItem error:', error instanceof Error ? error.message : String(error));
         return false;
     }
 }
@@ -656,8 +658,8 @@ export async function showUpgradeSheet(upgradeSheetRef: RefObject<{ show: () => 
             const user = JSON.parse(storedUser);
             subscriber = user?.subscription?.status === 'active' &&
                 (!user?.subscription?.expires || user?.subscription?.expires > Math.floor(Date.now() / 1000));
-        } catch (error: any) {
-            console.error('Error parsing user data from storage:', error.message);
+        } catch (error) {
+            console.error('Error parsing user data from storage:', error instanceof Error ? error.message : String(error));
             subscriber = false;
         }
     }
@@ -717,7 +719,7 @@ export function timestampToString(input: number | Date, format: string = "DOB"):
             return date.toLocaleString();
         case "ago": {
             const now = new Date();
-            const diffInSeconds = Math.floor(((now as unknown as number) - (date as unknown as number)) / 1000);
+            const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
             const minute = 60, hour = minute * 60, day = hour * 24;
             const week = day * 7, month = day * 30, year = day * 365;
 
@@ -841,11 +843,13 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
                 ...options.headers
             }
         });
-    } catch (error: any) {
-        if (error.name === 'AbortError') {
+    } catch (error) {
+        // fetch() aborts throw a DOMException, which does not extend Error in
+        // the browser — match either so abort detection still works.
+        if ((error instanceof DOMException || error instanceof Error) && error.name === 'AbortError') {
             throw error; // Re-throw abort errors for useListData to handle
         }
-        throw new Error(`Network error: ${error.message}`);
+        throw new Error(`Network error: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
         clearTimeout(timeoutId);
     }
@@ -932,8 +936,8 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
     // Parse JSON with error handling
     try {
         return await response.json();
-    } catch (error: any) {
-        throw new Error(`Invalid JSON response from server: ${error.message}`);
+    } catch (error) {
+        throw new Error(`Invalid JSON response from server: ${error instanceof Error ? error.message : String(error)}`);
     }
 }
 
@@ -1015,10 +1019,10 @@ export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => 
             const sorted = sortFn ? result.sort(sortFn) : result;
             setData(sorted);
             setError(null);
-        } catch (err: any) {
-            // Ignore abort errors
-            if (err.name === 'AbortError') return;
-            setError(err.message);
+        } catch (err) {
+            // Ignore abort errors (DOMException in the browser, not an Error)
+            if ((err instanceof DOMException || err instanceof Error) && err.name === 'AbortError') return;
+            setError(err instanceof Error ? err.message : String(err));
         } finally {
             setLoading(false);
         }
@@ -1055,8 +1059,8 @@ export function useForm(initialValues: Record<string, any>, onSubmit: (values: R
         try {
             await onSubmit(values);
             setValues(initialValues);
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : String(err));
         } finally {
             setSubmitting(false);
         }

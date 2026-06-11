@@ -22,6 +22,9 @@ type MenuContextValue = {
   setOpen: (open: boolean) => void
   triggerRef: React.RefObject<HTMLElement | null>
   contentId: string
+  // Generated fallback id for the trigger so the menu can point back at it via
+  // aria-labelledby — gives the role="menu" an accessible name from its trigger.
+  triggerId: string
   layers: React.MutableRefObject<Set<HTMLElement>>
 }
 const MenuContext = React.createContext<MenuContextValue | null>(null)
@@ -74,9 +77,12 @@ function DropdownMenu({
   })
   const triggerRef = React.useRef<HTMLElement | null>(null)
   const contentId = React.useId()
+  const triggerId = React.useId()
   const layers = React.useRef<Set<HTMLElement>>(new Set())
   return (
-    <MenuContext.Provider value={{ open: isOpen, setOpen, triggerRef, contentId, layers }}>
+    <MenuContext.Provider
+      value={{ open: isOpen, setOpen, triggerRef, contentId, triggerId, layers }}
+    >
       {children}
     </MenuContext.Provider>
   )
@@ -99,13 +105,16 @@ function DropdownMenuTrigger({
   render?: React.ReactElement
   nativeButton?: boolean
 }) {
-  const { open, setOpen, triggerRef, contentId } = useMenu()
+  const { open, setOpen, triggerRef, contentId, triggerId } = useMenu()
   const { useSlot, slotChild } = resolveRender(asChild, render, children)
   const Comp: React.ElementType = useSlot ? Slot : "button"
+  // Give the trigger a stable id so the menu can name itself via aria-labelledby.
+  // Honor a consumer-supplied id when present so we don't clobber their wiring.
   return (
     <Comp
       ref={triggerRef as React.Ref<HTMLButtonElement>}
       type={useSlot ? undefined : "button"}
+      id={props.id ?? triggerId}
       data-slot="dropdown-menu-trigger"
       aria-haspopup="menu"
       aria-expanded={open}
@@ -147,7 +156,7 @@ function DropdownMenuContent({
   onKeyDown,
   ...props
 }: DropdownMenuContentProps) {
-  const { open, setOpen, triggerRef, contentId, layers } = useMenu()
+  const { open, setOpen, triggerRef, contentId, triggerId, layers } = useMenu()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
     side,
@@ -211,6 +220,9 @@ function DropdownMenuContent({
         ref={mergeRefs(floatingRef, presenceRef, containerRef)}
         id={contentId}
         role="menu"
+        // Name the menu from its trigger so screen readers announce what it
+        // belongs to (the trigger's own id when a consumer set one, else triggerId).
+        aria-labelledby={triggerRef.current?.id ?? triggerId}
         aria-orientation="vertical"
         tabIndex={-1}
         data-slot="dropdown-menu-content"
@@ -491,6 +503,9 @@ type SubContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
   triggerRef: React.RefObject<HTMLElement | null>
+  // Stable id on the submenu content so the sub-trigger can reference it via
+  // aria-controls, wiring the disclosure relationship for screen readers.
+  subContentId: string
 }
 const SubContext = React.createContext<SubContextValue | null>(null)
 function useSub() {
@@ -508,8 +523,9 @@ function DropdownMenuSub({
 }) {
   const [open, setOpen] = React.useState(defaultOpen)
   const triggerRef = React.useRef<HTMLElement | null>(null)
+  const subContentId = React.useId()
   return (
-    <SubContext.Provider value={{ open, setOpen, triggerRef }}>
+    <SubContext.Provider value={{ open, setOpen, triggerRef, subContentId }}>
       {children}
     </SubContext.Provider>
   )
@@ -524,7 +540,7 @@ function DropdownMenuSubTrigger({
   onMouseEnter,
   ...props
 }: React.ComponentProps<"div"> & { inset?: boolean }) {
-  const { open, setOpen, triggerRef } = useSub()
+  const { open, setOpen, triggerRef, subContentId } = useSub()
   return (
     <div
       ref={triggerRef as React.Ref<HTMLDivElement>}
@@ -532,6 +548,9 @@ function DropdownMenuSubTrigger({
       tabIndex={-1}
       aria-haspopup="menu"
       aria-expanded={open}
+      // Point at the submenu content (only while open, when it's in the DOM) so
+      // assistive tech can follow the disclosure relationship to the open panel.
+      aria-controls={open ? subContentId : undefined}
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset ? "" : undefined}
       data-popup-open={open ? "" : undefined}
@@ -571,7 +590,7 @@ function DropdownMenuSubContent({
   onKeyDown,
   ...props
 }: React.ComponentProps<"div">) {
-  const { open, setOpen, triggerRef } = useSub()
+  const { open, setOpen, triggerRef, subContentId } = useSub()
   const { layers } = useMenu()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
@@ -618,6 +637,9 @@ function DropdownMenuSubContent({
     <Portal>
       <div
         ref={mergeRefs(floatingRef, presenceRef, containerRef)}
+        // id matches the sub-trigger's aria-controls so AT can follow the
+        // disclosure relationship from the trigger to this open submenu panel.
+        id={subContentId}
         role="menu"
         tabIndex={-1}
         data-slot="dropdown-menu-sub-content"
