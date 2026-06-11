@@ -148,6 +148,11 @@
       "import": "./dist/shadcn/ui/*.js",
       "default": "./dist/shadcn/ui/*.js"
     },
+    "./ui/*": {
+      "types": "./dist/ui/*.d.ts",
+      "import": "./dist/ui/*.js",
+      "default": "./dist/ui/*.js"
+    },
     "./shadcn/lib/utils": {
       "types": "./dist/shadcn/lib/utils.d.ts",
       "import": "./dist/shadcn/lib/utils.js",
