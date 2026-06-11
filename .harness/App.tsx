@@ -171,6 +171,37 @@ import {
   DrawerFooter,
   DrawerClose,
 } from "../dist/ui/drawer.js"
+import { Checkbox } from "../dist/ui/checkbox.js"
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from "../dist/ui/hover-card.js"
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "../dist/ui/command.js"
+import { Calendar } from "../dist/ui/calendar.js"
+import { ButtonGroup } from "../dist/ui/button-group.js"
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+} from "../dist/ui/item.js"
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+} from "../dist/ui/sidebar.js"
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -589,6 +620,65 @@ export function App() {
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
+      </Section>
+
+      <Section id="s-final" title="Checkbox / HoverCard / Command / Calendar / Item / Sidebar (final)">
+        <div className="flex items-center gap-2">
+          <Checkbox id="cb1" defaultChecked />
+          <Label htmlFor="cb1">Accept terms</Label>
+        </div>
+
+        <HoverCard>
+          <HoverCardTrigger href="#s-final">@hovercard</HoverCardTrigger>
+          <HoverCardContent>Hover card content.</HoverCardContent>
+        </HoverCard>
+
+        <Command className="w-64 rounded-md border">
+          <CommandInput placeholder="Search…" />
+          <CommandList>
+            <CommandEmpty>No results.</CommandEmpty>
+            <CommandGroup heading="Fruits">
+              <CommandItem value="apple">Apple</CommandItem>
+              <CommandItem value="banana">Banana</CommandItem>
+              <CommandItem value="cherry">Cherry</CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+
+        <Calendar mode="single" />
+
+        <ButtonGroup>
+          <Button variant="outline" size="sm">One</Button>
+          <Button variant="outline" size="sm">Two</Button>
+        </ButtonGroup>
+
+        <Item variant="outline" className="w-64">
+          <ItemContent>
+            <ItemTitle>Item title</ItemTitle>
+            <ItemDescription>Item description.</ItemDescription>
+          </ItemContent>
+        </Item>
+
+        <div className="h-48 w-full overflow-hidden rounded-md border">
+          <SidebarProvider defaultOpen className="min-h-0">
+            <Sidebar collapsible="none" className="h-48">
+              <SidebarContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton isActive>Home</SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton>Settings</SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarContent>
+            </Sidebar>
+            <div className="flex-1 p-2 text-sm">
+              <SidebarTrigger />
+              Main area
+            </div>
+          </SidebarProvider>
+        </div>
       </Section>
     </main>
   )
