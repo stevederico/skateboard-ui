@@ -90,11 +90,13 @@ function SheetClose({
   )
 }
 
+// `left-auto`/`right-auto`/etc. override the native <dialog> UA inset (left:0),
+// otherwise `right-0` + a width would still anchor to the left edge.
 const SIDE_POSITION: Record<SheetSide, string> = {
-  right: "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
-  left: "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
-  top: "inset-x-0 top-0 h-auto border-b",
-  bottom: "inset-x-0 bottom-0 h-auto border-t",
+  right: "inset-y-0 right-0 left-auto h-full w-3/4 border-l sm:max-w-sm",
+  left: "inset-y-0 left-0 right-auto h-full w-3/4 border-r sm:max-w-sm",
+  top: "inset-x-0 top-0 bottom-auto h-auto border-b",
+  bottom: "inset-x-0 bottom-0 top-auto h-auto border-t",
 }
 const SIDE_IN: Record<SheetSide, string> = {
   right: "slide-in-from-right-52",

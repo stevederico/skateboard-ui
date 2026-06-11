@@ -142,6 +142,25 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
 } from "../dist/ui/navigation-menu.js"
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "../dist/ui/alert-dialog.js"
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "../dist/ui/sheet.js"
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -511,6 +530,38 @@ export function App() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+      </Section>
+
+      <Section id="s-alert" title="AlertDialog / Sheet (hard tier)">
+        <AlertDialog>
+          <AlertDialogTrigger className="rounded-md border px-3 py-1.5 text-sm">
+            Delete…
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction variant="destructive">Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <Sheet>
+          <SheetTrigger className="rounded-md border px-3 py-1.5 text-sm">
+            Open sheet
+          </SheetTrigger>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>Sheet title</SheetTitle>
+              <SheetDescription>Slides in from the right edge.</SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
       </Section>
     </main>
   )
