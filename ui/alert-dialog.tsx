@@ -6,12 +6,22 @@ import { cn } from "../shadcn/lib/utils.js"
 import { Button } from "./button.js"
 import { Slot, resolveRender } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
+import { useDialogLabelling } from "./use-labelling.js"
+import { useScrollLock } from "./use-scroll-lock.js"
 
 type AlertDialogContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
   titleId: string
   descriptionId: string
+  /** Register the title part so `aria-labelledby` is wired only when present. */
+  registerTitle: () => () => void
+  /** Register the description part so `aria-describedby` is wired only when present. */
+  registerDescription: () => () => void
+  /** `aria-labelledby` value, or undefined when no title is rendered. */
+  labelledBy: string | undefined
+  /** `aria-describedby` value, or undefined when no description is rendered. */
+  describedBy: string | undefined
 }
 const AlertDialogContext = React.createContext<AlertDialogContextValue | null>(
   null
@@ -43,11 +53,26 @@ function AlertDialog({
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
-  const titleId = React.useId()
-  const descriptionId = React.useId()
+  const {
+    titleId,
+    descriptionId,
+    registerTitle,
+    registerDescription,
+    labelledBy,
+    describedBy,
+  } = useDialogLabelling()
   return (
     <AlertDialogContext.Provider
-      value={{ open: isOpen, setOpen, titleId, descriptionId }}
+      value={{
+        open: isOpen,
+        setOpen,
+        titleId,
+        descriptionId,
+        registerTitle,
+        registerDescription,
+        labelledBy,
+        describedBy,
+      }}
     >
       {children}
     </AlertDialogContext.Provider>
@@ -105,7 +130,7 @@ function AlertDialogContent({
   children,
   ...props
 }: AlertDialogContentProps) {
-  const { open, setOpen, titleId, descriptionId } = useAlertDialog()
+  const { open, setOpen, labelledBy, describedBy } = useAlertDialog()
   const ref = React.useRef<HTMLDialogElement>(null)
 
   React.useEffect(() => {
@@ -115,21 +140,19 @@ function AlertDialogContent({
     else if (!open && node.open) node.close()
   }, [open])
 
-  React.useEffect(() => {
-    if (!open) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [open])
+  // Lock background scroll while open via the shared reentrant helper so stacked
+  // overlays don't unlock each other when one closes.
+  useScrollLock(open)
 
   return (
     <dialog
       ref={ref}
       role="alertdialog"
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      // Reference the title/description only when those parts are actually
+      // rendered; a dangling IDREF is an a11y defect that assistive tech may
+      // announce as an empty or broken label.
+      aria-labelledby={labelledBy}
+      aria-describedby={describedBy}
       data-slot="alert-dialog-overlay"
       data-state={open ? "open" : "closed"}
       data-open={open ? "" : undefined}
@@ -200,7 +223,9 @@ function AlertDialogMedia({ className, ...props }: React.ComponentProps<"div">) 
 }
 
 function AlertDialogTitle({ className, ...props }: React.ComponentProps<"h2">) {
-  const { titleId } = useAlertDialog()
+  const { titleId, registerTitle } = useAlertDialog()
+  // Signal that a title exists so the content wires `aria-labelledby` to it.
+  React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
       id={titleId}
@@ -218,7 +243,9 @@ function AlertDialogDescription({
   className,
   ...props
 }: React.ComponentProps<"p">) {
-  const { descriptionId } = useAlertDialog()
+  const { descriptionId, registerDescription } = useAlertDialog()
+  // Signal that a description exists so the content wires `aria-describedby`.
+  React.useEffect(registerDescription, [registerDescription])
   return (
     <p
       id={descriptionId}

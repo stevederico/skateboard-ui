@@ -5,7 +5,9 @@ import * as React from "react"
 import { cn } from "../shadcn/lib/utils.js"
 import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
+import { useDialogLabelling } from "./use-labelling.js"
 import { usePresence } from "./use-presence.js"
+import { useScrollLock } from "./use-scroll-lock.js"
 
 // Drag thresholds and animation timing ported from vaul (MIT — Emil Kowalski).
 // https://github.com/emilkowalski/vaul/blob/main/src/constants.ts
@@ -38,6 +40,13 @@ type DrawerContextValue = {
   setOpen: (open: boolean) => void
   titleId: string
   descriptionId: string
+  // Stable register callbacks + resolved IDREF values from useDialogLabelling,
+  // so DrawerContent can omit aria-labelledby/aria-describedby when no
+  // Title/Description part is actually rendered (avoids a dangling IDREF).
+  registerTitle: () => () => void
+  registerDescription: () => () => void
+  labelledBy: string | undefined
+  describedBy: string | undefined
 }
 const DrawerContext = React.createContext<DrawerContextValue | null>(null)
 function useDrawer() {
@@ -65,10 +74,21 @@ function Drawer({ open, defaultOpen = false, onOpenChange, children }: DrawerPro
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
-  const titleId = React.useId()
-  const descriptionId = React.useId()
+  const { titleId, descriptionId, registerTitle, registerDescription, labelledBy, describedBy } =
+    useDialogLabelling()
   return (
-    <DrawerContext.Provider value={{ open: isOpen, setOpen, titleId, descriptionId }}>
+    <DrawerContext.Provider
+      value={{
+        open: isOpen,
+        setOpen,
+        titleId,
+        descriptionId,
+        registerTitle,
+        registerDescription,
+        labelledBy,
+        describedBy,
+      }}
+    >
       {children}
     </DrawerContext.Provider>
   )
@@ -161,7 +181,7 @@ function DrawerContent({
   onPointerCancel,
   ...props
 }: React.ComponentProps<"dialog">) {
-  const { open, setOpen, titleId, descriptionId } = useDrawer()
+  const { open, setOpen, labelledBy, describedBy } = useDrawer()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
   const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
@@ -179,14 +199,11 @@ function DrawerContent({
     else if (!mounted && node.open) node.close()
   }, [mounted])
 
-  React.useEffect(() => {
-    if (!mounted) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [mounted])
+  // Reentrant, reference-counted body scroll lock: when drawers stack with other
+  // overlays, the inline overflow effect would let an inner overlay's cleanup
+  // unlock scroll while an outer overlay is still open. useScrollLock shares one
+  // lock so only the last overlay to close restores the original overflow.
+  useScrollLock(mounted)
 
   // Clear any drag-leftover inline transform whenever we (re)open.
   React.useEffect(() => {
@@ -282,8 +299,11 @@ function DrawerContent({
     <dialog
       {...props}
       ref={mergeRefs(ref, presenceRef)}
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      // Conditional IDREFs: only reference the title/description when those parts
+      // are actually rendered, otherwise omit the attribute (undefined) so we
+      // never point assistive tech at a missing element.
+      aria-labelledby={labelledBy}
+      aria-describedby={describedBy}
       data-slot="drawer-content"
       data-state={open ? "open" : "closed"}
       data-open={open ? "" : undefined}
@@ -346,7 +366,10 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function DrawerTitle({ className, ...props }: React.ComponentProps<"h2">) {
-  const { titleId } = useDrawer()
+  const { titleId, registerTitle } = useDrawer()
+  // Register on mount so the container knows a title exists and can wire
+  // aria-labelledby; the returned cleanup unregisters on unmount.
+  React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
       id={titleId}
@@ -358,7 +381,10 @@ function DrawerTitle({ className, ...props }: React.ComponentProps<"h2">) {
 }
 
 function DrawerDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { descriptionId } = useDrawer()
+  const { descriptionId, registerDescription } = useDrawer()
+  // Register on mount so the container knows a description exists and can wire
+  // aria-describedby; the returned cleanup unregisters on unmount.
+  React.useEffect(registerDescription, [registerDescription])
   return (
     <p
       id={descriptionId}

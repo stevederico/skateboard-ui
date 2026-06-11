@@ -8,6 +8,8 @@ import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { XIcon } from "../icons/index.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { usePresence } from "./use-presence.js"
+import { useScrollLock } from "./use-scroll-lock.js"
+import { useDialogLabelling } from "./use-labelling.js"
 
 type SheetSide = "top" | "right" | "bottom" | "left"
 
@@ -16,6 +18,10 @@ type SheetContextValue = {
   setOpen: (open: boolean) => void
   titleId: string
   descriptionId: string
+  registerTitle: () => () => void
+  registerDescription: () => () => void
+  labelledBy: string | undefined
+  describedBy: string | undefined
 }
 const SheetContext = React.createContext<SheetContextValue | null>(null)
 function useSheet() {
@@ -39,10 +45,24 @@ function Sheet({ open, defaultOpen = false, onOpenChange, children }: SheetProps
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
-  const titleId = React.useId()
-  const descriptionId = React.useId()
+  // Conditional labelling: only advertise aria-labelledby/aria-describedby when a
+  // Title/Description part is actually rendered, so the dialog never points at a
+  // missing element (a dangling IDREF that screen readers announce as broken).
+  const { titleId, descriptionId, registerTitle, registerDescription, labelledBy, describedBy } =
+    useDialogLabelling()
   return (
-    <SheetContext.Provider value={{ open: isOpen, setOpen, titleId, descriptionId }}>
+    <SheetContext.Provider
+      value={{
+        open: isOpen,
+        setOpen,
+        titleId,
+        descriptionId,
+        registerTitle,
+        registerDescription,
+        labelledBy,
+        describedBy,
+      }}
+    >
       {children}
     </SheetContext.Provider>
   )
@@ -143,7 +163,7 @@ function SheetContent({
   showCloseButton = true,
   ...props
 }: SheetContentProps) {
-  const { open, setOpen, titleId, descriptionId } = useSheet()
+  const { open, setOpen, labelledBy, describedBy } = useSheet()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
   const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
@@ -155,22 +175,17 @@ function SheetContent({
     else if (!mounted && node.open) node.close()
   }, [mounted])
 
-  React.useEffect(() => {
-    if (!mounted) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [mounted])
+  // Reentrant, reference-counted scroll lock so stacked overlays don't unlock the
+  // body while another is still open (a plain per-instance effect would).
+  useScrollLock(mounted)
 
   if (!mounted) return null
   return (
     <dialog
       {...props}
       ref={mergeRefs(ref, presenceRef)}
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      aria-labelledby={labelledBy}
+      aria-describedby={describedBy}
       data-slot="sheet-content"
       data-side={side}
       data-state={open ? "open" : "closed"}
@@ -232,7 +247,9 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function SheetTitle({ className, ...props }: React.ComponentProps<"h2">) {
-  const { titleId } = useSheet()
+  const { titleId, registerTitle } = useSheet()
+  // Register so the dialog only sets aria-labelledby while this title is mounted.
+  React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
       id={titleId}
@@ -244,7 +261,9 @@ function SheetTitle({ className, ...props }: React.ComponentProps<"h2">) {
 }
 
 function SheetDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { descriptionId } = useSheet()
+  const { descriptionId, registerDescription } = useSheet()
+  // Register so the dialog only sets aria-describedby while this description is mounted.
+  React.useEffect(registerDescription, [registerDescription])
   return (
     <p
       id={descriptionId}

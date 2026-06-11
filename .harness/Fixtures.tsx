@@ -11,7 +11,22 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  PopoverTitle,
+  PopoverDescription,
 } from "../dist/ui/popover.js"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../dist/ui/dropdown-menu.js"
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetClose,
+} from "../dist/ui/sheet.js"
 import {
   Select,
   SelectTrigger,
@@ -203,6 +218,88 @@ function NavMenu() {
   )
 }
 
+// Popover with a Title + Description — proves the role="dialog" gets an
+// accessible name via aria-labelledby (and aria-describedby) only when present.
+function PopoverTitled() {
+  return (
+    <section data-testid="fx-popover-titled">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button>Open</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PopoverTitle>Account</PopoverTitle>
+          <PopoverDescription>Manage your settings</PopoverDescription>
+        </PopoverContent>
+      </Popover>
+    </section>
+  )
+}
+
+// DropdownMenu — proves selecting an item returns focus to the trigger.
+function DropdownFx() {
+  return (
+    <section data-testid="fx-dropdown">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button>Menu</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </section>
+  )
+}
+
+// Slider inside a form with a name + aria-label — proves form participation
+// (a hidden input posts the value) and that the thumb carries the accessible name.
+function SliderForm() {
+  return (
+    <section data-testid="fx-slider-form">
+      <form
+        data-testid="slider-form"
+        onSubmit={(e) => {
+          e.preventDefault()
+          const data = new FormData(e.currentTarget)
+          const out = document.querySelector("[data-testid=slider-form-result]")
+          if (out) out.textContent = String(data.get("volume") ?? "")
+        }}
+      >
+        <Slider name="volume" defaultValue={[30]} max={100} step={1} aria-label="Volume" className="w-64" />
+        <button type="submit">Submit</button>
+      </form>
+      <div data-testid="slider-form-result" />
+    </section>
+  )
+}
+
+// Open dialog containing a sheet — proves the shared scroll lock is reentrant:
+// closing the inner sheet must NOT unlock body scroll while the dialog is open.
+function NestedLock() {
+  return (
+    <section data-testid="fx-nested-lock">
+      <Dialog defaultOpen>
+        <DialogContent>
+          <DialogTitle>Outer dialog</DialogTitle>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button>Open sheet</Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetTitle>Inner sheet</SheetTitle>
+              <SheetClose asChild>
+                <Button>Close sheet</Button>
+              </SheetClose>
+            </SheetContent>
+          </Sheet>
+        </DialogContent>
+      </Dialog>
+    </section>
+  )
+}
+
 const FIXTURES: Record<string, React.ReactNode> = {
   "slot-compose": <SlotCompose />,
   "escape-stack": <EscapeStack />,
@@ -214,6 +311,10 @@ const FIXTURES: Record<string, React.ReactNode> = {
   "tabs-nodefault": <TabsNoDefault />,
   "radio-nodefault": <RadioNoDefault />,
   navmenu: <NavMenu />,
+  "popover-titled": <PopoverTitled />,
+  dropdown: <DropdownFx />,
+  "slider-form": <SliderForm />,
+  "nested-lock": <NestedLock />,
 }
 
 /**
