@@ -8,6 +8,7 @@ import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useTypeahead } from "./use-typeahead.js"
+import { usePointerMoved } from "./use-pointer-moved.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -232,6 +233,7 @@ function MenubarContent({
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
   const { onTypeaheadKeyDown } = useTypeahead()
+  const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -300,6 +302,10 @@ function MenubarContent({
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
         }}
         onPointerMove={(e) => {
+          // a11y: ignore synthetic pointermove events fired when keyboard nav
+          // scrolls the focused item into view — those report unchanged
+          // coordinates and would otherwise steal focus from the keyboard target.
+          if (!hasPointerMoved(e)) return
           const item = (e.target as HTMLElement).closest(
             '[role^="menuitem"]:not([data-disabled])'
           ) as HTMLElement | null
@@ -397,7 +403,7 @@ function MenubarItem({
   onClick,
   ...props
 }: MenubarItemProps) {
-  const { setOpen } = useMenu()
+  const { setOpen, triggerRef } = useMenu()
   return (
     <div
       role="menuitem"
@@ -408,7 +414,7 @@ function MenubarItem({
       data-variant={variant}
       data-disabled={disabled ? "" : undefined}
       className={cn(
-        "group/menubar-item relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive!",
+        "group/menubar-item relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive!",
         className
       )}
       onClick={(e) => {
@@ -417,6 +423,10 @@ function MenubarItem({
         if (e.defaultPrevented) return
         onSelect?.()
         setOpen(false)
+        // a11y: selecting an item closes the menu, which would otherwise drop
+        // focus to <body>; restore it to the trigger so keyboard users keep
+        // their place in the bar.
+        triggerRef.current?.focus()
       }}
       {...props}
     />
@@ -453,7 +463,7 @@ function MenubarCheckboxItem({
       data-disabled={disabled ? "" : undefined}
       data-inset={inset ? "" : undefined}
       className={cn(
-        "relative flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onClick={(e) => {
@@ -514,7 +524,7 @@ function MenubarRadioItem({
       data-disabled={disabled ? "" : undefined}
       data-inset={inset ? "" : undefined}
       className={cn(
-        "relative flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onClick={(e) => {
@@ -611,7 +621,7 @@ function MenubarSubTrigger({
       data-popup-open={open ? "" : undefined}
       data-open={open ? "" : undefined}
       className={cn(
-        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-inset:pl-8 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-inset:pl-8 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onMouseEnter={(e) => {
@@ -654,6 +664,7 @@ function MenubarSubContent({
     alignOffset: -3,
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -704,6 +715,9 @@ function MenubarSubContent({
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
         }}
         onPointerMove={(e) => {
+          // Ignore synthetic same-coordinate pointermoves (from keyboard-nav
+          // scroll) so they don't steal focus off the keyboard target.
+          if (!hasPointerMoved(e)) return
           const item = (e.target as HTMLElement).closest(
             '[role^="menuitem"]:not([data-disabled])'
           ) as HTMLElement | null

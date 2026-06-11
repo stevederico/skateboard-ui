@@ -15,6 +15,7 @@ export interface SliderProps
   step?: number
   orientation?: "horizontal" | "vertical"
   disabled?: boolean
+  name?: string
 }
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
@@ -34,6 +35,11 @@ function Slider({
   step = 1,
   orientation = "horizontal",
   disabled = false,
+  name,
+  // Pull the accessible-name props off so they don't land on the outer wrapper
+  // div; the thumb (role="slider") is the element that needs them.
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
   ...props
 }: SliderProps) {
   const [values, setValues] = useControllableState<number[]>({
@@ -148,14 +154,21 @@ function Slider({
             key={index}
             role="slider"
             tabIndex={disabled ? -1 : 0}
+            // The accessible-name props are forwarded here (not the wrapper) so the
+            // slider role actually gets a name; same label for all thumbs is fine.
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
             aria-valuemin={min}
             aria-valuemax={max}
             aria-valuenow={v}
             aria-orientation={orientation}
             aria-disabled={disabled || undefined}
             data-slot="slider-thumb"
+            // The thumb is a <span>, so :disabled never matches — drive the
+            // disabled styles off data-disabled instead.
+            data-disabled={disabled ? "" : undefined}
             onKeyDown={onThumbKeyDown(index)}
-            className="absolute block size-4 shrink-0 -translate-x-1/2 cursor-pointer rounded-full border border-primary bg-white shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 data-vertical:translate-x-0 data-vertical:-translate-y-1/2"
+            className="absolute block size-4 shrink-0 -translate-x-1/2 cursor-pointer rounded-full border border-primary bg-white shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 data-vertical:translate-x-0 data-vertical:-translate-y-1/2"
             data-orientation={orientation}
             style={
               vertical
@@ -165,6 +178,13 @@ function Slider({
           />
         ))}
       </div>
+      {/* Mirror RadioGroup: emit a hidden input per value so a wrapping <form>
+          actually submits the slider's value(s) under the given name. */}
+      {name
+        ? values.map((v, i) => (
+            <input key={i} type="hidden" name={name} value={v} />
+          ))
+        : null}
     </div>
   )
 }

@@ -7,12 +7,22 @@ import { Button } from "./button.js"
 import { Slot, resolveRender } from "./slot.js"
 import { XIcon } from "../icons/index.js"
 import { useControllableState } from "./use-controllable-state.js"
+import { useDialogLabelling } from "./use-labelling.js"
+import { useScrollLock } from "./use-scroll-lock.js"
 
 type DialogContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
   titleId: string
   descriptionId: string
+  /** Call from the title element's effect; returns the unregister cleanup. */
+  registerTitle: () => () => void
+  /** Call from the description element's effect; returns the unregister cleanup. */
+  registerDescription: () => () => void
+  /** `aria-labelledby` value, undefined when no title is rendered. */
+  labelledBy: string | undefined
+  /** `aria-describedby` value, undefined when no description is rendered. */
+  describedBy: string | undefined
 }
 const DialogContext = React.createContext<DialogContextValue | null>(null)
 function useDialog() {
@@ -39,10 +49,11 @@ function Dialog({ open, defaultOpen = false, onOpenChange, children }: DialogPro
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
-  const titleId = React.useId()
-  const descriptionId = React.useId()
+  // Track which labelling parts actually render so DialogContent can reference
+  // them only when present, avoiding a dangling aria-labelledby/-describedby IDREF.
+  const labelling = useDialogLabelling()
   return (
-    <DialogContext.Provider value={{ open: isOpen, setOpen, titleId, descriptionId }}>
+    <DialogContext.Provider value={{ open: isOpen, setOpen, ...labelling }}>
       {children}
     </DialogContext.Provider>
   )
@@ -130,7 +141,7 @@ function DialogContent({
   showCloseButton = true,
   ...props
 }: DialogContentProps) {
-  const { open, setOpen, titleId, descriptionId } = useDialog()
+  const { open, setOpen, labelledBy, describedBy } = useDialog()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
 
@@ -141,21 +152,19 @@ function DialogContent({
     else if (!open && node.open) node.close()
   }, [open])
 
-  // Lock background scroll while open.
-  React.useEffect(() => {
-    if (!open) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [open])
+  // Reentrant, reference-counted scroll lock so stacked overlays don't clobber
+  // each other's overflow restore (an inner close would otherwise unlock scroll
+  // while an outer dialog is still open).
+  useScrollLock(open)
 
   return (
     <dialog
       ref={ref}
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      // Conditional so the attribute is omitted when no title/description is
+      // rendered, instead of pointing at an id that doesn't exist (a dangling
+      // IDREF assistive tech may announce as a broken/empty label).
+      aria-labelledby={labelledBy}
+      aria-describedby={describedBy}
       data-slot="dialog-overlay"
       data-state={open ? "open" : "closed"}
       data-open={open ? "" : undefined}
@@ -239,7 +248,9 @@ function DialogFooter({
 }
 
 function DialogTitle({ className, ...props }: React.ComponentProps<"h2">) {
-  const { titleId } = useDialog()
+  const { titleId, registerTitle } = useDialog()
+  // Register presence so the container wires aria-labelledby only when a title exists.
+  React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
       id={titleId}
@@ -251,7 +262,9 @@ function DialogTitle({ className, ...props }: React.ComponentProps<"h2">) {
 }
 
 function DialogDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { descriptionId } = useDialog()
+  const { descriptionId, registerDescription } = useDialog()
+  // Register presence so the container wires aria-describedby only when a description exists.
+  React.useEffect(registerDescription, [registerDescription])
   return (
     <p
       id={descriptionId}

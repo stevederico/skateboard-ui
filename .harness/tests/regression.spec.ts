@@ -149,3 +149,69 @@ test("NavigationMenu: ArrowDown from the trigger moves focus into the panel", as
   // Keyboard users can now reach the links inside the portaled panel.
   await expect(page.getByRole("link", { name: "Analytics" })).toBeFocused()
 })
+
+// --- 4.2.0 medium a11y fixes ---
+
+test("Dialog wires aria-labelledby to its title and omits aria-describedby when no description", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=slot-compose")
+  await page.getByRole("button", { name: /asChild/ }).click()
+  const dlg = page.locator("dialog[data-slot=dialog-overlay]")
+  await expect(dlg).toHaveJSProperty("open", true)
+  // Title is rendered → aria-labelledby points at it.
+  await expect(dlg).toHaveAttribute("aria-labelledby", /.+/)
+  const labelledby = await dlg.getAttribute("aria-labelledby")
+  await expect(page.locator(`[id="${labelledby}"]`)).toHaveText("Composed")
+  // No DialogDescription rendered → no dangling aria-describedby.
+  await expect(dlg).not.toHaveAttribute("aria-describedby", /.*/)
+})
+
+test("Popover gets an accessible name from its title via aria-labelledby", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=popover-titled")
+  await page.getByRole("button", { name: "Open" }).click()
+  const pop = page.locator("[data-slot=popover-content]")
+  await expect(pop).toBeVisible()
+  await expect(pop).toHaveAttribute("aria-labelledby", /.+/)
+  const id = await pop.getAttribute("aria-labelledby")
+  await expect(page.locator(`[id="${id}"]`)).toHaveText("Account")
+})
+
+test("DropdownMenu returns focus to the trigger after selecting an item", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=dropdown")
+  const trigger = page.getByRole("button", { name: "Menu" })
+  await trigger.click()
+  await page.getByRole("menuitem", { name: "Profile" }).click()
+  await expect(trigger).toBeFocused()
+})
+
+test("Slider participates in form submission and names its thumb", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=slider-form")
+  await expect(page.getByRole("slider")).toHaveAttribute("aria-label", "Volume")
+  await page.getByRole("button", { name: "Submit" }).click()
+  await expect(page.getByTestId("slider-form-result")).toHaveText("30")
+})
+
+test("Scroll lock is reentrant: closing an inner sheet keeps body locked under the dialog", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=nested-lock")
+  const bodyOverflow = () =>
+    page.evaluate(() => getComputedStyle(document.body).overflow)
+  await expect.poll(bodyOverflow).toBe("hidden") // outer dialog locks
+  await page.getByRole("button", { name: "Open sheet" }).click()
+  await expect(page.locator("dialog[data-slot=sheet-content]")).toHaveJSProperty(
+    "open",
+    true
+  )
+  await page.getByRole("button", { name: "Close sheet" }).click()
+  await expect(page.locator("dialog[data-slot=sheet-content]")).toHaveCount(0)
+  // Inner closed, outer still open → body must STAY locked.
+  await expect.poll(bodyOverflow).toBe("hidden")
+})

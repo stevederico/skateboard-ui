@@ -9,12 +9,22 @@ import { useFloating, type Side, type Align } from "./use-floating.js"
 import { useDismiss } from "./use-dismiss.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
+import { useDialogLabelling } from "./use-labelling.js"
 
 type PopoverContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
   triggerRef: React.RefObject<HTMLElement | null>
   contentId: string
+  // Labelling wiring: PopoverContent reads labelledBy/describedBy for its
+  // role="dialog", and PopoverTitle/PopoverDescription register their ids so a
+  // screen reader announces the dialog by its title instead of as "dialog".
+  titleId: string
+  descriptionId: string
+  registerTitle: () => () => void
+  registerDescription: () => () => void
+  labelledBy: string | undefined
+  describedBy: string | undefined
 }
 const PopoverContext = React.createContext<PopoverContextValue | null>(null)
 function usePopover() {
@@ -38,8 +48,22 @@ function Popover({ open, defaultOpen = false, onOpenChange, children }: PopoverP
   })
   const triggerRef = React.useRef<HTMLElement | null>(null)
   const contentId = React.useId()
+  const labelling = useDialogLabelling()
   return (
-    <PopoverContext.Provider value={{ open: isOpen, setOpen, triggerRef, contentId }}>
+    <PopoverContext.Provider
+      value={{
+        open: isOpen,
+        setOpen,
+        triggerRef,
+        contentId,
+        titleId: labelling.titleId,
+        descriptionId: labelling.descriptionId,
+        registerTitle: labelling.registerTitle,
+        registerDescription: labelling.registerDescription,
+        labelledBy: labelling.labelledBy,
+        describedBy: labelling.describedBy,
+      }}
+    >
       {children}
     </PopoverContext.Provider>
   )
@@ -102,7 +126,7 @@ function PopoverContent({
   onKeyDown,
   ...props
 }: PopoverContentProps) {
-  const { open, setOpen, triggerRef, contentId } = usePopover()
+  const { open, setOpen, triggerRef, contentId, labelledBy, describedBy } = usePopover()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
     side,
@@ -150,6 +174,10 @@ function PopoverContent({
         ref={mergeRefs(floatingRef, presenceRef, contentRef, ref as React.Ref<HTMLDivElement>)}
         id={contentId}
         role="dialog"
+        // Name/describe the dialog from its rendered Title/Description so screen
+        // readers announce it by content; undefined omits a dangling IDREF.
+        aria-labelledby={labelledBy}
+        aria-describedby={describedBy}
         tabIndex={-1}
         data-slot="popover-content"
         data-state={open ? "open" : "closed"}
@@ -209,8 +237,12 @@ function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
+  // Register this title's id so PopoverContent can point aria-labelledby at it.
+  const { titleId, registerTitle } = usePopover()
+  React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
+      id={titleId}
       data-slot="popover-title"
       className={cn("font-medium", className)}
       {...props}
@@ -219,8 +251,12 @@ function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
 }
 
 function PopoverDescription({ className, ...props }: React.ComponentProps<"p">) {
+  // Register this description's id so PopoverContent can point aria-describedby at it.
+  const { descriptionId, registerDescription } = usePopover()
+  React.useEffect(registerDescription, [registerDescription])
   return (
     <p
+      id={descriptionId}
       data-slot="popover-description"
       className={cn("text-muted-foreground", className)}
       {...props}
