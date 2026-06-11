@@ -59,4 +59,19 @@ function Slot({ children, className, style, ref, ...props }: SlotProps) {
   return React.cloneElement(child, merged)
 }
 
-export { Slot, mergeRefs }
+/**
+ * Base UI `render={<El/>}` compatibility. The old shadcn tier passed a React
+ * element to `render` to control the rendered element; here that maps onto the
+ * `asChild` + Slot mechanism. Returns whether to use the Slot and what child to
+ * render through it, so `render={<Button/>}` keeps working on the new components.
+ */
+function resolveRender(
+  asChild: boolean | undefined,
+  render: React.ReactElement | undefined,
+  children: React.ReactNode
+): { useSlot: boolean; slotChild: React.ReactNode } {
+  if (React.isValidElement(render)) return { useSlot: true, slotChild: render }
+  return { useSlot: !!asChild, slotChild: children }
+}
+
+export { Slot, mergeRefs, resolveRender }

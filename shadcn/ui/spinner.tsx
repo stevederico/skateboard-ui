@@ -1,15 +1,3 @@
-import { cn } from "../lib/utils.js"
-import { Loader2Icon } from "../../icons/index.js"
-
-function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
-  return (
-    <Loader2Icon
-      role="status"
-      aria-label="Loading"
-      className={cn("size-4 animate-spin", className)}
-      {...props}
-    />
-  )
-}
-
-export { Spinner }
+// Linker shim: this path now re-exports the self-contained component from
+// `ui/spinner`. The legacy base-ui implementation was removed in 4.0.0.
+export * from "../../ui/spinner.js"

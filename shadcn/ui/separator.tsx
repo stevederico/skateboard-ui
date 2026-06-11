@@ -1,25 +1,3 @@
-"use client"
-
-import { Separator as SeparatorPrimitive } from "../lib/base-ui/separator.js"
-
-import { cn } from "../lib/utils.js"
-
-function Separator({
-  className,
-  orientation = "horizontal",
-  ...props
-}: SeparatorPrimitive.Props) {
-  return (
-    <SeparatorPrimitive
-      data-slot="separator"
-      orientation={orientation}
-      className={cn(
-        "shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-export { Separator }
+// Linker shim: this path now re-exports the self-contained component from
+// `ui/separator`. The legacy base-ui implementation was removed in 4.0.0.
+export * from "../../ui/separator.js"

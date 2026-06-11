@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
 import { Button } from "./button.js"
-import { Slot } from "./slot.js"
+import { Slot, resolveRender } from "./slot.js"
 import { XIcon } from "../icons/index.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { usePresence } from "./use-presence.js"
@@ -50,14 +50,22 @@ function Sheet({ open, defaultOpen = false, onOpenChange, children }: SheetProps
 
 function SheetTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onClick,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, setOpen } = useSheet()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="sheet-trigger"
       aria-haspopup="dialog"
       data-state={open ? "open" : "closed"}
@@ -66,27 +74,39 @@ function SheetTrigger({
         if (!e.defaultPrevented) setOpen(true)
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 
 function SheetClose({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onClick,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { setOpen } = useSheet()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="sheet-close"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(e)
         if (!e.defaultPrevented) setOpen(false)
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

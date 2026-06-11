@@ -1,22 +1,3 @@
-import { cn } from "../lib/utils.js"
-
-function AspectRatio({
-  ratio,
-  className,
-  ...props
-}: React.ComponentProps<"div"> & { ratio: number }) {
-  return (
-    <div
-      data-slot="aspect-ratio"
-      style={
-        {
-          "--ratio": ratio,
-        } as React.CSSProperties
-      }
-      className={cn("relative aspect-(--ratio)", className)}
-      {...props}
-    />
-  )
-}
-
-export { AspectRatio }
+// Linker shim: this path now re-exports the self-contained component from
+// `ui/aspect-ratio`. The legacy base-ui implementation was removed in 4.0.0.
+export * from "../../ui/aspect-ratio.js"

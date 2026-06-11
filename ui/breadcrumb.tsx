@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot } from "./slot.js"
+import { Slot, resolveRender } from "./slot.js"
 import { ChevronRightIcon, MoreHorizontalIcon } from "../icons/index.js"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
@@ -41,9 +41,17 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
 function BreadcrumbLink({
   className,
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   ...props
-}: React.ComponentProps<"a"> & { asChild?: boolean }) {
-  const Comp: React.ElementType = asChild ? Slot : "a"
+}: React.ComponentProps<"a"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "a"
   return (
     <Comp
       data-slot="breadcrumb-link"
@@ -52,7 +60,9 @@ function BreadcrumbLink({
         className
       )}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

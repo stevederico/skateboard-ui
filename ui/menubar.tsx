@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot, mergeRefs } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
@@ -132,19 +132,27 @@ function MenubarGroup({ className, ...props }: React.ComponentProps<"div">) {
 
 function MenubarTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   className,
   onClick,
   onKeyDown,
   onMouseEnter,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const root = useMenubarRoot()
   const { value, open, setOpen, triggerRef, contentId } = useMenu()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
       ref={triggerRef as React.Ref<HTMLButtonElement>}
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="menubar-trigger"
       aria-haspopup="menu"
       aria-expanded={open}
@@ -189,7 +197,9 @@ function MenubarTrigger({
         }
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

@@ -2,7 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "../shadcn/lib/cva.js"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot } from "./slot.js"
+import { Slot, resolveRender } from "./slot.js"
 import { Separator } from "./separator.js"
 
 const buttonGroupVariants = cva(
@@ -41,14 +41,22 @@ function ButtonGroup({
 export interface ButtonGroupTextProps extends React.ComponentProps<"div"> {
   /** Render the single child element styled as button-group text. */
   asChild?: boolean
+  /** Base UI compat: a React element rendered in place of the text. */
+  render?: React.ReactElement
+  /** Base UI compat: ignored (the element is inferred from `render`/`asChild`). */
+  nativeButton?: boolean
 }
 
 function ButtonGroupText({
   className,
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   ...props
 }: ButtonGroupTextProps) {
-  const Comp: React.ElementType = asChild ? Slot : "div"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "div"
   return (
     <Comp
       data-slot="button-group-text"
@@ -57,7 +65,9 @@ function ButtonGroupText({
         className
       )}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

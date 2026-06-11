@@ -118,6 +118,18 @@ import {
 } from "../dist/ui/select.js"
 import { Slider } from "../dist/ui/slider.js"
 import { ScrollArea } from "../dist/ui/scroll-area.js"
+// Legacy import path (linker shim) + base-ui render= compat — proves existing apps work
+import { Button as LegacyButton } from "../dist/shadcn/ui/button.js"
+import {
+  AlertDialog as LegacyAlertDialog,
+  AlertDialogTrigger as LegacyAlertDialogTrigger,
+  AlertDialogContent as LegacyAlertDialogContent,
+  AlertDialogTitle as LegacyAlertDialogTitle,
+  AlertDialogAction as LegacyAlertDialogAction,
+  AlertDialogCancel as LegacyAlertDialogCancel,
+  AlertDialogFooter as LegacyAlertDialogFooter,
+  AlertDialogHeader as LegacyAlertDialogHeader,
+} from "../dist/shadcn/ui/alert-dialog.js"
 import {
   ContextMenu,
   ContextMenuTrigger,
@@ -620,6 +632,24 @@ export function App() {
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
+      </Section>
+
+      <Section id="s-legacy" title="Legacy shim path + base-ui render= compat (4.0.0 linker)">
+        <LegacyButton variant="outline">Legacy import path</LegacyButton>
+        <LegacyAlertDialog>
+          <LegacyAlertDialogTrigger
+            render={<LegacyButton variant="destructive">Delete (render=)</LegacyButton>}
+          />
+          <LegacyAlertDialogContent>
+            <LegacyAlertDialogHeader>
+              <LegacyAlertDialogTitle>Confirm via render= trigger</LegacyAlertDialogTitle>
+            </LegacyAlertDialogHeader>
+            <LegacyAlertDialogFooter>
+              <LegacyAlertDialogCancel>Cancel</LegacyAlertDialogCancel>
+              <LegacyAlertDialogAction variant="destructive">Delete</LegacyAlertDialogAction>
+            </LegacyAlertDialogFooter>
+          </LegacyAlertDialogContent>
+        </LegacyAlertDialog>
       </Section>
 
       <Section id="s-final" title="Checkbox / HoverCard / Command / Calendar / Item / Sidebar (final)">

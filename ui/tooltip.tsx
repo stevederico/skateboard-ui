@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot, mergeRefs } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
@@ -79,18 +79,26 @@ function Tooltip({ delay, defaultOpen = false, children }: TooltipProps) {
 
 function TooltipTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onMouseEnter,
   onMouseLeave,
   onFocus,
   onBlur,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, show, hide, triggerRef, contentId } = useTooltip()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
       ref={triggerRef as React.Ref<HTMLButtonElement>}
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="tooltip-trigger"
       aria-describedby={open ? contentId : undefined}
       data-state={open ? "open" : "closed"}
@@ -111,7 +119,9 @@ function TooltipTrigger({
         hide()
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

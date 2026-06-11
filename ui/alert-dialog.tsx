@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
 import { Button } from "./button.js"
+import { Slot, resolveRender } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
 
 type AlertDialogContextValue = {
@@ -55,23 +56,35 @@ function AlertDialog({
 
 function AlertDialogTrigger({
   className,
+  asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onClick,
   ...props
-}: React.ComponentProps<"button">) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, setOpen } = useAlertDialog()
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
-    <button
-      type="button"
+    <Comp
+      type={useSlot ? undefined : "button"}
       data-slot="alert-dialog-trigger"
       aria-haspopup="dialog"
       data-state={open ? "open" : "closed"}
       className={cn("cursor-pointer", className)}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(e)
         if (!e.defaultPrevented) setOpen(true)
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

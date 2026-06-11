@@ -1,13 +1,3 @@
-import { cn } from "../lib/utils.js"
-
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="skeleton"
-      className={cn("animate-pulse rounded-md bg-muted", className)}
-      {...props}
-    />
-  )
-}
-
-export { Skeleton }
+// Linker shim: this path now re-exports the self-contained component from
+// `ui/skeleton`. The legacy base-ui implementation was removed in 4.0.0.
+export * from "../../ui/skeleton.js"
