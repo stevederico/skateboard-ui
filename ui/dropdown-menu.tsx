@@ -9,6 +9,7 @@ import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useTypeahead } from "./use-typeahead.js"
+import { usePointerMoved } from "./use-pointer-moved.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -156,6 +157,7 @@ function DropdownMenuContent({
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
   const { onTypeaheadKeyDown } = useTypeahead()
+  const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -225,6 +227,9 @@ function DropdownMenuContent({
           ["--available-height" as string]: pos ? `${pos.availableHeight}px` : undefined,
         }}
         onPointerMove={(e) => {
+          // Ignore synthetic pointermoves fired when keyboard nav scrolls the list
+          // under a stationary pointer — they'd yank focus off the keyboard target.
+          if (!hasPointerMoved(e)) return
           const item = (e.target as HTMLElement).closest(
             '[role^="menuitem"]:not([data-disabled])'
           ) as HTMLElement | null
@@ -311,7 +316,7 @@ function DropdownMenuItem({
   onClick,
   ...props
 }: DropdownMenuItemProps) {
-  const { setOpen } = useMenu()
+  const { setOpen, triggerRef } = useMenu()
   return (
     <div
       role="menuitem"
@@ -322,7 +327,9 @@ function DropdownMenuItem({
       data-variant={variant}
       data-disabled={disabled ? "" : undefined}
       className={cn(
-        "group/dropdown-menu-item relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive",
+        // focus-visible ring: focus:bg-accent alone is ~1.12:1 against the popover
+        // bg (below WCAG 3:1), so add a keyboard-only ring for a visible focus target.
+        "group/dropdown-menu-item relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive",
         className
       )}
       onClick={(e) => {
@@ -331,6 +338,9 @@ function DropdownMenuItem({
         if (e.defaultPrevented) return
         onSelect?.()
         setOpen(false)
+        // Selecting a plain item closes the menu; without this, focus is left on
+        // <body> instead of returning to the trigger (Escape already restores it).
+        triggerRef.current?.focus()
       }}
       {...props}
     />
@@ -367,7 +377,8 @@ function DropdownMenuCheckboxItem({
       data-disabled={disabled ? "" : undefined}
       data-inset={inset ? "" : undefined}
       className={cn(
-        "relative flex cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // focus-visible ring: keyboard-only focus target (focus:bg-accent is below WCAG 3:1).
+        "relative flex cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onClick={(e) => {
@@ -428,7 +439,8 @@ function DropdownMenuRadioItem({
       data-disabled={disabled ? "" : undefined}
       data-inset={inset ? "" : undefined}
       className={cn(
-        "relative flex cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // focus-visible ring: keyboard-only focus target (focus:bg-accent is below WCAG 3:1).
+        "relative flex cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onClick={(e) => {
@@ -525,7 +537,8 @@ function DropdownMenuSubTrigger({
       data-popup-open={open ? "" : undefined}
       data-open={open ? "" : undefined}
       className={cn(
-        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-inset:pl-8 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // focus-visible ring: keyboard-only focus target (focus:bg-accent is below WCAG 3:1).
+        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-inset:pl-8 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onMouseEnter={(e) => {
@@ -569,6 +582,7 @@ function DropdownMenuSubContent({
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
   const { onTypeaheadKeyDown } = useTypeahead()
+  const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -619,6 +633,9 @@ function DropdownMenuSubContent({
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
         }}
         onPointerMove={(e) => {
+          // Ignore synthetic pointermoves fired when keyboard nav scrolls the list
+          // under a stationary pointer — they'd yank focus off the keyboard target.
+          if (!hasPointerMoved(e)) return
           const item = (e.target as HTMLElement).closest(
             '[role^="menuitem"]:not([data-disabled])'
           ) as HTMLElement | null
