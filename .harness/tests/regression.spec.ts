@@ -215,3 +215,30 @@ test("Scroll lock is reentrant: closing an inner sheet keeps body locked under t
   // Inner closed, outer still open → body must STAY locked.
   await expect.poll(bodyOverflow).toBe("hidden")
 })
+
+// --- 4.3.0 cleanup ---
+
+test("Checkbox exposes aria-checked=mixed for indeterminate and resolves on click", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=checkbox-indeterminate")
+  const box = page.getByRole("checkbox")
+  await expect(box).toHaveAttribute("aria-checked", "mixed")
+  await box.click()
+  // A click resolves indeterminate to a concrete checked state.
+  await expect(box).toHaveAttribute("aria-checked", "true")
+})
+
+test("DropdownMenu content is labelled by its trigger via aria-labelledby", async ({
+  page,
+}) => {
+  await page.goto("/tests.html?fx=dropdown")
+  const trigger = page.getByRole("button", { name: "Menu" })
+  const triggerId = await trigger.getAttribute("id")
+  expect(triggerId).toBeTruthy()
+  await trigger.click()
+  await expect(page.getByRole("menu")).toHaveAttribute(
+    "aria-labelledby",
+    triggerId ?? ""
+  )
+})

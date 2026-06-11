@@ -39,6 +39,9 @@ type MenuContextValue = {
   setOpen: (open: boolean) => void
   triggerRef: React.RefObject<HTMLElement | null>
   contentId: string
+  // a11y: stable id placed on the trigger so the menu can point its
+  // aria-labelledby at it, naming the menu by its button for screen readers.
+  triggerId: string
   layers: React.MutableRefObject<Set<HTMLElement>>
 }
 const MenuContext = React.createContext<MenuContextValue | null>(null)
@@ -101,6 +104,7 @@ function MenubarMenu({
   const value = valueProp ?? generatedId
   const triggerRef = React.useRef<HTMLElement | null>(null)
   const contentId = React.useId()
+  const triggerId = React.useId()
   const layers = React.useRef<Set<HTMLElement>>(new Set())
   const open = root.value === value
   const setOpen = React.useCallback(
@@ -117,7 +121,7 @@ function MenubarMenu({
   )
   return (
     <MenuContext.Provider
-      value={{ value, open, setOpen, triggerRef, contentId, layers }}
+      value={{ value, open, setOpen, triggerRef, contentId, triggerId, layers }}
     >
       {children}
     </MenuContext.Provider>
@@ -148,7 +152,7 @@ function MenubarTrigger({
   nativeButton?: boolean
 }) {
   const root = useMenubarRoot()
-  const { value, open, setOpen, triggerRef, contentId } = useMenu()
+  const { value, open, setOpen, triggerRef, contentId, triggerId } = useMenu()
   const { useSlot, slotChild } = resolveRender(asChild, render, children)
   const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
@@ -156,6 +160,9 @@ function MenubarTrigger({
       ref={triggerRef as React.Ref<HTMLButtonElement>}
       type={useSlot ? undefined : "button"}
       data-slot="menubar-trigger"
+      // a11y: give the trigger a stable id so its menu can reference it via
+      // aria-labelledby; a consumer-supplied id in ...props overrides this.
+      id={triggerId}
       aria-haspopup="menu"
       aria-expanded={open}
       aria-controls={open ? contentId : undefined}
@@ -223,7 +230,7 @@ function MenubarContent({
   ...props
 }: MenubarContentProps) {
   const root = useMenubarRoot()
-  const { open, setOpen, triggerRef, contentId, layers } = useMenu()
+  const { open, setOpen, triggerRef, contentId, triggerId, layers } = useMenu()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
     side,
@@ -287,6 +294,10 @@ function MenubarContent({
         ref={mergeRefs(floatingRef, presenceRef, containerRef)}
         id={contentId}
         role="menu"
+        // a11y: name the menu by its trigger button. The content only mounts
+        // while open, so the trigger is already in the DOM — prefer its live id
+        // (honors a consumer-supplied id), falling back to the generated one.
+        aria-labelledby={triggerRef.current?.id ?? triggerId}
         aria-orientation="vertical"
         tabIndex={-1}
         data-slot="menubar-content"
@@ -575,6 +586,9 @@ type SubContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
   triggerRef: React.RefObject<HTMLElement | null>
+  // a11y: id shared between the sub-trigger (aria-controls) and the
+  // sub-content (id) so AT can associate the trigger with the popup it opens.
+  subContentId: string
 }
 const SubContext = React.createContext<SubContextValue | null>(null)
 function useSub() {
@@ -592,8 +606,9 @@ function MenubarSub({
 }) {
   const [open, setOpen] = React.useState(defaultOpen)
   const triggerRef = React.useRef<HTMLElement | null>(null)
+  const subContentId = React.useId()
   return (
-    <SubContext.Provider value={{ open, setOpen, triggerRef }}>
+    <SubContext.Provider value={{ open, setOpen, triggerRef, subContentId }}>
       {children}
     </SubContext.Provider>
   )
@@ -608,7 +623,7 @@ function MenubarSubTrigger({
   onMouseEnter,
   ...props
 }: React.ComponentProps<"div"> & { inset?: boolean }) {
-  const { open, setOpen, triggerRef } = useSub()
+  const { open, setOpen, triggerRef, subContentId } = useSub()
   return (
     <div
       ref={triggerRef as React.Ref<HTMLDivElement>}
@@ -616,6 +631,9 @@ function MenubarSubTrigger({
       tabIndex={-1}
       aria-haspopup="menu"
       aria-expanded={open}
+      // a11y: point at the sub-content it opens so AT can follow the
+      // disclosure; only valid while the controlled popup exists in the DOM.
+      aria-controls={open ? subContentId : undefined}
       data-slot="menubar-sub-trigger"
       data-inset={inset ? "" : undefined}
       data-popup-open={open ? "" : undefined}
@@ -654,7 +672,7 @@ function MenubarSubContent({
   onKeyDown,
   ...props
 }: React.ComponentProps<"div">) {
-  const { open, setOpen, triggerRef } = useSub()
+  const { open, setOpen, triggerRef, subContentId } = useSub()
   const { layers } = useMenu()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
@@ -700,6 +718,7 @@ function MenubarSubContent({
     <Portal>
       <div
         ref={mergeRefs(floatingRef, presenceRef, containerRef)}
+        id={subContentId}
         role="menu"
         tabIndex={-1}
         data-slot="menubar-sub-content"
