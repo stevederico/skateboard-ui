@@ -161,6 +161,16 @@ import {
   SheetTitle,
   SheetDescription,
 } from "../dist/ui/sheet.js"
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "../dist/ui/drawer.js"
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -562,6 +572,23 @@ export function App() {
             </SheetHeader>
           </SheetContent>
         </Sheet>
+
+        <Drawer>
+          <DrawerTrigger className="rounded-md border px-3 py-1.5 text-sm">
+            Open drawer
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Drawer title</DrawerTitle>
+              <DrawerDescription>Drag down to dismiss.</DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <Button variant="outline">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </Section>
     </main>
   )
