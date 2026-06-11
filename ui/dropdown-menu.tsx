@@ -8,6 +8,7 @@ import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
+import { useTypeahead } from "./use-typeahead.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -154,6 +155,7 @@ function DropdownMenuContent({
     alignOffset,
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const { onTypeaheadKeyDown } = useTypeahead()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -220,6 +222,7 @@ function DropdownMenuContent({
           top: pos?.y ?? 0,
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
+          ["--available-height" as string]: pos ? `${pos.availableHeight}px` : undefined,
         }}
         onPointerMove={(e) => {
           const item = (e.target as HTMLElement).closest(
@@ -246,6 +249,15 @@ function DropdownMenuContent({
             if (active && c.contains(active) && active.getAttribute("role")?.startsWith("menuitem")) {
               e.preventDefault()
               active.click()
+            }
+          } else {
+            // WAI-ARIA typeahead: printable chars jump to the matching item.
+            const items = itemsOf(c)
+            const idx = items.indexOf(document.activeElement as HTMLElement)
+            const match = onTypeaheadKeyDown(e, items, idx)
+            if (match) {
+              e.preventDefault()
+              match.focus()
             }
           }
         }}
@@ -556,6 +568,7 @@ function DropdownMenuSubContent({
     alignOffset: -3,
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const { onTypeaheadKeyDown } = useTypeahead()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -626,6 +639,15 @@ function DropdownMenuSubContent({
             if (active && c.contains(active)) {
               e.preventDefault()
               active.click()
+            }
+          } else {
+            // WAI-ARIA typeahead: printable chars jump to the matching item.
+            const items = itemsOf(c)
+            const idx = items.indexOf(document.activeElement as HTMLElement)
+            const match = onTypeaheadKeyDown(e, items, idx)
+            if (match) {
+              e.preventDefault()
+              match.focus()
             }
           }
         }}

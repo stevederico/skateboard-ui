@@ -4,6 +4,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "../shadcn/lib/cva.js"
 
 import { cn } from "../shadcn/lib/utils.js"
+import { mergeRefs } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
 
 type TabsContextValue = {
@@ -133,18 +134,34 @@ function TabsTrigger({
   className,
   value,
   onClick,
+  ref,
   ...props
 }: TabsTriggerProps) {
   const { value: active, setValue, idBase } = useTabs()
   const selected = active === value
+  const btnRef = React.useRef<HTMLButtonElement>(null)
+  // Roving tab index: the selected tab is tabbable. When nothing is selected the
+  // first enabled tab must still be reachable so the tablist stays in Tab order
+  // (WAI-ARIA: a tablist always has exactly one tab stop).
+  const [isFirstEnabled, setIsFirstEnabled] = React.useState(false)
+  React.useLayoutEffect(() => {
+    if (active !== undefined) return
+    const el = btnRef.current
+    const first = el?.parentElement?.querySelector(
+      '[role="tab"]:not([disabled]):not([data-disabled])'
+    )
+    setIsFirstEnabled(first === el)
+  })
+  const tabbable = selected || (active === undefined && isFirstEnabled)
   return (
     <button
+      ref={mergeRefs(btnRef, ref)}
       type="button"
       role="tab"
       id={`${idBase}-tab-${idify(value)}`}
       aria-selected={selected}
       aria-controls={`${idBase}-panel-${idify(value)}`}
-      tabIndex={selected ? 0 : -1}
+      tabIndex={tabbable ? 0 : -1}
       data-slot="tabs-trigger"
       data-active={selected ? "" : undefined}
       className={cn(

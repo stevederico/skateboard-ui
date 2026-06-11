@@ -7,6 +7,7 @@ import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
+import { useTypeahead } from "./use-typeahead.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -129,9 +130,15 @@ function ContextMenuContent({
   const { open, setOpen, point, contentId, layers } = useMenu()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const { onTypeaheadKeyDown } = useTypeahead()
   // Position the menu at the cursor, clamped into the viewport once the
-  // popup has measurable dimensions.
-  const [pos, setPos] = React.useState<Point | null>(null)
+  // popup has measurable dimensions. availableHeight caps the menu so long
+  // lists scroll inside the viewport instead of overflowing it.
+  const [pos, setPos] = React.useState<{
+    x: number
+    y: number
+    availableHeight: number
+  } | null>(null)
 
   React.useLayoutEffect(() => {
     if (!mounted) {
@@ -159,7 +166,9 @@ function ContextMenuContent({
       if (y + h + PAD > vh) y = Math.max(PAD, point.y - h)
       x = Math.max(PAD, Math.min(x, vw - w - PAD))
       y = Math.max(PAD, Math.min(y, vh - h - PAD))
-      setPos({ x, y })
+      // Space from the menu's top to the bottom of the viewport, minus padding.
+      const availableHeight = Math.max(0, vh - y - PAD)
+      setPos({ x, y, availableHeight })
     }
     measure()
     window.addEventListener("scroll", measure, true)
@@ -234,6 +243,7 @@ function ContextMenuContent({
           top: pos?.y ?? point.y,
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: "top left",
+          ["--available-height" as string]: pos ? `${pos.availableHeight}px` : undefined,
         }}
         onPointerMove={(e) => {
           const item = (e.target as HTMLElement).closest(
@@ -259,6 +269,15 @@ function ContextMenuContent({
             if (active && c.contains(active) && active.getAttribute("role")?.startsWith("menuitem")) {
               e.preventDefault()
               active.click()
+            }
+          } else {
+            // Printable-character typeahead: jump to the matching item.
+            const items = itemsOf(c)
+            const idx = items.indexOf(document.activeElement as HTMLElement)
+            const match = onTypeaheadKeyDown(e, items, idx)
+            if (match) {
+              e.preventDefault()
+              match.focus()
             }
           }
         }}
@@ -569,6 +588,7 @@ function ContextMenuSubContent({
     alignOffset: -3,
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const { onTypeaheadKeyDown } = useTypeahead()
 
   React.useEffect(() => {
     const node = containerRef.current
@@ -633,6 +653,15 @@ function ContextMenuSubContent({
             if (active && c.contains(active)) {
               e.preventDefault()
               active.click()
+            }
+          } else {
+            // Printable-character typeahead: jump to the matching item.
+            const items = itemsOf(c)
+            const idx = items.indexOf(document.activeElement as HTMLElement)
+            const match = onTypeaheadKeyDown(e, items, idx)
+            if (match) {
+              e.preventDefault()
+              match.focus()
             }
           }
         }}
