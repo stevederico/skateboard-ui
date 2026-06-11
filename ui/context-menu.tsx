@@ -509,6 +509,9 @@ type SubContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
   triggerRef: React.RefObject<HTMLElement | null>
+  // Stable id linking the SubTrigger's aria-controls to the SubContent menu,
+  // so assistive tech can announce/navigate the submenu the trigger owns.
+  subContentId: string
 }
 const SubContext = React.createContext<SubContextValue | null>(null)
 function useSub() {
@@ -526,8 +529,9 @@ function ContextMenuSub({
 }) {
   const [open, setOpen] = React.useState(defaultOpen)
   const triggerRef = React.useRef<HTMLElement | null>(null)
+  const subContentId = React.useId()
   return (
-    <SubContext.Provider value={{ open, setOpen, triggerRef }}>
+    <SubContext.Provider value={{ open, setOpen, triggerRef, subContentId }}>
       {children}
     </SubContext.Provider>
   )
@@ -542,14 +546,18 @@ function ContextMenuSubTrigger({
   onMouseEnter,
   ...props
 }: React.ComponentProps<"div"> & { inset?: boolean }) {
-  const { open, setOpen, triggerRef } = useSub()
+  const { open, setOpen, triggerRef, subContentId } = useSub()
   return (
     <div
       ref={triggerRef as React.Ref<HTMLDivElement>}
       role="menuitem"
       tabIndex={-1}
+      // Submenu aria wiring: announce the trigger opens a menu, expose its
+      // open state, and point aria-controls at the SubContent (only while it
+      // exists in the DOM) so SR users can navigate into the owned submenu.
       aria-haspopup="menu"
       aria-expanded={open}
+      aria-controls={open ? subContentId : undefined}
       data-slot="context-menu-sub-trigger"
       data-inset={inset ? "" : undefined}
       data-popup-open={open ? "" : undefined}
@@ -589,7 +597,7 @@ function ContextMenuSubContent({
   onKeyDown,
   ...props
 }: React.ComponentProps<"div">) {
-  const { open, setOpen, triggerRef } = useSub()
+  const { open, setOpen, triggerRef, subContentId } = useSub()
   const { layers } = useMenu()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
@@ -635,6 +643,9 @@ function ContextMenuSubContent({
     <Portal>
       <div
         ref={mergeRefs(floatingRef, presenceRef, containerRef)}
+        // Matches the SubTrigger's aria-controls target so the trigger->submenu
+        // relationship is exposed to assistive tech.
+        id={subContentId}
         role="menu"
         tabIndex={-1}
         data-slot="context-menu-sub-content"

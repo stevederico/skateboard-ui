@@ -143,7 +143,7 @@ function TooltipContent({
   children,
   ...props
 }: TooltipContentProps) {
-  const { open, contentId, triggerRef } = useTooltip()
+  const { open, contentId, triggerRef, hide } = useTooltip()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
     side,
@@ -151,6 +151,30 @@ function TooltipContent({
     sideOffset,
     alignOffset,
   })
+
+  // Touch dismissal: on touch devices a tooltip can open via tap/long-press
+  // (which focuses the trigger) with no pointer-leave/blur to close it again.
+  // While open, close it when the user points outside both the trigger and the
+  // content, and on scroll — so it can never get stuck on screen. Capture phase
+  // ensures we observe the pointerdown even if inner handlers stop propagation.
+  React.useEffect(() => {
+    if (!open) return
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target
+      if (!(target instanceof Node)) return
+      const trigger = triggerRef.current
+      const content = presenceRef.current
+      if (trigger?.contains(target) || content?.contains(target)) return
+      hide()
+    }
+    const onScroll = () => hide()
+    document.addEventListener("pointerdown", onPointerDown, true)
+    window.addEventListener("scroll", onScroll, true)
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true)
+      window.removeEventListener("scroll", onScroll, true)
+    }
+  }, [open, hide, triggerRef, presenceRef])
 
   if (!mounted) return null
   return (

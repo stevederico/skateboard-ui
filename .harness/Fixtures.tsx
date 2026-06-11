@@ -37,6 +37,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../dist/ui/tabs.js"
 import { RadioGroup, RadioGroupItem } from "../dist/ui/radio-group.js"
 import { Slider } from "../dist/ui/slider.js"
+import { Checkbox } from "../dist/ui/checkbox.js"
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -300,7 +301,18 @@ function NestedLock() {
   )
 }
 
+// Checkbox starting indeterminate — proves aria-checked="mixed" and that a click
+// resolves to a real checked state.
+function CheckboxIndeterminate() {
+  return (
+    <section data-testid="fx-checkbox-indeterminate">
+      <Checkbox defaultChecked="indeterminate" aria-label="Select all" />
+    </section>
+  )
+}
+
 const FIXTURES: Record<string, React.ReactNode> = {
+  "checkbox-indeterminate": <CheckboxIndeterminate />,
   "slot-compose": <SlotCompose />,
   "escape-stack": <EscapeStack />,
   "select-default": <SelectDefault />,

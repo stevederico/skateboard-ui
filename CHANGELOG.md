@@ -1,5 +1,16 @@
 # CHANGELOG
 
+4.3.0
+
+  Submenu aria-controls wiring
+  Menu labelled by trigger
+  Tooltip dismiss on outside tap
+  Checkbox indeterminate mixed state
+  Replace catch any narrowing
+  Match DOMException error names
+  Fix relative-time date casts
+  Add a11y regression tests
+
 4.2.0
 
   Restore menu focus on select
