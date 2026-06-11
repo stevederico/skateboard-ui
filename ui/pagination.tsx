@@ -46,8 +46,12 @@ function PaginationLink({
   className,
   isActive,
   size = "icon",
+  onKeyDown,
   ...props
 }: PaginationLinkProps) {
+  // An <a> without href is not focusable or Enter/Space-activatable, so for
+  // SPA usage (onClick, no href) add button semantics + keyboard activation.
+  const isRealLink = props.href != null
   return (
     <Button
       asChild
@@ -59,6 +63,15 @@ function PaginationLink({
         aria-current={isActive ? "page" : undefined}
         data-slot="pagination-link"
         data-active={isActive}
+        role={isRealLink ? undefined : "button"}
+        tabIndex={isRealLink ? undefined : 0}
+        onKeyDown={(e) => {
+          onKeyDown?.(e)
+          if (!isRealLink && !e.defaultPrevented && (e.key === "Enter" || e.key === " ")) {
+            e.preventDefault()
+            e.currentTarget.click()
+          }
+        }}
         {...props}
       />
     </Button>

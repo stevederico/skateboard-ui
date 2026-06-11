@@ -287,6 +287,12 @@ function MenubarContent({
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
         }}
+        onPointerMove={(e) => {
+          const item = (e.target as HTMLElement).closest(
+            '[role^="menuitem"]:not([data-disabled])'
+          ) as HTMLElement | null
+          if (item && item !== document.activeElement) item.focus()
+        }}
         onKeyDown={(e) => {
           onKeyDown?.(e)
           if (e.defaultPrevented) return
@@ -674,6 +680,12 @@ function MenubarSubContent({
           top: pos?.y ?? 0,
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
+        }}
+        onPointerMove={(e) => {
+          const item = (e.target as HTMLElement).closest(
+            '[role^="menuitem"]:not([data-disabled])'
+          ) as HTMLElement | null
+          if (item && item !== document.activeElement) item.focus()
         }}
         onKeyDown={(e) => {
           onKeyDown?.(e)

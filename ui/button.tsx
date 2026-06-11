@@ -57,6 +57,9 @@ function Button({
   const Comp: React.ElementType = asChild ? Slot : "button"
   return (
     <Comp
+      // Default to type="button" so a Button inside a <form> doesn't submit it;
+      // only applies to the real <button> (asChild children set their own type).
+      type={asChild ? undefined : "button"}
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}

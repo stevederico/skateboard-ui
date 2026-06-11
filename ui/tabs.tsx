@@ -20,6 +20,10 @@ function useTabs() {
   return ctx
 }
 
+// Sanitize a tab value for use in an element id — spaces/special chars would
+// break the aria-controls / aria-labelledby IDREF association.
+const idify = (v: string) => v.replace(/[^\w-]/g, "_")
+
 export interface TabsProps
   extends Omit<React.ComponentProps<"div">, "onChange" | "defaultValue"> {
   value?: string
@@ -137,9 +141,9 @@ function TabsTrigger({
     <button
       type="button"
       role="tab"
-      id={`${idBase}-tab-${value}`}
+      id={`${idBase}-tab-${idify(value)}`}
       aria-selected={selected}
-      aria-controls={`${idBase}-panel-${value}`}
+      aria-controls={`${idBase}-panel-${idify(value)}`}
       tabIndex={selected ? 0 : -1}
       data-slot="tabs-trigger"
       data-active={selected ? "" : undefined}
@@ -170,8 +174,8 @@ function TabsContent({ className, value, ...props }: TabsContentProps) {
   return (
     <div
       role="tabpanel"
-      id={`${idBase}-panel-${value}`}
-      aria-labelledby={`${idBase}-tab-${value}`}
+      id={`${idBase}-panel-${idify(value)}`}
+      aria-labelledby={`${idBase}-tab-${idify(value)}`}
       hidden={!selected}
       tabIndex={0}
       data-slot="tabs-content"

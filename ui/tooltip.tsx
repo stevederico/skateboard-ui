@@ -124,6 +124,8 @@ export interface TooltipContentProps extends React.ComponentProps<"div"> {
 
 function TooltipContent({
   className,
+  style,
+  ref,
   side = "top",
   sideOffset = 4,
   align = "center",
@@ -144,7 +146,7 @@ function TooltipContent({
   return (
     <Portal>
       <div
-        ref={mergeRefs(floatingRef, presenceRef)}
+        ref={mergeRefs(floatingRef, presenceRef, ref as React.Ref<HTMLDivElement>)}
         id={contentId}
         role="tooltip"
         data-slot="tooltip-content"
@@ -153,6 +155,7 @@ function TooltipContent({
         data-closed={open ? undefined : ""}
         data-side={pos?.side ?? side}
         style={{
+          ...style,
           position: "fixed",
           left: pos?.x ?? 0,
           top: pos?.y ?? 0,

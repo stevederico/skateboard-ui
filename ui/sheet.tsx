@@ -125,6 +125,7 @@ function SheetContent({
 }: SheetContentProps) {
   const { open, setOpen, titleId, descriptionId } = useSheet()
   const ref = React.useRef<HTMLDialogElement>(null)
+  const pointerDownOnBackdrop = React.useRef(false)
   const [mounted] = usePresence(open)
 
   React.useEffect(() => {
@@ -160,8 +161,13 @@ function SheetContent({
         setOpen(false)
       }}
       onClose={() => setOpen(false)}
+      onPointerDown={(e) => {
+        pointerDownOnBackdrop.current = e.target === ref.current
+      }}
       onClick={(e) => {
-        if (e.target === ref.current) setOpen(false)
+        if (e.target === ref.current && pointerDownOnBackdrop.current) {
+          setOpen(false)
+        }
       }}
       className={cn(
         "m-0 flex max-h-none flex-col gap-4 bg-background bg-clip-padding p-0 text-sm text-foreground shadow-lg backdrop:bg-black/10 backdrop:duration-150 supports-backdrop-filter:backdrop:backdrop-blur-xs fixed",

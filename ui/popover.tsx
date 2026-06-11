@@ -79,6 +79,8 @@ export interface PopoverContentProps extends React.ComponentProps<"div"> {
 
 function PopoverContent({
   className,
+  style,
+  ref,
   align = "center",
   alignOffset = 0,
   side = "bottom",
@@ -99,7 +101,7 @@ function PopoverContent({
   return (
     <Portal>
       <div
-        ref={mergeRefs(floatingRef, presenceRef)}
+        ref={mergeRefs(floatingRef, presenceRef, ref as React.Ref<HTMLDivElement>)}
         id={contentId}
         role="dialog"
         data-slot="popover-content"
@@ -108,6 +110,7 @@ function PopoverContent({
         data-closed={open ? undefined : ""}
         data-side={pos?.side ?? side}
         style={{
+          ...style,
           position: "fixed",
           left: pos?.x ?? 0,
           top: pos?.y ?? 0,

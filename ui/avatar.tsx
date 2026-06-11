@@ -40,17 +40,29 @@ function AvatarImage({
   className,
   onLoad,
   onError,
+  src,
   ...props
 }: React.ComponentProps<"img">) {
   const { status, setStatus } = React.useContext(AvatarContext)
+
+  // A missing/empty src never fires load or error, so mark it errored up front;
+  // otherwise the fallback would sit next to a blank img, each squeezed to half.
+  React.useEffect(() => {
+    if (!src) setStatus("error")
+  }, [src, setStatus])
+
+  // Render nothing until the image has actually loaded — the fallback owns the
+  // box until then (matches Base UI, avoids the blank-img squeeze on slow loads).
+  if (!src || status === "error") return null
   return (
     <img
+      src={src}
       data-slot="avatar-image"
       className={cn(
-        "aspect-square size-full rounded-full object-cover",
+        "absolute inset-0 aspect-square size-full rounded-full object-cover",
+        status === "loaded" ? undefined : "opacity-0",
         className
       )}
-      style={status === "error" ? { display: "none" } : undefined}
       onLoad={(e) => {
         setStatus("loaded")
         onLoad?.(e)
