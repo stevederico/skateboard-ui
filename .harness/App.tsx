@@ -74,6 +74,50 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "../dist/ui/avatar.js"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverDescription,
+} from "../dist/ui/popover.js"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "../dist/ui/tooltip.js"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "../dist/ui/dialog.js"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuCheckboxItem,
+} from "../dist/ui/dropdown-menu.js"
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectGroup,
+} from "../dist/ui/select.js"
+import { Slider } from "../dist/ui/slider.js"
+import { ScrollArea } from "../dist/ui/scroll-area.js"
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -86,6 +130,9 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 export function App() {
   const [progress, setProgress] = React.useState(40)
+  const [menuFlag, setMenuFlag] = React.useState(true)
+  const [fruit, setFruit] = React.useState<string | undefined>(undefined)
+  const [sliderVal, setSliderVal] = React.useState<number[]>([30])
   return (
     <main className="mx-auto flex max-w-3xl flex-col gap-10 p-8">
       <h1 className="text-xl font-bold">skateboard-ui — self-contained tiers</h1>
@@ -293,6 +340,96 @@ export function App() {
           <AvatarImage src="https://invalid.example/nope.png" alt="broken" />
           <AvatarFallback>FB</AvatarFallback>
         </Avatar>
+      </Section>
+
+      <Section id="s-popover" title="Popover / Tooltip / Dialog (hard tier)">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline">Open popover</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverHeader>
+              <PopoverTitle>Popover title</PopoverTitle>
+              <PopoverDescription>Floating, positioned, dismissable.</PopoverDescription>
+            </PopoverHeader>
+            <Input placeholder="Inside popover" />
+          </PopoverContent>
+        </Popover>
+
+        <TooltipProvider delay={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost">Hover me</Button>
+            </TooltipTrigger>
+            <TooltipContent>Tooltip text</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Open dialog</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Dialog title</DialogTitle>
+              <DialogDescription>Native dialog with focus trap.</DialogDescription>
+            </DialogHeader>
+            <Input placeholder="Focus lands here" />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <DialogClose asChild>
+                <Button>Confirm</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </Section>
+
+      <Section id="s-menu" title="DropdownMenu / Select / Slider / ScrollArea (hard tier)">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">Menu</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onSelect={() => console.log("edit")}>Edit</DropdownMenuItem>
+            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuCheckboxItem checked={menuFlag} onCheckedChange={setMenuFlag}>
+              Show grid
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Select value={fruit} onValueChange={setFruit}>
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="Pick a fruit" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Fruit</SelectLabel>
+              <SelectItem value="apple">Apple</SelectItem>
+              <SelectItem value="banana">Banana</SelectItem>
+              <SelectItem value="cherry">Cherry</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <div className="w-64">
+          <Slider value={sliderVal} onValueChange={setSliderVal} max={100} step={1} />
+          <div className="mt-1 text-xs text-muted-foreground">value: {sliderVal[0]}</div>
+        </div>
+
+        <ScrollArea className="h-32 w-48 rounded-md border p-2">
+          <div className="flex flex-col gap-1 text-sm">
+            {Array.from({ length: 20 }, (_, i) => (
+              <div key={i}>Row {i + 1}</div>
+            ))}
+          </div>
+        </ScrollArea>
       </Section>
     </main>
   )
