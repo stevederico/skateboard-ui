@@ -9,6 +9,7 @@ import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useTypeahead } from "./use-typeahead.js"
+import { usePointerMoved } from "./use-pointer-moved.js"
 import { ChevronDownIcon, CheckIcon } from "../icons/index.js"
 
 type SelectContextValue = {
@@ -212,6 +213,7 @@ function SelectContent({
   })
   const containerRef = React.useRef<HTMLDivElement>(null)
   const { onTypeaheadKeyDown } = useTypeahead()
+  const hasPointerMoved = usePointerMoved()
 
   // Focus the selected (or first) option once the popup is actually visible.
   const didFocus = React.useRef(false)
@@ -283,6 +285,10 @@ function SelectContent({
           ["--available-height" as string]: pos ? `${pos.availableHeight}px` : undefined,
         }}
         onPointerMove={(e) => {
+          // Ignore synthetic pointermoves fired by keyboard arrow scrolling
+          // (same coords) — otherwise pointer focus yanks focus off the
+          // keyboard-navigated option right after it scrolls into view.
+          if (!hasPointerMoved(e)) return
           const opt = (e.target as HTMLElement).closest(
             '[role="option"]:not([data-disabled])'
           ) as HTMLElement | null
@@ -381,7 +387,10 @@ function SelectItem({
       data-value={value}
       data-disabled={disabled ? "" : undefined}
       className={cn(
-        "relative flex w-full cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // focus-visible ring gives keyboard users a clear focus indicator;
+        // focus:bg-accent alone is a weak signal and fails when accent contrast
+        // is low, so pair it with a visible ring for arrow-key navigation.
+        "relative flex w-full cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       onClick={(e) => {

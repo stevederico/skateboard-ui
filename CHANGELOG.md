@@ -1,5 +1,17 @@
 # CHANGELOG
 
+4.2.0
+
+  Restore menu focus on select
+  Guard menu pointer focus-steal
+  Add menu keyboard focus ring
+  Conditional dialog aria labelling
+  Reentrant overlay scroll lock
+  Name popover dialog
+  Slider name and form
+  Fix dead slider classes
+  Add a11y regression tests
+
 4.1.0
 
   Add menu/select typeahead
