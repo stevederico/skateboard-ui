@@ -1,0 +1,150 @@
+"use client"
+
+import * as React from "react"
+
+export type Side = "top" | "bottom" | "left" | "right"
+export type Align = "start" | "center" | "end"
+
+export interface FloatingOptions {
+  side?: Side
+  align?: Align
+  sideOffset?: number
+  alignOffset?: number
+}
+
+export interface FloatingResult {
+  x: number
+  y: number
+  side: Side
+  align: Align
+  transformOrigin: string
+}
+
+const PAD = 8
+
+const OPPOSITE: Record<Side, Side> = {
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+  right: "left",
+}
+
+/**
+ * Pure positioning math: place a floating box relative to an anchor on the given
+ * side/alignment, flipping to the opposite side when it would overflow and
+ * shifting along the cross axis to stay within the viewport. A focused subset of
+ * what a full floating-ui pipeline does — enough for popovers, menus, tooltips.
+ */
+export function computePosition(
+  anchor: DOMRect,
+  floating: { width: number; height: number },
+  opts: Required<FloatingOptions>,
+  viewport: { width: number; height: number }
+): FloatingResult {
+  let { side } = opts
+  const { align, sideOffset, alignOffset } = opts
+
+  const space = {
+    top: anchor.top,
+    bottom: viewport.height - anchor.bottom,
+    left: anchor.left,
+    right: viewport.width - anchor.right,
+  }
+  const isVertical = side === "top" || side === "bottom"
+  const need =
+    (isVertical ? floating.height : floating.width) + sideOffset
+  if (space[side] < need && space[OPPOSITE[side]] > space[side]) {
+    side = OPPOSITE[side]
+  }
+  const vertical = side === "top" || side === "bottom"
+
+  let x = 0
+  let y = 0
+  if (side === "bottom") y = anchor.bottom + sideOffset
+  else if (side === "top") y = anchor.top - floating.height - sideOffset
+  else if (side === "right") x = anchor.right + sideOffset
+  else x = anchor.left - floating.width - sideOffset
+
+  if (vertical) {
+    if (align === "start") x = anchor.left + alignOffset
+    else if (align === "end") x = anchor.right - floating.width - alignOffset
+    else x = anchor.left + anchor.width / 2 - floating.width / 2 + alignOffset
+  } else {
+    if (align === "start") y = anchor.top + alignOffset
+    else if (align === "end") y = anchor.bottom - floating.height - alignOffset
+    else y = anchor.top + anchor.height / 2 - floating.height / 2 + alignOffset
+  }
+
+  x = Math.max(PAD, Math.min(x, viewport.width - floating.width - PAD))
+  y = Math.max(PAD, Math.min(y, viewport.height - floating.height - PAD))
+
+  const originX = vertical
+    ? align === "start"
+      ? "left"
+      : align === "end"
+        ? "right"
+        : "center"
+    : side === "right"
+      ? "left"
+      : "right"
+  const originY = vertical
+    ? side === "bottom"
+      ? "top"
+      : "bottom"
+    : align === "start"
+      ? "top"
+      : align === "end"
+        ? "bottom"
+        : "center"
+
+  return { x, y, side, align, transformOrigin: `${originX} ${originY}` }
+}
+
+/**
+ * Position a floating element against an anchor, recomputing on scroll, resize,
+ * and content resize while `open`. Attach `floatingRef` to the popup.
+ */
+export function useFloating(
+  anchorRef: React.RefObject<HTMLElement | null>,
+  open: boolean,
+  options: FloatingOptions = {}
+) {
+  const floatingRef = React.useRef<HTMLDivElement | null>(null)
+  const [pos, setPos] = React.useState<FloatingResult | null>(null)
+
+  const side = options.side ?? "bottom"
+  const align = options.align ?? "center"
+  const sideOffset = options.sideOffset ?? 0
+  const alignOffset = options.alignOffset ?? 0
+
+  const update = React.useCallback(() => {
+    const a = anchorRef.current
+    const f = floatingRef.current
+    if (!a || !f) return
+    setPos(
+      computePosition(
+        a.getBoundingClientRect(),
+        { width: f.offsetWidth, height: f.offsetHeight },
+        { side, align, sideOffset, alignOffset },
+        { width: window.innerWidth, height: window.innerHeight }
+      )
+    )
+  }, [anchorRef, side, align, sideOffset, alignOffset])
+
+  React.useLayoutEffect(() => {
+    if (!open) return
+    update()
+    window.addEventListener("scroll", update, true)
+    window.addEventListener("resize", update)
+    const ro = new ResizeObserver(update)
+    if (floatingRef.current) ro.observe(floatingRef.current)
+    if (anchorRef.current) ro.observe(anchorRef.current)
+    return () => {
+      window.removeEventListener("scroll", update, true)
+      window.removeEventListener("resize", update)
+      ro.disconnect()
+    }
+  }, [open, update, anchorRef])
+
+  return { floatingRef, pos, update }
+}
