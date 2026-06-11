@@ -133,13 +133,27 @@ export function useFloating(
 
   React.useLayoutEffect(() => {
     if (!open) return
-    update()
+    const ro = new ResizeObserver(update)
     window.addEventListener("scroll", update, true)
     window.addEventListener("resize", update)
-    const ro = new ResizeObserver(update)
-    if (floatingRef.current) ro.observe(floatingRef.current)
-    if (anchorRef.current) ro.observe(anchorRef.current)
+    // The floating node is portaled and may attach a frame late (the Portal
+    // defers rendering until its own effect runs). Retry each frame until the
+    // ref is set, then measure + observe — otherwise the first update() runs
+    // against a null ref, `pos` stays null, and the popup is stuck
+    // `visibility:hidden`.
+    let raf = 0
+    const attach = () => {
+      if (!floatingRef.current) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      update()
+      ro.observe(floatingRef.current)
+      if (anchorRef.current) ro.observe(anchorRef.current)
+    }
+    attach()
     return () => {
+      cancelAnimationFrame(raf)
       window.removeEventListener("scroll", update, true)
       window.removeEventListener("resize", update)
       ro.disconnect()

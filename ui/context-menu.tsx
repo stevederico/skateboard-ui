@@ -138,9 +138,15 @@ function ContextMenuContent({
       setPos(null)
       return
     }
+    let raf = 0
     const measure = () => {
       const node = containerRef.current
-      if (!node) return
+      // The popup is portaled and may attach a frame late; retry until it does,
+      // otherwise pos stays null and the menu is stuck visibility:hidden.
+      if (!node) {
+        raf = requestAnimationFrame(measure)
+        return
+      }
       const w = node.offsetWidth
       const h = node.offsetHeight
       const PAD = 8
@@ -159,6 +165,7 @@ function ContextMenuContent({
     window.addEventListener("scroll", measure, true)
     window.addEventListener("resize", measure)
     return () => {
+      cancelAnimationFrame(raf)
       window.removeEventListener("scroll", measure, true)
       window.removeEventListener("resize", measure)
     }
