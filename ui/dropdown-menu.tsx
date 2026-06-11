@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot, mergeRefs } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
@@ -86,16 +86,24 @@ function DropdownMenuPortal({ children }: { children?: React.ReactNode }) {
 
 function DropdownMenuTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onClick,
   onKeyDown,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, setOpen, triggerRef, contentId } = useMenu()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
       ref={triggerRef as React.Ref<HTMLButtonElement>}
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="dropdown-menu-trigger"
       aria-haspopup="menu"
       aria-expanded={open}
@@ -114,7 +122,9 @@ function DropdownMenuTrigger({
         }
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

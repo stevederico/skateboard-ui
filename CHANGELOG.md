@@ -1,5 +1,17 @@
 # CHANGELOG
 
+4.0.0
+
+  Self-contained ui/ component tier (47 components, zero base-ui)
+  Remove vendored base-ui bundle (~2MB / 31k lines)
+  Native dialog for dialog/alert-dialog/sheet/drawer
+  In-house floating positioner, dismiss, presence, focus
+  shadcn/ui/* now linker shims re-exporting ui/*
+  render= and nativeButton kept as asChild compat
+  SelectValue renders the real selected label
+  Fix Slot handler composition, Button type, Escape stacking
+  Fix avatar fallback, separator role, tabs ids, form integration
+
 3.12.0
 
   Fix asChild button

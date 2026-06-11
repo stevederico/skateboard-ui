@@ -2,7 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "../shadcn/lib/cva.js"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot } from "./slot.js"
+import { Slot, resolveRender } from "./slot.js"
 import { Separator } from "./separator.js"
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -60,6 +60,10 @@ export interface ItemProps
     VariantProps<typeof itemVariants> {
   /** Render the single child element styled as an item (e.g. an `<a>`). */
   asChild?: boolean
+  /** Base UI compat: a React element rendered in place of the item. */
+  render?: React.ReactElement
+  /** Base UI compat: ignored (the element is inferred from `render`/`asChild`). */
+  nativeButton?: boolean
 }
 
 function Item({
@@ -67,9 +71,13 @@ function Item({
   variant = "default",
   size = "default",
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   ...props
 }: ItemProps) {
-  const Comp: React.ElementType = asChild ? Slot : "div"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "div"
   return (
     <Comp
       data-slot="item"
@@ -77,7 +85,9 @@ function Item({
       data-size={size}
       className={cn(itemVariants({ variant, size, className }))}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

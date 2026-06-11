@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "../shadcn/lib/cva.js"
 
 import { useIsMobile } from "../shadcn/hooks/use-mobile.js"
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot } from "./slot.js"
+import { Slot, resolveRender } from "./slot.js"
 import { Button } from "./button.js"
 import { Input } from "./input.js"
 import { Separator } from "./separator.js"
@@ -393,9 +393,17 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
 function SidebarGroupLabel({
   className,
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean }) {
-  const Comp: React.ElementType = asChild ? Slot : "div"
+}: React.ComponentProps<"div"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "div"
   return (
     <Comp
       data-slot="sidebar-group-label"
@@ -405,16 +413,26 @@ function SidebarGroupLabel({
         className
       )}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 
 function SidebarGroupAction({
   className,
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
-  const Comp: React.ElementType = asChild ? Slot : "button"
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
       data-slot="sidebar-group-action"
@@ -424,7 +442,9 @@ function SidebarGroupAction({
         className
       )}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 
@@ -488,6 +508,9 @@ const sidebarMenuButtonVariants = cva(
 
 function SidebarMenuButton({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   isActive = false,
   variant = "default",
   size = "default",
@@ -496,11 +519,14 @@ function SidebarMenuButton({
   ...props
 }: React.ComponentProps<"button"> & {
   asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
   isActive?: boolean
   tooltip?: string | React.ComponentProps<typeof TooltipContent>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
 
   const button = (
     <Comp
@@ -510,7 +536,9 @@ function SidebarMenuButton({
       data-active={isActive ? "" : undefined}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 
   if (!tooltip) {
@@ -536,13 +564,19 @@ function SidebarMenuButton({
 function SidebarMenuAction({
   className,
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   showOnHover = false,
   ...props
 }: React.ComponentProps<"button"> & {
   asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
   showOnHover?: boolean
 }) {
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
       data-slot="sidebar-menu-action"
@@ -554,7 +588,9 @@ function SidebarMenuAction({
         className
       )}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 
@@ -643,16 +679,22 @@ function SidebarMenuSubItem({
 
 function SidebarMenuSubButton({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   size = "md",
   isActive = false,
   className,
   ...props
 }: React.ComponentProps<"a"> & {
   asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
   size?: "sm" | "md"
   isActive?: boolean
 }) {
-  const Comp: React.ElementType = asChild ? Slot : "a"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "a"
   return (
     <Comp
       data-slot="sidebar-menu-sub-button"
@@ -664,7 +706,9 @@ function SidebarMenuSubButton({
         className
       )}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

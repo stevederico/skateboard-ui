@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot, mergeRefs } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
@@ -110,15 +110,23 @@ function HoverCard({
 
 function HoverCardTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onMouseEnter,
   onMouseLeave,
   onFocus,
   onBlur,
   ...props
-}: React.ComponentProps<"a"> & { asChild?: boolean }) {
+}: React.ComponentProps<"a"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, scheduleOpen, scheduleClose, triggerRef, contentId } =
     useHoverCard()
-  const Comp: React.ElementType = asChild ? Slot : "a"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "a"
   return (
     <Comp
       ref={triggerRef as React.Ref<HTMLAnchorElement>}
@@ -142,7 +150,9 @@ function HoverCardTrigger({
         scheduleClose()
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

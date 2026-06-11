@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot } from "./slot.js"
+import { Slot, resolveRender } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { usePresence } from "./use-presence.js"
 
@@ -76,14 +76,22 @@ function Drawer({ open, defaultOpen = false, onOpenChange, children }: DrawerPro
 
 function DrawerTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onClick,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, setOpen } = useDrawer()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="drawer-trigger"
       aria-haspopup="dialog"
       data-state={open ? "open" : "closed"}
@@ -92,27 +100,39 @@ function DrawerTrigger({
         if (!e.defaultPrevented) setOpen(true)
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 
 function DrawerClose({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   onClick,
   ...props
-}: React.ComponentProps<"button"> & { asChild?: boolean }) {
+}: React.ComponentProps<"button"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { setOpen } = useDrawer()
-  const Comp: React.ElementType = asChild ? Slot : "button"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
     <Comp
-      type={asChild ? undefined : "button"}
+      type={useSlot ? undefined : "button"}
       data-slot="drawer-close"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(e)
         if (!e.defaultPrevented) setOpen(false)
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 

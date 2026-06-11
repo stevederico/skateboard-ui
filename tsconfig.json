@@ -36,7 +36,6 @@
     "dist",
     "node_modules",
     "scripts",
-    "shadcn/lib/base-ui",
     "shadcn/lib/tailwind-merge.js"
   ]
 }

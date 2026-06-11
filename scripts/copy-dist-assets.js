@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 // Copies non-compiled assets into dist/ after tsc:
-// - shadcn/lib/base-ui/  (vendored prebuilt JS + committed .d.ts)
 // - shadcn/lib/tailwind-merge.js (+ .d.ts)  — vendored prebuilt ESM, excluded from tsc
-// - icons/LICENSE (lucide), shadcn/lib/base-ui LICENSE if present
+// - icons/LICENSE (lucide)
 import { cpSync, copyFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,7 +10,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
 const copies = [
-  ['shadcn/lib/base-ui', true],
   ['shadcn/lib/tailwind-merge.js', false],
   ['shadcn/lib/tailwind-merge.d.ts', false],
   ['icons/LICENSE', false],

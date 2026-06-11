@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { Slot, mergeRefs } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
@@ -83,12 +83,20 @@ function ContextMenuPortal({ children }: { children?: React.ReactNode }) {
 
 function ContextMenuTrigger({
   asChild = false,
+  render,
+  nativeButton: _nativeButton,
+  children,
   className,
   onContextMenu,
   ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+}: React.ComponentProps<"div"> & {
+  asChild?: boolean
+  render?: React.ReactElement
+  nativeButton?: boolean
+}) {
   const { open, openAt, contentId } = useMenu()
-  const Comp: React.ElementType = asChild ? Slot : "div"
+  const { useSlot, slotChild } = resolveRender(asChild, render, children)
+  const Comp: React.ElementType = useSlot ? Slot : "div"
   return (
     <Comp
       data-slot="context-menu-trigger"
@@ -104,7 +112,9 @@ function ContextMenuTrigger({
         openAt({ x: e.clientX, y: e.clientY })
       }}
       {...props}
-    />
+    >
+      {slotChild}
+    </Comp>
   )
 }
 
