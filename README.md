@@ -2,7 +2,9 @@
 
 React component library for rapid application development. Built with TypeScript, TailwindCSS v4, and shadcn/ui.
 
-**Zero runtime npm dependencies.** Only React, React-DOM, and React Router are peer-resolved. Everything else — base-ui primitives, lucide icons, tailwind-merge, drag physics, command palette, date picker, theme provider — is vendored, ported, or recreated inside the repo.
+**Zero runtime npm dependencies.** Only React, React-DOM, and React Router are peer-resolved. Everything else — the 47 UI components, lucide icons, tailwind-merge, drag physics, command palette, date picker, theme provider — is authored, ported, or recreated inside the repo.
+
+**Self-contained components (v4.0).** Every component is now hand-written with no primitive framework underneath — the previously-vendored `@base-ui/react` bundle (~31k lines) is gone. Floating positioning, focus trapping, dismiss layers, and animations are small in-house hooks; modals use the native `<dialog>` element. The legacy `shadcn/ui/*` import paths still work — they re-export the new `ui/*` components — so existing apps need no changes.
 
 **TypeScript with full type declarations.** Source is TypeScript, compiled to plain JavaScript + `.d.ts` in `dist/` (`npm run build`). JavaScript apps consume the compiled JS exactly as before — import paths are unchanged — and TypeScript apps get real types for every export (`SkateboardConstants`, `User`, component props, `VariantProps`, typed icons).
 
@@ -37,7 +39,7 @@ That's it! You get routing, auth, layout, landing page, settings, and payments.
 
 ## Dependency Footprint
 
-Across the v3.x series, every npm runtime dep was either vendored, recreated, or dropped. v3.5 finished the job by vendoring `@base-ui/react`.
+Across the v3.x series, every npm runtime dep was either vendored, recreated, or dropped. v3.5 finished the job by vendoring `@base-ui/react`; **v4.0 removes that vendored bundle entirely** by rewriting every component to be self-contained.
 
 | | Hard deps | Optional peer deps | Total |
 |---|---|---|---|
@@ -48,7 +50,7 @@ Across the v3.x series, every npm runtime dep was either vendored, recreated, or
 | v3.3 | 2 | 0 | 2 |
 | v3.4 | 1 | 0 | 1 |
 | v3.5 | 0 | 0 | 0 |
-| **Now (v3.6+)** | **0** | **0** | **0** |
+| **Now (v4.0+)** | **0** | **0** | **0** |
 
 v3.10 converts the package to TypeScript — compiled JS + `.d.ts` ship in `dist/`; the dependency count is unchanged (`typescript` is a devDependency only).
 
@@ -60,15 +62,17 @@ Pre-built copies live in this repo so consumers don't pull them from npm. Refres
 
 | Source | Lives at | Refresh script |
 |---|---|---|
-| `@base-ui/react` + 5 transitive deps (`@floating-ui/react-dom`, `@floating-ui/utils`, `@babel/runtime`, `use-sync-external-store`, `@base-ui/utils`) | `shadcn/lib/base-ui/*.js` + `*.d.ts` (28 entry points + shared chunks) | `node scripts/vendor-base-ui.js` (requires `bun`; bump `BASE_UI_VERSION`) |
 | `lucide` icons (1700+) | `icons/*.tsx` | `node scripts/vendor-icons.js` (bump `LUCIDE_TAG`) |
 | `tailwind-merge` | `shadcn/lib/tailwind-merge.js` | `node scripts/vendor-tailwind-merge.js` (bump `TM_VERSION`) |
+
+`@base-ui/react` was vendored in v3.5 and **removed in v4.0** — the 47 components are now self-contained (see _Self-contained components_ above).
 
 ### Ported / recreated / inlined
 
 | Replaces | Lives at | Approach |
 |---|---|---|
-| `vaul` (drag gesture) | `shadcn/ui/drawer.tsx` | ported — drag math copied from vaul `src/index.tsx` (MIT, Emil Kowalski); base-ui Dialog as modal shell |
+| `@base-ui/react` (behavior) | `ui/*.tsx` + `ui/{use-floating,use-dismiss,use-presence,use-controllable-state,slot,portal}.tsx` | rewritten — small in-house hooks for positioning, dismiss, presence, focus; native `<dialog>` for modals |
+| `vaul` (drag gesture) | `ui/drawer.tsx` | ported — drag math copied from vaul `src/index.tsx` (MIT, Emil Kowalski) on a native `<dialog>` shell |
 | `cmdk` | `components/core/Command.tsx` | rewritten drop-in |
 | `react-day-picker` | `components/core/Calendar.tsx` | rewritten drop-in |
 | `next-themes` | `components/core/ThemeProvider.tsx` | rewritten drop-in |
@@ -85,6 +89,7 @@ Pre-built copies live in this repo so consumers don't pull them from npm. Refres
 | v3.3 | `Chart` | unused; consumers can install `recharts` directly |
 | v3.4 | `vaul` | drag physics ported; `Drawer` rebuilt on base-ui Dialog |
 | v3.5 | `@base-ui/react` | vendored; see table above |
+| v4.0 | `@base-ui/react` (vendored bundle) | removed; components rewritten self-contained on `ui/*` |
 
 ## Migrating to 3.0
 
@@ -118,7 +123,6 @@ Each vendored library has a script that pins a version, fetches the upstream rel
 
 | Library | Bump | Command | Host requirement |
 |---|---|---|---|
-| `@base-ui/react` | `BASE_UI_VERSION` in `scripts/vendor-base-ui.js` | `node scripts/vendor-base-ui.js` | [bun](https://bun.sh) |
 | `lucide` icons | `LUCIDE_TAG` in `scripts/vendor-icons.js` | `node scripts/vendor-icons.js` | Node |
 | `tailwind-merge` | `TM_VERSION` in `scripts/vendor-tailwind-merge.js` | `node scripts/vendor-tailwind-merge.js` | Node |
 
@@ -1230,56 +1234,58 @@ Import base theme and override as needed:
 
 Dark mode is automatic via CSS custom properties and the in-house `ThemeProvider` (`components/core/ThemeProvider.tsx`).
 
-## shadcn/ui Components
+## Components
 
-47 components available at `@stevederico/skateboard-ui/shadcn/ui/*`:
+47 self-contained components available at `@stevederico/skateboard-ui/ui/*`. The legacy `@stevederico/skateboard-ui/ui/*` paths still resolve to the same components (re-export shims), so existing imports keep working.
+
+Components follow the shadcn API. `asChild` renders the styling onto a single child element; the old base-ui `render={<El/>}` / `nativeButton` props are still accepted for backward compatibility.
 
 ```javascript
-import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '@stevederico/skateboard-ui/shadcn/ui/card';
-import { Input } from '@stevederico/skateboard-ui/shadcn/ui/input';
-import { Label } from '@stevederico/skateboard-ui/shadcn/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@stevederico/skateboard-ui/shadcn/ui/dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@stevederico/skateboard-ui/shadcn/ui/avatar';
-import { Badge } from '@stevederico/skateboard-ui/shadcn/ui/badge';
-import { Separator } from '@stevederico/skateboard-ui/shadcn/ui/separator';
-import { ScrollArea } from '@stevederico/skateboard-ui/shadcn/ui/scroll-area';
-import { Skeleton } from '@stevederico/skateboard-ui/shadcn/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@stevederico/skateboard-ui/shadcn/ui/alert';
-import { Progress } from '@stevederico/skateboard-ui/shadcn/ui/progress';
-import { Switch } from '@stevederico/skateboard-ui/shadcn/ui/switch';
-import { Checkbox } from '@stevederico/skateboard-ui/shadcn/ui/checkbox';
-import { Textarea } from '@stevederico/skateboard-ui/shadcn/ui/textarea';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@stevederico/skateboard-ui/shadcn/ui/tooltip';
+import { Button } from '@stevederico/skateboard-ui/ui/button';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '@stevederico/skateboard-ui/ui/card';
+import { Input } from '@stevederico/skateboard-ui/ui/input';
+import { Label } from '@stevederico/skateboard-ui/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@stevederico/skateboard-ui/ui/dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@stevederico/skateboard-ui/ui/avatar';
+import { Badge } from '@stevederico/skateboard-ui/ui/badge';
+import { Separator } from '@stevederico/skateboard-ui/ui/separator';
+import { ScrollArea } from '@stevederico/skateboard-ui/ui/scroll-area';
+import { Skeleton } from '@stevederico/skateboard-ui/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@stevederico/skateboard-ui/ui/alert';
+import { Progress } from '@stevederico/skateboard-ui/ui/progress';
+import { Switch } from '@stevederico/skateboard-ui/ui/switch';
+import { Checkbox } from '@stevederico/skateboard-ui/ui/checkbox';
+import { Textarea } from '@stevederico/skateboard-ui/ui/textarea';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@stevederico/skateboard-ui/ui/tooltip';
 ```
 
 ```javascript
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from '@stevederico/skateboard-ui/shadcn/ui/select';
+} from '@stevederico/skateboard-ui/ui/select';
 
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
-} from '@stevederico/skateboard-ui/shadcn/ui/dropdown-menu';
+} from '@stevederico/skateboard-ui/ui/dropdown-menu';
 
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
   AlertDialogTitle, AlertDialogTrigger,
-} from '@stevederico/skateboard-ui/shadcn/ui/alert-dialog';
+} from '@stevederico/skateboard-ui/ui/alert-dialog';
 
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
-} from '@stevederico/skateboard-ui/shadcn/ui/accordion';
+} from '@stevederico/skateboard-ui/ui/accordion';
 
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from '@stevederico/skateboard-ui/shadcn/ui/table';
+} from '@stevederico/skateboard-ui/ui/table';
 
 import {
   Tabs, TabsContent, TabsList, TabsTrigger,
-} from '@stevederico/skateboard-ui/shadcn/ui/tabs';
+} from '@stevederico/skateboard-ui/ui/tabs';
 ```
 
 ### Utilities
@@ -1307,7 +1313,7 @@ All components support dark mode automatically and accept a `className` prop for
 
 ### Hard dependencies
 
-None. `@base-ui/react` and all its transitive deps are vendored at `shadcn/lib/base-ui/`. See the dep-count table near the top of this README for the full vendoring history.
+None. As of v4.0 the components are self-contained — `@base-ui/react` is no longer vendored or required. See the dep-count table near the top of this README for the full history.
 
 ## Repository
 
