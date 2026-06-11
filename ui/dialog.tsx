@@ -112,6 +112,7 @@ function DialogContent({
 }: DialogContentProps) {
   const { open, setOpen, titleId, descriptionId } = useDialog()
   const ref = React.useRef<HTMLDialogElement>(null)
+  const pointerDownOnBackdrop = React.useRef(false)
 
   React.useEffect(() => {
     const node = ref.current
@@ -144,8 +145,15 @@ function DialogContent({
         setOpen(false)
       }}
       onClose={() => setOpen(false)}
+      onPointerDown={(e) => {
+        pointerDownOnBackdrop.current = e.target === ref.current
+      }}
       onClick={(e) => {
-        if (e.target === ref.current) setOpen(false)
+        // Close only when the press both started and ended on the backdrop —
+        // a drag that began inside the content (e.g. text selection) must not.
+        if (e.target === ref.current && pointerDownOnBackdrop.current) {
+          setOpen(false)
+        }
       }}
       className="group/dialog m-0 grid max-h-none max-w-none place-items-center bg-transparent p-4 backdrop:bg-black/10 backdrop:duration-100 supports-backdrop-filter:backdrop:backdrop-blur-xs open:fixed open:inset-0 open:size-full"
     >

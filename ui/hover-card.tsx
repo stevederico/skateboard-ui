@@ -155,6 +155,8 @@ export interface HoverCardContentProps extends React.ComponentProps<"div"> {
 
 function HoverCardContent({
   className,
+  style,
+  ref,
   side = "bottom",
   sideOffset = 4,
   align = "center",
@@ -177,7 +179,7 @@ function HoverCardContent({
   return (
     <Portal>
       <div
-        ref={mergeRefs(floatingRef, presenceRef)}
+        ref={mergeRefs(floatingRef, presenceRef, ref as React.Ref<HTMLDivElement>)}
         id={contentId}
         data-slot="hover-card-content"
         data-state={open ? "open" : "closed"}
@@ -185,6 +187,7 @@ function HoverCardContent({
         data-closed={open ? undefined : ""}
         data-side={pos?.side ?? side}
         style={{
+          ...style,
           position: "fixed",
           left: pos?.x ?? 0,
           top: pos?.y ?? 0,

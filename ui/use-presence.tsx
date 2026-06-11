@@ -25,11 +25,14 @@ export function usePresence<T extends HTMLElement = HTMLElement>(
       return
     }
     let cancelled = false
+    let fallback = 0
     const finish = () => {
       if (!cancelled) setMounted(false)
     }
-    // Let the data-closed classes apply and animations register, then wait.
-    const fallback = window.setTimeout(finish, 300)
+    // Let the data-closed classes apply and animations register, then wait for
+    // the actual animations to finish (no short timeout racing them — that would
+    // cut off any exit animation longer than the timeout). A generous backstop
+    // only guards against animations that never settle.
     const raf = requestAnimationFrame(() => {
       const anims = node.getAnimations?.() ?? []
       if (anims.length === 0) {
@@ -37,6 +40,7 @@ export function usePresence<T extends HTMLElement = HTMLElement>(
         return
       }
       Promise.allSettled(anims.map((a) => a.finished)).then(finish)
+      fallback = window.setTimeout(finish, 2000)
     })
     return () => {
       cancelled = true

@@ -25,17 +25,38 @@ type SlotProps = React.HTMLAttributes<HTMLElement> & {
   ref?: React.Ref<HTMLElement>
 }
 
-function Slot({ children, className, ref, ...props }: SlotProps) {
+function Slot({ children, className, style, ref, ...props }: SlotProps) {
   const child = React.Children.only(children) as React.ReactElement<
     Record<string, unknown>
   >
   const childProps = child.props as Record<string, unknown>
-  return React.cloneElement(child, {
-    ...props,
-    ...childProps,
-    className: cn(className, childProps.className as string | undefined),
-    ref: mergeRefs(childProps.ref as React.Ref<HTMLElement>, ref),
-  })
+
+  // Child props win on plain values, but event handlers (on*) are COMPOSED so
+  // the slot-injected behavior (open/close/etc.) runs alongside the child's own
+  // handler — matching Radix Slot / Base UI mergeProps instead of clobbering it.
+  const merged: Record<string, unknown> = { ...props, ...childProps }
+  for (const key of Object.keys(props)) {
+    const slotHandler = (props as Record<string, unknown>)[key]
+    const childHandler = childProps[key]
+    if (
+      key.startsWith("on") &&
+      typeof slotHandler === "function" &&
+      typeof childHandler === "function"
+    ) {
+      merged[key] = (...args: unknown[]) => {
+        ;(slotHandler as (...a: unknown[]) => void)(...args)
+        const event = args[0] as { defaultPrevented?: boolean } | undefined
+        if (!event?.defaultPrevented) {
+          ;(childHandler as (...a: unknown[]) => void)(...args)
+        }
+      }
+    }
+  }
+  merged.className = cn(className, childProps.className as string | undefined)
+  merged.style = { ...(style as object), ...(childProps.style as object) }
+  merged.ref = mergeRefs(childProps.ref as React.Ref<HTMLElement>, ref)
+
+  return React.cloneElement(child, merged)
 }
 
 export { Slot, mergeRefs }

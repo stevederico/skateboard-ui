@@ -81,6 +81,9 @@ function RadioGroup({
         }}
         {...props}
       />
+      {name ? (
+        <input type="hidden" name={name} value={selected ?? ""} />
+      ) : null}
     </RadioGroupContext.Provider>
   )
 }

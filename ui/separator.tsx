@@ -6,7 +6,8 @@ import { cn } from "../shadcn/lib/utils.js"
 
 export interface SeparatorProps extends React.ComponentProps<"div"> {
   orientation?: "horizontal" | "vertical"
-  /** When true (default) the separator is purely visual and hidden from a11y. */
+  /** Set true for a purely-visual divider hidden from a11y. Defaults to false
+   * so the separator keeps `role="separator"` semantics (matches the spec). */
   decorative?: boolean
 }
 
@@ -18,7 +19,7 @@ export interface SeparatorProps extends React.ComponentProps<"div"> {
 function Separator({
   className,
   orientation = "horizontal",
-  decorative = true,
+  decorative = false,
   ...props
 }: SeparatorProps) {
   return (

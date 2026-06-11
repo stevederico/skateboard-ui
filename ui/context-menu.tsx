@@ -218,6 +218,12 @@ function ContextMenuContent({
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: "top left",
         }}
+        onPointerMove={(e) => {
+          const item = (e.target as HTMLElement).closest(
+            '[role^="menuitem"]:not([data-disabled])'
+          ) as HTMLElement | null
+          if (item && item !== document.activeElement) item.focus()
+        }}
         onKeyDown={(e) => {
           onKeyDown?.(e)
           if (e.defaultPrevented) return

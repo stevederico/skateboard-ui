@@ -248,7 +248,16 @@ function SelectContent({
     }
   }, [open, setOpen, triggerRef])
 
-  if (!mounted) return null
+  // While closed, render the items into a hidden tree so their value→label
+  // mappings register — this lets SelectValue show the selected label on initial
+  // render, before the listbox has ever been opened.
+  if (!mounted) {
+    return (
+      <div hidden aria-hidden data-slot="select-content-registry">
+        {children}
+      </div>
+    )
+  }
   const triggerWidth = triggerRef.current?.offsetWidth
   return (
     <Portal>
@@ -269,6 +278,12 @@ function SelectContent({
           minWidth: triggerWidth,
           visibility: pos ? "visible" : "hidden",
           ["--transform-origin" as string]: pos?.transformOrigin ?? "center",
+        }}
+        onPointerMove={(e) => {
+          const opt = (e.target as HTMLElement).closest(
+            '[role="option"]:not([data-disabled])'
+          ) as HTMLElement | null
+          if (opt && opt !== document.activeElement) opt.focus()
         }}
         onKeyDown={(e) => {
           onKeyDown?.(e)
