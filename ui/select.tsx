@@ -19,6 +19,7 @@ type SelectContextValue = {
   setValue: (value: string) => void
   triggerRef: React.RefObject<HTMLElement | null>
   contentId: string
+  triggerId: string
   labels: Record<string, React.ReactNode>
   registerLabel: (value: string, label: React.ReactNode) => void
   unregisterLabel: (value: string) => void
@@ -61,6 +62,7 @@ function Select({
   })
   const triggerRef = React.useRef<HTMLElement | null>(null)
   const contentId = React.useId()
+  const triggerId = React.useId()
   const [labels, setLabels] = React.useState<Record<string, React.ReactNode>>({})
 
   const registerLabel = React.useCallback(
@@ -95,6 +97,7 @@ function Select({
         setValue,
         triggerRef,
         contentId,
+        triggerId,
         labels,
         registerLabel,
         unregisterLabel,
@@ -139,15 +142,21 @@ function SelectTrigger({
   className,
   size = "default",
   children,
+  id,
   onClick,
   onKeyDown,
   ...props
 }: React.ComponentProps<"button"> & { size?: "sm" | "default" }) {
-  const { open, setOpen, value, triggerRef, contentId } = useSelect()
+  const { open, setOpen, value, triggerRef, contentId, triggerId } = useSelect()
+  // Give the trigger a stable id so the listbox can point back at it via
+  // aria-labelledby — naming the popup with its combobox. Honor a consumer id
+  // when supplied so an existing label association isn't clobbered.
+  const resolvedTriggerId = id ?? triggerId
   return (
     <button
       ref={triggerRef as React.Ref<HTMLButtonElement>}
       type="button"
+      id={resolvedTriggerId}
       role="combobox"
       aria-haspopup="listbox"
       aria-expanded={open}
@@ -203,7 +212,7 @@ function SelectContent({
   onKeyDown,
   ...props
 }: SelectContentProps) {
-  const { open, setOpen, value, triggerRef, contentId } = useSelect()
+  const { open, setOpen, value, triggerRef, contentId, triggerId } = useSelect()
   const [mounted, presenceRef] = usePresence<HTMLDivElement>(open)
   const { floatingRef, pos } = useFloating(triggerRef, mounted, {
     side,
@@ -263,12 +272,17 @@ function SelectContent({
     )
   }
   const triggerWidth = triggerRef.current?.offsetWidth
+  // Name the listbox after its combobox trigger for screen readers. Prefer the
+  // trigger's live DOM id (which reflects any consumer-supplied id) and fall
+  // back to the context-generated triggerId.
+  const labelledById = triggerRef.current?.id || triggerId
   return (
     <Portal>
       <div
         ref={mergeRefs(floatingRef, presenceRef, containerRef)}
         id={contentId}
         role="listbox"
+        aria-labelledby={labelledById}
         tabIndex={-1}
         data-slot="select-content"
         data-state={open ? "open" : "closed"}
