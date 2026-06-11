@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
 import { Button } from "./button.js"
-import { Slot, resolveRender } from "./slot.js"
+import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { XIcon } from "../icons/index.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { usePresence } from "./use-presence.js"
@@ -146,7 +146,7 @@ function SheetContent({
   const { open, setOpen, titleId, descriptionId } = useSheet()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
-  const [mounted] = usePresence(open)
+  const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
 
   React.useEffect(() => {
     const node = ref.current
@@ -168,7 +168,7 @@ function SheetContent({
   return (
     <dialog
       {...props}
-      ref={ref}
+      ref={mergeRefs(ref, presenceRef)}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
       data-slot="sheet-content"

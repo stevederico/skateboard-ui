@@ -18,6 +18,10 @@ export interface FloatingResult {
   side: Side
   align: Align
   transformOrigin: string
+  /** Usable height (px) between the anchor and the viewport edge on the chosen
+   * side, less offsets/padding. Exposed as `--available-height` so scrollable
+   * popups (menus, selects) can clamp with `max-h-(--available-height)`. */
+  availableHeight: number
 }
 
 const PAD = 8
@@ -97,7 +101,15 @@ export function computePosition(
         ? "bottom"
         : "center"
 
-  return { x, y, side, align, transformOrigin: `${originX} ${originY}` }
+  // Space left for the popup on its final side, so it can clamp + scroll
+  // instead of overflowing the viewport. For left/right placements the popup
+  // spans the cross axis, so the usable height is the full viewport less padding.
+  const availableHeight = Math.max(
+    0,
+    (vertical ? space[side] - sideOffset : viewport.height) - PAD
+  )
+
+  return { x, y, side, align, transformOrigin: `${originX} ${originY}`, availableHeight }
 }
 
 /**
@@ -132,7 +144,12 @@ export function useFloating(
   }, [anchorRef, side, align, sideOffset, alignOffset])
 
   React.useLayoutEffect(() => {
-    if (!open) return
+    // Drop the last position on close so a reopen stays visibility:hidden until
+    // it is re-measured, rather than flashing one frame at stale coordinates.
+    if (!open) {
+      setPos(null)
+      return
+    }
     const ro = new ResizeObserver(update)
     window.addEventListener("scroll", update, true)
     window.addEventListener("resize", update)

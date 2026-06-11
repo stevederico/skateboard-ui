@@ -27,8 +27,15 @@ interface CommandItemMeta {
 interface CommandContextValue {
   filter: string;
   setFilter: (value: string) => void;
+  /**
+   * Id of the currently active/highlighted option. This is the same string
+   * each CommandItem renders as its DOM `id`, so it doubles as the target for
+   * the combobox input's `aria-activedescendant`.
+   */
   selectedId: string | null;
   setSelectedId: React.Dispatch<React.SetStateAction<string | null>>;
+  /** Shared base id used to build the listbox id and per-option DOM ids. */
+  listboxId: string;
   register: (id: string, meta: CommandItemMeta) => void;
   unregister: (id: string) => void;
   isVisible: (id: string) => boolean;
@@ -54,6 +61,9 @@ export interface CommandProps {
 export function Command({ className, children, ...props }: CommandProps) {
   const [filter, setFilter] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Stable base id shared by the listbox container and every option, so the
+  // input's aria-controls / aria-activedescendant can reference them.
+  const listboxId = useId();
   const itemsRef = useRef(new Map<string, CommandItemMeta>()); // id -> { value, onSelect, disabled }
 
   const register = useCallback((id: string, meta: CommandItemMeta) => {
@@ -102,13 +112,17 @@ export function Command({ className, children, ...props }: CommandProps) {
   const visibleCount = visibleIds().length;
 
   const value = useMemo(
-    () => ({ filter, setFilter, selectedId, setSelectedId, register, unregister, isVisible, visibleCount, move, triggerSelected }),
-    [filter, selectedId, register, unregister, isVisible, visibleCount, move, triggerSelected]
+    () => ({ filter, setFilter, selectedId, setSelectedId, listboxId, register, unregister, isVisible, visibleCount, move, triggerSelected }),
+    [filter, selectedId, listboxId, register, unregister, isVisible, visibleCount, move, triggerSelected]
   );
 
   return (
     <CommandContext.Provider value={value}>
-      <div role="combobox" aria-expanded="true" className={className} {...props}>
+      {/*
+        The wrapper is a plain container. Per the WAI-ARIA combobox pattern the
+        combobox role lives on the text input (see CommandInput), not on a div.
+      */}
+      <div className={className} {...props}>
         {children}
       </div>
     </CommandContext.Provider>
@@ -124,8 +138,15 @@ export interface CommandInputProps {
 }
 
 export function CommandInput({ className, placeholder, value: controlledValue, onValueChange, ...props }: CommandInputProps) {
-  const { filter, setFilter, move, triggerSelected } = useCommand();
+  const { filter, setFilter, move, triggerSelected, selectedId, listboxId, visibleCount } = useCommand();
   const value = controlledValue ?? filter;
+
+  // The listbox is considered "shown"/expanded whenever it has visible options.
+  const isExpanded = visibleCount > 0;
+  // aria-activedescendant points at the DOM id of the active option (selectedId
+  // is rendered verbatim as each CommandItem's id). Undefined when nothing is
+  // active, so screen readers don't reference a missing element.
+  const activeDescendant = isExpanded && selectedId ? selectedId : undefined;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -140,8 +161,15 @@ export function CommandInput({ className, placeholder, value: controlledValue, o
   };
 
   return (
+    // The input is the combobox. Real DOM focus stays here during arrow
+    // navigation; only aria-activedescendant moves so screen readers announce
+    // the active option (WAI-ARIA combobox + activedescendant pattern).
     <input
-      role="searchbox"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-expanded={isExpanded}
+      aria-controls={listboxId}
+      aria-activedescendant={activeDescendant}
       autoComplete="off"
       autoCorrect="off"
       spellCheck="false"
@@ -162,8 +190,10 @@ export interface CommandListProps {
 }
 
 export function CommandList({ className, children, ...props }: CommandListProps) {
+  const { listboxId } = useCommand();
+  // id matches the input's aria-controls so the combobox owns this listbox.
   return (
-    <div role="listbox" className={className} {...props}>
+    <div role="listbox" id={listboxId} className={className} {...props}>
       {children}
     </div>
   );
@@ -215,8 +245,11 @@ export interface CommandItemProps {
 }
 
 export function CommandItem({ className, value, onSelect, disabled = false, children, ...props }: CommandItemProps) {
+  // This id is both the value tracked in selectedId and the option's DOM id,
+  // which is what the input's aria-activedescendant references.
   const id = useId();
   const { register, unregister, selectedId, setSelectedId, isVisible } = useCommand();
+  const optionRef = useRef<HTMLDivElement | null>(null);
 
   // Resolve a usable value string — fall back to children text if no value prop
   const resolvedValue = value ?? (typeof children === 'string' ? children : id);
@@ -226,9 +259,16 @@ export function CommandItem({ className, value, onSelect, disabled = false, chil
     return () => unregister(id);
   }, [id, resolvedValue, onSelect, disabled, register, unregister]);
 
+  const isSelected = selectedId === id;
+
+  // Focus stays on the input under the activedescendant model, so scroll the
+  // active option into view manually when it becomes active.
+  useEffect(() => {
+    if (isSelected) optionRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [isSelected]);
+
   if (!isVisible(id)) return null;
 
-  const isSelected = selectedId === id;
   const handleClick = () => {
     if (disabled) return;
     onSelect?.(String(resolvedValue));
@@ -236,6 +276,9 @@ export function CommandItem({ className, value, onSelect, disabled = false, chil
 
   return (
     <div
+      // Stable DOM id targeted by aria-activedescendant when this option is active.
+      id={id}
+      ref={optionRef}
       role="option"
       aria-selected={isSelected}
       data-selected={isSelected ? 'true' : undefined}
