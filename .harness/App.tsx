@@ -118,6 +118,30 @@ import {
 } from "../dist/ui/select.js"
 import { Slider } from "../dist/ui/slider.js"
 import { ScrollArea } from "../dist/ui/scroll-area.js"
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+} from "../dist/ui/context-menu.js"
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+} from "../dist/ui/menubar.js"
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "../dist/ui/navigation-menu.js"
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -430,6 +454,63 @@ export function App() {
             ))}
           </div>
         </ScrollArea>
+      </Section>
+
+      <Section id="s-nav" title="ContextMenu / Menubar / NavigationMenu (hard tier)">
+        <ContextMenu>
+          <ContextMenuTrigger className="flex h-20 w-48 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+            Right-click here
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuLabel>Context</ContextMenuLabel>
+            <ContextMenuItem>Back</ContextMenuItem>
+            <ContextMenuItem>Reload</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem variant="destructive">Remove</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+
+        <Menubar className="flex h-9 items-center gap-1 rounded-md border bg-background p-1">
+          <MenubarMenu>
+            <MenubarTrigger className="rounded-sm px-2 py-1 text-sm">File</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>New</MenubarItem>
+              <MenubarItem>Open</MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>Save</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+          <MenubarMenu>
+            <MenubarTrigger className="rounded-sm px-2 py-1 text-sm">Edit</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>Undo</MenubarItem>
+              <MenubarItem>Redo</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="flex w-48 flex-col gap-1">
+                  <NavigationMenuLink href="#a">Analytics</NavigationMenuLink>
+                  <NavigationMenuLink href="#b">Engagement</NavigationMenuLink>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="flex w-48 flex-col gap-1">
+                  <NavigationMenuLink href="#c">About</NavigationMenuLink>
+                  <NavigationMenuLink href="#d">Careers</NavigationMenuLink>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </Section>
     </main>
   )
