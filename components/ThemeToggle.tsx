@@ -30,7 +30,7 @@ export interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ className = "", iconSize = 16, variant = "settings", ...props }: ThemeToggleProps) {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -39,7 +39,7 @@ export default function ThemeToggle({ className = "", iconSize = 16, variant = "
 
   if (!mounted) return null;
 
-  const isDarkMode = theme === 'dark';
+  const isDarkMode = resolvedTheme === 'dark';
   const toggleTheme = () => setTheme(isDarkMode ? 'light' : 'dark');
 
   return (
