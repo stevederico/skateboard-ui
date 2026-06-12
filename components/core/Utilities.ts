@@ -791,17 +791,14 @@ export function timestampToString(input: number | Date, format: string = "DOB"):
 }
 
 /**
- * Hook that sets the document title and removes dark mode on non-app pages.
+ * Hook that sets the document title on navigation.
+ * Dark mode is owned by ThemeProvider — never touch the class here.
  *
  * @param {Object} location - react-router location object
  */
 export function useAppSetup(location: Location): void {
     useEffect(() => {
         document.title = getConstants().appName;
-        if (!location.pathname.toLowerCase().includes('app')) {
-            document.documentElement.classList.remove('dark');
-            document.body.classList.remove('dark');
-        }
     }, [location.pathname]);
 }
 

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+4.5.0
+
+  Toggle uses resolvedTheme
+  ThemeProvider owns dark
+  Drop dark-mode stripping
+  Slot render child fallback
+
 4.4.0
 
   Document a11y releases

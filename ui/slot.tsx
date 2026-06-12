@@ -64,13 +64,33 @@ function Slot({ children, className, style, ref, ...props }: SlotProps) {
  * element to `render` to control the rendered element; here that maps onto the
  * `asChild` + Slot mechanism. Returns whether to use the Slot and what child to
  * render through it, so `render={<Button/>}` keeps working on the new components.
+ * Matching Base UI's render-prop semantics, the component's children become the
+ * render element's children when the element has none of its own — so
+ * `<Trigger render={<Button/>}>Columns</Trigger>` renders the label, while
+ * `render={<Button>Sign Out</Button>}` keeps the element's own children.
  */
 function resolveRender(
   asChild: boolean | undefined,
   render: React.ReactElement | undefined,
   children: React.ReactNode
 ): { useSlot: boolean; slotChild: React.ReactNode } {
-  if (React.isValidElement(render)) return { useSlot: true, slotChild: render }
+  if (React.isValidElement(render)) {
+    const renderProps: unknown = render.props
+    const ownChildren =
+      typeof renderProps === "object" &&
+      renderProps !== null &&
+      "children" in renderProps
+        ? renderProps.children
+        : undefined
+    // != null, not truthiness: 0 and "" are renderable children to keep.
+    if (ownChildren == null && children != null) {
+      return {
+        useSlot: true,
+        slotChild: React.cloneElement(render, undefined, children),
+      }
+    }
+    return { useSlot: true, slotChild: render }
+  }
   return { useSlot: !!asChild, slotChild: children }
 }
 
