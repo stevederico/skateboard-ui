@@ -1,5 +1,9 @@
 # CHANGELOG
 
+4.6.0
+
+  SettingsView uses ThemeToggle
+
 4.5.0
 
   Toggle uses resolvedTheme

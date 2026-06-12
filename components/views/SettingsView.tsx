@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { getState } from '../core/Context.js';
-import { useTheme } from '../core/ThemeProvider.js';
-import { Sun, Moon } from '../../icons/index.js';
+import ThemeToggle from '../ThemeToggle.js';
 import Header from '../layout/Header.js';
 import { Avatar, AvatarFallback } from '../../shadcn/ui/avatar.js';
 import { Badge } from '../../shadcn/ui/badge.js';
@@ -39,8 +38,6 @@ export default function SettingsView() {
   const { state, dispatch } = getState();
   const constants = state.constants;
   const navigate = useNavigate();
-  const { theme, setTheme } = useTheme();
-  const isDarkMode = theme === 'dark';
   const user = state.user;
   const subscription = user?.subscription;
   const showAuth = (constants.noLogin === false || typeof constants.noLogin === 'undefined') && user;
@@ -62,9 +59,7 @@ export default function SettingsView() {
   return (
     <div className="flex-1">
       <Header title="Settings">
-        <Button variant="ghost" size="icon" onClick={() => setTheme(isDarkMode ? 'light' : 'dark')} aria-label="Toggle dark mode">
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </Button>
+        <ThemeToggle iconSize={20} />
       </Header>
 
       {/* Main content */}
