@@ -1,5 +1,11 @@
 # CHANGELOG
 
+4.7.0
+
+  Trim README documentation
+  Remove migration sections
+  Drop implementation marketing
+
 4.6.0
 
   SettingsView uses ThemeToggle
