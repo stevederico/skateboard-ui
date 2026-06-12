@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.4.0
+
+  Document a11y releases
+  Fix peer-dep naming
+
 4.3.0
 
   Submenu aria-controls wiring
