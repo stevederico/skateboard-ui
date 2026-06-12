@@ -6,6 +6,8 @@ React component library for rapid application development. Built with TypeScript
 
 **Self-contained components (v4.0).** Every component is now hand-written with no primitive framework underneath — the previously-vendored `@base-ui/react` bundle (~31k lines) is gone. Floating positioning, focus trapping, dismiss layers, and animations are small in-house hooks; modals use the native `<dialog>` element. The legacy `shadcn/ui/*` import paths still work — they re-export the new `ui/*` components — so existing apps need no changes.
 
+**Accessibility-hardened (v4.1–4.3).** The self-contained tier was put through three rounds of a11y work: menu/select typeahead, correct keyboard focus management and tab-stops (menus, tabs, radios, popovers, navigation menu), ARIA wiring (`aria-controls`, labelled-by, indeterminate checkbox mixed state, named popover/slider dialogs), scroll-lock and exit-animation fixes, plus matching DOMException error names. Each release adds to a Playwright a11y regression suite that runs `workers: 1`.
+
 **TypeScript with full type declarations.** Source is TypeScript, compiled to plain JavaScript + `.d.ts` in `dist/` (`npm run build`). JavaScript apps consume the compiled JS exactly as before — import paths are unchanged — and TypeScript apps get real types for every export (`SkateboardConstants`, `User`, component props, `VariantProps`, typed icons).
 
 **Node.js 24+** is required in the app repo for build tooling and backend (see `engines` in `package.json`). The UI package itself runs in the browser.
@@ -1309,7 +1311,7 @@ All components support dark mode automatically and accept a `className` prop for
 ### Required peer dependencies
 - React 19.1+
 - react-dom 19.1+
-- react-router-dom 7.0+
+- react-router 7.0+
 
 ### Hard dependencies
 
