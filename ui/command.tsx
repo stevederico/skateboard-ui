@@ -60,7 +60,10 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("rounded-xl! top-1/3 translate-y-0 overflow-hidden p-0", className)}
+        className={cn(
+          "rounded-xl! self-start justify-self-center mt-[33vh] overflow-hidden p-0",
+          className
+        )}
         showCloseButton={showCloseButton}>
         {children}
       </DialogContent>

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.8.0
+
+  Fix command palette position
+  Add authOverlay override
+
 4.7.0
 
   Trim README documentation
