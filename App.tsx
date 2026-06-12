@@ -42,6 +42,7 @@ export interface AppOverrides {
   signUp?: ComponentType<any>;
   signOut?: ComponentType<any>;
   notFound?: ComponentType<any>;
+  authOverlay?: ComponentType<any>;
 }
 
 /** Configuration accepted by createSkateboardApp. */
@@ -151,6 +152,7 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
  * @param {React.ComponentType} [config.overrides.signUp] - Replace SignUpView
  * @param {React.ComponentType} [config.overrides.signOut] - Replace SignOutView
  * @param {React.ComponentType} [config.overrides.notFound] - Replace NotFound
+ * @param {React.ComponentType} [config.overrides.authOverlay] - Replace AuthOverlay
  *
  * @example
  * import { createSkateboardApp } from '@stevederico/skateboard-ui/App';
@@ -189,6 +191,7 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
 
   const container = document.getElementById('root');
   const root = createRoot(container!);
+  const AuthOverlayComponent = overrides?.authOverlay || AuthOverlay;
 
   root.render(
     <ErrorBoundary>
@@ -197,13 +200,13 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
           {Wrapper ? (
             <Wrapper>
               <Router>
-                <AuthOverlay />
+                <AuthOverlayComponent />
                 <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
               </Router>
             </Wrapper>
           ) : (
             <Router>
-              <AuthOverlay />
+              <AuthOverlayComponent />
               <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
             </Router>
           )}
