@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.9.0
+
+  Replace duration with transition-none
+  Fix overlay hover jank
+
 4.8.0
 
   Fix command palette position
