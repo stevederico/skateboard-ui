@@ -5,6 +5,7 @@ import * as React from "react"
 import { cn } from "../shadcn/lib/utils.js"
 import { mergeRefs } from "./slot.js"
 import { Portal } from "./portal.js"
+import { registerLayer } from "./layer-stack.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
@@ -22,7 +23,6 @@ type SelectContextValue = {
   triggerId: string
   labels: Record<string, React.ReactNode>
   registerLabel: (value: string, label: React.ReactNode) => void
-  unregisterLabel: (value: string) => void
 }
 const SelectContext = React.createContext<SelectContextValue | null>(null)
 function useSelect() {
@@ -70,14 +70,6 @@ function Select({
       setLabels((prev) => ({ ...prev, [v]: label })),
     []
   )
-  const unregisterLabel = React.useCallback(
-    (v: string) =>
-      setLabels((prev) => {
-        const { [v]: _, ...rest } = prev
-        return rest
-      }),
-    []
-  )
 
   const setValue = React.useCallback(
     (v: string) => {
@@ -100,7 +92,6 @@ function Select({
         triggerId,
         labels,
         registerLabel,
-        unregisterLabel,
       }}
     >
       {children}
@@ -249,6 +240,8 @@ function SelectContent({
 
   React.useEffect(() => {
     if (!open) return
+    const node = containerRef.current
+    const off = node ? registerLayer(node) : undefined
     const onPointerDown = (e: PointerEvent) => {
       const t = e.target as Node
       if (triggerRef.current?.contains(t)) return
@@ -258,6 +251,7 @@ function SelectContent({
     document.addEventListener("pointerdown", onPointerDown, true)
     return () => {
       document.removeEventListener("pointerdown", onPointerDown, true)
+      off?.()
     }
   }, [open, setOpen, triggerRef])
 

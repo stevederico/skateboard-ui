@@ -52,6 +52,7 @@ export default function SignUpView({
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useSafeNavigate();
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,6 +65,7 @@ export default function SignUpView({
 
   async function signUpClicked(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (isSubmitting) return;
     // Client-side password validation (matches backend: 6-72 chars)
     if (password.length < 6) {
       setErrorMessage('Password must be at least 6 characters');
@@ -73,6 +75,7 @@ export default function SignUpView({
       setErrorMessage('Password must be 72 characters or less');
       return;
     }
+    setIsSubmitting(true);
     try {
       const response = await fetch(`${getBackendURL()}/signup`, {
         method: 'POST',
@@ -101,6 +104,8 @@ export default function SignUpView({
     } catch (error) {
       console.error('Signup failed:', error);
       setErrorMessage('Server Error')
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -169,10 +174,11 @@ export default function SignUpView({
           variant="gradient"
           size="cta"
           className="w-full"
+          disabled={isSubmitting}
         >
           <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
             <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
-            Sign Up
+            {isSubmitting ? "Signing up..." : "Sign Up"}
           </span>
         </Button>
 

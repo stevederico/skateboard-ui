@@ -2,6 +2,8 @@
 
 import * as React from "react"
 
+import { isInLayer } from "./layer-stack.js"
+
 // Shared stack of open dismissable layers (most-recently-opened last). Escape
 // only closes the topmost layer, so a popover opened inside a dialog doesn't
 // close both at once.
@@ -39,6 +41,7 @@ export function useDismiss(
       const target = e.target as Node | null
       if (!target) return
       if (refs.some((r) => r.current && r.current.contains(target))) return
+      if (isInLayer(target)) return
       onDismissRef.current()
     }
     document.addEventListener("keydown", onKeyDown, true)

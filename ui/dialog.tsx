@@ -13,6 +13,7 @@ import { useScrollLock } from "./use-scroll-lock.js"
 type DialogContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  contentId: string
   titleId: string
   descriptionId: string
   /** Call from the title element's effect; returns the unregister cleanup. */
@@ -52,8 +53,10 @@ function Dialog({ open, defaultOpen = false, onOpenChange, children }: DialogPro
   // Track which labelling parts actually render so DialogContent can reference
   // them only when present, avoiding a dangling aria-labelledby/-describedby IDREF.
   const labelling = useDialogLabelling()
+  // Stable id wiring the trigger's aria-controls to the content's id.
+  const contentId = React.useId()
   return (
-    <DialogContext.Provider value={{ open: isOpen, setOpen, ...labelling }}>
+    <DialogContext.Provider value={{ open: isOpen, setOpen, contentId, ...labelling }}>
       {children}
     </DialogContext.Provider>
   )
@@ -71,7 +74,7 @@ function DialogTrigger({
   render?: React.ReactElement
   nativeButton?: boolean
 }) {
-  const { open, setOpen } = useDialog()
+  const { open, setOpen, contentId } = useDialog()
   const { useSlot, slotChild } = resolveRender(asChild, render, children)
   const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
@@ -80,6 +83,7 @@ function DialogTrigger({
       data-slot="dialog-trigger"
       aria-haspopup="dialog"
       aria-expanded={open}
+      aria-controls={open ? contentId : undefined}
       data-state={open ? "open" : "closed"}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(e)
@@ -141,7 +145,7 @@ function DialogContent({
   showCloseButton = true,
   ...props
 }: DialogContentProps) {
-  const { open, setOpen, labelledBy, describedBy } = useDialog()
+  const { open, setOpen, contentId, labelledBy, describedBy } = useDialog()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
 
@@ -188,6 +192,7 @@ function DialogContent({
     >
       {open ? (
         <div
+          id={contentId}
           data-slot="dialog-content"
           data-state={open ? "open" : "closed"}
           data-open={open ? "" : undefined}

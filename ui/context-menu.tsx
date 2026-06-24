@@ -9,6 +9,7 @@ import { useFloating } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useTypeahead } from "./use-typeahead.js"
 import { usePointerMoved } from "./use-pointer-moved.js"
+import { registerLayer } from "./layer-stack.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -186,11 +187,34 @@ function ContextMenuContent({
   }, [mounted, point])
 
   React.useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    layers.current.add(node)
+    if (!mounted) return
+    // The popup is portaled and attaches a frame late (Portal defers its child to
+    // its own effect), so containerRef.current is null when this effect first runs
+    // and the deps don't change once it attaches. Retry each frame until the node
+    // exists, then register it. Without this the dismiss handler's `layers` set
+    // stays empty, so a pointerdown INSIDE the menu fails the contains() check and
+    // is treated as an outside click — closing the menu before the item's onClick
+    // fires (real mouse only; a synthetic click with no pointerdown masks it).
+    let raf = 0
+    let added: HTMLElement | null = null
+    let off: (() => void) | null = null
+    const attach = () => {
+      const node = containerRef.current
+      if (!node) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      added = node
+      layers.current.add(node)
+      // Register in the shared cross-overlay stack so an outer popover's
+      // outside-press dismiss doesn't fire when a nested context menu is clicked.
+      off = registerLayer(node)
+    }
+    attach()
     return () => {
-      layers.current.delete(node)
+      cancelAnimationFrame(raf)
+      if (added) layers.current.delete(added)
+      off?.()
     }
   }, [mounted, layers])
 
@@ -260,7 +284,8 @@ function ContextMenuContent({
         onKeyDown={(e) => {
           onKeyDown?.(e)
           if (e.defaultPrevented) return
-          const c = containerRef.current!
+          const c = containerRef.current
+          if (!c) return
           if (e.key === "ArrowDown") (e.preventDefault(), moveFocus(c, "next"))
           else if (e.key === "ArrowUp") (e.preventDefault(), moveFocus(c, "prev"))
           else if (e.key === "Home") (e.preventDefault(), moveFocus(c, "first"))
@@ -288,7 +313,7 @@ function ContextMenuContent({
           }
         }}
         className={cn(
-          "z-50 max-h-(--available-height) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-md bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 transition-none outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "z-50 max-h-(--available-height) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-md bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 transition-none outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -610,11 +635,34 @@ function ContextMenuSubContent({
   const { onTypeaheadKeyDown } = useTypeahead()
 
   React.useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    layers.current.add(node)
+    if (!mounted) return
+    // The popup is portaled and attaches a frame late (Portal defers its child to
+    // its own effect), so containerRef.current is null when this effect first runs
+    // and the deps don't change once it attaches. Retry each frame until the node
+    // exists, then register it. Without this the dismiss handler's `layers` set
+    // stays empty, so a pointerdown INSIDE the submenu fails the contains() check
+    // and is treated as an outside click — closing it before the item's onClick
+    // fires (real mouse only; a synthetic click with no pointerdown masks it).
+    let raf = 0
+    let added: HTMLElement | null = null
+    let off: (() => void) | null = null
+    const attach = () => {
+      const node = containerRef.current
+      if (!node) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      added = node
+      layers.current.add(node)
+      // Register in the shared cross-overlay stack so an outer popover's
+      // outside-press dismiss doesn't fire when this nested submenu is clicked.
+      off = registerLayer(node)
+    }
+    attach()
     return () => {
-      layers.current.delete(node)
+      cancelAnimationFrame(raf)
+      if (added) layers.current.delete(added)
+      off?.()
     }
   }, [mounted, layers])
 
@@ -663,7 +711,8 @@ function ContextMenuSubContent({
         onKeyDown={(e) => {
           onKeyDown?.(e)
           if (e.defaultPrevented) return
-          const c = containerRef.current!
+          const c = containerRef.current
+          if (!c) return
           if (e.key === "ArrowDown") (e.preventDefault(), moveFocus(c, "next"))
           else if (e.key === "ArrowUp") (e.preventDefault(), moveFocus(c, "prev"))
           else if (e.key === "ArrowLeft" || e.key === "Escape") {
