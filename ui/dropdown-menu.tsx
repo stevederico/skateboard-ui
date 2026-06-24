@@ -169,11 +169,29 @@ function DropdownMenuContent({
   const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    layers.current.add(node)
+    if (!mounted) return
+    // The popup is portaled and attaches a frame late (Portal defers its child to
+    // its own effect), so containerRef.current is null when this effect first runs
+    // and the deps don't change once it attaches. Retry each frame until the node
+    // exists, then register it. Without this the dismiss handler's `layers` set
+    // stays empty, so a pointerdown INSIDE the menu fails the contains() check and
+    // is treated as an outside click — closing the menu before the item's onClick
+    // fires (real mouse only; a synthetic click with no pointerdown masks it).
+    let raf = 0
+    let added: HTMLElement | null = null
+    const attach = () => {
+      const node = containerRef.current
+      if (!node) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      added = node
+      layers.current.add(node)
+    }
+    attach()
     return () => {
-      layers.current.delete(node)
+      cancelAnimationFrame(raf)
+      if (added) layers.current.delete(added)
     }
   }, [mounted, layers])
 
@@ -604,11 +622,29 @@ function DropdownMenuSubContent({
   const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    layers.current.add(node)
+    if (!mounted) return
+    // The popup is portaled and attaches a frame late (Portal defers its child to
+    // its own effect), so containerRef.current is null when this effect first runs
+    // and the deps don't change once it attaches. Retry each frame until the node
+    // exists, then register it. Without this the dismiss handler's `layers` set
+    // stays empty, so a pointerdown INSIDE the menu fails the contains() check and
+    // is treated as an outside click — closing the menu before the item's onClick
+    // fires (real mouse only; a synthetic click with no pointerdown masks it).
+    let raf = 0
+    let added: HTMLElement | null = null
+    const attach = () => {
+      const node = containerRef.current
+      if (!node) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      added = node
+      layers.current.add(node)
+    }
+    attach()
     return () => {
-      layers.current.delete(node)
+      cancelAnimationFrame(raf)
+      if (added) layers.current.delete(added)
     }
   }, [mounted, layers])
 
