@@ -3,6 +3,7 @@
 4.11.0
 
   Fix context-menu and menubar mouse clicks
+  Fix popover focus-into-content on open
   Fix calendar single-select first-click crash
   Share dismiss layer across nested overlays
   Slider pointercancel cleanup and controlled drag
