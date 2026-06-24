@@ -16,6 +16,7 @@ type SheetSide = "top" | "right" | "bottom" | "left"
 type SheetContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  contentId: string
   titleId: string
   descriptionId: string
   registerTitle: () => () => void
@@ -50,11 +51,14 @@ function Sheet({ open, defaultOpen = false, onOpenChange, children }: SheetProps
   // missing element (a dangling IDREF that screen readers announce as broken).
   const { titleId, descriptionId, registerTitle, registerDescription, labelledBy, describedBy } =
     useDialogLabelling()
+  // Stable id wiring the trigger's aria-controls to the content's id.
+  const contentId = React.useId()
   return (
     <SheetContext.Provider
       value={{
         open: isOpen,
         setOpen,
+        contentId,
         titleId,
         descriptionId,
         registerTitle,
@@ -80,7 +84,7 @@ function SheetTrigger({
   render?: React.ReactElement
   nativeButton?: boolean
 }) {
-  const { open, setOpen } = useSheet()
+  const { open, setOpen, contentId } = useSheet()
   const { useSlot, slotChild } = resolveRender(asChild, render, children)
   const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
@@ -88,6 +92,8 @@ function SheetTrigger({
       type={useSlot ? undefined : "button"}
       data-slot="sheet-trigger"
       aria-haspopup="dialog"
+      aria-expanded={open}
+      aria-controls={open ? contentId : undefined}
       data-state={open ? "open" : "closed"}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(e)
@@ -163,7 +169,7 @@ function SheetContent({
   showCloseButton = true,
   ...props
 }: SheetContentProps) {
-  const { open, setOpen, labelledBy, describedBy } = useSheet()
+  const { open, setOpen, contentId, labelledBy, describedBy } = useSheet()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
   const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
@@ -184,6 +190,7 @@ function SheetContent({
     <dialog
       {...props}
       ref={mergeRefs(ref, presenceRef)}
+      id={contentId}
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}
       data-slot="sheet-content"

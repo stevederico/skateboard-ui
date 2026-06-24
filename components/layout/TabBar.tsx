@@ -29,6 +29,7 @@ export default function TabBar({ className, ...props }: TabBarProps) {
   const location = useLocation();
   const { state } = getState();
   const constants = state.constants;
+  const currentPage = (location.pathname.split("/")[2] || "").toLowerCase();
 
   const tabs = [
     ...(constants?.pages || []).map((item) => ({
@@ -52,7 +53,7 @@ export default function TabBar({ className, ...props }: TabBarProps) {
     >
       <div className="flex justify-around items-center pt-2 pb-4">
         {tabs.map((tab) => {
-          const isActive = location.pathname.includes(tab.match);
+          const isActive = currentPage === tab.match;
           return (
             <Link
               key={tab.title}

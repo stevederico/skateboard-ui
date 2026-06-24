@@ -140,19 +140,26 @@ function TabsTrigger({
   const { value: active, setValue, idBase } = useTabs()
   const selected = active === value
   const btnRef = React.useRef<HTMLButtonElement>(null)
-  // Roving tab index: the selected tab is tabbable. When nothing is selected the
-  // first enabled tab must still be reachable so the tablist stays in Tab order
+  // Roving tab index: the selected tab is tabbable. When no trigger matches the
+  // active value — undefined, or a value with no rendered trigger — the first
+  // enabled tab must still be reachable so the tablist stays in Tab order
   // (WAI-ARIA: a tablist always has exactly one tab stop).
-  const [isFirstEnabled, setIsFirstEnabled] = React.useState(false)
+  const [isFallbackStop, setIsFallbackStop] = React.useState(false)
   React.useLayoutEffect(() => {
-    if (active !== undefined) return
     const el = btnRef.current
-    const first = el?.parentElement?.querySelector(
+    const list = el?.parentElement
+    if (!list) return
+    const anySelected = list.querySelector('[role="tab"][aria-selected="true"]')
+    if (anySelected) {
+      setIsFallbackStop(false)
+      return
+    }
+    const first = list.querySelector(
       '[role="tab"]:not([disabled]):not([data-disabled])'
     )
-    setIsFirstEnabled(first === el)
+    setIsFallbackStop(first === el)
   })
-  const tabbable = selected || (active === undefined && isFirstEnabled)
+  const tabbable = selected || isFallbackStop
   return (
     <button
       ref={mergeRefs(btnRef, ref)}

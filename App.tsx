@@ -88,10 +88,7 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
 }) {
   const location = useLocation();
 
-  useEffect(() => {
-    document.title = constants.appName;
-  }, [constants.appName]);
-
+  // document.title is set by useAppSetup (on navigation) — single source of truth.
   useAppSetup(location);
 
   const LayoutComponent = overrides.layout || Layout;

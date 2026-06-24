@@ -1,5 +1,20 @@
 # CHANGELOG
 
+4.11.0
+
+  Fix context-menu and menubar mouse clicks
+  Fix popover focus-into-content on open
+  Fix calendar single-select first-click crash
+  Share dismiss layer across nested overlays
+  Slider pointercancel cleanup and controlled drag
+  Fix roving tabindex (radio, tabs, calendar)
+  Avatar reconciles cached images
+  Command palette single-pass filter and a11y name
+  Add aria-expanded to sheet/drawer/alert-dialog
+  Guard checkout and subscription fields
+  TabBar active match by path segment
+  Remove banned type assertions and dead code
+
 4.10.0
 
   Fix dropdown menu item clicks

@@ -38,6 +38,7 @@ function shouldDrag(el: HTMLElement | null, popup: HTMLElement): boolean {
 type DrawerContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  contentId: string
   titleId: string
   descriptionId: string
   // Stable register callbacks + resolved IDREF values from useDialogLabelling,
@@ -76,11 +77,14 @@ function Drawer({ open, defaultOpen = false, onOpenChange, children }: DrawerPro
   })
   const { titleId, descriptionId, registerTitle, registerDescription, labelledBy, describedBy } =
     useDialogLabelling()
+  // Stable id wiring the trigger's aria-controls to the content's id.
+  const contentId = React.useId()
   return (
     <DrawerContext.Provider
       value={{
         open: isOpen,
         setOpen,
+        contentId,
         titleId,
         descriptionId,
         registerTitle,
@@ -106,7 +110,7 @@ function DrawerTrigger({
   render?: React.ReactElement
   nativeButton?: boolean
 }) {
-  const { open, setOpen } = useDrawer()
+  const { open, setOpen, contentId } = useDrawer()
   const { useSlot, slotChild } = resolveRender(asChild, render, children)
   const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
@@ -114,6 +118,8 @@ function DrawerTrigger({
       type={useSlot ? undefined : "button"}
       data-slot="drawer-trigger"
       aria-haspopup="dialog"
+      aria-expanded={open}
+      aria-controls={open ? contentId : undefined}
       data-state={open ? "open" : "closed"}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(e)
@@ -181,7 +187,7 @@ function DrawerContent({
   onPointerCancel,
   ...props
 }: React.ComponentProps<"dialog">) {
-  const { open, setOpen, labelledBy, describedBy } = useDrawer()
+  const { open, setOpen, contentId, labelledBy, describedBy } = useDrawer()
   const ref = React.useRef<HTMLDialogElement>(null)
   const pointerDownOnBackdrop = React.useRef(false)
   const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
@@ -299,6 +305,7 @@ function DrawerContent({
     <dialog
       {...props}
       ref={mergeRefs(ref, presenceRef)}
+      id={contentId}
       // Conditional IDREFs: only reference the title/description when those parts
       // are actually rendered, otherwise omit the attribute (undefined) so we
       // never point assistive tech at a missing element.

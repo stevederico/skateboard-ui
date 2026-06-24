@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInRouterContext, useNavigate } from 'react-router';
 import { getDispatch } from './Context.js';
 import type { Location } from 'react-router';
@@ -517,8 +517,14 @@ export async function showCheckout(email: string | undefined, productIndex = 0):
     try {
         const csrfToken = getCSRFToken();
 
+        const product = getConstants().stripeProducts?.[productIndex];
+        if (!product) {
+            console.error("No stripe product at index", productIndex);
+            return false;
+        }
+
         const params = {
-            lookup_key: getConstants().stripeProducts![productIndex].lookup_key,
+            lookup_key: product.lookup_key,
             email: email
         };
 
@@ -1009,11 +1015,16 @@ export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Keep sortFn in a ref so an inline sort function doesn't retrigger the fetch effect every render
+    const sortFnRef = useRef(sortFn);
+    sortFnRef.current = sortFn;
+
     const fetchData = async (signal?: AbortSignal) => {
         setLoading(true);
         try {
             const result = await apiRequest<T[]>(endpoint, { signal });
-            const sorted = sortFn ? result.sort(sortFn) : result;
+            const sort = sortFnRef.current;
+            const sorted = sort ? result.sort(sort) : result;
             setData(sorted);
             setError(null);
         } catch (err) {
@@ -1029,7 +1040,7 @@ export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => 
         const controller = new AbortController();
         fetchData(controller.signal);
         return () => controller.abort();
-    }, [endpoint, sortFn]);
+    }, [endpoint]);
 
     return { data, loading, error, refetch: () => fetchData() };
 }

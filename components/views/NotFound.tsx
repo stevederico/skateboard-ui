@@ -1,3 +1,4 @@
+import type React from 'react';
 import { cn } from '../../shadcn/lib/utils.js';
 import { Card, CardHeader, CardTitle, CardDescription } from '../../shadcn/ui/card.js';
 
@@ -13,10 +14,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '../../shadcn/ui/ca
  *
  * <Route path="*" element={<NotFound />} />
  */
-export interface NotFoundProps {
-  className?: string;
-  [key: string]: any;
-}
+export interface NotFoundProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function NotFound({ className, ...props }: NotFoundProps) {
   return (

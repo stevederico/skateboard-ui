@@ -113,10 +113,21 @@ function RadioGroupItem({
   React.useLayoutEffect(() => {
     if (selected !== undefined) return
     const el = btnRef.current
-    const first = el?.parentElement?.querySelector(
+    // Scope to the radiogroup (not the immediate parent) so per-item wrappers
+    // like <label>/<div> don't change which radio counts as "first enabled" —
+    // this matches the arrow-key handler, which queries the group element.
+    const group = el?.closest('[role="radiogroup"]')
+    const first = (group ?? el)?.querySelector(
       '[role="radio"]:not([disabled]):not([data-disabled])'
     )
     setIsFirstEnabled(first === el)
+    // No dependency array on purpose: "first enabled" depends on the whole
+    // sibling set, so an item must recompute when ANY sibling's disabled state
+    // or order changes — a per-item dep list ([selected, value, disabled])
+    // misses those cross-sibling changes and can leave the group with zero tab
+    // stops. The body is cheap (two querySelectors) and setIsFirstEnabled bails
+    // out of re-render when the value is unchanged, so running every render is
+    // negligible.
   })
   const tabbable = checked || (selected === undefined && isFirstEnabled)
   return (

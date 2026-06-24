@@ -7,6 +7,7 @@ import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { useDismiss } from "./use-dismiss.js"
+import { registerLayer } from "./layer-stack.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useDialogLabelling } from "./use-labelling.js"
@@ -148,14 +149,31 @@ function PopoverContent({
     // mounts it a tick after `open` flips, and it stays visibility:hidden until
     // useFloating positions it — focus() on a missing or hidden node is a silent
     // no-op. The effect cleanup cancels this when the popover closes.
+    let tries = 0
     const focusIn = () => {
+      // Safety bound (~1.5s of frames) so a popover that can never take focus
+      // doesn't spin forever.
+      if (tries++ > 90) return
       const node = contentRef.current
+      // Wait while the content is still mounting (presence renders it a tick
+      // after `open` flips) or still positioning (it stays visibility:hidden
+      // until useFloating measures it) — focus() on a missing/hidden node is a
+      // silent no-op.
       if (!node || getComputedStyle(node).visibility === "hidden") {
         raf = requestAnimationFrame(focusIn)
         return
       }
+      // Focus is already where it belongs.
+      if (node.contains(document.activeElement)) return
+      // Don't fight the user: if focus moved somewhere that isn't the trigger or
+      // <body>, they placed it deliberately — stop chasing.
+      const active = document.activeElement
+      if (active && active !== trigger && active !== document.body) return
       const first = node.querySelector<HTMLElement>(FOCUSABLE_SELECTOR)
       ;(first ?? node).focus()
+      // Even once visible, the target can be a frame away from being focusable,
+      // so focus() may no-op — retry until focus genuinely lands inside.
+      if (!node.contains(document.activeElement)) raf = requestAnimationFrame(focusIn)
     }
     raf = requestAnimationFrame(focusIn)
     return () => {
@@ -166,6 +184,17 @@ function PopoverContent({
       if (trigger && node && node.contains(document.activeElement)) trigger.focus()
     }
   }, [open, triggerRef])
+
+  // Register the floating content as an open dismissable layer while mounted, so
+  // an outer overlay's outside-press dismiss ignores clicks landing inside this
+  // popover (e.g. a popover nested in another popover). Keyed on `mounted` so it
+  // runs once contentRef attaches.
+  React.useEffect(() => {
+    if (!mounted) return
+    const node = contentRef.current
+    if (!node) return
+    return registerLayer(node)
+  }, [mounted])
 
   if (!mounted) return null
   return (
