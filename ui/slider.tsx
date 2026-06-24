@@ -20,6 +20,17 @@ export interface SliderProps
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
+// Snap a value to the step grid relative to `min`, then round away the
+// floating-point drift that `Math.round(x / step) * step` introduces (e.g.
+// 0.1 * 3 === 0.30000000000000004) so value/aria-valuenow stay clean.
+const snapToStep = (v: number, min: number, step: number) => {
+  if (step <= 0) return v
+  const snapped = min + Math.round((v - min) / step) * step
+  // Derive the decimal precision from the step (e.g. 0.1 -> 1, 0.25 -> 2).
+  const decimals = (String(step).split(".")[1] ?? "").length
+  return decimals > 0 ? Number(snapped.toFixed(decimals)) : snapped
+}
+
 /**
  * Self-contained slider with pointer drag and keyboard control. Supports one or
  * more thumbs (the nearest thumb to the pointer is the one that moves). Track,
@@ -51,6 +62,13 @@ function Slider({
   const activeThumb = React.useRef<number>(0)
   const vertical = orientation === "vertical"
 
+  // Track the latest values so pointer-move handlers (which close over the
+  // pointerdown-time render) read fresh state — otherwise, in controlled mode,
+  // a parent correction (e.g. min-gap push between thumbs) gets overwritten on
+  // the next move.
+  const valuesRef = React.useRef(values)
+  valuesRef.current = values
+
   const percent = (v: number) => ((v - min) / (max - min)) * 100
 
   const valueFromPointer = (clientX: number, clientY: number) => {
@@ -61,19 +79,30 @@ function Slider({
       ? (rect.bottom - clientY) / rect.height
       : (clientX - rect.left) / rect.width
     const raw = min + clamp(ratio, 0, 1) * (max - min)
-    return clamp(Math.round(raw / step) * step, min, max)
+    return clamp(snapToStep(raw, min, step), min, max)
   }
 
   const updateThumb = (index: number, next: number) => {
-    setValues(values.map((v, i) => (i === index ? next : v)))
+    const current = valuesRef.current
+    // Clamp the moving thumb against its immediate neighbors so values stay
+    // ordered. When neighbors share this thumb's value (overlap), only the
+    // actively-dragged thumb is allowed to move away — clamping against the
+    // neighbor on the side it's heading lets it pass instead of pinning it.
+    const lower = index > 0 ? current[index - 1] : min
+    const upper = index < current.length - 1 ? current[index + 1] : max
+    const clamped = clamp(next, lower, upper)
+    setValues(current.map((v, i) => (i === index ? clamped : v)))
   }
 
   const nearestThumb = (v: number) => {
     let best = 0
     let bestDist = Infinity
-    values.forEach((tv, i) => {
+    valuesRef.current.forEach((tv, i) => {
       const d = Math.abs(tv - v)
-      if (d < bestDist) {
+      // On exact ties prefer the thumb whose move direction matches the
+      // pointer, so overlapping thumbs don't both resolve to the lowest index
+      // (which would leave the higher-index thumb unmovable).
+      if (d < bestDist || (d === bestDist && v > tv)) {
         bestDist = d
         best = i
       }
@@ -88,17 +117,27 @@ function Slider({
     activeThumb.current = idx
     updateThumb(idx, v)
     const target = e.currentTarget
-    target.setPointerCapture(e.pointerId)
+    const pointerId = e.pointerId
+    target.setPointerCapture(pointerId)
     const onMove = (ev: PointerEvent) => {
       updateThumb(activeThumb.current, valueFromPointer(ev.clientX, ev.clientY))
     }
-    const onUp = (ev: PointerEvent) => {
-      target.releasePointerCapture(ev.pointerId)
+    // Single teardown for every drag-ending event so a cancelled or lost
+    // pointer (pointercancel/lostpointercapture) doesn't leak the move/up
+    // listeners and leave the drag stuck.
+    const teardown = () => {
+      if (target.hasPointerCapture(pointerId)) {
+        target.releasePointerCapture(pointerId)
+      }
       target.removeEventListener("pointermove", onMove)
-      target.removeEventListener("pointerup", onUp)
+      target.removeEventListener("pointerup", teardown)
+      target.removeEventListener("pointercancel", teardown)
+      target.removeEventListener("lostpointercapture", teardown)
     }
     target.addEventListener("pointermove", onMove)
-    target.addEventListener("pointerup", onUp)
+    target.addEventListener("pointerup", teardown)
+    target.addEventListener("pointercancel", teardown)
+    target.addEventListener("lostpointercapture", teardown)
   }
 
   const onThumbKeyDown =
@@ -106,8 +145,12 @@ function Slider({
       if (disabled) return
       let next: number | null = null
       const cur = values[index]
-      if (e.key === "ArrowRight" || e.key === "ArrowUp") next = cur + step
-      else if (e.key === "ArrowLeft" || e.key === "ArrowDown") next = cur - step
+      // Round each step back onto the grid so repeated arrow presses don't
+      // accumulate float drift in value/aria-valuenow.
+      if (e.key === "ArrowRight" || e.key === "ArrowUp")
+        next = snapToStep(cur + step, min, step)
+      else if (e.key === "ArrowLeft" || e.key === "ArrowDown")
+        next = snapToStep(cur - step, min, step)
       else if (e.key === "Home") next = min
       else if (e.key === "End") next = max
       if (next !== null) {

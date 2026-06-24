@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
 import { ChevronDownIcon } from "../icons/index.js"
+import { useControllableState } from "./use-controllable-state.js"
 
 type AccordionContextValue = {
   value: string[]
@@ -51,13 +52,11 @@ function Accordion({
   openMultiple = true,
   ...props
 }: AccordionProps) {
-  const [value, setValue] = React.useState<string[]>(defaultValue)
-  const isControlled = controlled !== undefined
-  const open = isControlled ? controlled : value
-  const commit = (next: string[]) => {
-    if (!isControlled) setValue(next)
-    onValueChange?.(next)
-  }
+  const [open, setOpen] = useControllableState<string[]>({
+    value: controlled,
+    defaultValue,
+    onChange: onValueChange,
+  })
   const toggle = (item: string) => {
     const has = open.includes(item)
     const next = has
@@ -65,7 +64,29 @@ function Accordion({
       : openMultiple
         ? [...open, item]
         : [item]
-    commit(next)
+    setOpen(next)
+  }
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    props.onKeyDown?.(e)
+    if (e.defaultPrevented) return
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return
+    const triggers = Array.from(
+      e.currentTarget.querySelectorAll<HTMLButtonElement>(
+        '[data-slot="accordion-trigger"]:not([disabled])'
+      )
+    )
+    const current = triggers.findIndex((t) => t === document.activeElement)
+    if (current < 0) return
+    let next = -1
+    if (e.key === "ArrowDown") next = (current + 1) % triggers.length
+    else if (e.key === "ArrowUp")
+      next = (current - 1 + triggers.length) % triggers.length
+    else if (e.key === "Home") next = 0
+    else if (e.key === "End") next = triggers.length - 1
+    if (next >= 0) {
+      e.preventDefault()
+      triggers[next].focus()
+    }
   }
   return (
     <AccordionContext.Provider value={{ value: open, toggle }}>
@@ -73,6 +94,7 @@ function Accordion({
         data-slot="accordion"
         className={cn("flex w-full flex-col", className)}
         {...props}
+        onKeyDown={onKeyDown}
       />
     </AccordionContext.Provider>
   )

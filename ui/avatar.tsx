@@ -44,6 +44,7 @@ function AvatarImage({
   ...props
 }: React.ComponentProps<"img">) {
   const { status, setStatus } = React.useContext(AvatarContext)
+  const imgRef = React.useRef<HTMLImageElement>(null)
 
   // A missing/empty src never fires load or error, so mark it errored up front;
   // otherwise the fallback would sit next to a blank img, each squeezed to half.
@@ -51,11 +52,22 @@ function AvatarImage({
     if (!src) setStatus("error")
   }, [src, setStatus])
 
+  // A cached image can finish loading before React wires up onLoad, leaving the
+  // fallback stuck over a hidden loaded image. Reconcile against the DOM on mount
+  // and on src change (matches Base UI's cached-image handling).
+  React.useLayoutEffect(() => {
+    const img = imgRef.current
+    if (!img || !img.complete) return
+    if (img.naturalWidth > 0) setStatus("loaded")
+    else setStatus("error")
+  }, [src, setStatus])
+
   // Render nothing until the image has actually loaded — the fallback owns the
   // box until then (matches Base UI, avoids the blank-img squeeze on slow loads).
   if (!src || status === "error") return null
   return (
     <img
+      ref={imgRef}
       src={src}
       data-slot="avatar-image"
       className={cn(

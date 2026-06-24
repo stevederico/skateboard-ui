@@ -9,6 +9,7 @@ import { useFloating, type Side, type Align } from "./use-floating.js"
 import { usePresence } from "./use-presence.js"
 import { useTypeahead } from "./use-typeahead.js"
 import { usePointerMoved } from "./use-pointer-moved.js"
+import { registerLayer } from "./layer-stack.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -243,11 +244,32 @@ function MenubarContent({
   const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    layers.current.add(node)
+    if (!mounted) return
+    // The popup is portaled and attaches a frame late (Portal defers its child to
+    // its own effect), so containerRef.current is null when this effect first runs
+    // and the deps don't change once it attaches. Retry each frame until the node
+    // exists, then register it. Without this the dismiss handler's `layers` set
+    // stays empty, so a pointerdown INSIDE the menu fails the contains() check and
+    // is treated as an outside click — closing the menu before the item's onClick
+    // fires (real mouse only; a synthetic click with no pointerdown masks it).
+    let raf = 0
+    let added: HTMLElement | null = null
+    let off: (() => void) | null = null
+    const attach = () => {
+      const node = containerRef.current
+      if (!node) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      added = node
+      layers.current.add(node)
+      off = registerLayer(node)
+    }
+    attach()
     return () => {
-      layers.current.delete(node)
+      cancelAnimationFrame(raf)
+      if (added) layers.current.delete(added)
+      off?.()
     }
   }, [mounted, layers])
 
@@ -685,11 +707,30 @@ function MenubarSubContent({
   const hasPointerMoved = usePointerMoved()
 
   React.useEffect(() => {
-    const node = containerRef.current
-    if (!node) return
-    layers.current.add(node)
+    if (!mounted) return
+    // The sub-popup is portaled and attaches a frame late, so containerRef.current
+    // is null when this effect first runs and the deps don't change once it
+    // attaches. Retry each frame until the node exists, then register it — without
+    // this the dismiss handler's `layers` set stays empty and a real-mouse click
+    // inside the submenu reads as an outside click, closing it before onClick fires.
+    let raf = 0
+    let added: HTMLElement | null = null
+    let off: (() => void) | null = null
+    const attach = () => {
+      const node = containerRef.current
+      if (!node) {
+        raf = requestAnimationFrame(attach)
+        return
+      }
+      added = node
+      layers.current.add(node)
+      off = registerLayer(node)
+    }
+    attach()
     return () => {
-      layers.current.delete(node)
+      cancelAnimationFrame(raf)
+      if (added) layers.current.delete(added)
+      off?.()
     }
   }, [mounted, layers])
 
