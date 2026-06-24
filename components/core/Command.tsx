@@ -38,7 +38,12 @@ interface CommandContextValue {
   listboxId: string;
   register: (id: string, meta: CommandItemMeta) => void;
   unregister: (id: string) => void;
-  isVisible: (id: string) => boolean;
+  /**
+   * Set of currently visible (non-disabled, filter-matching) option ids,
+   * recomputed once per render. Each CommandItem does an O(1) `has(id)` check
+   * instead of scanning the full item list, and visibleCount is its `.size`.
+   */
+  visibleSet: Set<string>;
   visibleCount: number;
   move: (dir: number) => void;
   triggerSelected: () => void;
@@ -52,10 +57,9 @@ function useCommand(): CommandContextValue {
   return ctx;
 }
 
-export interface CommandProps {
+export interface CommandProps extends React.ComponentPropsWithoutRef<'div'> {
   className?: string;
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
 export function Command({ className, children, ...props }: CommandProps) {
@@ -65,16 +69,24 @@ export function Command({ className, children, ...props }: CommandProps) {
   // input's aria-controls / aria-activedescendant can reference them.
   const listboxId = useId();
   const itemsRef = useRef(new Map<string, CommandItemMeta>()); // id -> { value, onSelect, disabled }
+  // Bumped on every register/unregister so the visible-id memo (which reads the
+  // non-reactive itemsRef) recomputes when the registered item set changes.
+  const [registrationVersion, setRegistrationVersion] = useState(0);
 
   const register = useCallback((id: string, meta: CommandItemMeta) => {
     itemsRef.current.set(id, meta);
+    setRegistrationVersion((v) => v + 1);
   }, []);
   const unregister = useCallback((id: string) => {
     itemsRef.current.delete(id);
+    setRegistrationVersion((v) => v + 1);
     setSelectedId((cur) => (cur === id ? null : cur));
   }, []);
 
-  const visibleIds = useCallback(() => {
+  // Compute the ordered visible ids and the membership Set once per render,
+  // memoized on the filter and the registered item set. Items can then check
+  // visibility in O(1) instead of rescanning the whole list each render.
+  const visibleIds = useMemo(() => {
     const f = filter.trim().toLowerCase();
     const visible: string[] = [];
     for (const [id, meta] of itemsRef.current) {
@@ -82,24 +94,25 @@ export function Command({ className, children, ...props }: CommandProps) {
       if (!f || meta.value.toLowerCase().includes(f)) visible.push(id);
     }
     return visible;
-  }, [filter]);
+  }, [filter, registrationVersion]);
+  const visibleSet = useMemo(() => new Set(visibleIds), [visibleIds]);
+  const visibleCount = visibleSet.size;
 
-  // Keep selection valid when filter changes
+  // Keep selection valid when the visible set changes (filter input or
+  // registration), driven by the reactive derived ids rather than the ref.
   useEffect(() => {
-    const visible = visibleIds();
-    if (visible.length === 0) {
+    if (visibleIds.length === 0) {
       setSelectedId(null);
       return;
     }
-    if (!selectedId || !visible.includes(selectedId)) setSelectedId(visible[0]);
-  }, [filter, visibleIds, selectedId]);
+    setSelectedId((cur) => (cur && visibleSet.has(cur) ? cur : visibleIds[0]));
+  }, [visibleIds, visibleSet]);
 
   const move = useCallback((dir: number) => {
-    const visible = visibleIds();
-    if (visible.length === 0) return;
-    const idx = selectedId ? visible.indexOf(selectedId) : -1;
-    const next = (idx + dir + visible.length) % visible.length;
-    setSelectedId(visible[next]);
+    if (visibleIds.length === 0) return;
+    const idx = selectedId ? visibleIds.indexOf(selectedId) : -1;
+    const next = (idx + dir + visibleIds.length) % visibleIds.length;
+    setSelectedId(visibleIds[next]);
   }, [selectedId, visibleIds]);
 
   const triggerSelected = useCallback(() => {
@@ -108,12 +121,9 @@ export function Command({ className, children, ...props }: CommandProps) {
     meta?.onSelect?.(meta.value);
   }, [selectedId]);
 
-  const isVisible = useCallback((id: string) => visibleIds().includes(id), [visibleIds]);
-  const visibleCount = visibleIds().length;
-
   const value = useMemo(
-    () => ({ filter, setFilter, selectedId, setSelectedId, listboxId, register, unregister, isVisible, visibleCount, move, triggerSelected }),
-    [filter, selectedId, listboxId, register, unregister, isVisible, visibleCount, move, triggerSelected]
+    () => ({ filter, setFilter, selectedId, setSelectedId, listboxId, register, unregister, visibleSet, visibleCount, move, triggerSelected }),
+    [filter, selectedId, listboxId, register, unregister, visibleSet, visibleCount, move, triggerSelected]
   );
 
   return (
@@ -129,12 +139,11 @@ export function Command({ className, children, ...props }: CommandProps) {
   );
 }
 
-export interface CommandInputProps {
+export interface CommandInputProps extends Omit<React.ComponentPropsWithoutRef<'input'>, 'value' | 'onChange'> {
   className?: string;
   placeholder?: string;
   value?: string;
   onValueChange?: (value: string) => void;
-  [key: string]: any;
 }
 
 export function CommandInput({ className, placeholder, value: controlledValue, onValueChange, ...props }: CommandInputProps) {
@@ -170,6 +179,9 @@ export function CommandInput({ className, placeholder, value: controlledValue, o
       aria-expanded={isExpanded}
       aria-controls={listboxId}
       aria-activedescendant={activeDescendant}
+      // Gives the combobox an accessible name when the caller hasn't supplied
+      // an explicit aria-label / aria-labelledby (both overridable via props).
+      aria-label="Search"
       autoComplete="off"
       autoCorrect="off"
       spellCheck="false"
@@ -183,10 +195,9 @@ export function CommandInput({ className, placeholder, value: controlledValue, o
   );
 }
 
-export interface CommandListProps {
+export interface CommandListProps extends React.ComponentPropsWithoutRef<'div'> {
   className?: string;
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
 export function CommandList({ className, children, ...props }: CommandListProps) {
@@ -199,10 +210,9 @@ export function CommandList({ className, children, ...props }: CommandListProps)
   );
 }
 
-export interface CommandEmptyProps {
+export interface CommandEmptyProps extends React.ComponentPropsWithoutRef<'div'> {
   className?: string;
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
 export function CommandEmpty({ className, children, ...props }: CommandEmptyProps) {
@@ -215,11 +225,10 @@ export function CommandEmpty({ className, children, ...props }: CommandEmptyProp
   );
 }
 
-export interface CommandGroupProps {
+export interface CommandGroupProps extends React.ComponentPropsWithoutRef<'div'> {
   className?: string;
   heading?: React.ReactNode;
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
 export function CommandGroup({ className, heading, children, ...props }: CommandGroupProps) {
@@ -235,20 +244,19 @@ export function CommandGroup({ className, heading, children, ...props }: Command
   );
 }
 
-export interface CommandItemProps {
+export interface CommandItemProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
   className?: string;
   value?: string;
   onSelect?: (value: string) => void;
   disabled?: boolean;
   children?: React.ReactNode;
-  [key: string]: any;
 }
 
 export function CommandItem({ className, value, onSelect, disabled = false, children, ...props }: CommandItemProps) {
   // This id is both the value tracked in selectedId and the option's DOM id,
   // which is what the input's aria-activedescendant references.
   const id = useId();
-  const { register, unregister, selectedId, setSelectedId, isVisible } = useCommand();
+  const { register, unregister, selectedId, setSelectedId, visibleSet } = useCommand();
   const optionRef = useRef<HTMLDivElement | null>(null);
 
   // Resolve a usable value string — fall back to children text if no value prop
@@ -267,7 +275,7 @@ export function CommandItem({ className, value, onSelect, disabled = false, chil
     if (isSelected) optionRef.current?.scrollIntoView({ block: 'nearest' });
   }, [isSelected]);
 
-  if (!isVisible(id)) return null;
+  if (!visibleSet.has(id)) return null;
 
   const handleClick = () => {
     if (disabled) return;
@@ -293,18 +301,16 @@ export function CommandItem({ className, value, onSelect, disabled = false, chil
   );
 }
 
-export interface CommandSeparatorProps {
+export interface CommandSeparatorProps extends React.ComponentPropsWithoutRef<'div'> {
   className?: string;
-  [key: string]: any;
 }
 
 export function CommandSeparator({ className, ...props }: CommandSeparatorProps) {
   return <div role="separator" className={className} {...props} />;
 }
 
-export interface CommandShortcutProps {
+export interface CommandShortcutProps extends React.ComponentPropsWithoutRef<'span'> {
   className?: string;
-  [key: string]: any;
 }
 
 export function CommandShortcut({ className, ...props }: CommandShortcutProps) {

@@ -420,10 +420,29 @@ export function DayPicker({
   const today = useMemo(() => startOfDay(new Date()), []);
   const grid = useMemo(() => buildGrid(displayMonth, weekStartsOn), [displayMonth, weekStartsOn]);
 
+  // Fallback tabbable cell: keep the grid keyboard-reachable when no day is
+  // focused and "today" isn't in the displayed month. Prefer the selected day
+  // (when it falls in this month), else the first non-disabled day of the month.
+  const fallbackTabbable = useMemo(() => {
+    if (focusedDay) return null;
+    const todayInMonth = isSameMonth(today, displayMonth);
+    if (todayInMonth) return null;
+    if (selected instanceof Date && isSameMonth(selected, displayMonth)) {
+      return startOfDay(selected);
+    }
+    for (const week of grid) {
+      for (const date of week) {
+        if (isSameMonth(date, displayMonth) && !isDisabled(date, disabled)) return date;
+      }
+    }
+    return null;
+  }, [focusedDay, today, displayMonth, selected, grid, disabled]);
+
   // Selection handler
   const handleSelect = useCallback((date: Date) => {
     if (mode === 'single') {
-      onSelect?.(sameDay(selected as Date, date) ? undefined : date);
+      const isSame = selected instanceof Date && sameDay(selected, date);
+      onSelect?.(isSame ? undefined : date);
       return;
     }
     if (mode === 'range') {
@@ -580,10 +599,18 @@ export function DayPicker({
                     };
                     const dayObj = { date };
 
+                    const isTabbable = Boolean(
+                      focused ||
+                      (!focusedDay && isSameMonth(today, displayMonth) && sameDay(date, today)) ||
+                      (fallbackTabbable && sameDay(date, fallbackTabbable))
+                    );
+
                     return (
                       <td
                         key={date.toISOString()}
+                        role="gridcell"
                         className={dayClass}
+                        aria-selected={modSel}
                         data-selected={modSel ? 'true' : undefined}
                         data-disabled={dis ? 'true' : undefined}
                         data-outside={outside ? 'true' : undefined}
@@ -594,8 +621,8 @@ export function DayPicker({
                           modifiers={modifiers}
                           onClick={() => !dis && handleSelect(date)}
                           onFocus={() => handleDayFocus(date)}
-                          tabIndex={focused || (!focusedDay && sameDay(date, today)) ? 0 : -1}
-                          aria-selected={modSel}
+                          tabIndex={isTabbable ? 0 : -1}
+                          aria-pressed={modSel}
                           aria-disabled={dis}
                           aria-current={tod ? 'date' : undefined}
                           className=""

@@ -10,6 +10,7 @@ import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useTypeahead } from "./use-typeahead.js"
 import { usePointerMoved } from "./use-pointer-moved.js"
+import { registerLayer } from "./layer-stack.js"
 import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
 
 /* ------------------------------------------------------------------ *
@@ -179,6 +180,7 @@ function DropdownMenuContent({
     // fires (real mouse only; a synthetic click with no pointerdown masks it).
     let raf = 0
     let added: HTMLElement | null = null
+    let off: (() => void) | null = null
     const attach = () => {
       const node = containerRef.current
       if (!node) {
@@ -187,11 +189,15 @@ function DropdownMenuContent({
       }
       added = node
       layers.current.add(node)
+      // Also register in the shared cross-overlay stack so a dropdown nested in a
+      // popover doesn't trip the popover's outside-press dismiss.
+      off = registerLayer(node)
     }
     attach()
     return () => {
       cancelAnimationFrame(raf)
       if (added) layers.current.delete(added)
+      off?.()
     }
   }, [mounted, layers])
 
@@ -268,7 +274,8 @@ function DropdownMenuContent({
         onKeyDown={(e) => {
           onKeyDown?.(e)
           if (e.defaultPrevented) return
-          const c = containerRef.current!
+          const c = containerRef.current
+          if (!c) return
           if (e.key === "ArrowDown") (e.preventDefault(), moveFocus(c, "next"))
           else if (e.key === "ArrowUp") (e.preventDefault(), moveFocus(c, "prev"))
           else if (e.key === "Home") (e.preventDefault(), moveFocus(c, "first"))
@@ -278,7 +285,10 @@ function DropdownMenuContent({
             setOpen(false)
             triggerRef.current?.focus()
           } else if (e.key === "Tab") {
+            // Restore focus to the trigger so the browser's default Tab advances
+            // from there — content is portaled to end of body, orphaning focus.
             setOpen(false)
+            triggerRef.current?.focus()
           } else if (e.key === "Enter" || e.key === " ") {
             const active = document.activeElement as HTMLElement | null
             if (active && c.contains(active) && active.getAttribute("role")?.startsWith("menuitem")) {
@@ -556,6 +566,7 @@ function DropdownMenuSubTrigger({
   onClick,
   onKeyDown,
   onMouseEnter,
+  onPointerLeave,
   ...props
 }: React.ComponentProps<"div"> & { inset?: boolean }) {
   const { open, setOpen, triggerRef, subContentId } = useSub()
@@ -582,6 +593,16 @@ function DropdownMenuSubTrigger({
         onMouseEnter?.(e)
         setOpen(true)
       }}
+      onPointerLeave={(e) => {
+        onPointerLeave?.(e)
+        if (e.defaultPrevented) return
+        // Close when the pointer leaves the trigger toward anything that isn't the
+        // open submenu panel (keeps it open while moving into the sub-content).
+        const related = e.relatedTarget
+        const subContent = document.getElementById(subContentId)
+        if (related instanceof Node && subContent?.contains(related)) return
+        setOpen(false)
+      }}
       onClick={(e) => {
         onClick?.(e)
         if (!e.defaultPrevented) setOpen(!open)
@@ -606,6 +627,7 @@ function DropdownMenuSubContent({
   className,
   children,
   onKeyDown,
+  onPointerLeave,
   ...props
 }: React.ComponentProps<"div">) {
   const { open, setOpen, triggerRef, subContentId } = useSub()
@@ -632,6 +654,7 @@ function DropdownMenuSubContent({
     // fires (real mouse only; a synthetic click with no pointerdown masks it).
     let raf = 0
     let added: HTMLElement | null = null
+    let off: (() => void) | null = null
     const attach = () => {
       const node = containerRef.current
       if (!node) {
@@ -640,11 +663,15 @@ function DropdownMenuSubContent({
       }
       added = node
       layers.current.add(node)
+      // Also register in the shared cross-overlay stack so a dropdown nested in a
+      // popover doesn't trip the popover's outside-press dismiss.
+      off = registerLayer(node)
     }
     attach()
     return () => {
       cancelAnimationFrame(raf)
       if (added) layers.current.delete(added)
+      off?.()
     }
   }, [mounted, layers])
 
@@ -699,10 +726,20 @@ function DropdownMenuSubContent({
           ) as HTMLElement | null
           if (item && item !== document.activeElement) item.focus()
         }}
+        onPointerLeave={(e) => {
+          onPointerLeave?.(e)
+          if (e.defaultPrevented) return
+          // Close when the pointer leaves the panel toward anything that isn't the
+          // sub-trigger (keeps it open while moving back onto the trigger).
+          const related = e.relatedTarget
+          if (related instanceof Node && triggerRef.current?.contains(related)) return
+          setOpen(false)
+        }}
         onKeyDown={(e) => {
           onKeyDown?.(e)
           if (e.defaultPrevented) return
-          const c = containerRef.current!
+          const c = containerRef.current
+          if (!c) return
           if (e.key === "ArrowDown") (e.preventDefault(), moveFocus(c, "next"))
           else if (e.key === "ArrowUp") (e.preventDefault(), moveFocus(c, "prev"))
           else if (e.key === "ArrowLeft" || e.key === "Escape") {
@@ -711,7 +748,7 @@ function DropdownMenuSubContent({
             triggerRef.current?.focus()
           } else if (e.key === "Enter" || e.key === " ") {
             const active = document.activeElement as HTMLElement | null
-            if (active && c.contains(active)) {
+            if (active && c.contains(active) && active.getAttribute("role")?.startsWith("menuitem")) {
               e.preventDefault()
               active.click()
             }

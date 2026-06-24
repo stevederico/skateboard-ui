@@ -7,6 +7,7 @@ import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { Portal } from "./portal.js"
 import { useFloating, type Side, type Align } from "./use-floating.js"
 import { useDismiss } from "./use-dismiss.js"
+import { registerLayer } from "./layer-stack.js"
 import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useDialogLabelling } from "./use-labelling.js"
@@ -166,6 +167,17 @@ function PopoverContent({
       if (trigger && node && node.contains(document.activeElement)) trigger.focus()
     }
   }, [open, triggerRef])
+
+  // Register the floating content as an open dismissable layer while mounted, so
+  // an outer overlay's outside-press dismiss ignores clicks landing inside this
+  // popover (e.g. a popover nested in another popover). Keyed on `mounted` so it
+  // runs once contentRef attaches.
+  React.useEffect(() => {
+    if (!mounted) return
+    const node = contentRef.current
+    if (!node) return
+    return registerLayer(node)
+  }, [mounted])
 
   if (!mounted) return null
   return (

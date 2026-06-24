@@ -153,12 +153,16 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
     return `${appName.toLowerCase().replace(/\s+/g, '-')}_user`;
   };
 
+  const isUser = (value: unknown): value is User =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
+
   const getInitialUser = (): User | null => {
     try {
       const storageKey = getStorageKey();
       const storedUser = safeLSGetItem(storageKey);
       if (!storedUser || storedUser === "undefined") return null;
-      return JSON.parse(storedUser);
+      const parsed: unknown = JSON.parse(storedUser);
+      return isUser(parsed) ? parsed : null;
     } catch (e) {
       console.error('Error parsing user data:', e instanceof Error ? e.message : String(e));
       return null;

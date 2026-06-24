@@ -40,6 +40,7 @@ export default function SettingsView() {
   const navigate = useNavigate();
   const user = state.user;
   const subscription = user?.subscription;
+  const stripeID = subscription?.stripeID;
   const showAuth = (constants.noLogin === false || typeof constants.noLogin === 'undefined') && user;
 
   function signOutClicked() {
@@ -51,8 +52,12 @@ export default function SettingsView() {
   function getBillingDescription() {
     const status = subscription?.status;
     if (status === null || typeof status === 'undefined') return "Free plan";
-    if (status === "active") return `Renews ${new Date(subscription!.expires! * 1000).toLocaleDateString('en-US')}`;
-    if (status === "canceled") return `Ends ${new Date(subscription!.expires! * 1000).toLocaleDateString('en-US')}`;
+    const expires = subscription?.expires;
+    const expiresDate = typeof expires === "number"
+      ? new Date(expires * 1000).toLocaleDateString('en-US')
+      : null;
+    if (status === "active") return expiresDate ? `Renews ${expiresDate}` : "Active";
+    if (status === "canceled") return expiresDate ? `Ends ${expiresDate}` : "Canceled";
     return `Plan ${status}`;
   }
 
@@ -161,11 +166,11 @@ export default function SettingsView() {
               </CardTitle>
               <CardDescription>{getBillingDescription()}</CardDescription>
               <CardAction>
-                {subscription?.stripeID ? (
+                {stripeID ? (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => { showManage(subscription!.stripeID!) }}
+                    onClick={() => { showManage(stripeID) }}
                   >
                     Manage
                   </Button>

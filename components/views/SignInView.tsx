@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader } from "../../shadcn/ui/card.js"
 import { Alert, AlertDescription } from "../../shadcn/ui/alert.js"
 import DynamicIcon from '../core/DynamicIcon.js';
 import { getState } from "../core/Context.js";
-import { getBackendURL, useSafeNavigate } from '../core/Utilities.js'
+import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
 
 /**
  * Sign-in form component.
@@ -77,6 +77,12 @@ export default function SignInView({
 
       if (response.ok) {
         const data = await response.json();
+        // Save CSRF token to localStorage for isAuthenticated() check
+        const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
+        const csrfToken = csrfCookie ? csrfCookie.split('=')[1] : data.csrfToken;
+        if (csrfToken) {
+          localStorage.setItem(getAppKey('csrf'), csrfToken);
+        }
         dispatch({ type: 'SET_USER', payload: data });
         if (embedded && onSuccess) {
           onSuccess();

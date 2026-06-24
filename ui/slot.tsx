@@ -33,7 +33,9 @@ function Slot({ children, className, style, ref, ...props }: SlotProps) {
 
   // Child props win on plain values, but event handlers (on*) are COMPOSED so
   // the slot-injected behavior (open/close/etc.) runs alongside the child's own
-  // handler — matching Radix Slot / Base UI mergeProps instead of clobbering it.
+  // handler — matching Radix composeEventHandlers instead of clobbering it. The
+  // child's own handler runs FIRST; the forwarded slot handler runs ONLY IF the
+  // child hasn't called preventDefault, so a child can opt out of slot behavior.
   const merged: Record<string, unknown> = { ...props, ...childProps }
   for (const key of Object.keys(props)) {
     const slotHandler = (props as Record<string, unknown>)[key]
@@ -44,10 +46,10 @@ function Slot({ children, className, style, ref, ...props }: SlotProps) {
       typeof childHandler === "function"
     ) {
       merged[key] = (...args: unknown[]) => {
-        ;(slotHandler as (...a: unknown[]) => void)(...args)
+        ;(childHandler as (...a: unknown[]) => void)(...args)
         const event = args[0] as { defaultPrevented?: boolean } | undefined
         if (!event?.defaultPrevented) {
-          ;(childHandler as (...a: unknown[]) => void)(...args)
+          ;(slotHandler as (...a: unknown[]) => void)(...args)
         }
       }
     }

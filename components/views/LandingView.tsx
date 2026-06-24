@@ -54,7 +54,7 @@ export default function LandingView() {
 
   const navLinks = constants.navLinks || [
     { label: 'Features', href: '#features' },
-    ...((constants.stripeProducts?.length as number) > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
+    ...((constants.stripeProducts?.length ?? 0) > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
   ];
   const footerLinks = constants.footerLinks || [
     ...(constants.privacyPolicy ? [PRIVACY_LINK] : []),

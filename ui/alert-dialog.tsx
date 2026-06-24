@@ -12,6 +12,7 @@ import { useScrollLock } from "./use-scroll-lock.js"
 type AlertDialogContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  contentId: string
   titleId: string
   descriptionId: string
   /** Register the title part so `aria-labelledby` is wired only when present. */
@@ -61,11 +62,14 @@ function AlertDialog({
     labelledBy,
     describedBy,
   } = useDialogLabelling()
+  // Stable id wiring the trigger's aria-controls to the content's id.
+  const contentId = React.useId()
   return (
     <AlertDialogContext.Provider
       value={{
         open: isOpen,
         setOpen,
+        contentId,
         titleId,
         descriptionId,
         registerTitle,
@@ -92,7 +96,7 @@ function AlertDialogTrigger({
   render?: React.ReactElement
   nativeButton?: boolean
 }) {
-  const { open, setOpen } = useAlertDialog()
+  const { open, setOpen, contentId } = useAlertDialog()
   const { useSlot, slotChild } = resolveRender(asChild, render, children)
   const Comp: React.ElementType = useSlot ? Slot : "button"
   return (
@@ -100,6 +104,8 @@ function AlertDialogTrigger({
       type={useSlot ? undefined : "button"}
       data-slot="alert-dialog-trigger"
       aria-haspopup="dialog"
+      aria-expanded={open}
+      aria-controls={open ? contentId : undefined}
       data-state={open ? "open" : "closed"}
       className={cn("cursor-pointer", className)}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -130,7 +136,7 @@ function AlertDialogContent({
   children,
   ...props
 }: AlertDialogContentProps) {
-  const { open, setOpen, labelledBy, describedBy } = useAlertDialog()
+  const { open, setOpen, contentId, labelledBy, describedBy } = useAlertDialog()
   const ref = React.useRef<HTMLDialogElement>(null)
 
   React.useEffect(() => {
@@ -166,6 +172,7 @@ function AlertDialogContent({
     >
       {open ? (
         <div
+          id={contentId}
           data-slot="alert-dialog-content"
           data-size={size}
           data-state={open ? "open" : "closed"}
