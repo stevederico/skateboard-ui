@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.10.0
+
+  Fix dropdown menu item clicks
+  Register portaled layer after attach
+
 4.9.0
 
   Replace duration with transition-none
