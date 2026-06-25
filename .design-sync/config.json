@@ -1,0 +1,9 @@
+{
+  "pkg": "@stevederico/skateboard-ui",
+  "globalName": "SkateboardUI",
+  "projectId": "8505a96e-04a4-4163-98ed-e92bec396ade",
+  "shape": "package",
+  "buildCmd": "npm run build && node .design-sync/build-css.mjs",
+  "cssEntry": ".design-sync/.cache/compiled-styles.css",
+  "readmeHeader": ".design-sync/conventions.md"
+}
