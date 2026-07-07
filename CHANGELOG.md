@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.12.0
+
+  Fix drawer dark-mode text
+  Fix auth redirect route
+
 4.11.0
 
   Fix context-menu and menubar mouse clicks

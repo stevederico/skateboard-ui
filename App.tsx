@@ -59,7 +59,7 @@ export interface CreateSkateboardAppConfig {
  * Redirect component for auth routes when authOverlay mode is enabled.
  *
  * Dispatches SHOW_AUTH_OVERLAY on mount and redirects to the previous page
- * (from location state) or /app/home as fallback.
+ * (from location state) or /app as fallback (which routes to the app's defaultRoute).
  */
 function AuthRedirect() {
   const { dispatch } = getState();
@@ -72,7 +72,7 @@ function AuthRedirect() {
     if (!isAuthenticated()) {
       dispatch({ type: 'SHOW_AUTH_OVERLAY' });
     }
-    const returnTo = location.state?.from || '/app/home';
+    const returnTo = location.state?.from || '/app';
     navigate(returnTo, { replace: true });
   }, [dispatch, navigate, location.state]);
 
