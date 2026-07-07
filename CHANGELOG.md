@@ -1,5 +1,9 @@
 # CHANGELOG
 
+4.12.1
+
+  Republish built dist
+
 4.12.0
 
   Fix drawer dark-mode text
