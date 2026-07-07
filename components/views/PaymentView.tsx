@@ -6,7 +6,7 @@ import { Spinner } from '../../shadcn/ui/spinner.js';
 
 // Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
 const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
-const DEFAULT_REDIRECT = '/app/home';
+const DEFAULT_REDIRECT = '/app';
 
 function isAllowedRedirect(path: string): boolean {
   try {

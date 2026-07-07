@@ -337,7 +337,7 @@ function DrawerContent({
         // browser claiming it for native scroll (which would fire pointercancel).
         // top-auto/m-0/w-full/max-w-none clear the native <dialog> UA inset and
         // sizing so the drawer pins to the bottom edge at full width.
-        "fixed inset-x-0 top-auto bottom-0 z-50 m-0 flex max-h-[80vh] w-full max-w-none touch-none flex-col rounded-t-xl border-t border-border bg-background p-0 text-sm outline-none backdrop:bg-black/10 backdrop:transition-opacity backdrop:duration-250 supports-backdrop-filter:backdrop:backdrop-blur-xs",
+        "fixed inset-x-0 top-auto bottom-0 z-50 m-0 flex max-h-[80vh] w-full max-w-none touch-none flex-col rounded-t-xl border-t border-border bg-background p-0 text-sm text-foreground outline-none backdrop:bg-black/10 backdrop:transition-opacity backdrop:duration-250 supports-backdrop-filter:backdrop:backdrop-blur-xs",
         open
           ? "animate-in fade-in-0 slide-in-from-bottom-52 duration-300"
           : dismissingByDrag.current
