@@ -124,6 +124,30 @@ Sets up routing, auth, theming, state, and error handling.
 | `/terms`, `/privacy`, `/eula`, `/subscription` | TextView | No |
 | `*` | NotFound | No |
 
+## Loading skeletons
+
+Prefer **skeletons** for content waits (lists, page data, auth gate inside layout). Keep **spinners** for actions (submit, redirect).
+
+```javascript
+import {
+  Skeleton,
+  PageSkeleton,
+  CardListSkeleton,
+  SettingsSkeleton,
+} from '@stevederico/skateboard-ui/ui/skeleton';
+
+// Generic main-content placeholder (also used by ProtectedRoute while validating /me)
+if (loading) return <PageSkeleton />;
+
+// List/grid of avatar+text cards
+if (loading) return <CardListSkeleton count={9} />;
+
+// Settings-shaped stacked cards
+if (loading) return <SettingsSkeleton />;
+```
+
+`ProtectedRoute` renders `PageSkeleton` inside the layout main area while checking the session — sidebar and tab bar stay put.
+
 ## Authentication
 
 Hybrid cookie + localStorage auth:

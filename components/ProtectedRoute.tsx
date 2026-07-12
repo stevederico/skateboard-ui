@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router';
 import { isAuthenticated, apiRequest, getAppKey, getConstants, isAuthOverlayEnabled } from './core/Utilities.js';
-import { Spinner } from '../shadcn/ui/spinner.js';
+import { PageSkeleton } from '../ui/skeleton.js';
 
 /**
  * Route guard that validates authentication before rendering child routes.
@@ -10,6 +10,9 @@ import { Spinner } from '../shadcn/ui/spinner.js';
  * session with the backend via /me. Redirects to /signin if invalid.
  * Bypassed for lazy auth (the default) unless constants.authOverlay is false.
  * Bypassed when constants.noLogin is true (no auth required).
+ *
+ * While checking, renders PageSkeleton inside the layout main content
+ * (ProtectedRoute is already nested under Layout / SidebarInset).
  *
  * @returns {JSX.Element} Outlet if authenticated, Navigate to /signin otherwise
  *
@@ -53,11 +56,7 @@ const ProtectedRoute = () => {
     }, []);
 
     if (status === 'checking') {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-background">
-                <Spinner className="size-6" />
-            </div>
-        );
+        return <PageSkeleton />;
     }
 
     return status === 'valid' ? <Outlet /> : <Navigate to="/signin" replace />;

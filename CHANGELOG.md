@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.13.0
+
+  Add content skeletons
+  Skeleton in ProtectedRoute
+
 4.12.1
 
   Republish built dist
