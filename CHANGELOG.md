@@ -1,5 +1,9 @@
 # CHANGELOG
 
+4.14.0
+
+  Remove unused dts-bundle-generator devDependency
+
 4.13.0
 
   Add content skeletons
