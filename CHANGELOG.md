@@ -1,5 +1,14 @@
 # CHANGELOG
 
+5.0.0
+
+  Major break from 4.x
+  Drop icons re-exports
+  Drop public DynamicIcon
+  Ship lucide-react dependency
+  Collapse shadcn/ui shims
+  Bump react-router 7.18.3
+
 4.18.1
 
   Bump react-router 7.18.3
