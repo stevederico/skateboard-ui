@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../shadcn/ui/dialog.js';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog.js';
 import ConstantsIcon from './core/constantsIcon.js';
 import { getState } from './core/Context.js';
 import SignInView from './views/SignInView.js';

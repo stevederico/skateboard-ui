@@ -5,7 +5,7 @@ import type { ButtonProps } from "./button.js";
 
 import { cn } from "../shadcn/lib/utils.js"
 import { Button, buttonVariants } from "./button.js"
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "../icons/index.js"
+import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from 'lucide-react'
 
 export interface CalendarProps extends DayPickerProps {
   buttonVariant?: ButtonProps["variant"]

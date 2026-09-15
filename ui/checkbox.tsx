@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { CheckIcon, MinusIcon } from "../icons/index.js"
+import { CheckIcon, MinusIcon } from 'lucide-react'
 import { useControllableState } from "./use-controllable-state.js"
 
 /** Checked state of a checkbox: a real boolean, or the tri-state "mixed" value. */

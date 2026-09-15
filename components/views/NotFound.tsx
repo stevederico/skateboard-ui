@@ -1,6 +1,6 @@
 import type React from 'react';
 import { cn } from '../../shadcn/lib/utils.js';
-import { Card, CardHeader, CardTitle, CardDescription } from '../../shadcn/ui/card.js';
+import { Card, CardHeader, CardTitle, CardDescription } from '../../ui/card.js';
 
 /**
  * 404 page displayed for unmatched routes.

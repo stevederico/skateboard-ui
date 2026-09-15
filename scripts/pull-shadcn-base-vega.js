@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // One-shot: pull official shadcn Base UI (base-vega style) TSX components and
 // rewire their imports to this package's vendored layout. Writes to a staging
-// dir + a deviation ledger (normalized diff vs the current shadcn/ui files) —
-// it does NOT overwrite shadcn/ui/ itself; adoption is a reviewed copy.
+// dir + a deviation ledger (normalized diff vs the current ui/ files) —
+// it does NOT overwrite ui/ itself; adoption is a reviewed copy.
 //
 // Usage: node scripts/pull-shadcn-base-vega.js [staging-dir]
 // Registry: https://ui.shadcn.com/r/styles/base-vega/<name>.json (fetched 2026-06)
@@ -43,7 +43,7 @@ function rewrite(src) {
   });
   out = out.replace(
     /import \{ IconPlaceholder \} from "@\/app\/\(create\)\/components\/icon-placeholder"\n?/,
-    iconNames.size ? `import { ${[...iconNames].join(', ')} } from "../../icons/index.js"\n` : ''
+    iconNames.size ? `import { ${[...iconNames].join(', ')} } from "lucide-react"\n` : ''
   );
 
   // Package + registry-alias imports -> vendored relative paths.
@@ -93,12 +93,14 @@ for (const name of NAMES) {
   }
   writeFileSync(join(STAGING, `${name}.tsx`), tsx);
 
-  const oldPath = join(ROOT, 'shadcn/ui', `${name}.jsx`);
+  const oldPathTsx = join(ROOT, 'ui', `${name}.tsx`);
+  const oldPathJsx = join(ROOT, 'ui', `${name}.jsx`);
+  const oldPath = existsSync(oldPathTsx) ? oldPathTsx : oldPathJsx;
   if (existsSync(oldPath)) {
     writeFileSync(join(STAGING, 'ledger', `${name}.new.js`), normalize(tsx));
     writeFileSync(join(STAGING, 'ledger', `${name}.old.js`), normalize(readFileSync(oldPath, 'utf8')));
   } else {
-    summary.push(`${name}: no existing .jsx counterpart`);
+    summary.push(`${name}: no existing ui/ counterpart`);
   }
   summary.push(`${name}: ok`);
 }

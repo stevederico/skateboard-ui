@@ -1,5 +1,12 @@
 # CHANGELOG
 
+4.18.0
+
+  Drop icons re-exports
+  Import lucide-react direct
+  Ship lucide-react dependency
+  Collapse shadcn/ui shims
+
 4.17.0
 
   Drop public DynamicIcon

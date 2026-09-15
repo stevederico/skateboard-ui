@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "4.17.0",
+  "version": "4.18.0",
   "type": "module",
   "exports": {
     ".": {
@@ -128,20 +128,10 @@
       "import": "./dist/hooks/useAuthGate.js",
       "default": "./dist/hooks/useAuthGate.js"
     },
-    "./icons": {
-      "types": "./dist/icons/index.d.ts",
-      "import": "./dist/icons/index.js",
-      "default": "./dist/icons/index.js"
-    },
-    "./icons/*": {
-      "types": "./dist/icons/*.d.ts",
-      "import": "./dist/icons/*.js",
-      "default": "./dist/icons/*.js"
-    },
     "./shadcn/ui/*": {
-      "types": "./dist/shadcn/ui/*.d.ts",
-      "import": "./dist/shadcn/ui/*.js",
-      "default": "./dist/shadcn/ui/*.js"
+      "types": "./dist/ui/*.d.ts",
+      "import": "./dist/ui/*.js",
+      "default": "./dist/ui/*.js"
     },
     "./ui/*": {
       "types": "./dist/ui/*.d.ts",
@@ -185,17 +175,16 @@
     "node": ">=24.0.0"
   },
   "dependencies": {
+    "lucide-react": "0.546.0",
     "react-router": "7.15.0"
   },
   "peerDependencies": {
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "lucide-react": ">=0.500.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/react": "19.2.16",
     "@types/react-dom": "19.2.3",
-    "lucide-react": "0.546.0",
     "typescript": "5.9.3"
   }
 }

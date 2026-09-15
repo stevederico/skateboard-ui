@@ -5,7 +5,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from "../shadcn/ui/drawer.js"
+} from "../ui/drawer.js"
 
 /** Imperative API exposed via ref: { show, hide, open, close, toggle }. */
 export interface SheetHandle {

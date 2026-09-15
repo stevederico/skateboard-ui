@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../shadcn/lib/utils.js"
-import { ChevronDownIcon } from "../icons/index.js"
+import { ChevronDownIcon } from 'lucide-react'
 import { useControllableState } from "./use-controllable-state.js"
 
 type AccordionContextValue = {

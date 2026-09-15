@@ -7,11 +7,7 @@ Requires **Node.js 24+** in the app repo (see `engines` in `package.json`).
 ## Installation
 
 ```bash
-# npm
 npm install @stevederico/skateboard-ui
-
-# deno
-deno install npm:@stevederico/skateboard-ui
 ```
 
 ## Quick Start
@@ -301,8 +297,12 @@ import { useIsMobile } from '@stevederico/skateboard-ui/shadcn/hooks/use-mobile'
 ### Icons
 
 ```javascript
-import { ArrowUp, X } from '@stevederico/skateboard-ui/icons';
+import { ArrowUp, X } from 'lucide-react';
 ```
+
+Apps install `lucide-react` (peer) and named-import icons. There is no
+`@stevederico/skateboard-ui/icons` export. The shell resolves
+`constants.json` icon strings privately via a curated registry.
 
 ## Context
 
@@ -378,11 +378,8 @@ showManage('cus_abc123');
 
 - React 19.1+
 - react-dom 19.1+
-- lucide-react 0.500+
 
-`react-router` is a runtime dependency of this package (pinned). Apps do not install it. Navigate with `useSafeNavigate()` from `Utilities`.
-
-Icons are re-exported from `lucide-react`. Named imports from `@stevederico/skateboard-ui/icons` stay supported; install `lucide-react` in the app. App code should named-import icons — there is no public DynamicIcon. The shell resolves `constants.json` icon strings privately.
+`react-router` and `lucide-react` are runtime dependencies of this package (pinned). Apps do not need to install them for the shell. Named-import icons from `lucide-react` in app code (npm will hoist it). There is no public DynamicIcon and no `@stevederico/skateboard-ui/icons` path. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
 
 ## Repository
 

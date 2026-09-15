@@ -11,7 +11,7 @@ import { useControllableState } from "./use-controllable-state.js"
 import { useTypeahead } from "./use-typeahead.js"
 import { usePointerMoved } from "./use-pointer-moved.js"
 import { registerLayer } from "./layer-stack.js"
-import { ChevronRightIcon, CheckIcon } from "../icons/index.js"
+import { ChevronRightIcon, CheckIcon } from 'lucide-react'
 
 /* ------------------------------------------------------------------ *
  * Shared menu core: root state, dismiss across nested layers, and the

@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./dialog.js"
-import { SearchIcon, CheckIcon } from "../icons/index.js"
+import { SearchIcon, CheckIcon } from 'lucide-react'
 
 function Command({
   className,

@@ -6,17 +6,17 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-} from "../shadcn/ui/drawer.js"
+} from "../ui/drawer.js"
 import {
   Card,
   CardContent,
-} from "../shadcn/ui/card.js"
-import { Badge } from "../shadcn/ui/badge.js"
-import { Separator } from "../shadcn/ui/separator.js"
-import { Button } from "../shadcn/ui/button.js"
+} from "../ui/card.js"
+import { Badge } from "../ui/badge.js"
+import { Separator } from "../ui/separator.js"
+import { Button } from "../ui/button.js"
 import { getState } from "./core/Context.js";
 import { showCheckout } from './core/Utilities.js';
-import { Sparkles, CircleCheck } from '../icons/index.js';
+import { Sparkles, CircleCheck } from 'lucide-react';
 
 /** Imperative API exposed via ref: { show, hide, open, close, toggle }. */
 export interface UpgradeSheetHandle {

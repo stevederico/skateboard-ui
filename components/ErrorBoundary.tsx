@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button } from '../shadcn/ui/button.js';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '../shadcn/ui/card.js';
-import { Alert, AlertDescription } from '../shadcn/ui/alert.js';
-import { Badge } from '../shadcn/ui/badge.js';
+import { Button } from '../ui/button.js';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '../ui/card.js';
+import { Alert, AlertDescription } from '../ui/alert.js';
+import { Badge } from '../ui/badge.js';
 
 /**
  * Top-level error boundary that catches render errors, unhandled promise

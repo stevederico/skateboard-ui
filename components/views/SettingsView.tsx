@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router';
 import { getState } from '../core/Context.js';
 import ThemeToggle from '../ThemeToggle.js';
 import Header from '../layout/Header.js';
-import { Avatar, AvatarFallback } from '../../shadcn/ui/avatar.js';
-import { Badge } from '../../shadcn/ui/badge.js';
-import { Button } from '../../shadcn/ui/button.js';
-import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '../../shadcn/ui/card.js';
+import { Avatar, AvatarFallback } from '../../ui/avatar.js';
+import { Badge } from '../../ui/badge.js';
+import { Button } from '../../ui/button.js';
+import { Card, CardHeader, CardTitle, CardDescription, CardAction } from '../../ui/card.js';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '../../shadcn/ui/alert-dialog.js';
+} from '../../ui/alert-dialog.js';
 import { showCheckout, showManage, isAuthOverlayEnabled } from '../core/Utilities.js';
 
 /**

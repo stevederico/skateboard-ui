@@ -3,7 +3,6 @@ node_modules/
 
 # Lock files (libraries should not commit lock files)
 package-lock.json
-deno.lock
 
 # Environment variables
 .env

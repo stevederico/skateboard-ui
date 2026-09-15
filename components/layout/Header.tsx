@@ -1,6 +1,6 @@
-import { Separator } from "../../shadcn/ui/separator.js";
-import { Button } from "../../shadcn/ui/button.js";
-import { Badge } from "../../shadcn/ui/badge.js";
+import { Separator } from "../../ui/separator.js";
+import { Button } from "../../ui/button.js";
+import { Badge } from "../../ui/badge.js";
 import { cn } from "../../shadcn/lib/utils.js";
 import type { ReactNode } from "react";
 

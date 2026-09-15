@@ -14,8 +14,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "../../shadcn/ui/sidebar.js";
-import { Settings } from '../../icons/index.js';
+} from "../../ui/sidebar.js";
+import { Settings } from 'lucide-react';
 
 /**
  * Desktop navigation sidebar using shadcn primitives.

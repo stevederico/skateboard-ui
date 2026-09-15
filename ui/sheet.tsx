@@ -5,7 +5,7 @@ import * as React from "react"
 import { cn } from "../shadcn/lib/utils.js"
 import { Button } from "./button.js"
 import { Slot, mergeRefs, resolveRender } from "./slot.js"
-import { XIcon } from "../icons/index.js"
+import { XIcon } from 'lucide-react'
 import { useControllableState } from "./use-controllable-state.js"
 import { usePresence } from "./use-presence.js"
 import { useScrollLock } from "./use-scroll-lock.js"

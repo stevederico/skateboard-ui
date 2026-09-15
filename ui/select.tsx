@@ -11,7 +11,7 @@ import { usePresence } from "./use-presence.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useTypeahead } from "./use-typeahead.js"
 import { usePointerMoved } from "./use-pointer-moved.js"
-import { ChevronDownIcon, CheckIcon } from "../icons/index.js"
+import { ChevronDownIcon, CheckIcon } from 'lucide-react'
 
 type SelectContextValue = {
   open: boolean

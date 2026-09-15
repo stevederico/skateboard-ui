@@ -1,6 +1,6 @@
 import { getState } from "../core/Context.js";
-import { Card, CardContent } from '../../shadcn/ui/card.js';
-import { ScrollArea } from '../../shadcn/ui/scroll-area.js';
+import { Card, CardContent } from '../../ui/card.js';
+import { ScrollArea } from '../../ui/scroll-area.js';
 import { cn } from '../../shadcn/lib/utils.js';
 
 /**

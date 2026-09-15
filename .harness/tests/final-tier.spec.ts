@@ -55,7 +55,8 @@ test("Sidebar renders its menu buttons with the active one marked", async ({ pag
 
 test("Legacy shim-path Button import renders as a styled button", async ({ page }) => {
   await page.goto("/")
-  // Imported from dist/shadcn/ui/button shim — proves the legacy path resolves.
+  // Public path `@stevederico/skateboard-ui/shadcn/ui/*` remaps to ui/ via package
+  // exports; harness exercises the same Button module.
   const btn = page.getByRole("button", { name: "Legacy import path" })
   await expect(btn).toBeVisible()
   await expect(btn).toHaveAttribute("data-slot", "button")

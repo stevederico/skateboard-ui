@@ -110,8 +110,10 @@ import {
 } from "../dist/ui/select.js"
 import { Slider } from "../dist/ui/slider.js"
 import { ScrollArea } from "../dist/ui/scroll-area.js"
-// Legacy import path (linker shim) + base-ui render= compat — proves existing apps work
-import { Button as LegacyButton } from "../dist/shadcn/ui/button.js"
+// Public apps still import `@stevederico/skateboard-ui/shadcn/ui/*` (package
+// exports remap to ui/). Harness loads ui/ directly; this row proves the same
+// Button module + legacy render= AlertDialog API still work.
+import { Button as LegacyButton } from "../dist/ui/button.js"
 import {
   AlertDialog as LegacyAlertDialog,
   AlertDialogTrigger as LegacyAlertDialogTrigger,
@@ -121,7 +123,7 @@ import {
   AlertDialogCancel as LegacyAlertDialogCancel,
   AlertDialogFooter as LegacyAlertDialogFooter,
   AlertDialogHeader as LegacyAlertDialogHeader,
-} from "../dist/shadcn/ui/alert-dialog.js"
+} from "../dist/ui/alert-dialog.js"
 import {
   AlertDialog,
   AlertDialogTrigger,
