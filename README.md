@@ -380,7 +380,8 @@ showManage('cus_abc123');
 
 - React 19.1+
 - react-dom 19.1+
-- react-router 7.0+
+
+`react-router` is a runtime dependency of this package (pinned). Apps do not install it. Navigate with `useSafeNavigate()` from `Utilities`.
 
 ## Repository
 

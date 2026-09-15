@@ -1,5 +1,9 @@
 # CHANGELOG
 
+4.15.0
+
+  Ship react-router as a dependency
+
 4.14.0
 
   Remove unused dts-bundle-generator devDependency
