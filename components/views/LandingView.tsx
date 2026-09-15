@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { getState } from '../core/Context.js';
-import DynamicIcon from '../core/DynamicIcon.js';
+import ConstantsIcon from '../core/constantsIcon.js';
 import ThemeToggle from '../ThemeToggle.js';
 import { Check, ArrowRight } from '../../icons/index.js';
 import { Button } from '../../shadcn/ui/button.js';
@@ -17,7 +17,7 @@ const EULA_LINK = { label: 'EULA', href: '/eula' };
 
 /**
  * Renders a constants icon value. Values that look like a Lucide name (ASCII
- * letters, digits, hyphens) resolve via DynamicIcon; anything else (e.g. a
+ * letters, digits, hyphens) resolve via ConstantsIcon; anything else (e.g. a
  * legacy emoji icon) renders as raw text so it never silently disappears.
  *
  * @param {Object} props
@@ -28,7 +28,7 @@ const EULA_LINK = { label: 'EULA', href: '/eula' };
  */
 function ConstantIcon({ name, size, strokeWidth }: { name?: string; size: number; strokeWidth?: number }) {
   if (!name) return null;
-  if (/^[a-z][a-z0-9-]*$/i.test(name)) return <DynamicIcon name={name} size={size} strokeWidth={strokeWidth} />;
+  if (/^[a-z][a-z0-9-]*$/i.test(name)) return <ConstantsIcon name={name} size={size} strokeWidth={strokeWidth} />;
   return <span className="leading-none" style={{ fontSize: size }}>{name}</span>;
 }
 
@@ -41,7 +41,7 @@ function ConstantIcon({ name, size, strokeWidth }: { name?: string; size: number
  * footerLinks, companyName, copyrightText).
  *
  * Feature icons (constants.features.items[].icon) and appIcon are resolved
- * via DynamicIcon as Lucide names (kebab/PascalCase). Emoji icons do NOT
+ * via ConstantsIcon as Lucide names (kebab/PascalCase). Emoji icons do NOT
  * render — migrate legacy emoji icons in constants.json to Lucide names.
  *
  * @returns {JSX.Element}

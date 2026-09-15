@@ -1,5 +1,10 @@
 # CHANGELOG
 
+4.17.0
+
+  Drop public DynamicIcon
+  Keep private constantsIcon
+
 4.16.0
 
   Drop unused shadcn primitives

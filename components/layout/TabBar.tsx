@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router';
-import DynamicIcon from '../core/DynamicIcon.js';
+import ConstantsIcon from '../core/constantsIcon.js';
 import { getState } from '../core/Context.js';
 import { cn } from '../../shadcn/lib/utils.js';
 
@@ -65,7 +65,7 @@ export default function TabBar({ className, ...props }: TabBarProps) {
               aria-label={tab.title}
               aria-current={isActive ? 'page' : undefined}
             >
-              <DynamicIcon name={tab.icon} size={24} strokeWidth={isActive ? 2 : 1.5} />
+              <ConstantsIcon name={tab.icon} size={24} strokeWidth={isActive ? 2 : 1.5} />
               <span className="text-xs">{tab.title}</span>
             </Link>
           );

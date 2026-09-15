@@ -5,7 +5,8 @@ import { Input } from "../../shadcn/ui/input.js"
 import { Label } from "../../shadcn/ui/label.js"
 import { Card, CardContent, CardHeader } from "../../shadcn/ui/card.js"
 import { Alert, AlertDescription } from "../../shadcn/ui/alert.js"
-import DynamicIcon from '../core/DynamicIcon.js';
+import ConstantsIcon from '../core/constantsIcon.js';
+import { Sparkles } from '../../icons/index.js';
 import { getState } from "../core/Context.js";
 import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
 
@@ -146,7 +147,7 @@ export default function SignInView({
           disabled={isSubmitting}
         >
           <span className="relative z-20 flex items-center justify-center gap-2 drop-shadow-sm">
-            <DynamicIcon name="sparkles" size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
+            <Sparkles size={16} color="currentColor" strokeWidth={2} className="animate-pulse" />
             {isSubmitting ? "Signing in..." : "Sign In"}
           </span>
         </Button>
@@ -172,7 +173,7 @@ export default function SignInView({
           <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
               <div className="bg-app rounded-2xl flex aspect-square size-12 items-center justify-center">
-                <DynamicIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
+                <ConstantsIcon name={constants.appIcon} size={24} color="white" strokeWidth={2} />
               </div>
               <span className="text-3xl font-bold">{constants.appName}</span>
             </div>

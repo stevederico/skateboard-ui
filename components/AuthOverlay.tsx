@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../shadcn/ui/dialog.js';
-import DynamicIcon from './core/DynamicIcon.js';
+import ConstantsIcon from './core/constantsIcon.js';
 import { getState } from './core/Context.js';
 import SignInView from './views/SignInView.js';
 import SignUpView from './views/SignUpView.js';
@@ -61,7 +61,7 @@ export default function AuthOverlay() {
         <DialogHeader className="items-center text-center">
           <div className="flex items-center justify-center gap-3">
             <div className="bg-app rounded-2xl flex aspect-square size-10 items-center justify-center">
-              <DynamicIcon name={constants.appIcon} size={20} color="white" strokeWidth={2} />
+              <ConstantsIcon name={constants.appIcon} size={20} color="white" strokeWidth={2} />
             </div>
             <span className="text-2xl font-bold">{constants.appName}</span>
           </div>

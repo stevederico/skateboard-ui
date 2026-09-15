@@ -253,7 +253,6 @@ Key variables: `--color-app` (brand), `--background`, `--foreground`, `--accent`
 | Header | `@stevederico/skateboard-ui/Header` | Page header with optional action button |
 | Layout | `@stevederico/skateboard-ui/Layout` | Sidebar (desktop) + tabbar (mobile) |
 | TabBar | `@stevederico/skateboard-ui/TabBar` | Mobile bottom navigation |
-| DynamicIcon | `@stevederico/skateboard-ui/DynamicIcon` | Lucide icon by name string |
 | ThemeToggle | `@stevederico/skateboard-ui/ThemeToggle` | Dark/light mode toggle |
 | Sheet | `@stevederico/skateboard-ui/Sheet` | Slide-out panel |
 | UpgradeSheet | `@stevederico/skateboard-ui/UpgradeSheet` | Premium upgrade drawer |
@@ -383,7 +382,7 @@ showManage('cus_abc123');
 
 `react-router` is a runtime dependency of this package (pinned). Apps do not install it. Navigate with `useSafeNavigate()` from `Utilities`.
 
-Icons are re-exported from `lucide-react`. Named imports from `@stevederico/skateboard-ui/icons` stay supported; install `lucide-react` in the app. `DynamicIcon` resolves a curated registry used by the shell and typical `constants.json` icon strings — import rare icons by name instead.
+Icons are re-exported from `lucide-react`. Named imports from `@stevederico/skateboard-ui/icons` stay supported; install `lucide-react` in the app. App code should named-import icons — there is no public DynamicIcon. The shell resolves `constants.json` icon strings privately.
 
 ## Repository
 

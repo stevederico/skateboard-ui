@@ -186,11 +186,9 @@ function toIconName(name: string): string {
 
 /**
  * Curated Lucide icons used by the shell and by `constants.json` icon strings
- * across skateboard apps. Kept explicit so DynamicIcon never star-imports the
- * full icon set (which defeated tree-shaking for every consumer).
- *
- * Named imports from `@stevederico/skateboard-ui/icons` or `lucide-react` still
- * reach the full set. Unknown DynamicIcon names render nothing.
+ * across skateboard apps. Private to the shell — not a package export.
+ * App code should named-import from `lucide-react` or
+ * `@stevederico/skateboard-ui/icons`. Unknown names render nothing.
  */
 const ICON_REGISTRY: Record<string, LucideIcon> = {
   Anchor,
@@ -351,16 +349,6 @@ const ICON_REGISTRY: Record<string, LucideIcon> = {
 };
 
 /**
- * Check if a name string can be resolved to a curated Lucide icon.
- *
- * @param {string} name - Icon name to check
- * @returns {boolean} True if the icon is in the DynamicIcon registry
- */
-export function canResolveIcon(name: string): boolean {
-  return Boolean(ICON_REGISTRY[toIconName(name)]);
-}
-
-/**
  * Render a Lucide icon by name string from the curated registry.
  *
  * Accepts kebab-case ("layout-dashboard"), PascalCase ("LayoutDashboard"),
@@ -376,14 +364,8 @@ export function canResolveIcon(name: string): boolean {
  * @param {string} [props.className] - Additional CSS classes
  * @returns {JSX.Element|null} Rendered icon or null if not found
  *
- * @example
- * import DynamicIcon from '@stevederico/skateboard-ui/DynamicIcon';
- *
- * <DynamicIcon name="home" size={24} />
- * <DynamicIcon name="arrow-right" size={20} color="red" />
- * <DynamicIcon name="settings" className="text-muted-foreground" />
  */
-export interface DynamicIconProps {
+interface ConstantsIconProps {
   name: string;
   size?: number;
   color?: string;
@@ -392,14 +374,14 @@ export interface DynamicIconProps {
   [key: string]: unknown;
 }
 
-const DynamicIcon = ({
+const ConstantsIcon = ({
   name,
   size = 24,
   color = 'currentColor',
   strokeWidth = 2,
   className,
   ...props
-}: DynamicIconProps) => {
+}: ConstantsIconProps) => {
   const Icon = ICON_REGISTRY[toIconName(name)];
   if (!Icon) return null;
   return (
@@ -413,4 +395,4 @@ const DynamicIcon = ({
   );
 };
 
-export default DynamicIcon;
+export default ConstantsIcon;

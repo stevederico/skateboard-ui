@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router";
-import DynamicIcon from "../core/DynamicIcon.js";
+import ConstantsIcon from '../core/constantsIcon.js';
 import { getState } from "../core/Context.js";
 import {
   Sidebar as SidebarRoot,
@@ -20,7 +20,7 @@ import { Settings } from '../../icons/index.js';
 /**
  * Desktop navigation sidebar using shadcn primitives.
  *
- * Renders app pages from constants.pages with DynamicIcon icons,
+ * Renders app pages from constants.pages with ConstantsIcon icons,
  * tooltip support when collapsed, and settings pushed to the footer.
  *
  * @returns {JSX.Element} Sidebar navigation
@@ -57,7 +57,7 @@ export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
                 className="hover:bg-transparent active:bg-transparent"
               >
                 <div className="bg-app flex items-center justify-center shrink-0 rounded-lg size-8 -ml-2">
-                  <DynamicIcon
+                  <ConstantsIcon
                     name={constants.appIcon}
                     strokeWidth={2}
                     className="text-white"
@@ -90,7 +90,7 @@ export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
                         navigate(`/app/${item.url.toLowerCase()}`)
                       }
                     >
-                      <DynamicIcon
+                      <ConstantsIcon
                         name={item.icon}
                         size={20}
                         strokeWidth={2}

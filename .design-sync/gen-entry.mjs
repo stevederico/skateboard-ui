@@ -61,7 +61,7 @@ const defaults = [
   ['AuthOverlay', 'components/AuthOverlay.js'],
   ['ErrorBoundary', 'components/ErrorBoundary.js'],
   ['ProtectedRoute', 'components/ProtectedRoute.js'],
-  ['DynamicIcon', 'components/core/DynamicIcon.js'],
+  ['ConstantsIcon', 'components/core/constantsIcon.js'],
 ];
 for (const [name, p] of defaults) {
   lines.push(`export { default as ${name} } from '../../dist/${p}';`);
