@@ -1,3 +1,9 @@
+5.1.0
+
+  Add loadLegal option
+  Lazy legal TextView routes
+  has* legal footer flags
+
 # CHANGELOG
 
 5.0.0

@@ -12,7 +12,7 @@ import { getState } from './components/core/Context.js';
 import { ThemeProvider } from './components/core/ThemeProvider.js';
 import Layout from './components/layout/Layout.js';
 import LandingView from './components/views/LandingView.js';
-import TextView from './components/views/TextView.js';
+import LegalRoute from './components/views/LegalRoute.js';
 import SignUpView from './components/views/SignUpView.js';
 import SignInView from './components/views/SignInView.js';
 import SignOutView from './components/views/SignOutView.js';
@@ -25,7 +25,10 @@ import { useAppSetup, initializeUtilities, validateConstants, isAuthOverlayEnabl
 import { ContextProvider } from './components/core/Context.js';
 import AuthOverlay from './components/AuthOverlay.js';
 import type { ComponentType, ReactNode } from 'react';
-import type { SkateboardConstants } from './components/core/Utilities.js';
+import type { SkateboardConstants, LegalTexts } from './components/core/Utilities.js';
+
+/** Re-export for consumers that type `loadLegal`. */
+export type { LegalTexts } from './components/core/Utilities.js';
 
 /** A route rendered under /app (config.appRoutes). */
 export interface AppRoute {
@@ -53,6 +56,12 @@ export interface CreateSkateboardAppConfig {
   landingPage?: ReactNode;
   wrapper?: ComponentType<{ children?: ReactNode }>;
   overrides?: AppOverrides;
+  /**
+   * Lazy-load legal document bodies so they stay out of the main JS chunk.
+   * When set, `/terms` `/privacy` `/eula` `/subs` call this on first visit.
+   * Eager `constants.termsOfService` etc. remain supported as a fallback.
+   */
+  loadLegal?: () => Promise<LegalTexts>;
 }
 
 /**
@@ -79,12 +88,13 @@ function AuthRedirect() {
   return null;
 }
 
-function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }: {
+function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {}, loadLegal }: {
   constants: SkateboardConstants;
   appRoutes: AppRoute[];
   defaultRoute: string;
   landingPage?: ReactNode;
   overrides?: AppOverrides;
+  loadLegal?: () => Promise<LegalTexts>;
 }) {
   const location = useLocation();
 
@@ -120,10 +130,10 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
       <Route path="/signin" element={<SignInComponent />} />
       <Route path="/signup" element={<SignUpComponent />} />
       <Route path="/signout" element={<SignOutComponent />} />
-      <Route path="/terms" element={<TextView details={constants.termsOfService!} />} />
-      <Route path="/privacy" element={<TextView details={constants.privacyPolicy!} />} />
-      <Route path="/eula" element={<TextView details={constants.EULA!} />} />
-      <Route path="/subs" element={<TextView details={constants.subscriptionDetails!} />} />
+      <Route path="/terms" element={<LegalRoute field="termsOfService" fallback={constants.termsOfService} loadLegal={loadLegal} />} />
+      <Route path="/privacy" element={<LegalRoute field="privacyPolicy" fallback={constants.privacyPolicy} loadLegal={loadLegal} />} />
+      <Route path="/eula" element={<LegalRoute field="EULA" fallback={constants.EULA} loadLegal={loadLegal} />} />
+      <Route path="/subs" element={<LegalRoute field="subscriptionDetails" fallback={constants.subscriptionDetails} loadLegal={loadLegal} />} />
       <Route path="*" element={<NotFoundComponent />} />
     </Routes>
   );
@@ -151,6 +161,8 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
  * @param {React.ComponentType} [config.overrides.notFound] - Replace NotFound
  * @param {React.ComponentType} [config.overrides.authOverlay] - Replace AuthOverlay
  *
+ * @param {() => Promise<LegalTexts>} [config.loadLegal] - Lazy-load legal document bodies
+ *
  * @example
  * import { createSkateboardApp } from '@stevederico/skateboard-ui/App';
  * import constants from './constants.json';
@@ -158,6 +170,14 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
  * createSkateboardApp({
  *   constants,
  *   appRoutes: [{ path: 'home', element: <HomeView /> }]
+ * });
+ *
+ * @example
+ * // Keep legal text out of the main chunk
+ * createSkateboardApp({
+ *   constants,
+ *   appRoutes: [{ path: 'home', element: <HomeView /> }],
+ *   loadLegal: () => import('./legal.json'),
  * });
  *
  * @example
@@ -171,7 +191,7 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {} }
  *   }
  * });
  */
-export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper, overrides }: CreateSkateboardAppConfig) {
+export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper, overrides, loadLegal }: CreateSkateboardAppConfig) {
   // Validate constants before initialization
   validateConstants(constants);
 
@@ -198,13 +218,13 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
             <Wrapper>
               <Router>
                 <AuthOverlayComponent />
-                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
+                <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} loadLegal={loadLegal} />
               </Router>
             </Wrapper>
           ) : (
             <Router>
               <AuthOverlayComponent />
-              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} />
+              <App constants={constants} appRoutes={appRoutes} defaultRoute={defaultRoute} landingPage={landingPage} overrides={overrides} loadLegal={loadLegal} />
             </Router>
           )}
         </ContextProvider>

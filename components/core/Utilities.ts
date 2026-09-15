@@ -36,6 +36,14 @@ export interface StripeProduct {
     [key: string]: unknown;
 }
 
+/** Legal document bodies that can be loaded lazily via `loadLegal`. */
+export interface LegalTexts {
+    termsOfService?: string;
+    privacyPolicy?: string;
+    EULA?: string;
+    subscriptionDetails?: string;
+}
+
 /**
  * App configuration object passed to createSkateboardApp / initializeUtilities.
  * Required fields are enforced at runtime by validateConstants(); everything
@@ -61,6 +69,14 @@ export interface SkateboardConstants {
     privacyPolicy?: string;
     EULA?: string;
     subscriptionDetails?: string;
+    /** Show Privacy footer link when the body is loaded via `loadLegal` instead of constants. */
+    hasPrivacyPolicy?: boolean;
+    /** Show Terms footer link when the body is loaded via `loadLegal` instead of constants. */
+    hasTermsOfService?: boolean;
+    /** Show EULA footer link when the body is loaded via `loadLegal` instead of constants. */
+    hasEULA?: boolean;
+    /** Show subscription-details link when the body is loaded via `loadLegal`. */
+    hasSubscriptionDetails?: boolean;
     navLinks?: ConstantsLink[];
     footerLinks?: ConstantsLink[];
     pricing?: { title?: string; extras?: string[] };

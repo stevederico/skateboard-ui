@@ -57,9 +57,9 @@ export default function LandingView() {
     ...((constants.stripeProducts?.length ?? 0) > 0 ? [{ label: 'Pricing', href: '#pricing' }] : []),
   ];
   const footerLinks = constants.footerLinks || [
-    ...(constants.privacyPolicy ? [PRIVACY_LINK] : []),
-    ...(constants.termsOfService ? [TERMS_LINK] : []),
-    ...(constants.EULA ? [EULA_LINK] : []),
+    ...(constants.privacyPolicy || constants.hasPrivacyPolicy ? [PRIVACY_LINK] : []),
+    ...(constants.termsOfService || constants.hasTermsOfService ? [TERMS_LINK] : []),
+    ...(constants.EULA || constants.hasEULA ? [EULA_LINK] : []),
   ];
   const items = constants.features?.items || [];
   const sp = (constants.stripeProducts || [])[0];
