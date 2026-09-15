@@ -1,5 +1,9 @@
 # CHANGELOG
 
+4.18.1
+
+  Bump react-router 7.18.3
+
 4.18.0
 
   Drop icons re-exports
