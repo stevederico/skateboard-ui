@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const SwissFranc = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M10 21V3h8" />
-      <path d="M6 16h9" />
-      <path d="M10 9.5h7" />
-  </Icon>
-);
-
-export default SwissFranc;
+export { SwissFranc as default, SwissFranc, SwissFranc as SwissFrancIcon } from 'lucide-react';

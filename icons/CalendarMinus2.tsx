@@ -1,13 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const CalendarMinus2 = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M8 2v4" />
-      <path d="M16 2v4" />
-      <rect width="18" height="18" x="3" y="4" rx="2" />
-      <path d="M3 10h18" />
-      <path d="M10 16h4" />
-  </Icon>
-);
-
-export default CalendarMinus2;
+export { CalendarMinus2 as default, CalendarMinus2, CalendarMinus2 as CalendarMinus2Icon } from 'lucide-react';

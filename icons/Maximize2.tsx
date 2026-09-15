@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Maximize2 = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M15 3h6v6" />
-      <path d="m21 3-7 7" />
-      <path d="m3 21 7-7" />
-      <path d="M9 21H3v-6" />
-  </Icon>
-);
-
-export default Maximize2;
+export { Maximize2 as default, Maximize2, Maximize2 as Maximize2Icon } from 'lucide-react';

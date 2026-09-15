@@ -1,9 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Minus = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M5 12h14" />
-  </Icon>
-);
-
-export default Minus;
+export { Minus as default, Minus, Minus as MinusIcon } from 'lucide-react';

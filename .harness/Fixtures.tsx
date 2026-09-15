@@ -38,14 +38,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../dist/ui/tabs.js"
 import { RadioGroup, RadioGroupItem } from "../dist/ui/radio-group.js"
 import { Slider } from "../dist/ui/slider.js"
 import { Checkbox } from "../dist/ui/checkbox.js"
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
-} from "../dist/ui/navigation-menu.js"
 
 function SlotCompose() {
   // Counts consumer-handler invocations to prove Slot composes (doesn't clobber).
@@ -197,27 +189,6 @@ function RadioNoDefault() {
   )
 }
 
-// NavigationMenu — proves keyboard entry: ArrowDown from the trigger moves focus
-// into the portaled panel's first link.
-function NavMenu() {
-  return (
-    <section data-testid="fx-navmenu">
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Products</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <div className="flex w-48 flex-col gap-1">
-                <NavigationMenuLink href="#a">Analytics</NavigationMenuLink>
-                <NavigationMenuLink href="#b">Engagement</NavigationMenuLink>
-              </div>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    </section>
-  )
-}
 
 // Popover with a Title + Description — proves the role="dialog" gets an
 // accessible name via aria-labelledby (and aria-describedby) only when present.
@@ -322,7 +293,6 @@ const FIXTURES: Record<string, React.ReactNode> = {
   "popover-focus": <PopoverFocus />,
   "tabs-nodefault": <TabsNoDefault />,
   "radio-nodefault": <RadioNoDefault />,
-  navmenu: <NavMenu />,
   "popover-titled": <PopoverTitled />,
   dropdown: <DropdownFx />,
   "slider-form": <SliderForm />,

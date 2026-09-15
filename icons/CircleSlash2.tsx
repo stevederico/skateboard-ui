@@ -1,10 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const CircleSlash2 = (props: IconProps) => (
-  <Icon {...props}>
-    <circle cx="12" cy="12" r="10" />
-      <path d="M22 2 2 22" />
-  </Icon>
-);
-
-export default CircleSlash2;
+export { CircleSlash2 as default, CircleSlash2, CircleSlash2 as CircleSlash2Icon } from 'lucide-react';

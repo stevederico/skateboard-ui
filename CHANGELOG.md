@@ -1,5 +1,12 @@
 # CHANGELOG
 
+4.16.0
+
+  Drop unused shadcn primitives
+  Peer lucide-react icons
+  Curate DynamicIcon registry
+  Cut dead Utilities helpers
+
 4.15.0
 
   Ship react-router as a dependency

@@ -20,15 +20,14 @@ const REGISTRY = 'https://ui.shadcn.com/r/styles/base-vega';
 // Excluded (hand-converted in place, no usable upstream): button, drawer, calendar, command.
 const NAMES = [
   // A
-  'accordion', 'alert-dialog', 'avatar', 'checkbox', 'collapsible', 'context-menu',
-  'dialog', 'dropdown-menu', 'hover-card', 'input', 'menubar', 'navigation-menu',
+  'accordion', 'alert-dialog', 'avatar', 'checkbox', 'collapsible',
+  'dialog', 'dropdown-menu', 'input',
   'popover', 'progress', 'radio-group', 'scroll-area', 'select', 'separator',
   'sheet', 'slider', 'switch', 'tabs', 'toggle', 'toggle-group', 'tooltip',
   // B
-  'item', 'button-group', 'sidebar',
+  'sidebar',
   // C
-  'alert', 'aspect-ratio', 'badge', 'breadcrumb', 'card', 'empty', 'field',
-  'input-group', 'kbd', 'label', 'pagination', 'skeleton', 'spinner', 'table', 'textarea',
+  'alert', 'badge', 'card', 'empty', 'field', 'kbd', 'label', 'pagination', 'skeleton', 'spinner', 'table', 'textarea',
 ];
 
 function rewrite(src) {

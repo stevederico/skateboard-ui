@@ -1,14 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const CalendarX2 = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M8 2v4" />
-      <path d="M16 2v4" />
-      <path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
-      <path d="M3 10h18" />
-      <path d="m17 22 5-5" />
-      <path d="m17 17 5 5" />
-  </Icon>
-);
-
-export default CalendarX2;
+export { CalendarX2 as default, CalendarX2, CalendarX2 as CalendarX2Icon } from 'lucide-react';

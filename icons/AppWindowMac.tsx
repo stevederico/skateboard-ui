@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const AppWindowMac = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-      <path d="M6 8h.01" />
-      <path d="M10 8h.01" />
-      <path d="M14 8h.01" />
-  </Icon>
-);
-
-export default AppWindowMac;
+export { AppWindowMac as default, AppWindowMac, AppWindowMac as AppWindowMacIcon } from 'lucide-react';

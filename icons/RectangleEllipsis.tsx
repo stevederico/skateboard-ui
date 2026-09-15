@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const RectangleEllipsis = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="20" height="12" x="2" y="6" rx="2" />
-      <path d="M12 12h.01" />
-      <path d="M17 12h.01" />
-      <path d="M7 12h.01" />
-  </Icon>
-);
-
-export default RectangleEllipsis;
+export { RectangleEllipsis as default, RectangleEllipsis, RectangleEllipsis as RectangleEllipsisIcon } from 'lucide-react';

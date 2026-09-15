@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Music4 = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M9 18V5l12-2v13" />
-      <path d="m9 9 12-2" />
-      <circle cx="6" cy="18" r="3" />
-      <circle cx="18" cy="16" r="3" />
-  </Icon>
-);
-
-export default Music4;
+export { Music4 as default, Music4, Music4 as Music4Icon } from 'lucide-react';

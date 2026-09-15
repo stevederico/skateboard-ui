@@ -27,14 +27,6 @@ import {
   TableCell,
 } from "../dist/ui/table.js"
 import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "../dist/ui/breadcrumb.js"
-import {
   Pagination,
   PaginationContent,
   PaginationItem,
@@ -131,30 +123,6 @@ import {
   AlertDialogHeader as LegacyAlertDialogHeader,
 } from "../dist/shadcn/ui/alert-dialog.js"
 import {
-  ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuLabel,
-} from "../dist/ui/context-menu.js"
-import {
-  Menubar,
-  MenubarMenu,
-  MenubarTrigger,
-  MenubarContent,
-  MenubarItem,
-  MenubarSeparator,
-} from "../dist/ui/menubar.js"
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
-} from "../dist/ui/navigation-menu.js"
-import {
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -185,11 +153,6 @@ import {
 } from "../dist/ui/drawer.js"
 import { Checkbox } from "../dist/ui/checkbox.js"
 import {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-} from "../dist/ui/hover-card.js"
-import {
   Command,
   CommandInput,
   CommandList,
@@ -198,13 +161,6 @@ import {
   CommandItem,
 } from "../dist/ui/command.js"
 import { Calendar } from "../dist/ui/calendar.js"
-import { ButtonGroup } from "../dist/ui/button-group.js"
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-} from "../dist/ui/item.js"
 import {
   SidebarProvider,
   Sidebar,
@@ -311,18 +267,7 @@ export function App() {
         </Table>
       </Section>
 
-      <Section id="s-breadcrumb" title="Breadcrumb / Pagination">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Current</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      <Section id="s-pagination" title="Pagination">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
@@ -528,62 +473,6 @@ export function App() {
         </ScrollArea>
       </Section>
 
-      <Section id="s-nav" title="ContextMenu / Menubar / NavigationMenu (hard tier)">
-        <ContextMenu>
-          <ContextMenuTrigger className="flex h-20 w-48 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-            Right-click here
-          </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuLabel>Context</ContextMenuLabel>
-            <ContextMenuItem>Back</ContextMenuItem>
-            <ContextMenuItem>Reload</ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem variant="destructive">Remove</ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
-
-        <Menubar className="flex h-9 items-center gap-1 rounded-md border bg-background p-1">
-          <MenubarMenu>
-            <MenubarTrigger className="rounded-sm px-2 py-1 text-sm">File</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>New</MenubarItem>
-              <MenubarItem>Open</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Save</MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger className="rounded-sm px-2 py-1 text-sm">Edit</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>Undo</MenubarItem>
-              <MenubarItem>Redo</MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-        </Menubar>
-
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="flex w-48 flex-col gap-1">
-                  <NavigationMenuLink href="#a">Analytics</NavigationMenuLink>
-                  <NavigationMenuLink href="#b">Engagement</NavigationMenuLink>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="flex w-48 flex-col gap-1">
-                  <NavigationMenuLink href="#c">About</NavigationMenuLink>
-                  <NavigationMenuLink href="#d">Careers</NavigationMenuLink>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      </Section>
 
       <Section id="s-alert" title="AlertDialog / Sheet (hard tier)">
         <AlertDialog>
@@ -652,16 +541,11 @@ export function App() {
         </LegacyAlertDialog>
       </Section>
 
-      <Section id="s-final" title="Checkbox / HoverCard / Command / Calendar / Item / Sidebar (final)">
+      <Section id="s-final" title="Checkbox / Command / Calendar / Sidebar (final)">
         <div className="flex items-center gap-2">
           <Checkbox id="cb1" defaultChecked />
           <Label htmlFor="cb1">Accept terms</Label>
         </div>
-
-        <HoverCard>
-          <HoverCardTrigger href="#s-final">@hovercard</HoverCardTrigger>
-          <HoverCardContent>Hover card content.</HoverCardContent>
-        </HoverCard>
 
         <Command className="w-64 rounded-md border">
           <CommandInput placeholder="Search…" />
@@ -676,18 +560,6 @@ export function App() {
         </Command>
 
         <Calendar mode="single" />
-
-        <ButtonGroup>
-          <Button variant="outline" size="sm">One</Button>
-          <Button variant="outline" size="sm">Two</Button>
-        </ButtonGroup>
-
-        <Item variant="outline" className="w-64">
-          <ItemContent>
-            <ItemTitle>Item title</ItemTitle>
-            <ItemDescription>Item description.</ItemDescription>
-          </ItemContent>
-        </Item>
 
         <div className="h-48 w-full overflow-hidden rounded-md border">
           <SidebarProvider defaultOpen className="min-h-0">

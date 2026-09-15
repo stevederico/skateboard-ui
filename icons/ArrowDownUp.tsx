@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const ArrowDownUp = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="m3 16 4 4 4-4" />
-      <path d="M7 20V4" />
-      <path d="m21 8-4-4-4 4" />
-      <path d="M17 4v16" />
-  </Icon>
-);
-
-export default ArrowDownUp;
+export { ArrowDownUp as default, ArrowDownUp, ArrowDownUp as ArrowDownUpIcon } from 'lucide-react';

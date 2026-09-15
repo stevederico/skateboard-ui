@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Tent = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M3.5 21 14 3" />
-      <path d="M20.5 21 10 3" />
-      <path d="M15.5 21 12 15l-3.5 6" />
-      <path d="M2 21h20" />
-  </Icon>
-);
-
-export default Tent;
+export { Tent as default, Tent, Tent as TentIcon } from 'lucide-react';

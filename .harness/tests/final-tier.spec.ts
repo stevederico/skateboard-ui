@@ -1,32 +1,12 @@
 import { test, expect } from "@playwright/test"
 
-// Final-tier tests for the remaining in-house drop-ins (HoverCard, Command,
-// Calendar, ButtonGroup, Item, Sidebar) plus the 4.0.0 linker: the legacy
+// Final-tier tests for the remaining in-house drop-ins (Command,
+// Calendar, Sidebar) plus the 4.0.0 linker: the legacy
 // dist/shadcn/ui shim import path and base-ui `render=` trigger compat.
 // Checkbox is covered elsewhere. All markup lives in App.tsx under #s-final
 // and #s-legacy. Every test loads the demo at "/" first and asserts one
 // behavior, relying on Playwright auto-waiting (no fixed timeouts).
 
-// ===== HoverCard (#s-final) =====
-
-test("HoverCard opens on trigger hover after its open delay", async ({ page }) => {
-  await page.goto("/")
-  const content = page.locator("[data-slot=hover-card-content]")
-  await expect(content).toHaveCount(0)
-  // Hovering the trigger opens the card after a ~700ms delay; auto-retry past it.
-  await page.getByRole("link", { name: "@hovercard" }).hover()
-  await expect(content).toBeVisible({ timeout: 2000 })
-})
-
-test("HoverCard closes when the pointer moves away", async ({ page }) => {
-  await page.goto("/")
-  const content = page.locator("[data-slot=hover-card-content]")
-  await page.getByRole("link", { name: "@hovercard" }).hover()
-  await expect(content).toBeVisible({ timeout: 2000 })
-  // Move the pointer off the trigger; the card dismisses.
-  await page.getByRole("heading", { level: 1 }).hover()
-  await expect(content).toHaveCount(0)
-})
 
 // ===== Command (#s-final) =====
 
@@ -56,22 +36,6 @@ test("Calendar renders a grid of numbered day buttons", async ({ page }) => {
   expect(await days.count()).toBeGreaterThan(27)
 })
 
-// ===== ButtonGroup (#s-final) =====
-
-test("ButtonGroup renders its grouped buttons", async ({ page }) => {
-  await page.goto("/")
-  const group = page.locator("[data-slot=button-group]")
-  await expect(group.getByRole("button", { name: "One" })).toBeVisible()
-  await expect(group.getByRole("button", { name: "Two" })).toBeVisible()
-})
-
-// ===== Item (#s-final) =====
-
-test("Item renders its title and description", async ({ page }) => {
-  await page.goto("/")
-  await expect(page.getByText("Item title")).toBeVisible()
-  await expect(page.getByText("Item description.")).toBeVisible()
-})
 
 // ===== Sidebar (#s-final) =====
 

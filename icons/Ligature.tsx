@@ -1,13 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Ligature = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M14 12h2v8" />
-      <path d="M14 20h4" />
-      <path d="M6 12h4" />
-      <path d="M6 20h4" />
-      <path d="M8 20V8a4 4 0 0 1 7.464-2" />
-  </Icon>
-);
-
-export default Ligature;
+export { Ligature as default, Ligature, Ligature as LigatureIcon } from 'lucide-react';

@@ -1,13 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const TextSearch = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M21 5H3" />
-      <path d="M10 12H3" />
-      <path d="M10 19H3" />
-      <circle cx="17" cy="15" r="3" />
-      <path d="m21 19-1.9-1.9" />
-  </Icon>
-);
-
-export default TextSearch;
+export { TextSearch as default, TextSearch, TextSearch as TextSearchIcon } from 'lucide-react';

@@ -140,18 +140,6 @@ test("RadioGroup: only the first radio is tabbable when none is selected", async
   await expect(radios.nth(2)).toHaveAttribute("tabindex", "-1")
 })
 
-test("NavigationMenu: ArrowDown from the trigger moves focus into the panel", async ({
-  page,
-}) => {
-  await page.goto("/tests.html?fx=navmenu")
-  await page.getByRole("button", { name: "Products" }).focus()
-  await page.keyboard.press("ArrowDown")
-  // Keyboard users can now reach the links inside the portaled panel.
-  await expect(page.getByRole("link", { name: "Analytics" })).toBeFocused()
-})
-
-// --- 4.2.0 medium a11y fixes ---
-
 test("Dialog wires aria-labelledby to its title and omits aria-describedby when no description", async ({
   page,
 }) => {

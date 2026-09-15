@@ -1,10 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Captions = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="18" height="14" x="3" y="5" rx="2" ry="2" />
-      <path d="M7 15h4M15 15h2M7 11h2M13 11h4" />
-  </Icon>
-);
-
-export default Captions;
+export { Captions as default, Captions, Captions as CaptionsIcon } from 'lucide-react';

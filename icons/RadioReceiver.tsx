@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const RadioReceiver = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M5 16v2" />
-      <path d="M19 16v2" />
-      <rect width="20" height="8" x="2" y="8" rx="2" />
-      <path d="M18 12h.01" />
-  </Icon>
-);
-
-export default RadioReceiver;
+export { RadioReceiver as default, RadioReceiver, RadioReceiver as RadioReceiverIcon } from 'lucide-react';

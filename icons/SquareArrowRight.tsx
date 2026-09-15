@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const SquareArrowRight = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="18" height="18" x="3" y="3" rx="2" />
-      <path d="M8 12h8" />
-      <path d="m12 16 4-4-4-4" />
-  </Icon>
-);
-
-export default SquareArrowRight;
+export { SquareArrowRight as default, SquareArrowRight, SquareArrowRight as SquareArrowRightIcon } from 'lucide-react';

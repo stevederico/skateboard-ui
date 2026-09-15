@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const SpellCheck = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="m6 16 6-12 6 12" />
-      <path d="M8 12h8" />
-      <path d="m16 20 2 2 4-4" />
-  </Icon>
-);
-
-export default SpellCheck;
+export { SpellCheck as default, SpellCheck, SpellCheck as SpellCheckIcon } from 'lucide-react';

@@ -1,13 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const TimerOff = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M10 2h4" />
-      <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7" />
-      <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2" />
-      <path d="m2 2 20 20" />
-      <path d="M12 12v-2" />
-  </Icon>
-);
-
-export default TimerOff;
+export { TimerOff as default, TimerOff, TimerOff as TimerOffIcon } from 'lucide-react';

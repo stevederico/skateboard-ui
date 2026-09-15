@@ -1,10 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Undo = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M3 7v6h6" />
-      <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
-  </Icon>
-);
-
-export default Undo;
+export { Undo as default, Undo, Undo as UndoIcon } from 'lucide-react';

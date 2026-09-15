@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const ReplyAll = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="m12 17-5-5 5-5" />
-      <path d="M22 18v-2a4 4 0 0 0-4-4H7" />
-      <path d="m7 17-5-5 5-5" />
-  </Icon>
-);
-
-export default ReplyAll;
+export { ReplyAll as default, ReplyAll, ReplyAll as ReplyAllIcon } from 'lucide-react';

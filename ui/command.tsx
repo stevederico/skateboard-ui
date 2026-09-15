@@ -18,10 +18,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./dialog.js"
-import {
-  InputGroup,
-  InputGroupAddon,
-} from "./input-group.js"
 import { SearchIcon, CheckIcon } from "../icons/index.js"
 
 function Command({
@@ -77,19 +73,18 @@ function CommandInput({
 }: CommandInputProps) {
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup
-        className="bg-input/30 border-input/30 h-8! rounded-lg! shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+      <div
+        data-slot="command-input-group"
+        className="bg-input/30 border-input/30 flex h-8 items-center gap-2 rounded-lg border px-2 shadow-none">
+        <SearchIcon className="size-4 shrink-0 opacity-50" />
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
-            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            "w-full bg-transparent text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           {...props} />
-        <InputGroupAddon>
-          <SearchIcon className="size-4 shrink-0 opacity-50" />
-        </InputGroupAddon>
-      </InputGroup>
+      </div>
     </div>
   );
 }

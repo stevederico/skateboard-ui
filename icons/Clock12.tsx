@@ -1,10 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Clock12 = (props: IconProps) => (
-  <Icon {...props}>
-    <circle cx="12" cy="12" r="10" />
-      <path d="M12 6v6" />
-  </Icon>
-);
-
-export default Clock12;
+export { Clock12 as default, Clock12, Clock12 as Clock12Icon } from 'lucide-react';

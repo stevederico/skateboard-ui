@@ -1,13 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Barcode = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M3 5v14" />
-      <path d="M8 5v14" />
-      <path d="M12 5v14" />
-      <path d="M17 5v14" />
-      <path d="M21 5v14" />
-  </Icon>
-);
-
-export default Barcode;
+export { Barcode as default, Barcode, Barcode as BarcodeIcon } from 'lucide-react';

@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const GeorgianLari = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M11.5 21a7.5 7.5 0 1 1 7.35-9" />
-      <path d="M13 12V3" />
-      <path d="M4 21h16" />
-      <path d="M9 12V3" />
-  </Icon>
-);
-
-export default GeorgianLari;
+export { GeorgianLari as default, GeorgianLari, GeorgianLari as GeorgianLariIcon } from 'lucide-react';

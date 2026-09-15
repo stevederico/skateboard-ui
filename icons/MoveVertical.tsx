@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const MoveVertical = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M12 2v20" />
-      <path d="m8 18 4 4 4-4" />
-      <path d="m8 6 4-4 4 4" />
-  </Icon>
-);
-
-export default MoveVertical;
+export { MoveVertical as default, MoveVertical, MoveVertical as MoveVerticalIcon } from 'lucide-react';

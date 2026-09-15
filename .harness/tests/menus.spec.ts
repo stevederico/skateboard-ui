@@ -1,12 +1,9 @@
 import { test, expect } from "@playwright/test"
 
-// Real-browser behavior tests for the menu/listbox family: DropdownMenu,
-// Select, ContextMenu, Menubar, and NavigationMenu. These exercise the
+// Real-browser behavior tests for DropdownMenu and Select. These exercise the
 // floating/portal layout, roving focus, and open-state coordination that only
-// behave correctly in a real browser. Markup/labels are pinned to App.tsx
-// (#s-menu has DropdownMenu "Menu" + Select "Pick a fruit"; #s-nav has the
-// ContextMenu "Right-click here", the File/Edit Menubar, and the
-// Products/Company NavigationMenu). One behavior per test.
+// behave correctly in a real browser. Markup lives in App.tsx (#s-menu).
+// One behavior per test.
 
 // ---- DropdownMenu --------------------------------------------------------
 
@@ -138,56 +135,3 @@ test("Select ArrowDown moves the focused option", async ({ page }) => {
   await expect(opts.getByRole("option", { name: "Banana" })).toBeFocused()
 })
 
-// ---- ContextMenu ---------------------------------------------------------
-
-test("ContextMenu opens on right-click and closes on Escape", async ({
-  page,
-}) => {
-  await page.goto("/")
-  await page.getByText("Right-click here").click({ button: "right" })
-  const content = page.locator("[data-slot=context-menu-content]")
-  await expect(content).toBeVisible()
-  await expect(content.getByRole("menuitem", { name: "Reload" })).toBeVisible()
-  await page.keyboard.press("Escape")
-  await expect(content).toHaveCount(0)
-})
-
-// ---- Menubar -------------------------------------------------------------
-
-test("Menubar opens the File menu on click", async ({ page }) => {
-  await page.goto("/")
-  // Menubar triggers are <button aria-haspopup=menu>, not role=menuitem.
-  await page.getByRole("button", { name: "File" }).click()
-  const content = page.locator("[data-slot=menubar-content]")
-  await expect(content.getByRole("menuitem", { name: "New" })).toBeVisible()
-  await expect(content.getByRole("menuitem", { name: "Open" })).toBeVisible()
-  await expect(content.getByRole("menuitem", { name: "Save" })).toBeVisible()
-})
-
-test("Menubar switches the open menu when hovering a sibling trigger", async ({
-  page,
-}) => {
-  await page.goto("/")
-  await page.getByRole("button", { name: "File" }).click()
-  await expect(
-    page.getByRole("menuitem", { name: "New" })
-  ).toBeVisible()
-  await page.getByRole("button", { name: "Edit" }).hover()
-  // The open menu switched to Edit's content; File's items are gone.
-  await expect(page.getByRole("menuitem", { name: "Undo" })).toBeVisible()
-  await expect(page.getByRole("menuitem", { name: "Redo" })).toBeVisible()
-  await expect(page.getByRole("menuitem", { name: "New" })).toHaveCount(0)
-})
-
-// ---- NavigationMenu ------------------------------------------------------
-
-test("NavigationMenu opens its panel when the trigger is hovered", async ({
-  page,
-}) => {
-  await page.goto("/")
-  await page.getByRole("button", { name: "Products" }).hover()
-  const panel = page.locator("[data-slot=navigation-menu-content]")
-  await expect(panel).toBeVisible()
-  await expect(panel.getByRole("link", { name: "Analytics" })).toBeVisible()
-  await expect(panel.getByRole("link", { name: "Engagement" })).toBeVisible()
-})

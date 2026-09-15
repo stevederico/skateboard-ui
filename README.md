@@ -354,7 +354,6 @@ import {
   hideTabBar,
   timestampToString,
   useListData,
-  useForm,
   isAppMode,
 } from '@stevederico/skateboard-ui/Utilities';
 ```
@@ -380,8 +379,11 @@ showManage('cus_abc123');
 
 - React 19.1+
 - react-dom 19.1+
+- lucide-react 0.500+
 
 `react-router` is a runtime dependency of this package (pinned). Apps do not install it. Navigate with `useSafeNavigate()` from `Utilities`.
+
+Icons are re-exported from `lucide-react`. Named imports from `@stevederico/skateboard-ui/icons` stay supported; install `lucide-react` in the app. `DynamicIcon` resolves a curated registry used by the shell and typical `constants.json` icon strings — import rare icons by name instead.
 
 ## Repository
 

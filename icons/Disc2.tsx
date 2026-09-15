@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Disc2 = (props: IconProps) => (
-  <Icon {...props}>
-    <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 12h.01" />
-  </Icon>
-);
-
-export default Disc2;
+export { Disc2 as default, Disc2, Disc2 as Disc2Icon } from 'lucide-react';

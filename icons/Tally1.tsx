@@ -1,9 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Tally1 = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M4 4v16" />
-  </Icon>
-);
-
-export default Tally1;
+export { Tally1 as default, Tally1, Tally1 as Tally1Icon } from 'lucide-react';

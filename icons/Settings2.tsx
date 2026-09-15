@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Settings2 = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M14 17H5" />
-      <path d="M19 7h-9" />
-      <circle cx="17" cy="17" r="3" />
-      <circle cx="7" cy="7" r="3" />
-  </Icon>
-);
-
-export default Settings2;
+export { Settings2 as default, Settings2, Settings2 as Settings2Icon } from 'lucide-react';

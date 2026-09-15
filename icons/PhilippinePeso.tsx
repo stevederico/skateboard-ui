@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const PhilippinePeso = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M20 11H4" />
-      <path d="M20 7H4" />
-      <path d="M7 21V4a1 1 0 0 1 1-1h4a1 1 0 0 1 0 12H7" />
-  </Icon>
-);
-
-export default PhilippinePeso;
+export { PhilippinePeso as default, PhilippinePeso, PhilippinePeso as PhilippinePesoIcon } from 'lucide-react';

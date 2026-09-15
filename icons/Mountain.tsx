@@ -1,9 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Mountain = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-  </Icon>
-);
-
-export default Mountain;
+export { Mountain as default, Mountain, Mountain as MountainIcon } from 'lucide-react';

@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const EqualNot = (props: IconProps) => (
-  <Icon {...props}>
-    <line x1="5" x2="19" y1="9" y2="9" />
-      <line x1="5" x2="19" y1="15" y2="15" />
-      <line x1="19" x2="5" y1="5" y2="19" />
-  </Icon>
-);
-
-export default EqualNot;
+export { EqualNot as default, EqualNot, EqualNot as EqualNotIcon } from 'lucide-react';

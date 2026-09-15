@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const PanelTopOpen = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="18" height="18" x="3" y="3" rx="2" />
-      <path d="M3 9h18" />
-      <path d="m15 14-3 3-3-3" />
-  </Icon>
-);
-
-export default PanelTopOpen;
+export { PanelTopOpen as default, PanelTopOpen, PanelTopOpen as PanelTopOpenIcon } from 'lucide-react';

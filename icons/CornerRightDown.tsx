@@ -1,10 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const CornerRightDown = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="m10 15 5 5 5-5" />
-      <path d="M4 4h7a4 4 0 0 1 4 4v12" />
-  </Icon>
-);
-
-export default CornerRightDown;
+export { CornerRightDown as default, CornerRightDown, CornerRightDown as CornerRightDownIcon } from 'lucide-react';

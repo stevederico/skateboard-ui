@@ -1,10 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const SkipForward = (props: IconProps) => (
-  <Icon {...props}>
-    <path d="M21 4v16" />
-      <path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" />
-  </Icon>
-);
-
-export default SkipForward;
+export { SkipForward as default, SkipForward, SkipForward as SkipForwardIcon } from 'lucide-react';

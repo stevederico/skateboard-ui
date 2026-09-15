@@ -1,11 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const BetweenVerticalEnd = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="7" height="13" x="3" y="3" rx="1" />
-      <path d="m9 22 3-3 3 3" />
-      <rect width="7" height="13" x="14" y="3" rx="1" />
-  </Icon>
-);
-
-export default BetweenVerticalEnd;
+export { BetweenVerticalEnd as default, BetweenVerticalEnd, BetweenVerticalEnd as BetweenVerticalEndIcon } from 'lucide-react';

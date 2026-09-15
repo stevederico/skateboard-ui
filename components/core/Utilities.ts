@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useInRouterContext, useNavigate } from 'react-router';
 import { getDispatch } from './Context.js';
 import type { Location } from 'react-router';
-import type { ChangeEvent, FormEvent, RefObject } from 'react';
+import type { RefObject } from 'react';
 
 /** A navigation item rendered in the Sidebar and TabBar (constants.pages). */
 export interface ConstantsPage {
@@ -452,16 +452,6 @@ export async function isSubscriber(): Promise<boolean> {
         console.error('Error checking subscription:', error);
         return false;
     }
-}
-
-/**
- * Log an analytics event. Stub for custom analytics integration.
- *
- * @param {string} event - Event name to log
- * @returns {Promise<void>}
- */
-export async function logEvent(event: string): Promise<void> {
-    //insert analytics code here
 }
 
 /**
@@ -1045,48 +1035,12 @@ export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => 
     return { data, loading, error, refetch: () => fetchData() };
 }
 
-/**
- * Standard form state management
- * @param {object} initialValues - Initial form values
- * @param {function} onSubmit - Submit handler function
- * @returns {object} - { values, handleChange, handleSubmit, reset, submitting, error }
- */
-export function useForm(initialValues: Record<string, any>, onSubmit: (values: Record<string, any>) => unknown) {
-    const [values, setValues] = useState(initialValues);
-    const [submitting, setSubmitting] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-    const handleChange = (field: string) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setValues(prev => ({ ...prev, [field]: e.target.value }));
-    };
-
-    const handleSubmit = async (e?: FormEvent) => {
-        e?.preventDefault();
-        setSubmitting(true);
-        setError(null);
-        try {
-            await onSubmit(values);
-            setValues(initialValues);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : String(err));
-        } finally {
-            setSubmitting(false);
-        }
-    };
-
-    const reset = () => setValues(initialValues);
-
-    return { values, handleChange, handleSubmit, reset, submitting, error };
-}
-
-
 // ===== UI VISIBILITY CONTROLS =====
 
 /**
- * Programmatically show/hide the sidebar
- * @param {boolean} visible - Whether sidebar should be visible
+ * Dispatch a sidebar visibility change. Not exported — apps use show/hide helpers.
  */
-export function setSidebarVisible(visible: boolean): void {
+function setSidebarVisible(visible: boolean): void {
     const dispatch = getDispatch();
     if (dispatch) {
         dispatch({ type: 'SET_SIDEBAR_VISIBLE', payload: visible });
@@ -1096,10 +1050,9 @@ export function setSidebarVisible(visible: boolean): void {
 }
 
 /**
- * Programmatically show/hide the tab bar
- * @param {boolean} visible - Whether tab bar should be visible
+ * Dispatch a tab bar visibility change. Not exported — apps use show/hide helpers.
  */
-export function setTabBarVisible(visible: boolean): void {
+function setTabBarVisible(visible: boolean): void {
     const dispatch = getDispatch();
     if (dispatch) {
         dispatch({ type: 'SET_TABBAR_VISIBLE', payload: visible });

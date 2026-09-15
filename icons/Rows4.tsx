@@ -1,12 +1,1 @@
-import Icon, { type IconProps } from './_Icon.js';
-
-const Rows4 = (props: IconProps) => (
-  <Icon {...props}>
-    <rect width="18" height="18" x="3" y="3" rx="2" />
-      <path d="M21 7.5H3" />
-      <path d="M21 12H3" />
-      <path d="M21 16.5H3" />
-  </Icon>
-);
-
-export default Rows4;
+export { Rows4 as default, Rows4, Rows4 as Rows4Icon } from 'lucide-react';
