@@ -1010,13 +1010,29 @@ export function validateConstants(constants: SkateboardConstants): SkateboardCon
 
 // ===== REACT HOOKS =====
 
+/** Options for {@link useListData}. */
+export interface ListDataOptions {
+    /**
+     * Keep the list fresh: refetch quietly every this many milliseconds while
+     * the page is visible, and again when the user returns to it. `true`
+     * means 60 seconds. Quiet refetches skip the loading state and keep the
+     * last good rows on error, so new items just appear.
+     */
+    live?: boolean | number;
+}
+
 /**
- * Standard list data fetcher with optional sorting
+ * Standard list data fetcher with optional sorting and live refresh
  * @param {string} endpoint - API endpoint to fetch from
  * @param {function} sortFn - Optional sort function for results
+ * @param {ListDataOptions} options - `live` turns on quiet periodic refetch
  * @returns {object} - { data, loading, error, refetch }
  */
-export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => number) | null = null) {
+export function useListData<T = any>(
+    endpoint: string,
+    sortFn: ((a: T, b: T) => number) | null = null,
+    options: ListDataOptions = {},
+) {
     const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -1025,8 +1041,10 @@ export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => 
     const sortFnRef = useRef(sortFn);
     sortFnRef.current = sortFn;
 
-    const fetchData = async (signal?: AbortSignal) => {
-        setLoading(true);
+    const liveMs = options.live === true ? 60_000 : typeof options.live === 'number' ? options.live : 0;
+
+    const fetchData = async (signal?: AbortSignal, quiet = false) => {
+        if (!quiet) setLoading(true);
         try {
             const result = await apiRequest<T[]>(endpoint, { signal });
             const sort = sortFnRef.current;
@@ -1036,17 +1054,28 @@ export function useListData<T = any>(endpoint: string, sortFn: ((a: T, b: T) => 
         } catch (err) {
             // Ignore abort errors (DOMException in the browser, not an Error)
             if ((err instanceof DOMException || err instanceof Error) && err.name === 'AbortError') return;
-            setError(err instanceof Error ? err.message : String(err));
+            // A failed quiet refresh keeps showing the last good rows
+            if (!quiet) setError(err instanceof Error ? err.message : String(err));
         } finally {
-            setLoading(false);
+            if (!quiet) setLoading(false);
         }
     };
 
     useEffect(() => {
         const controller = new AbortController();
         fetchData(controller.signal);
-        return () => controller.abort();
-    }, [endpoint]);
+        if (liveMs <= 0) return () => controller.abort();
+        const tick = () => {
+            if (document.visibilityState === 'visible') fetchData(controller.signal, true);
+        };
+        const timer = setInterval(tick, liveMs);
+        document.addEventListener('visibilitychange', tick);
+        return () => {
+            controller.abort();
+            clearInterval(timer);
+            document.removeEventListener('visibilitychange', tick);
+        };
+    }, [endpoint, liveMs]);
 
     return { data, loading, error, refetch: () => fetchData() };
 }

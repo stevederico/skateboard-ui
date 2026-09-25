@@ -198,6 +198,21 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
   // Initialize utilities with constants
   initializeUtilities(constants);
 
+  // A deploy replaces the hashed chunk files. A page opened before it asks
+  // for chunks that are gone ("Importing a module script failed"); reload
+  // once to pick up the new build instead of showing a broken route.
+  window.addEventListener('vite:preloadError', (event) => {
+    event.preventDefault();
+    try {
+      const last = Number(sessionStorage.getItem('skateboard-chunk-reload') || 0);
+      if (Date.now() - last < 10_000) return;
+      sessionStorage.setItem('skateboard-chunk-reload', String(Date.now()));
+    } catch {
+      // Storage can be unavailable (private mode, some web views); reload anyway
+    }
+    window.location.reload();
+  });
+
   // Prevent theme flash by setting dark class before React hydrates
   // This runs synchronously before render, reading from localStorage or system preference
   const storageKey = 'theme';

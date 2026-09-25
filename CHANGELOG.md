@@ -1,3 +1,10 @@
+5.2.0
+
+  Add live list option
+  Reload stale builds
+  Raise dark contrast
+  Bolder page titles
+
 5.1.0
 
   Add loadLegal option
