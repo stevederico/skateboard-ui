@@ -1,3 +1,7 @@
+5.2.1
+
+  Publish from CI
+
 5.2.0
 
   Add live list option
