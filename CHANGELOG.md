@@ -1,3 +1,7 @@
+5.4.0
+
+  Use shadcn dark palette
+
 5.3.0
 
   Drop header divider
