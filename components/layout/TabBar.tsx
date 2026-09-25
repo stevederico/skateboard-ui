@@ -44,7 +44,7 @@ export default function TabBar({ className, ...props }: TabBarProps) {
   return (
     <nav
       className={cn(
-        "fixed md:hidden bottom-0 inset-x-0 bg-background border-t border-border z-50",
+        "fixed md:hidden bottom-0 inset-x-0 bg-background z-50",
         className
       )}
       role="navigation"

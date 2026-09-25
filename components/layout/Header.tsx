@@ -1,14 +1,12 @@
-import { Separator } from "../../ui/separator.js";
 import { Button } from "../../ui/button.js";
 import { Badge } from "../../ui/badge.js";
 import { cn } from "../../shadcn/lib/utils.js";
 import type { ReactNode } from "react";
 
 /**
- * App header bar built on shadcn primitives (Button, Separator, Badge).
+ * App header bar built on shadcn primitives (Button, Badge).
  *
  * Renders page title and optional action button on the right.
- * A shadcn Separator renders below the header instead of a border utility.
  *
  * @param {Object} props
  * @param {string} props.title - Header title text
@@ -53,7 +51,6 @@ function Header({ title, buttonTitle, onButtonTitleClick, buttonClass, className
           </div>
         </div>
       </header>
-      <Separator />
     </>
   );
 }

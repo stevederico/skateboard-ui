@@ -1,3 +1,8 @@
+5.3.0
+
+  Drop header divider
+  Drop tab bar border
+
 5.2.3
 
   No border on phones
