@@ -1,3 +1,7 @@
+5.2.2
+
+  Fix CI install
+
 5.2.1
 
   Publish from CI

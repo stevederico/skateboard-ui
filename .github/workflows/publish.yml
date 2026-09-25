@@ -23,7 +23,8 @@ jobs:
           registry-url: https://registry.npmjs.org
       # Trusted publishing needs npm 11.5.1 or newer.
       - run: npm install -g npm@11
-      - run: npm ci
+      # Libraries do not commit a lockfile, so install fresh.
+      - run: npm install --no-audit --no-fund
       - name: Tag matches package.json
         run: test "$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
       - run: npm publish
