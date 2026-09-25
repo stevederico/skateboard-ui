@@ -55,7 +55,7 @@ export default function Layout({ children }: LayoutProps) {
           '--header-height': '3.5rem',
         } as React.CSSProperties}>
         {showSidebar && <Sidebar variant="inset" />}
-        <SidebarInset id="main" className={`border border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
+        <SidebarInset id="main" className={`md:border md:border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
           <Outlet />
         </SidebarInset>
       </SidebarProvider>

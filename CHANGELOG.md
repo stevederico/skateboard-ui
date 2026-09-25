@@ -1,3 +1,7 @@
+5.2.3
+
+  No border on phones
+
 5.2.2
 
   Fix CI install
