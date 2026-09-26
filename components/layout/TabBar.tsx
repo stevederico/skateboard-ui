@@ -59,7 +59,7 @@ export default function TabBar({ className, ...props }: TabBarProps) {
               key={tab.title}
               to={tab.to}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 transition-colors",
+                "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 px-3 transition-colors",
                 isActive ? "text-foreground" : "text-muted-foreground"
               )}
               aria-label={tab.title}

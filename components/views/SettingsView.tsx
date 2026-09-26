@@ -114,7 +114,7 @@ export default function SettingsView() {
               </CardTitle>
               <CardAction>
                 <AlertDialog>
-                  <AlertDialogTrigger render={<Button variant="outline" size="sm">Sign Out</Button>} />
+                  <AlertDialogTrigger render={<Button variant="outline" size="sm" className="min-h-11 px-4">Sign Out</Button>} />
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Sign Out</AlertDialogTitle>

@@ -47,7 +47,7 @@ export default function ThemeToggle({ className = "", iconSize = 16, variant = "
       variant={variant === "landing" ? "outline" : "ghost"}
       size="icon"
       onClick={toggleTheme}
-      className={cn(className)}
+      className={cn("size-11", className)}
       aria-label="Toggle dark mode"
       {...props}
     >

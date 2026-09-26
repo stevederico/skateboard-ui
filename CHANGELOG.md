@@ -1,3 +1,7 @@
+5.5.0
+
+  Enlarge tap targets
+
 5.4.0
 
   Use shadcn dark palette
