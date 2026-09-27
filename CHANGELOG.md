@@ -1,3 +1,7 @@
+5.8.0
+
+  Fix Sheet scrolling
+
 5.7.0
 
   Add optional Turnstile

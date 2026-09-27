@@ -77,7 +77,9 @@ const MySheet = forwardRef<SheetHandle, SheetProps>(function MySheet(props, ref)
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
         </DrawerHeader>
-        <div className="px-4 pb-4">{children}</div>
+        {/* The dialog is touch-none so it can own the drag gesture. The body is
+            its own scroll container, so long content still scrolls by touch. */}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4">{children}</div>
       </DrawerContent>
     </Drawer>
   );
