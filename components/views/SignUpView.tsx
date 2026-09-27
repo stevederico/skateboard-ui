@@ -10,6 +10,31 @@ import { Sparkles } from 'lucide-react';
 import { getState } from "../core/Context.js";
 import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
 
+interface TurnstileApi {
+  render: (el: HTMLElement, options: Record<string, unknown>) => string;
+  reset: (id: string) => void;
+}
+
+let turnstileScript: Promise<void> | null = null;
+
+/** Load Cloudflare's Turnstile script once. */
+function loadTurnstile(): Promise<void> {
+  if (!turnstileScript) {
+    turnstileScript = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => {
+        turnstileScript = null;
+        reject(new Error('Turnstile failed to load'));
+      };
+      document.head.appendChild(script);
+    });
+  }
+  return turnstileScript;
+}
+
 /**
  * Sign-up form component.
  *
@@ -56,6 +81,39 @@ export default function SignUpView({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useSafeNavigate();
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileIdRef = useRef<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
+
+  // Optional Cloudflare Turnstile: the backend hands out a site key from
+  // GET /signup/options. No key, or no endpoint, means no widget.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${getBackendURL()}/signup/options`, { credentials: 'include' });
+        if (!res.ok) return;
+        const { turnstileSiteKey } = (await res.json()) as { turnstileSiteKey?: string | null };
+        if (!turnstileSiteKey || cancelled) return;
+        await loadTurnstile();
+        const container = turnstileRef.current;
+        const api = (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+        if (!container || !api || cancelled) return;
+        turnstileIdRef.current = api.render(container, {
+          sitekey: turnstileSiteKey,
+          appearance: 'interaction-only',
+          callback: (token: string) => setTurnstileToken(token),
+          'expired-callback': () => setTurnstileToken(''),
+          'error-callback': () => setTurnstileToken(''),
+        });
+      } catch {
+        /* Turnstile is optional; sign-up works without it. */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Focus the first input on mount
   useEffect(() => {
@@ -82,7 +140,7 @@ export default function SignUpView({
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name })
+        body: JSON.stringify({ email, password, name, ...(turnstileToken ? { turnstileToken } : {}) })
       });
 
       if (response.ok) {
@@ -100,7 +158,13 @@ export default function SignUpView({
           navigate('/app');
         }
       } else {
-        setErrorMessage('Invalid Credentials')
+        const failure = (await response.json().catch(() => null)) as { error?: string } | null;
+        setErrorMessage(failure?.error || 'Invalid Credentials');
+        const api = (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+        if (api && turnstileIdRef.current) {
+          api.reset(turnstileIdRef.current);
+          setTurnstileToken('');
+        }
       }
     } catch (error) {
       console.error('Signup failed:', error);
@@ -169,6 +233,8 @@ export default function SignUpView({
           />
           <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
         </div>
+
+        <div ref={turnstileRef} />
 
         <Button
           type="submit"

@@ -1,3 +1,8 @@
+5.7.0
+
+  Add optional Turnstile
+  Show sign-up errors
+
 5.6.0
 
   Add Sheet onUserClose
