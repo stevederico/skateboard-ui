@@ -20,6 +20,8 @@ export interface SheetProps {
   title?: string;
   minHeight?: string;
   children?: ReactNode;
+  /** Called when the person closes the sheet (swipe, outside tap, Escape), not when code calls hide(). */
+  onUserClose?: () => void;
 }
 
 /**
@@ -31,6 +33,7 @@ export interface SheetProps {
  * @param {string} [props.title=""] - Sheet header title
  * @param {string} [props.minHeight="auto"] - Minimum sheet height CSS value
  * @param {React.ReactNode} props.children - Sheet body content
+ * @param {Function} [props.onUserClose] - Called when the person closes the sheet, not when code calls hide()
  * @param {React.Ref} ref - Ref exposing { show, hide, open, close, toggle }
  * @returns {JSX.Element} Drawer sheet
  *
@@ -51,7 +54,7 @@ export interface SheetProps {
  * }
  */
 const MySheet = forwardRef<SheetHandle, SheetProps>(function MySheet(props, ref) {
-  const { title = "", minHeight = "auto", children } = props;
+  const { title = "", minHeight = "auto", children, onUserClose } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -63,7 +66,13 @@ const MySheet = forwardRef<SheetHandle, SheetProps>(function MySheet(props, ref)
   }));
 
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (!open) onUserClose?.();
+      }}
+    >
       <DrawerContent style={{ minHeight }}>
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>

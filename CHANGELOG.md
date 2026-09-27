@@ -1,3 +1,7 @@
+5.6.0
+
+  Add Sheet onUserClose
+
 5.5.0
 
   Enlarge tap targets
