@@ -1,3 +1,8 @@
+5.9.0
+
+  Default to sign up
+  Remember past sign-in
+
 5.8.0
 
   Fix Sheet scrolling
