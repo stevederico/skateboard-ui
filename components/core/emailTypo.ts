@@ -14,7 +14,7 @@ const REAL = new Set([
   'gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com', 'msn.com',
   'comcast.net', 'googlemail.com', 'protonmail.com', 'mail.com', 'email.com', 'ymail.com', 'gmx.com',
   'me.com', 'mac.com', 'aim.com', 'proton.me', 'rocketmail.com', 'hushmail.com', 'fastmail.com',
-  'foxmail.com', 'cloud.com', 'qmail.com', 'homemail.com',
+  'foxmail.com', 'cloud.com', 'qmail.com', 'homemail.com', 'hicloud.com', 'onmail.com', 'yopmail.com',
 ]);
 
 /** Typed endings that almost always meant ".com". */
@@ -40,22 +40,18 @@ function home(provider: string): string {
   return provider === 'comcast' ? 'comcast.net' : `${provider}.com`;
 }
 
-/** The provider a mistyped name most likely meant, or null. */
+/** The provider a mistyped name most likely meant, or null when none or more than one fit. */
 function closest(name: string): string | null {
   if (PROVIDERS.includes(name)) return name;
-  let best: string | null = null;
-  let bestScore = Infinity;
+  const near: string[] = [];
   for (const p of PROVIDERS) {
     // Short names (aol, msn, live) only match exactly; too many real look-alikes.
     if (p.length < 5) continue;
     const limit = p.length >= 7 ? 2 : 1;
-    const score = distance(name, p);
-    if (score <= limit && score < bestScore) {
-      best = p;
-      bestScore = score;
-    }
+    if (distance(name, p) <= limit) near.push(p);
   }
-  return best;
+  // "hmail" could be gmail or hotmail: better no guess than a wrong one.
+  return near.length === 1 ? near[0] : null;
 }
 
 export function suggestEmail(raw: string): string | null {
@@ -85,6 +81,8 @@ export function suggestEmail(raw: string): string | null {
   if (dot < 1) return null;
   const name = domain.slice(0, dot);
   const tld = domain.slice(dot + 1);
+  // "email.con": a real ".com" domain with a typo in the ending only.
+  if (REAL.has(`${name}.com`) && COM_TYPOS.has(tld)) return `${local}@${name}.com`;
   const provider = closest(name);
   if (!provider) return null;
   const fixed = home(provider);

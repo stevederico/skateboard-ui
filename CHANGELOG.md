@@ -1,3 +1,8 @@
+5.11.0
+
+  Skip ambiguous typos
+  Fix real-domain endings
+
 5.10.0
 
   Suggest email typo fixes
