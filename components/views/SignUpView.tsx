@@ -9,6 +9,7 @@ import ConstantsIcon from '../core/constantsIcon.js';
 import { Sparkles } from 'lucide-react';
 import { getState } from "../core/Context.js";
 import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
+import { suggestEmail } from '../core/emailTypo.js'
 
 interface TurnstileApi {
   render: (el: HTMLElement, options: Record<string, unknown>) => string;
@@ -40,6 +41,8 @@ function loadTurnstile(): Promise<void> {
  *
  * Creates account via POST to /signup with name, email, and password.
  * Validates password length (6-72 chars), dispatches SET_USER on success.
+ * Offers a fix for a mistyped mail domain ("gmail.con") on blur, and pauses
+ * the first submit once to show it; a second submit sends the address as typed.
  * In full-page mode, navigates to /app. In embedded mode, calls onSuccess.
  *
  * @param {Object} props
@@ -84,6 +87,15 @@ export default function SignUpView({
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileIdRef = useRef<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState('');
+  const [emailFix, setEmailFix] = useState<string | null>(null);
+  const [emailFixShown, setEmailFixShown] = useState(false);
+
+  function checkEmail() {
+    const fix = suggestEmail(email);
+    setEmailFix(fix);
+    if (fix) setEmailFixShown(true);
+    return fix;
+  }
 
   // Optional Cloudflare Turnstile: the backend hands out a site key from
   // GET /signup/options. No key, or no endpoint, means no widget.
@@ -134,6 +146,7 @@ export default function SignUpView({
       setErrorMessage('Password must be 72 characters or less');
       return;
     }
+    if (!emailFixShown && checkEmail()) return;
     setIsSubmitting(true);
     try {
       const response = await fetch(`${getBackendURL()}/signup`, {
@@ -210,9 +223,28 @@ export default function SignUpView({
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
+              setEmailFix(null);
               setErrorMessage('');
             }}
+            onBlur={checkEmail}
           />
+          {emailFix && (
+            <p className="text-sm text-muted-foreground" role="status">
+              Did you mean{" "}
+              <Button
+                type="button"
+                variant="link"
+                className="p-0 h-auto font-medium"
+                onClick={() => {
+                  setEmail(emailFix);
+                  setEmailFix(null);
+                }}
+              >
+                {emailFix}
+              </Button>
+              ?
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">

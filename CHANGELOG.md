@@ -1,3 +1,7 @@
+5.10.0
+
+  Suggest email typo fixes
+
 5.9.0
 
   Default to sign up
