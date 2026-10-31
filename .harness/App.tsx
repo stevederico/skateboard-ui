@@ -98,6 +98,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "../dist/ui/dropdown-menu.js"
 import {
   Select,
@@ -185,6 +188,7 @@ function Section({ id, title, children }: { id: string; title: string; children:
 export function App() {
   const [progress, setProgress] = React.useState(40)
   const [menuFlag, setMenuFlag] = React.useState(true)
+  const [exportFormat, setExportFormat] = React.useState("none")
   const [fruit, setFruit] = React.useState<string | undefined>(undefined)
   const [sliderVal, setSliderVal] = React.useState<number[]>([30])
   return (
@@ -446,6 +450,23 @@ export function App() {
             <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">Share</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Copy link</DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Export</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem onSelect={() => setExportFormat("pdf")}>PDF</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setExportFormat("csv")}>CSV</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <output data-testid="export-format">{exportFormat}</output>
 
         <Select value={fruit} onValueChange={setFruit}>
           <SelectTrigger className="w-44">

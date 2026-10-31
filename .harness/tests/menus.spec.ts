@@ -104,6 +104,81 @@ test("DropdownMenu closes on an outside click", async ({ page }) => {
   await expect(page.locator("[data-slot=dropdown-menu-content]")).toHaveCount(0)
 })
 
+test("DropdownMenu Escape while the menu is closed is a no-op", async ({
+  page,
+}) => {
+  const errors: string[] = []
+  page.on("pageerror", (err) => errors.push(err.message))
+  page.on("console", (msg) => {
+    // Network misses (e.g. an offline avatar image) are not script errors.
+    if (msg.type() !== "error" || msg.text().startsWith("Failed to load resource")) return
+    errors.push(msg.text())
+  })
+  await page.goto("/")
+  const trigger = page.getByRole("button", { name: "Menu" })
+  await trigger.focus()
+  await page.keyboard.press("Escape")
+  await expect(trigger).toHaveAttribute("aria-expanded", "false")
+  await expect(page.locator("[data-slot=dropdown-menu-content]")).toHaveCount(0)
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
+})
+
+// ---- DropdownMenu submenu (#s-menu "Share" > "Export") --------------------
+
+test("DropdownMenu submenu opens from its sub-trigger", async ({ page }) => {
+  await page.goto("/")
+  await page.getByRole("button", { name: "Share" }).click()
+  const subTrigger = page.getByRole("menuitem", { name: "Export" })
+  await subTrigger.click()
+  await expect(subTrigger).toHaveAttribute("aria-expanded", "true")
+  const sub = page.locator("[data-slot=dropdown-menu-sub-content]")
+  await expect(sub).toBeVisible()
+  await expect(sub.getByRole("menuitem", { name: "PDF" })).toBeVisible()
+})
+
+test("DropdownMenu submenu item is reachable by keyboard", async ({ page }) => {
+  await page.goto("/")
+  await page.getByRole("button", { name: "Share" }).click()
+  await expect(page.getByRole("menuitem", { name: "Copy link" })).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(page.getByRole("menuitem", { name: "Export" })).toBeFocused()
+  await page.keyboard.press("ArrowRight")
+  const sub = page.locator("[data-slot=dropdown-menu-sub-content]")
+  await expect(sub.getByRole("menuitem", { name: "PDF" })).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(sub.getByRole("menuitem", { name: "CSV" })).toBeFocused()
+})
+
+test("DropdownMenu submenu item selects and closes the whole menu", async ({
+  page,
+}) => {
+  await page.goto("/")
+  await page.getByRole("button", { name: "Share" }).click()
+  await page.getByRole("menuitem", { name: "Export" }).click()
+  await page
+    .locator("[data-slot=dropdown-menu-sub-content]")
+    .getByRole("menuitem", { name: "CSV" })
+    .click()
+  await expect(page.getByTestId("export-format")).toHaveText("csv")
+  await expect(page.locator("[data-slot=dropdown-menu-sub-content]")).toHaveCount(0)
+  await expect(page.locator("[data-slot=dropdown-menu-content]")).toHaveCount(0)
+})
+
+test("DropdownMenu submenu closes on Escape and refocuses its trigger", async ({
+  page,
+}) => {
+  await page.goto("/")
+  await page.getByRole("button", { name: "Share" }).click()
+  await page.getByRole("menuitem", { name: "Export" }).click()
+  const sub = page.locator("[data-slot=dropdown-menu-sub-content]")
+  await expect(sub.getByRole("menuitem", { name: "PDF" })).toBeFocused()
+  await page.keyboard.press("Escape")
+  await expect(sub).toHaveCount(0)
+  await expect(page.locator("[data-slot=dropdown-menu-content]")).toBeVisible()
+  await expect(page.getByRole("menuitem", { name: "Export" })).toBeFocused()
+})
+
 // ---- Select --------------------------------------------------------------
 
 test("Select opens a listbox of options on trigger click", async ({ page }) => {

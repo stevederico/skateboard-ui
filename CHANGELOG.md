@@ -1,3 +1,13 @@
+5.11.3
+
+  Pin publish actions
+  Pin npm version
+  Pin harness devDeps
+  Disable CI retries
+  Test nested submenu
+  Test closed Escape
+  Note: @source './dist' (5.11.2) no longer pulls in .m-9, .filter! or the accordion keyframes the old sibling scan picked up
+
 5.11.2
 
   Close menu on early Escape
