@@ -432,6 +432,23 @@ export async function getCurrentUser(): Promise<User | null> {
 }
 
 /**
+ * Check whether a subscription status counts as paid.
+ *
+ * Stripe reports a subscription in a free trial as "trialing". Trial users
+ * get the paid plan, so both "active" and "trialing" count as paid.
+ *
+ * @param {string|null|undefined} status - Subscription status, e.g. user.subscription.status
+ * @returns {boolean} True for "active" or "trialing"
+ *
+ * @example
+ * isPaidStatus('trialing'); // true
+ * isPaidStatus('canceled'); // false
+ */
+export function isPaidStatus(status: string | null | undefined): boolean {
+    return status === 'active' || status === 'trialing';
+}
+
+/**
  * Check if the current user has an active subscription.
  *
  * Calls GET /isSubscriber with credentials.
@@ -654,7 +671,7 @@ export async function trackUsage(action: string): Promise<UsageData> {
  * Show the upgrade sheet if the user is not a subscriber.
  *
  * Checks subscription status from localStorage user data.
- * Does nothing for active subscribers. Falls back to navigation
+ * Does nothing for paid (active or trialing) subscribers. Falls back to navigation
  * if the ref is unavailable.
  *
  * @param {React.RefObject} upgradeSheetRef - Ref to UpgradeSheet component
@@ -668,7 +685,7 @@ export async function showUpgradeSheet(upgradeSheetRef: RefObject<{ show: () => 
     if (storedUser && storedUser !== "undefined") {
         try {
             const user = JSON.parse(storedUser);
-            subscriber = user?.subscription?.status === 'active' &&
+            subscriber = isPaidStatus(user?.subscription?.status) &&
                 (!user?.subscription?.expires || user?.subscription?.expires > Math.floor(Date.now() / 1000));
         } catch (error) {
             console.error('Error parsing user data from storage:', error instanceof Error ? error.message : String(error));

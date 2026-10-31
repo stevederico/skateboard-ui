@@ -339,6 +339,7 @@ import {
   isAuthenticated,
   getCurrentUser,
   isSubscriber,
+  isPaidStatus,
   getCSRFToken,
   getBackendURL,
   getConstants,

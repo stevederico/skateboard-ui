@@ -38,6 +38,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../dist/ui/tabs.js"
 import { RadioGroup, RadioGroupItem } from "../dist/ui/radio-group.js"
 import { Slider } from "../dist/ui/slider.js"
 import { Checkbox } from "../dist/ui/checkbox.js"
+import { MemoryRouter } from "react-router"
+import { ContextProvider } from "../dist/components/core/Context.js"
+import SettingsView from "../dist/components/views/SettingsView.js"
+import {
+  initializeUtilities,
+  isPaidStatus,
+  showUpgradeSheet,
+} from "../dist/components/core/Utilities.js"
 
 function SlotCompose() {
   // Counts consumer-handler invocations to prove Slot composes (doesn't clobber).
@@ -282,7 +290,41 @@ function CheckboxIndeterminate() {
   )
 }
 
+// Subscription status from ?status= (omit for no subscription). Stores a signed-in
+// user with that status, then renders the real SettingsView plus a button that
+// runs showUpgradeSheet, so tests can check what a trial user sees.
+const SUB_CONSTANTS = { appName: "Harness Sub", companyEmail: "a@b.c", version: "1" }
+function SubscriptionStatus() {
+  const status = new URLSearchParams(window.location.search).get("status")
+  const [shown, setShown] = React.useState(0)
+  const [ready] = React.useState(() => {
+    initializeUtilities(SUB_CONSTANTS)
+    const user = { name: "Trial User", email: "t@u.co", ...(status ? { subscription: { status } } : {}) }
+    localStorage.setItem("harness-sub_user", JSON.stringify(user))
+    return true
+  })
+  const ref = React.useRef({ show: () => setShown((n) => n + 1) })
+  if (!ready) return null
+  return (
+    <section data-testid="fx-subscription">
+      <div data-testid="paid-statuses">
+        {["active", "trialing", "canceled", "past_due", "incomplete", ""].map((s) =>
+          `${s || "empty"}=${isPaidStatus(s)}`
+        ).join(" ")} null={String(isPaidStatus(null))} undefined={String(isPaidStatus(undefined))}
+      </div>
+      <Button onClick={() => showUpgradeSheet(ref)}>Try upgrade</Button>
+      <div data-testid="upgrade-shown">{shown}</div>
+      <ContextProvider constants={SUB_CONSTANTS}>
+        <MemoryRouter>
+          <SettingsView />
+        </MemoryRouter>
+      </ContextProvider>
+    </section>
+  )
+}
+
 const FIXTURES: Record<string, React.ReactNode> = {
+  subscription: <SubscriptionStatus />,
   "checkbox-indeterminate": <CheckboxIndeterminate />,
   "slot-compose": <SlotCompose />,
   "escape-stack": <EscapeStack />,

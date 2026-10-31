@@ -1,3 +1,8 @@
+5.11.1
+
+  Count trialing as paid
+  Add isPaidStatus
+
 5.11.0
 
   Skip ambiguous typos

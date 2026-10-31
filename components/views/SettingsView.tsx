@@ -18,7 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../../ui/alert-dialog.js';
-import { showCheckout, showManage, isAuthOverlayEnabled } from '../core/Utilities.js';
+import { showCheckout, showManage, isAuthOverlayEnabled, isPaidStatus } from '../core/Utilities.js';
 
 /**
  * User settings page with account info, sign out, support contact,
@@ -56,7 +56,7 @@ export default function SettingsView() {
     const expiresDate = typeof expires === "number"
       ? new Date(expires * 1000).toLocaleDateString('en-US')
       : null;
-    if (status === "active") return expiresDate ? `Renews ${expiresDate}` : "Active";
+    if (isPaidStatus(status)) return expiresDate ? `Renews ${expiresDate}` : "Active";
     if (status === "canceled") return expiresDate ? `Ends ${expiresDate}` : "Canceled";
     return `Plan ${status}`;
   }
@@ -107,7 +107,7 @@ export default function SettingsView() {
                 <div>
                   <div className="flex items-center gap-2 capitalize">
                     {user.name || "No User"}
-                    {subscription?.status === "active" && <Badge>Pro</Badge>}
+                    {isPaidStatus(subscription?.status) && <Badge>Pro</Badge>}
                   </div>
                   <CardDescription className="font-normal normal-case">{user.email || "no@user.com"}</CardDescription>
                 </div>
@@ -156,7 +156,7 @@ export default function SettingsView() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 Billing
-                {subscription?.status === "active" ? (
+                {isPaidStatus(subscription?.status) ? (
                   <Badge>Active</Badge>
                 ) : subscription?.status === "canceled" ? (
                   <Badge variant="destructive">Canceled</Badge>
