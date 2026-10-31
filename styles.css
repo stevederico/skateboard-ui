@@ -16,7 +16,13 @@
 
 @import "tailwindcss";
 
-@source '../';
+/* Scan only this package's compiled components for class names. In an app
+   this file sits at node_modules/@stevederico/skateboard-ui/styles.css, so
+   './dist' is the published component code (Tailwind skips node_modules unless
+   it is registered here). The app's own src is auto-detected by Tailwind.
+   The old '../' scanned the parent directory: node_modules/@stevederico in
+   apps, and every repo beside skateboard-ui when building in place. */
+@source './dist';
 
 /* Inlined tailwindcss-animate utilities — drop-in for the @plugin directive
    so we don't depend on the npm package. Covers what shadcn primitives use:

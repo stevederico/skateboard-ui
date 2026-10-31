@@ -131,6 +131,11 @@ function DropdownMenuTrigger({
         if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
           e.preventDefault()
           setOpen(true)
+        } else if (e.key === "Escape" && open) {
+          // Focus moves into the menu a frame after it opens, so an Escape
+          // pressed right away lands here. Close it like the menu's own Escape.
+          e.preventDefault()
+          setOpen(false)
         }
       }}
       {...props}

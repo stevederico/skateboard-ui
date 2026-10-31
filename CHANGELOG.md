@@ -1,3 +1,11 @@
+5.11.2
+
+  Close menu on early Escape
+  Scope Tailwind source to dist
+  Gate publish on tests
+  Commit lockfiles
+  Test past_due as unpaid
+
 5.11.1
 
   Count trialing as paid

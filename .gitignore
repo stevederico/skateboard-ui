@@ -1,8 +1,6 @@
 # Dependencies
 node_modules/
 
-# Lock files (libraries should not commit lock files)
-package-lock.json
 
 # Environment variables
 .env

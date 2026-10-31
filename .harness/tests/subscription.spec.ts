@@ -41,3 +41,13 @@ test("canceled user still sees the upgrade sheet", async ({ page }) => {
   await expect(page.getByTestId("upgrade-shown")).toHaveText("1")
   await expect(page.getByText("Pro", { exact: true })).toHaveCount(0)
 })
+
+test("past_due user is not paid: sees the upgrade sheet and Free", async ({ page }) => {
+  await page.goto("/tests.html?fx=subscription&status=past_due")
+  await page.getByRole("button", { name: "Try upgrade" }).click()
+  await expect(page.getByTestId("upgrade-shown")).toHaveText("1")
+
+  await expect(page.getByText("Pro", { exact: true })).toHaveCount(0)
+  const billing = page.locator("[data-slot=card]").filter({ hasText: "Billing" })
+  await expect(billing.locator("[data-slot=badge]")).toHaveText("Free")
+})

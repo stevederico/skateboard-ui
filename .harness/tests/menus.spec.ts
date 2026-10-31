@@ -37,6 +37,8 @@ test("DropdownMenu ArrowDown moves focus to the next item", async ({ page }) => 
 test("DropdownMenu hovering an item focuses it", async ({ page }) => {
   await page.goto("/")
   await page.getByRole("button", { name: "Menu" }).click()
+  // Wait for the open-time auto-focus, or it can land after the hover.
+  await expect(page.getByRole("menuitem", { name: "Edit" })).toBeFocused()
   const del = page.getByRole("menuitem", { name: "Delete" })
   await del.hover()
   await expect(del).toBeFocused()
@@ -51,11 +53,13 @@ test("DropdownMenu checkbox item toggles aria-checked on click", async ({
   // App seeds menuFlag=true, so it starts checked.
   await expect(item).toHaveAttribute("aria-checked", "true")
   await item.click()
-  // Reopen to inspect the new state (clicking an item closes the menu).
-  await page.getByRole("button", { name: "Menu" }).click()
-  await expect(
-    page.getByRole("menuitemcheckbox", { name: "Show grid" })
-  ).toHaveAttribute("aria-checked", "false")
+  // A checkbox item toggles in place and keeps the menu open (only plain items
+  // close it), so read the new state straight from the open menu.
+  await expect(page.getByRole("button", { name: "Menu" })).toHaveAttribute(
+    "aria-expanded",
+    "true"
+  )
+  await expect(item).toHaveAttribute("aria-checked", "false")
 })
 
 test("DropdownMenu closes on Escape", async ({ page }) => {
@@ -64,6 +68,32 @@ test("DropdownMenu closes on Escape", async ({ page }) => {
   await expect(page.locator("[data-slot=dropdown-menu-content]")).toBeVisible()
   await page.keyboard.press("Escape")
   await expect(page.locator("[data-slot=dropdown-menu-content]")).toHaveCount(0)
+})
+
+test("DropdownMenu closes on Escape pressed before focus moves into it", async ({
+  page,
+}) => {
+  await page.goto("/")
+  // Click and press Escape within one frame, so focus is still on the trigger:
+  // the menu moves focus to its first item a frame later (requestAnimationFrame).
+  // A fast Escape must still close it.
+  const open = await page.evaluate(async () => {
+    const trigger = [...document.querySelectorAll("button")].find(
+      (b) => b.textContent?.trim() === "Menu"
+    )!
+    trigger.focus()
+    trigger.click()
+    // React flushes the click's update in a microtask; no frame runs before it.
+    await Promise.resolve()
+    const wasOpen = trigger.getAttribute("aria-expanded") === "true"
+    trigger.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })
+    )
+    return { wasOpen, focusOnTrigger: document.activeElement === trigger }
+  })
+  expect(open).toEqual({ wasOpen: true, focusOnTrigger: true })
+  await expect(page.locator("[data-slot=dropdown-menu-content]")).toHaveCount(0)
+  await expect(page.getByRole("button", { name: "Menu" })).toBeFocused()
 })
 
 test("DropdownMenu closes on an outside click", async ({ page }) => {

@@ -2,6 +2,8 @@
 # Uses npm Trusted Publishing (OIDC): no stored token and no 2FA prompt.
 # One-time setup on npmjs.com: package Settings > Trusted Publisher >
 # GitHub Actions, repository stevederico/skateboard-ui, workflow publish.yml.
+# Nothing publishes unless the lockfile installs, the types check, the package
+# builds, and the .harness Playwright suite passes against the built dist/.
 name: Publish
 
 on:
@@ -23,8 +25,23 @@ jobs:
           registry-url: https://registry.npmjs.org
       # Trusted publishing needs npm 11.5.1 or newer.
       - run: npm install -g npm@11
-      # Libraries do not commit a lockfile, so install fresh.
-      - run: npm install --no-audit --no-fund
       - name: Tag matches package.json
         run: test "$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - name: Install (lockfile)
+        run: npm ci --no-audit --no-fund
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Install harness (lockfile)
+        working-directory: .harness
+        run: npm ci --no-audit --no-fund
+      - name: Install Chromium
+        working-directory: .harness
+        run: npx playwright install --with-deps chromium
+      # The Playwright webServer rebuilds the package and the harness, then
+      # serves it with `vite preview`; the tests run against the built dist/.
+      - name: Harness tests
+        working-directory: .harness
+        run: npx playwright test
       - run: npm publish
