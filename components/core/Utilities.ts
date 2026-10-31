@@ -451,8 +451,10 @@ export function isPaidStatus(status: string | null | undefined): boolean {
 /**
  * Check if the current user has an active subscription.
  *
- * Calls GET /isSubscriber with credentials.
- * Returns false if constants.noLogin is true.
+ * Calls POST /usage with operation "check" (the same request as
+ * getRemainingUsage) and returns its isSubscriber field. Backends have no
+ * separate subscription-status route.
+ * Returns false if constants.noLogin is true, or on any error.
  *
  * @returns {Promise<boolean>} True if user is an active subscriber
  */
@@ -463,13 +465,14 @@ export async function isSubscriber(): Promise<boolean> {
 
     try{
         const csrfToken = getCSRFToken();
-        const response = await fetch(`${getBackendURL()}/isSubscriber`, {
-            method: 'GET',
+        const response = await fetch(`${getBackendURL()}/usage`, {
+            method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 ...(csrfToken && { 'X-CSRF-Token': csrfToken })
             },
+            body: JSON.stringify({ operation: 'check' })
         });
 
         if (!response.ok) {

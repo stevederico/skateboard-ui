@@ -1,3 +1,9 @@
+5.11.4
+
+  isSubscriber uses usage check
+  Test isSubscriber request
+  README: no isSubscriber route
+
 5.11.3
 
   Pin publish actions

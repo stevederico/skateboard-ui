@@ -176,7 +176,7 @@ Hybrid cookie + localStorage auth:
 | Endpoint | Purpose |
 |----------|---------|
 | `POST /usage` | Track/check feature usage limits |
-| `GET /isSubscriber` | Subscription status |
+| `POST /usage` `{"operation":"check"}` | Subscription status: `isSubscriber()` reads `isSubscriber` from this response (no separate route) |
 | `POST /checkout` | Stripe checkout session |
 | `POST /portal` | Stripe billing portal |
 

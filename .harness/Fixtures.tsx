@@ -44,6 +44,7 @@ import SettingsView from "../dist/components/views/SettingsView.js"
 import {
   initializeUtilities,
   isPaidStatus,
+  isSubscriber,
   showUpgradeSheet,
 } from "../dist/components/core/Utilities.js"
 
@@ -323,8 +324,27 @@ function SubscriptionStatus() {
   )
 }
 
+// Runs isSubscriber() against a same-origin backend (/harness-api) that the
+// test intercepts with page.route, after setting a csrf_token cookie, and
+// shows the result. "pending" until the call resolves.
+const ISSUB_CONSTANTS = { appName: "Harness IsSub", backendURL: "/harness-api", devBackendURL: "/harness-api" }
+function IsSubscriberFx() {
+  const [result, setResult] = React.useState("pending")
+  React.useEffect(() => {
+    initializeUtilities(ISSUB_CONSTANTS)
+    document.cookie = "csrf_token=harness-csrf; path=/"
+    isSubscriber().then((v) => setResult(String(v)))
+  }, [])
+  return (
+    <section data-testid="fx-is-subscriber">
+      <div data-testid="is-subscriber">{result}</div>
+    </section>
+  )
+}
+
 const FIXTURES: Record<string, React.ReactNode> = {
   subscription: <SubscriptionStatus />,
+  "is-subscriber": <IsSubscriberFx />,
   "checkbox-indeterminate": <CheckboxIndeterminate />,
   "slot-compose": <SlotCompose />,
   "escape-stack": <EscapeStack />,
