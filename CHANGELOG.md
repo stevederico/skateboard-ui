@@ -1,3 +1,13 @@
+5.12.0
+
+  react-router becomes peer
+  Add tailwindcss peer
+  Bump react-router 7.18.4
+  Bump @types 19.3.0
+  Declare harness router
+  Dedupe harness router
+  Fix README peers
+
 5.11.4
 
   isSubscriber uses usage check
