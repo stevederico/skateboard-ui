@@ -151,7 +151,7 @@ import {
   Workflow,
   X,
   Zap,
-} from 'lucide-react';
+} from '../../icons/index.js';
 
 type LucideIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number | string; strokeWidth?: number | string }>;
 
@@ -187,7 +187,7 @@ function toIconName(name: string): string {
 /**
  * Curated Lucide icons used by the shell and by `constants.json` icon strings
  * across skateboard apps. Private to the shell — not a package export.
- * App code should named-import from `lucide-react`. Unknown names render nothing.
+ * App code brings its own icons. Unknown names render nothing.
  */
 const ICON_REGISTRY: Record<string, LucideIcon> = {
   Anchor,
@@ -352,7 +352,7 @@ const ICON_REGISTRY: Record<string, LucideIcon> = {
  *
  * Accepts kebab-case ("layout-dashboard"), PascalCase ("LayoutDashboard"),
  * or legacy prefixed ("IconLayoutDashboard") names. Icons outside the
- * registry are not rendered — import them by name from `lucide-react` instead.
+ * registry are not rendered; apps import those icons themselves.
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (e.g. "home", "arrow-right", "Settings")

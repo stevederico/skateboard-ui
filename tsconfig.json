@@ -25,6 +25,7 @@
     "ui",
     "components",
     "hooks",
+    "icons",
     "shadcn/hooks",
     "shadcn/lib/utils.*",
     "shadcn/lib/cva.*",

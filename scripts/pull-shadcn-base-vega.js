@@ -34,6 +34,7 @@ function rewrite(src) {
   let out = src;
 
   // IconPlaceholder JSX -> vendored lucide icon, collecting names for the import.
+  // New names must be added to icons/index.tsx: run scripts/vendor-lucide-icons.js.
   const iconNames = new Set();
   out = out.replace(/<IconPlaceholder\b([\s\S]*?)\/>/g, (m, attrs) => {
     const lucide = attrs.match(/lucide="([^"]+)"/);
@@ -43,7 +44,7 @@ function rewrite(src) {
   });
   out = out.replace(
     /import \{ IconPlaceholder \} from "@\/app\/\(create\)\/components\/icon-placeholder"\n?/,
-    iconNames.size ? `import { ${[...iconNames].join(', ')} } from "lucide-react"\n` : ''
+    iconNames.size ? `import { ${[...iconNames].join(', ')} } from "../icons/index.js"\n` : ''
   );
 
   // Package + registry-alias imports -> vendored relative paths.

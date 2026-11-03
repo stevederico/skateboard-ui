@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from './core/ThemeProvider.js';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from '../icons/index.js';
 import { Button } from '../ui/button.js';
 import { cn } from '../shadcn/lib/utils.js';
 

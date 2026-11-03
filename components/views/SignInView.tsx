@@ -6,7 +6,7 @@ import { Label } from "../../ui/label.js"
 import { Card, CardContent, CardHeader } from "../../ui/card.js"
 import { Alert, AlertDescription } from "../../ui/alert.js"
 import ConstantsIcon from '../core/constantsIcon.js';
-import { Sparkles } from 'lucide-react';
+import { Sparkles } from '../../icons/index.js';
 import { getState } from "../core/Context.js";
 import { getBackendURL, useSafeNavigate, getAppKey } from '../core/Utilities.js'
 

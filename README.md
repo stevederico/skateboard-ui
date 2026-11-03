@@ -296,13 +296,11 @@ import { useIsMobile } from '@stevederico/skateboard-ui/shadcn/hooks/use-mobile'
 
 ### Icons
 
-```javascript
-import { ArrowUp, X } from 'lucide-react';
-```
-
-`lucide-react` ships as a dependency of this package. Apps named-import icons. There is no
+The shell ships the icons it renders inside the package. There is no
 `@stevederico/skateboard-ui/icons` export. The shell resolves
 `constants.json` icon strings privately via a curated registry.
+
+Icons by [Lucide](https://lucide.dev) (ISC License, see `LICENSE-lucide`).
 
 ## Context
 
@@ -382,7 +380,7 @@ showManage('cus_abc123');
 - react-router 7.x
 - tailwindcss 4.x (for `styles.css`)
 
-`react-router` is a peer so the app and the shell share one router copy (two copies break router context). npm 7+ installs missing peers automatically. `lucide-react` is a runtime dependency of this package (pinned). Named-import icons from `lucide-react` in app code (npm will hoist it). There is no public DynamicIcon and no `@stevederico/skateboard-ui/icons` path. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
+`react-router` is a peer so the app and the shell share one router copy (two copies break router context). npm 7+ installs missing peers automatically. There is no public DynamicIcon and no `@stevederico/skateboard-ui/icons` path. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
 
 ## Repository
 

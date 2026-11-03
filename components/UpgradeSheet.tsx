@@ -16,7 +16,7 @@ import { Separator } from "../ui/separator.js"
 import { Button } from "../ui/button.js"
 import { getState } from "./core/Context.js";
 import { showCheckout } from './core/Utilities.js';
-import { Sparkles, CircleCheck } from 'lucide-react';
+import { Sparkles, CircleCheck } from '../icons/index.js';
 
 /** Imperative API exposed via ref: { show, hide, open, close, toggle }. */
 export interface UpgradeSheetHandle {

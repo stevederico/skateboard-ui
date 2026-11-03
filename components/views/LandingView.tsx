@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { getState } from '../core/Context.js';
 import ConstantsIcon from '../core/constantsIcon.js';
 import ThemeToggle from '../ThemeToggle.js';
-import { Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from '../../icons/index.js';
 import { Button } from '../../ui/button.js';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../ui/card.js';
 import { Separator } from '../../ui/separator.js';

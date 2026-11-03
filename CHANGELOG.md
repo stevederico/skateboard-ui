@@ -1,3 +1,11 @@
+5.13.0
+
+  Vendor lucide icons
+  Remove lucide-react
+  Add LICENSE-lucide
+  Add icon generator
+  Update README credit
+
 5.12.0
 
   react-router becomes peer
