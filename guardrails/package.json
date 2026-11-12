@@ -1,0 +1,11 @@
+{
+  "name": "skateboard-ui-guardrails",
+  "private": true,
+  "type": "module",
+  "description": "Lint and boundary tooling for skateboard-ui. Kept out of the root package so the published library gains no dependencies and the npm tarball never carries lint tooling.",
+  "devDependencies": {
+    "@typescript-eslint/parser": "8.72.1",
+    "eslint": "10.14.0",
+    "typescript": "5.9.3"
+  }
+}

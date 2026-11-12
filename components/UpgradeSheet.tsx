@@ -114,7 +114,7 @@ const UpgradeSheet = forwardRef<UpgradeSheetHandle, UpgradeSheetProps>(function 
               <Separator />
 
               {/* Features */}
-              <div className="w-full space-y-3">
+              <div className="flex w-full flex-col gap-3">
                 {product.features?.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <CircleCheck className="size-5 text-primary shrink-0" />

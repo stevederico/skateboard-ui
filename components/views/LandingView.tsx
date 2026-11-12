@@ -152,7 +152,7 @@ export default function LandingView() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3 text-sm">
+                  <ul className="flex flex-col gap-3 text-sm">
                     {(sp.features || []).map((f, i) => (
                       <li key={`sp-${i}`} className="flex items-start gap-2.5">
                         <Check size={16} className="text-app shrink-0 mt-0.5" />

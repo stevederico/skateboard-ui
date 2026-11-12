@@ -35,6 +35,8 @@
     "dist",
     "node_modules",
     "scripts",
+    "guardrails",
+    "eslint.config.js",
     "shadcn/lib/tailwind-merge.js"
   ]
 }

@@ -4,6 +4,7 @@ import TabBar from './TabBar.js'
 import { SidebarProvider, SidebarInset } from "../../ui/sidebar.js"
 import Sidebar from "./Sidebar.js"
 import { getState } from '../core/Context.js';
+import { cn } from '../../shadcn/lib/utils.js';
 
 /**
  * Page layout wrapper with sidebar and tab bar.
@@ -55,7 +56,7 @@ export default function Layout({ children }: LayoutProps) {
           '--header-height': '3.5rem',
         } as React.CSSProperties}>
         {showSidebar && <Sidebar variant="inset" />}
-        <SidebarInset id="main" className={`md:border md:border-border/50 ${constants.hideSidebarInsetRounding ? "md:peer-data-[variant=inset]:rounded-none" : ""}`}>
+        <SidebarInset id="main" className={cn("md:border md:border-border/50", constants.hideSidebarInsetRounding && "md:peer-data-[variant=inset]:rounded-none")}>
           <Outlet />
         </SidebarInset>
       </SidebarProvider>

@@ -52,6 +52,6 @@ export function useDismiss(
       document.removeEventListener("keydown", onKeyDown, true)
       document.removeEventListener("pointerdown", onPointerDown, true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Deps are [open] on purpose: onDismiss is read through a ref, and refs are RefObjects read at event time.
   }, [open])
 }

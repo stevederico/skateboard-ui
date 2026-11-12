@@ -103,6 +103,7 @@ export default function SignUpView({
     let cancelled = false;
     (async () => {
       try {
+        // eslint-disable-next-line skateboard-ui/no-fetch-in-effect -- optional Turnstile bootstrap: one-shot read guarded by `cancelled`, then imperative widget render into a ref; no state to show while loading
         const res = await fetch(`${getBackendURL()}/signup/options`, { credentials: 'include' });
         if (!res.ok) return;
         const { turnstileSiteKey } = (await res.json()) as { turnstileSiteKey?: string | null };
