@@ -296,8 +296,15 @@ import { useIsMobile } from '@stevederico/skateboard-ui/shadcn/hooks/use-mobile'
 
 ### Icons
 
-The shell ships the icons it renders inside the package. There is no
-`@stevederico/skateboard-ui/icons` export. The shell resolves
+The shell ships the icons it renders inside the package. Apps import the
+same vendored icons by name from `@stevederico/skateboard-ui/icons`, so they
+need no `lucide-react` dependency:
+
+```javascript
+import { Home, Settings } from '@stevederico/skateboard-ui/icons';
+```
+
+Only the icons the shell vendors are exported. The shell resolves
 `constants.json` icon strings privately via a curated registry.
 
 Icons by [Lucide](https://lucide.dev) (ISC License, see `LICENSE-lucide`).
@@ -380,7 +387,7 @@ showManage('cus_abc123');
 - react-router 7.x
 - tailwindcss 4.x (for `styles.css`)
 
-`react-router` is a peer so the app and the shell share one router copy (two copies break router context). npm 7+ installs missing peers automatically. There is no public DynamicIcon and no `@stevederico/skateboard-ui/icons` path. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
+`react-router` is a peer so the app and the shell share one router copy (two copies break router context). npm 7+ installs missing peers automatically. There is no public DynamicIcon; vendored icons are imported by name from `@stevederico/skateboard-ui/icons`. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
 
 ## Repository
 

@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "5.13.0",
+  "version": "5.13.1",
   "type": "module",
   "exports": {
     ".": {
@@ -127,6 +127,11 @@
       "types": "./dist/hooks/useAuthGate.d.ts",
       "import": "./dist/hooks/useAuthGate.js",
       "default": "./dist/hooks/useAuthGate.js"
+    },
+    "./icons": {
+      "types": "./dist/icons/index.d.ts",
+      "import": "./dist/icons/index.js",
+      "default": "./dist/icons/index.js"
     },
     "./shadcn/ui/*": {
       "types": "./dist/ui/*.d.ts",

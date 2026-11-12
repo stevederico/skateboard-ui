@@ -1,3 +1,8 @@
+5.13.1
+
+  Export ./icons entry
+  Document icons import
+
 5.13.0
 
   Vendor lucide icons
