@@ -12,6 +12,11 @@
   Type validateConstants lookup
   Note: guardrails/ is a nested private package (eslint 10.14.0, @typescript-eslint/parser 8.72.1, typescript 5.9.3) and is not published; the tarball file list is unchanged
 
+5.13.1
+
+  Export ./icons entry
+  Document icons import
+
 5.13.0
 
   Vendor lucide icons

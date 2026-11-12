@@ -47,7 +47,7 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 | No inline `<svg>` in components | `no-inline-svg` |
 | No emoji as UI icons | `no-emoji-icons` |
 
-`icons/index.tsx` is generated. Do not edit it; add icons with `npm i --no-save lucide-react@0.546.0 && node scripts/vendor-lucide-icons.js`, then remove `node_modules/lucide-react`. There is no public `./icons` export and no public DynamicIcon.
+`icons/index.tsx` is generated. Do not edit it; add icons with `npm i --no-save lucide-react@0.546.0 && node scripts/vendor-lucide-icons.js`, then remove `node_modules/lucide-react`. Apps import the same icons by name from the public `@stevederico/skateboard-ui/icons` export (5.13.1); inside the package, always use the relative `icons/index.js` path. There is no public DynamicIcon.
 
 ### Layers
 

@@ -128,6 +128,11 @@
       "import": "./dist/hooks/useAuthGate.js",
       "default": "./dist/hooks/useAuthGate.js"
     },
+    "./icons": {
+      "types": "./dist/icons/index.d.ts",
+      "import": "./dist/icons/index.js",
+      "default": "./dist/icons/index.js"
+    },
     "./shadcn/ui/*": {
       "types": "./dist/ui/*.d.ts",
       "import": "./dist/ui/*.js",
