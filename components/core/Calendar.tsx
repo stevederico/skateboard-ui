@@ -215,6 +215,7 @@ function DefaultChevron({ className, orientation }: CalendarChevronProps) {
   // Inline SVG fallback if no override supplied
   const rotate = orientation === 'left' ? 180 : orientation === 'down' ? 90 : 0;
   return (
+    // eslint-disable-next-line skateboard-ui/no-inline-svg -- headless layer is dependency-free and may not import icons/; ui/calendar.tsx overrides this fallback with a vendored icon
     <svg
       width="16"
       height="16"
@@ -361,6 +362,7 @@ function CaptionDropdowns({
 export interface DayPickerProps {
   mode?: 'single' | 'range';
   selected?: Date | DateRange;
+  // eslint-disable-next-line skateboard-ui/no-explicit-any -- public react-day-picker-compatible signature (Date, DateRange or undefined by mode); narrowing it breaks callers typed `(date: Date) => void`
   onSelect?: (value: any) => void;
   month?: Date;
   onMonthChange?: (month: Date) => void;

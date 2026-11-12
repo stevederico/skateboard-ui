@@ -1,3 +1,22 @@
+5.14.0
+
+  Add guardrails ESLint plugin
+  Add AGENTS.md and CLAUDE.md
+  Add layer boundary table
+  Ban fetch in effects
+  Ban lucide-react imports
+  Ban non-peer imports
+  Add lint and test:guardrails scripts
+  Layout uses cn()
+  UpgradeSheet, LandingView use gap
+  Type validateConstants lookup
+  Note: guardrails/ is a nested private package (eslint 10.14.0, @typescript-eslint/parser 8.72.1, typescript 5.9.3) and is not published; the tarball file list is unchanged
+
+5.13.1
+
+  Export ./icons entry
+  Document icons import
+
 5.13.0
 
   Vendor lucide icons

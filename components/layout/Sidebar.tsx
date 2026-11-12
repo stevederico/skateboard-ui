@@ -60,6 +60,7 @@ export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
                   <ConstantsIcon
                     name={constants.appIcon}
                     strokeWidth={2}
+                    // eslint-disable-next-line skateboard-ui/no-raw-color-classes -- icon on the bg-app brand tile; styles.css has no app-foreground token
                     className="text-white"
                   />
                 </div>

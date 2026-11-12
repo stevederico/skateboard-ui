@@ -551,7 +551,7 @@ export async function showCheckout(email: string | undefined, productIndex = 0):
 
         const params = {
             lookup_key: product.lookup_key,
-            email: email
+            email
         };
 
         const uri = `${getBackendURL()}/checkout`;
@@ -1008,7 +1008,10 @@ export function validateConstants(constants: SkateboardConstants): SkateboardCon
     ];
 
     const errors = required.filter(({ key, type }) => {
-        const value = key.split('.').reduce<any>((obj, k) => obj?.[k], constants);
+        const value = key.split('.').reduce<unknown>(
+            (obj, k) => (typeof obj === 'object' && obj !== null ? (obj as Record<string, unknown>)[k] : undefined),
+            constants,
+        );
 
         if (type === 'string') {
             // Must be non-empty string

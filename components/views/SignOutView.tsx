@@ -41,6 +41,7 @@ function SignOutView() {
       }
     };
 
+    // eslint-disable-next-line skateboard-ui/no-fetch-in-effect -- /signout route: visiting the page is the sign-out action; it always clears the user and redirects, even if the request fails
     signOut();
   }, [navigate, dispatch]);
 

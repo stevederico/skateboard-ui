@@ -100,6 +100,7 @@ export default function SettingsView() {
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <Avatar>
+                  {/* eslint-disable-next-line skateboard-ui/no-raw-color-classes -- initials on the bg-app brand color; styles.css has no app-foreground token */}
                   <AvatarFallback className="bg-app text-white uppercase font-medium text-sm">
                     {user.name?.split(' ').map(w => w[0]).join('') || "NA"}
                   </AvatarFallback>

@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "5.13.0",
+  "version": "5.14.0",
   "type": "module",
   "exports": {
     ".": {
@@ -128,6 +128,11 @@
       "import": "./dist/hooks/useAuthGate.js",
       "default": "./dist/hooks/useAuthGate.js"
     },
+    "./icons": {
+      "types": "./dist/icons/index.d.ts",
+      "import": "./dist/icons/index.js",
+      "default": "./dist/icons/index.js"
+    },
     "./shadcn/ui/*": {
       "types": "./dist/ui/*.d.ts",
       "import": "./dist/ui/*.js",
@@ -153,6 +158,9 @@
     "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true});fs.rmSync('.tsbuildinfo.json',{force:true})\"",
     "build": "tsc -p tsconfig.json && node scripts/copy-dist-assets.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "guardrails:install": "npm ci --prefix guardrails --no-audit --no-fund",
+    "lint": "node guardrails/node_modules/eslint/bin/eslint.js .",
+    "test:guardrails": "node --test \"guardrails/eslint-plugin/**/*.test.js\"",
     "prepack": "npm run clean && npm run build",
     "prod": "npm publish"
   },

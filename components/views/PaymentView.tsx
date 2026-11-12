@@ -61,6 +61,7 @@ export default function PaymentView() {
     switch (true) {
       case success:
         redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
+        // eslint-disable-next-line skateboard-ui/no-fetch-in-effect -- Stripe redirect return: the only trigger is this page load, and the user is refreshed once before navigating away
         fetchUser();
         break;
       case canceled:
