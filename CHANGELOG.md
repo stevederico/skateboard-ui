@@ -1,3 +1,8 @@
+5.21.0
+
+  Release 5.20.0 changes
+  Note: tag 5.20.0 was pushed by mistake onto the 5.19.0 commit; its publish failed the tag/version check, so 5.20.0 is not on npm. 5.21.0 ships the changes listed under 5.20.0
+
 5.20.0
 
   Remove pull-shadcn-base-vega script

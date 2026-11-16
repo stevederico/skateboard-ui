@@ -37,11 +37,13 @@ Kept on purpose: upstream references ("base-vega source" notes) and component JS
 - [ ] Apps still on `./shadcn/*` paths break on 5.17.0 until they rewrite them (README
   has the mapping and a grep).
 
-## One-shot scripts removed (5.20.0)
+## One-shot scripts removed (5.21.0)
 
 Done: `scripts/pull-shadcn-base-vega.js` and `scripts/tailwind-to-css.js` are gone, with every
 mention in README, AGENTS.md, the guardrail tests and the harness. `lib/tailwind-merge.js`
 stays (`cn()` needs it). Upstream `ui/` changes are adopted as a reviewed copy by hand.
+Shipped as 5.21.0: tag 5.20.0 points at the 5.19.0 commit (pushed by mistake, never
+published) and stays, since tags are not moved.
 
 ## TypeScript 7 build (5.19.0)
 
