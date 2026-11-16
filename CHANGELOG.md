@@ -1,3 +1,10 @@
+5.19.0
+
+  Build with TypeScript 7.0.2
+  Same dist file list
+  Converter keeps precedence
+  Note: three .d.ts files differ only in form (Calendar quote style, ErrorBoundary union order, Command statics declared as export aliases); every export keeps the same type, and the d.ts typecheck under TypeScript 5.0.4, 5.9.3 and 7.0.2. guardrails/ stays on TypeScript 5.9.3 for @typescript-eslint/parser
+
 5.18.0
 
   Ship plain styles.css

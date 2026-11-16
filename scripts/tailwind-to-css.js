@@ -22,8 +22,16 @@
 //               @font-face, @keyframes and @property it already has is left out of the output.
 //               Apps pass node_modules/@stevederico/skateboard-ui/styles.css.
 //   --app       also copy the input's own `@theme` declarations into a plain `:root` block, so
-//               the app keeps its theme values (brand color, fonts) without Tailwind.
-import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+//               the app keeps its theme values (brand color, fonts) without Tailwind, and keep
+//               the input's `@import "@stevederico/skateboard-ui/styles.css"` as the first line.
+//
+// Splitting Tailwind's output into two files changes the cascade: an app rule that Tailwind
+// ordered before a shell rule now comes after it and wins (an app `line-clamp-1` beating the
+// shell's `flex` on `display`). With --subtract, a subtracted rule is therefore written again
+// after the app rules when it sets the same property family as an app rule, Tailwind ordered it
+// later, and both classes appear in the same string literal or line of a scanned file (or of the
+// installed skateboard-ui dist). Compare light and dark screenshots before and after anyway.
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -198,10 +206,173 @@ const sources = opts.scan.map((p) =>
   statSync(p).isDirectory() ? { base: p, pattern: '**/*', negated: false } : { base: dirname(p), pattern: basename(p), negated: false },
 );
 const candidates = new Scanner({ sources }).scan();
-let nodes = parse(optimize(compiler.build(candidates), { minify: false }).code);
-for (const file of opts.subtract) nodes = subtract(nodes, index(parse(readFileSync(file, 'utf8'))));
 
-const css = `${print(nodes)}\n`;
+// Build the app's classes together with every class the --subtract files define, so the
+// output has Tailwind's single global utility order across both files.
+const subtractTexts = opts.subtract.map((file) => readFileSync(file, 'utf8'));
+const subtractClasses = new Set();
+for (const text of subtractTexts) for (const c of classNames(text)) subtractClasses.add(c);
+let nodes = parse(optimize(compiler.build([...new Set([...candidates, ...subtractClasses])]), { minify: false }).code);
+
+if (subtractTexts.length) {
+  const idx = index(subtractTexts.flatMap((t) => parse(t)));
+  // Class strings: the scanned app sources plus the shell's own components (the published
+  // 5.17.0 dist from the temporary install), for which classes share an element.
+  const uiDist = join(opts.tailwind, 'node_modules', '@stevederico', 'skateboard-ui', 'dist');
+  nodes = keepPrecedence(nodes, idx, cooccurrence([...opts.scan, ...(existsSync(uiDist) ? [uiDist] : [])]));
+}
+
+/**
+ * Which class tokens can share an element: tokens in the same string literal or on the
+ * same source line. Over-approximates (safe: it only re-emits more rules).
+ *
+ * @param {string[]} paths - Files or directories to read (.ts/.tsx/.js/.jsx/.html/.mjs)
+ * @returns {Map<string, Set<string>>} token -> tokens seen with it
+ */
+function cooccurrence(paths) {
+  const map = new Map();
+  const add = (tokens) => {
+    for (const t of tokens) {
+      if (!map.has(t)) map.set(t, new Set());
+      for (const o of tokens) if (o !== t) map.get(t).add(o);
+    }
+  };
+  const files = [];
+  const walk = (p) => {
+    if (statSync(p).isDirectory()) {
+      for (const e of readdirSync(p)) if (e !== 'node_modules' && !e.startsWith('.')) walk(join(p, e));
+    } else if (/\.(?:[cm]?[jt]sx?|html)$/.test(p)) files.push(p);
+  };
+  paths.forEach(walk);
+  for (const f of files) {
+    const text = readFileSync(f, 'utf8');
+    for (const m of text.matchAll(/"([^"\n]*)"|'([^'\n]*)'|`([^`]*)`/g)) add((m[1] ?? m[2] ?? m[3]).split(/\s+/).filter(Boolean));
+    for (const line of text.split('\n')) {
+      const tokens = [];
+      for (const m of line.matchAll(/"([^"]*)"|'([^']*)'|`([^`]*)`/g)) tokens.push(...(m[1] ?? m[2] ?? m[3]).split(/\s+/).filter(Boolean));
+      add(tokens);
+    }
+  }
+  return map;
+}
+
+/**
+ * Class names a stylesheet defines (unescaped `.name` selectors in rule preludes).
+ *
+ * @param {string} text - Plain CSS
+ * @returns {Set<string>} Class names
+ */
+function classNames(text) {
+  const out = new Set();
+  const walk = (list) => {
+    for (const n of list) {
+      if (n.kind !== 'block') continue;
+      if (!n.prelude.startsWith('@')) {
+        for (const m of n.prelude.matchAll(/\.(-?(?:[A-Za-z_]|\\.)(?:[\w-]|\\.)*)/g)) out.add(m[1].replace(/\\(.)/g, '$1'));
+      }
+      walk(n.children);
+    }
+  };
+  walk(parse(text));
+  return out;
+}
+
+/**
+ * Property families a rule sets: longhands and shorthands of one property share a family
+ * (padding / padding-inline, gap / row-gap, inset / top), vendor prefixes are dropped, and
+ * every custom property is its own family. Over-grouping is safe (it only re-emits more).
+ *
+ * @param {any[]} children - Statements of one style rule
+ * @returns {Set<string>} Families
+ */
+function families(children) {
+  const ALIAS = { top: 'inset', right: 'inset', bottom: 'inset', left: 'inset', 'row-gap': 'gap', 'column-gap': 'gap' };
+  const out = new Set();
+  for (const c of children) {
+    if (c.kind !== 'stmt') continue;
+    const prop = c.text.split(':')[0].trim();
+    if (prop.startsWith('--')) out.add(prop);
+    else {
+      const bare = prop.replace(/^-(?:webkit|moz|ms)-/, '');
+      out.add(ALIAS[bare] ?? bare.split('-')[0]);
+    }
+  }
+  return out;
+}
+
+/**
+ * Subtract what the earlier stylesheet(s) already define, but keep Tailwind's precedence.
+ * In the single Tailwind build a later utility beats an earlier one on the same property.
+ * Split into two files, an app rule that Tailwind ordered BEFORE a shell rule now comes
+ * after it and wins instead (`line-clamp-1` vs `flex` on `display`). So every shell rule
+ * that shares a property family with an emitted rule and is ordered after it is emitted
+ * again after it when the two classes can share an element (same class string or line),
+ * repeated until nothing changes. Base, theme and the rest subtract as usual.
+ *
+ * @param {any[]} tree - Full build (app + shell classes)
+ * @param {ReturnType<typeof index>} idx - Index of the earlier stylesheet(s)
+ * @param {Map<string, Set<string>>} cooc - Which class tokens can share an element
+ * @returns {any[]} Nodes for the app's file
+ */
+function keepPrecedence(tree, idx, cooc) {
+  const entries = [];
+  const collect = (list, path) => {
+    for (const n of list) {
+      if (n.kind !== 'block' || /^@(keyframes|property|font-face)\b/.test(n.prelude)) continue;
+      const stmts = n.children.filter((c) => c.kind === 'stmt');
+      const nested = n.children.filter((c) => c.kind === 'block');
+      if (stmts.length && !n.prelude.startsWith('@')) {
+        const known = idx.stmts.get(`${path}>${n.prelude}`);
+        const cls = [...n.prelude.matchAll(/\.(-?(?:[A-Za-z_]|\\.)(?:[\w-]|\\.)*)/g)].map((m) => m[1].replace(/\\(.)/g, '$1'));
+        entries.push({ node: n, shell: Boolean(known) && stmts.every((s) => known.has(s.text)), fam: families(stmts), cls });
+      }
+      collect(nested, `${path}>${n.prelude}`);
+    }
+  };
+  const layer = tree.find((n) => n.kind === 'block' && n.prelude === '@layer utilities');
+  if (layer) collect(layer.children, '>@layer utilities');
+  const keep = new Set(entries.filter((e) => !e.shell).map((e) => e.node));
+  let changed = true;
+  while (changed) {
+    changed = false;
+    entries.forEach((a, i) => {
+      if (!keep.has(a.node)) return;
+      for (let j = i + 1; j < entries.length; j++) {
+        const u = entries[j];
+        if (keep.has(u.node) || !u.shell) continue;
+        const together = a.cls.some((x) => u.cls.some((y) => cooc.get(x)?.has(y)));
+        if (together && [...u.fam].some((f) => a.fam.has(f))) {
+          keep.add(u.node);
+          changed = true;
+        }
+      }
+    });
+  }
+  const filterLayer = (list) => {
+    const out = [];
+    for (const n of list) {
+      if (n.kind === 'stmt') continue;
+      if (keep.has(n)) {
+        out.push({ ...n, children: n.children.filter((c) => c.kind === 'stmt').concat(filterLayer(n.children.filter((c) => c.kind === 'block'))) });
+        continue;
+      }
+      if (/^@(keyframes|property|font-face)\b/.test(n.prelude)) continue;
+      const children = filterLayer(n.children);
+      if (children.length) out.push({ ...n, children });
+    }
+    return out;
+  };
+  return tree.flatMap((n) => {
+    if (n === layer) {
+      const children = filterLayer(n.children);
+      return children.length ? [{ ...n, children }] : [];
+    }
+    return subtract([n], idx);
+  });
+}
+
+const keepImport = opts.app && /@import\s+(?:url\()?["']@stevederico\/skateboard-ui\/styles\.css["']/.test(readFileSync(opts.input, 'utf8'));
+const css = `${keepImport ? '@import "@stevederico/skateboard-ui/styles.css";\n\n' : ''}${print(nodes)}\n`;
 writeFileSync(opts.out, css);
 const classes = new Set();
 for (const m of css.matchAll(/(?:^|[\s,>+~(])\.((?:[\w-]|\\.)+)/gm)) classes.add(m[1].replace(/\\(.)/g, '$1'));

@@ -38,6 +38,17 @@ source" notes) and component JSDoc about shadcn-compatible markup.
 - [ ] Apps still on `./shadcn/*` paths break on 5.17.0 until they rewrite them (README
   has the mapping and a grep).
 
+## TypeScript 7 build (5.19.0)
+
+Done: the root build and typecheck use typescript 7.0.2 (exact); guardrails/ stays on 5.9.3
+because @typescript-eslint/parser needs it. dist/ has the same files; three .d.ts differ only
+in form (Calendar quote style, ErrorBoundary union order, Command statics as export aliases,
+so reassigning `Command.Input` is now a type error). `scripts/tailwind-to-css.js` repeats the
+shell rules an app class depends on for cascade precedence; the skateboard template
+conversion (skateboard 5.20.0) came out pixel-identical in light and dark.
+
+- [ ] Move guardrails/ to TypeScript 7 when @typescript-eslint/parser supports it.
+
 ## Plain CSS, no Tailwind (5.18.0)
 
 Done: `styles.css` is plain CSS for skateboard-ui's own components plus the theme, produced

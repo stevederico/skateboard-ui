@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "5.18.0",
+  "version": "5.19.0",
   "type": "module",
   "exports": {
     ".": {
@@ -201,6 +201,6 @@
   "devDependencies": {
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }
