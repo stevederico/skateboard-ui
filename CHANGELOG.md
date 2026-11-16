@@ -1,3 +1,8 @@
+5.22.0
+
+  Patch minimatch advisory
+  Override minimatch 11.0.5
+
 5.21.0
 
   Release 5.20.0 changes
