@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation } from '../../router/index.mjs';
 import ConstantsIcon from '../core/constantsIcon.js';
 import { getState } from '../core/Context.js';
 import { cn } from '../../shadcn/lib/utils.js';

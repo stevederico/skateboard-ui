@@ -7,7 +7,7 @@ runRuleTests('peer-dependencies-only', rule, {
     "import { jsx } from 'react/jsx-runtime';",
     { code: "import { createRoot } from 'react-dom/client';", filename: 'App.tsx' },
     { code: "import { createPortal } from 'react-dom';", filename: 'ui/portal.tsx' },
-    "import { useNavigate } from 'react-router';",
+    "import { useNavigate } from '../../router/index.mjs';",
     "import { cn } from '../../shadcn/lib/utils.js';",
     // Tooling and the harness have their own dependencies.
     { code: "import ts from 'typescript';", filename: 'scripts/pull-shadcn-base-vega.js' },
@@ -15,6 +15,8 @@ runRuleTests('peer-dependencies-only', rule, {
     { code: "import { RuleTester } from 'eslint';", filename: 'guardrails/eslint-plugin/lib/ruleTester.js' },
     // Reported by their own rules instead.
     "import { Plus } from 'lucide-react';",
+    "import { useNavigate } from 'react-router';",
+    "import { Link } from 'react-router-dom';",
     "import { readFileSync } from 'node:fs';",
     "import { getState } from '@stevederico/skateboard-ui/Context';",
   ],
@@ -23,7 +25,6 @@ runRuleTests('peer-dependencies-only', rule, {
     { code: "import { Command } from 'cmdk';", filename: 'ui/command.tsx', errors: [{ messageId: 'notPeer' }] },
     { code: "import { DayPicker } from 'react-day-picker';", filename: 'ui/calendar.tsx', errors: [{ messageId: 'notPeer' }] },
     { code: "import * as Dialog from '@radix-ui/react-dialog';", filename: 'ui/dialog.tsx', errors: [{ messageId: 'notPeer', data: { source: '@radix-ui/react-dialog', pkg: '@radix-ui/react-dialog' } }] },
-    { code: "import { Link } from 'react-router-dom';", errors: [{ messageId: 'notPeer' }] },
     { code: "import axios from 'axios';", filename: 'components/core/Utilities.ts', errors: [{ messageId: 'notPeer' }] },
     { code: "import type { Properties } from 'csstype';", filename: 'ui/slot.tsx', errors: [{ messageId: 'notPeer' }] },
     { code: "const { toast } = await import('sonner');", errors: [{ messageId: 'notPeer' }] },

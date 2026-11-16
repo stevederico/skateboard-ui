@@ -38,7 +38,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../dist/ui/tabs.js"
 import { RadioGroup, RadioGroupItem } from "../dist/ui/radio-group.js"
 import { Slider } from "../dist/ui/slider.js"
 import { Checkbox } from "../dist/ui/checkbox.js"
-import { MemoryRouter } from "react-router"
+import { MemoryRouter } from "../dist/router/index.mjs"
 import { ContextProvider } from "../dist/components/core/Context.js"
 import SettingsView from "../dist/components/views/SettingsView.js"
 import {

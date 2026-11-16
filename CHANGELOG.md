@@ -1,3 +1,15 @@
+5.16.0
+
+  Vendor react-router 7.18.5
+  Export ./router entries
+  Drop react-router peer
+  Add vendor-react-router script
+  Add LICENSE-react-router
+  Add no-react-router-import rule
+  Add router layer
+  Add router harness spec
+  Note: cookie 1.1.1 and set-cookie-parser 2.7.3 are wrapped in ESM shims (react-router imports them); an app must not also install react-router
+
 5.15.0
 
   Vendor 222 app icons

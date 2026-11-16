@@ -313,6 +313,46 @@ a curated registry.
 
 Icons by [Lucide](https://lucide.dev) (ISC License, see `LICENSE-lucide`).
 
+### Router
+
+skateboard-ui vendors react-router 7.18.5 (unchanged ESM build and types) and
+exports it, so apps need no `react-router` dependency:
+
+| Export | Import |
+|--------|--------|
+| react-router (`BrowserRouter`, `Routes`, `Link`, `useNavigate`, `createBrowserRouter`, ...) | `@stevederico/skateboard-ui/router` |
+| react-router/dom (`RouterProvider` with `flushSync`, `HydratedRouter`) | `@stevederico/skateboard-ui/router/dom` |
+| react-router/internal (route-module types) | `@stevederico/skateboard-ui/router/internal` |
+
+```javascript
+import { Link, useNavigate, useParams, useSearchParams } from '@stevederico/skateboard-ui/router';
+```
+
+Same API as `react-router`: change the import path, nothing else. Not
+included: react-router's `react-server` (RSC) entries.
+
+**Exactly one router copy.** The shell's routes, `Outlet`, `ProtectedRoute` and
+`useSafeNavigate` use the vendored copy. An app that also imports
+`'react-router'` (or `react-router-dom`) loads a second router whose context the
+shell cannot see: hooks throw "useNavigate() may be used only in the context of
+a <Router>", and `useSafeNavigate` silently falls back to full page loads. Find
+leftovers with:
+
+```bash
+grep -rnE "from ['\"]react-router(-dom)?(/[^'\"]*)?['\"]" src
+```
+
+Then remove `react-router` from `package.json` and from Vite's
+`resolve.dedupe` / `optimizeDeps.include`.
+
+Re-copy for a new react-router release with
+`node scripts/vendor-react-router.js <react-router> <cookie> <set-cookie-parser>`
+(see the script header). **Security advisories for react-router are not
+watched by any tool here**: check
+https://github.com/remix-run/react-router/security/advisories by hand and
+re-vendor when one applies. react-router by Remix Software, with cookie and
+set-cookie-parser (MIT, see `LICENSE-react-router`).
+
 ## Context
 
 ```javascript
@@ -388,10 +428,9 @@ showManage('cus_abc123');
 
 - React 19.1+
 - react-dom 19.1+
-- react-router 7.x
 - tailwindcss 4.x (for `styles.css`)
 
-`react-router` is a peer so the app and the shell share one router copy (two copies break router context). npm 7+ installs missing peers automatically. There is no public DynamicIcon; vendored icons are imported by name from `@stevederico/skateboard-ui/icons`. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
+react-router is not a peer since 5.16.0: it ships inside the package as `@stevederico/skateboard-ui/router` (see [Router](#router)). npm 7+ installs missing peers automatically. There is no public DynamicIcon; vendored icons are imported by name from `@stevederico/skateboard-ui/icons`. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
 
 ## Repository
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router';
+import { Navigate, Outlet } from '../router/index.mjs';
 import { isAuthenticated, apiRequest, getAppKey, getConstants, isAuthOverlayEnabled } from './core/Utilities.js';
 import { PageSkeleton } from '../ui/skeleton.js';
 

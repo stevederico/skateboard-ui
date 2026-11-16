@@ -54,7 +54,7 @@ describe('layer table', () => {
   });
 
   it('keeps the leaf layers leaf and the entry unimported', () => {
-    for (const leaf of ['headless', 'icons', 'shadcn']) assert.deepEqual(ALLOWED_EDGES[leaf], [leaf]);
+    for (const leaf of ['headless', 'icons', 'shadcn', 'router']) assert.deepEqual(ALLOWED_EDGES[leaf], [leaf]);
     for (const [from, targets] of Object.entries(ALLOWED_EDGES)) {
       if (from !== 'entry') assert.ok(!targets.includes('entry'), `${from} may not import the entry`);
     }
@@ -82,6 +82,7 @@ describe('layer table', () => {
     assert.equal(layerOf('ui/button.tsx')?.name, 'ui');
     assert.equal(layerOf('icons/index.tsx')?.name, 'icons');
     assert.equal(layerOf('shadcn/lib/utils.ts')?.name, 'shadcn');
+    assert.equal(layerOf('router/index.mjs')?.name, 'router');
     assert.equal(layerOf('scripts/vendor-lucide-icons.js')?.name, 'tooling');
     assert.equal(layerOf('.harness/tests/menus.spec.ts')?.name, 'harness');
     assert.equal(layerOf('eslint.config.js')?.name, 'guardrails');

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../../router/index.mjs';
 import { getState } from '../core/Context.js';
 import ConstantsIcon from '../core/constantsIcon.js';
 import ThemeToggle from '../ThemeToggle.js';

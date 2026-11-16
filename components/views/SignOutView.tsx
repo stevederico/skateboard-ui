@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../../router/index.mjs';
 import { getBackendURL, getCSRFToken } from '../core/Utilities.js';
 import { useDispatch } from '../core/Context.js';
 import { Spinner } from '../../ui/spinner.js';

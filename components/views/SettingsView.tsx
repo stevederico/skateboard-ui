@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../../router/index.mjs';
 import { getState } from '../core/Context.js';
 import ThemeToggle from '../ThemeToggle.js';
 import Header from '../layout/Header.js';

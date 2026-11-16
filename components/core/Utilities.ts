@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { useInRouterContext, useNavigate } from 'react-router';
+import { useInRouterContext, useNavigate } from '../../router/index.mjs';
 import { getDispatch } from './Context.js';
-import type { Location } from 'react-router';
+import type { Location } from '../../router/index.mjs';
 import type { RefObject } from 'react';
 
 /** A navigation item rendered in the Sidebar and TabBar (constants.pages). */

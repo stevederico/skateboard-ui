@@ -8,14 +8,15 @@ skateboard-ui is the published React shell (`@stevederico/skateboard-ui`) that s
 ## Commands
 
 ```bash
-npm ci                       # root: typescript, react-router, tailwindcss, @types (pinned)
+npm ci                       # root: typescript, tailwindcss, @types (pinned)
 npm run typecheck            # tsc --noEmit, strict
 npm run build                # tsc -> dist/, then scripts/copy-dist-assets.js
 npm run guardrails:install   # once: ESLint + TS parser into guardrails/ (nested, pinned)
 npm run lint                 # local guardrails plugin (see Guardrails)
 npm run test:guardrails      # RuleTester suite for every rule (node --test)
 cd .harness && npm ci && npx playwright test   # Playwright suite against the built dist/
-npm pack --dry-run           # must list only dist/, styles.css, fonts/, CHANGELOG, README, LICENSE-lucide
+npm pack --dry-run           # must list only dist/, styles.css, fonts/, CHANGELOG, README, LICENSE-lucide, LICENSE-react-router
+node scripts/vendor-react-router.js 7.18.5 1.1.1 2.7.3   # re-copy react-router (+ cookie, set-cookie-parser) into router/
 ```
 
 ## Guardrails
@@ -33,7 +34,8 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 
 | Rule | Lint rule |
 |---|---|
-| Library code imports only its peers (`react`, `react-dom`, `react-router`) and relative files. The package has no `dependencies`; everything else is vendored (`shadcn/lib`, `components/core/Command.tsx`, `Calendar.tsx`, `icons/`) | `peer-dependencies-only` |
+| Library code imports only its peers (`react`, `react-dom`) and relative files. The package has no `dependencies`; everything else is vendored (`shadcn/lib`, `components/core/Command.tsx`, `Calendar.tsx`, `icons/`, `router/`) | `peer-dependencies-only` |
+| Never import `react-router` (or `react-router-dom`, `react-router/dom`, `@react-router/*`). The router is vendored in `router/` and the package ships exactly one copy: library code imports `router/index.mjs` (or `router/dom-export.mjs`) by relative path, the harness imports `../dist/router/index.mjs`, apps import `@stevederico/skateboard-ui/router` | `no-react-router-import` |
 | Never import `@stevederico/skateboard-ui/...` from inside the package; use relative paths with the `.js` extension | `no-self-package-import` |
 | Never import through `node_modules/` or a package's `dist/`, `build/`, `esm/`, `cjs/` | `no-deep-package-imports` |
 | ES modules only, never `require()` or `module.exports` | `no-require` |
@@ -56,14 +58,15 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 | Layer | Path | May import |
 |---|---|---|
 | entry | `App.tsx`, `index.ts` | every library layer below |
-| views | `components/views/` | layout, widgets, core, hooks, ui, icons, shadcn |
-| widgets | `components/*.tsx` | core, hooks, ui, icons, shadcn |
-| layout | `components/layout/` | core, hooks, ui, icons, shadcn |
-| hooks | `hooks/` | core, shadcn |
-| core | `components/core/` | icons, shadcn |
+| views | `components/views/` | layout, widgets, core, hooks, ui, icons, shadcn, router |
+| widgets | `components/*.tsx` | core, hooks, ui, icons, shadcn, router |
+| layout | `components/layout/` | core, hooks, ui, icons, shadcn, router |
+| hooks | `hooks/` | core, shadcn, router |
+| core | `components/core/` | icons, shadcn, router |
 | ui | `ui/` | headless, icons, shadcn |
 | headless | `components/core/Calendar.tsx`, `Command.tsx` | nothing (leaf) |
 | icons | `icons/` | nothing (leaf) |
+| router | `router/` (vendored react-router, generated) | nothing (leaf; only `react`, `react-dom`) |
 | shadcn | `shadcn/` | nothing (leaf) |
 | tooling | `scripts/`, `.design-sync/` | itself only |
 | harness | `.harness/` | itself and `dist/` only |
@@ -124,14 +127,15 @@ These do not run on `ui/`, whose class lists follow the upstream shadcn base-veg
 | Rule | Why not linted |
 |---|---|
 | Every dependency (root, `.harness/`, `guardrails/`) is pinned exactly, no `^` / `~`, at least 7 days old (`npm view <pkg> time`), with a committed lockfile; install with `npm ci` | JSON and registry data, not source. Check by hand before adding |
-| Never add a `dependencies` block to `package.json`; peers are `react`, `react-dom`, `react-router`, `tailwindcss` | JSON. `peer-dependencies-only` covers the import side |
-| Never loosen `strict` in `tsconfig.json`; relative imports carry the `.js` extension | `npm run typecheck` enforces both |
+| Never add a `dependencies` block to `package.json`; peers are `react`, `react-dom`, `tailwindcss`. Never add `react-router` back as a peer or devDependency | JSON. `peer-dependencies-only` and `no-react-router-import` cover the import side |
+| Never loosen `strict` in `tsconfig.json`; relative imports carry the `.js` extension (`.mjs` for the vendored `router/`) | `npm run typecheck` enforces both |
 | Never publish by hand. A release is a pushed version tag; `publish.yml` checks tag = `package.json` version, then `npm ci`, typecheck, build and the harness suite | CI workflow, not source |
 | Workflow actions are pinned to commit SHAs and npm to an exact version | YAML |
 | Bump `version` in `package.json` and `package-lock.json` together and add a `CHANGELOG.md` entry in the existing style (version line, then short two-space-indented items) | JSON and Markdown |
-| The tarball is `dist/`, `styles.css`, `fonts/`, `CHANGELOG.md`, `README.md`, `LICENSE-lucide` only. Never add `guardrails/`, `.harness/` or `scripts/` to `files` | JSON. Check with `npm pack --dry-run` |
+| The tarball is `dist/`, `styles.css`, `fonts/`, `CHANGELOG.md`, `README.md`, `LICENSE-lucide`, `LICENSE-react-router` only. Never add `guardrails/`, `.harness/` or `scripts/` to `files` | JSON. Check with `npm pack --dry-run` |
 | A new public component needs an `exports` entry in `package.json` and a row in the README table | Cross-file (JSON plus Markdown) |
-| Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `shadcn/lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`) | Needs a diff against generator output |
+| Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `shadcn/lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`), `router/` and `LICENSE-react-router` (`scripts/vendor-react-router.js`) | Needs a diff against generator output |
+| Security advisories for react-router (and cookie, set-cookie-parser) are watched by hand: check https://github.com/remix-run/react-router/security/advisories and re-run `scripts/vendor-react-router.js` when one applies | No dependency, so no `npm audit` or Dependabot sees it |
 | Never overwrite `ui/` from upstream. `scripts/pull-shadcn-base-vega.js` writes to a staging directory with a deviation ledger; adoption is a reviewed copy | Process rule |
 | New behavior gets a Playwright spec in `.harness/tests/` with a fixture that imports from `../dist/` | Needs to know what changed |
 | Skeletons for content waits, spinners for actions | Design judgment |

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "../../router/index.mjs";
 import ConstantsIcon from '../core/constantsIcon.js';
 import { getState } from "../core/Context.js";
 import {

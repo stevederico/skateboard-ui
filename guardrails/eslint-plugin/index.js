@@ -27,6 +27,7 @@ import noGlobalsPackage from './rules/no-globals-package.js';
 import noInlineSvg from './rules/no-inline-svg.js';
 import noOutlineNoneWithoutFocusRing from './rules/no-outline-none-without-focus-ring.js';
 import noRawColorClasses from './rules/no-raw-color-classes.js';
+import noReactRouterImport from './rules/no-react-router-import.js';
 import noRequire from './rules/no-require.js';
 import noSelfPackageImport from './rules/no-self-package-import.js';
 import noSpaceUtilities from './rules/no-space-utilities.js';
@@ -46,6 +47,7 @@ const BASE_RULES = {
   'no-deep-package-imports': noDeepPackageImports,
   'no-self-package-import': noSelfPackageImport,
   'peer-dependencies-only': peerDependenciesOnly,
+  'no-react-router-import': noReactRouterImport,
   'layer-boundaries': layerBoundaries,
   'no-empty-catch': noEmptyCatch,
   'no-foreign-test-frameworks': noForeignTestFrameworks,

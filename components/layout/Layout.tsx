@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet } from '../../router/index.mjs';
 import type * as React from 'react';
 import TabBar from './TabBar.js'
 import { SidebarProvider, SidebarInset } from "../../ui/sidebar.js"

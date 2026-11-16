@@ -6,7 +6,7 @@ import {
   Navigate,
   useLocation,
   useNavigate,
-} from 'react-router';
+} from './router/index.mjs';
 import { useEffect } from 'react';
 import { getState } from './components/core/Context.js';
 import { ThemeProvider } from './components/core/ThemeProvider.js';

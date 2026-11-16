@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from '../../router/index.mjs';
 import { getState } from '../core/Context.js';
 import { getCurrentUser, getAppKey } from '../core/Utilities.js'
 import { Spinner } from '../../ui/spinner.js';
