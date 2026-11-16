@@ -54,6 +54,13 @@ function scan(p) {
 }
 for (const d of SRC_DIRS) scan(join(root, d));
 
+// Icon names skateboard apps use that the package source does not import.
+const appNames = readFileSync(join(root, 'scripts', 'app-icon-names.txt'), 'utf8')
+  .split('\n')
+  .map((s) => s.trim())
+  .filter((s) => s && !s.startsWith('#'));
+for (const n of appNames) names.add(n);
+
 const toPascal = (s) => s.replace(/^([a-z])|[\s-_]+(\w)/g, (_, a, b) => (a ?? b).toUpperCase());
 const toKebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 

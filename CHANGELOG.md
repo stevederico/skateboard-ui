@@ -1,3 +1,12 @@
+5.15.0
+
+  Vendor 222 app icons
+  Export old aliases
+  Add app-icon-names list
+  Register six constants icons
+  Add icons harness spec
+  Track missing icons in todo.md
+
 5.14.0
 
   Add guardrails ESLint plugin

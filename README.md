@@ -304,8 +304,12 @@ need no `lucide-react` dependency:
 import { Home, Settings } from '@stevederico/skateboard-ui/icons';
 ```
 
-Only the icons the shell vendors are exported. The shell resolves
-`constants.json` icon strings privately via a curated registry.
+The export covers the icons the shell renders plus every Lucide icon the
+skateboard apps use (from lucide-react 0.546.0, listed in
+`scripts/app-icon-names.txt`). Old Lucide alias names (`AlertCircle`,
+`Loader2`, `HelpCircle`, `MoreHorizontal`) are exported too and point at the
+canonical icon. The shell resolves `constants.json` icon strings privately via
+a curated registry.
 
 Icons by [Lucide](https://lucide.dev) (ISC License, see `LICENSE-lucide`).
 

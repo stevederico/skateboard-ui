@@ -47,6 +47,19 @@ import {
   isSubscriber,
   showUpgradeSheet,
 } from "../dist/components/core/Utilities.js"
+import ConstantsIcon from "../dist/components/core/constantsIcon.js"
+import {
+  AlertCircle,
+  CircleAlert,
+  Loader2,
+  LoaderCircle,
+  MoreHorizontal,
+  Ellipsis,
+  SquarePen,
+  PenSquare,
+  Twitter,
+  Wrench,
+} from "../dist/icons/index.js"
 
 function SlotCompose() {
   // Counts consumer-handler invocations to prove Slot composes (doesn't clobber).
@@ -342,7 +355,33 @@ function IsSubscriberFx() {
   )
 }
 
+// Icons vendored in 5.15.0 for the apps: new names, old lucide aliases that
+// must be the same component as the canonical icon, and constants.json
+// strings resolved by ConstantsIcon.
+const ICON_FX = { AlertCircle, Loader2, MoreHorizontal, SquarePen, PenSquare, Twitter, Wrench }
+const CONSTANTS_ICON_NAMES = ["flag", "factory", "ev-charger", "git-pull-request", "corner-up-right", "arrow-right-left", "solar-panel", "workspace"]
+function IconsFx() {
+  return (
+    <section data-testid="fx-icons">
+      <div data-testid="alias-identity">
+        {String(AlertCircle === CircleAlert && Loader2 === LoaderCircle && MoreHorizontal === Ellipsis && PenSquare === SquarePen)}
+      </div>
+      {Object.entries(ICON_FX).map(([name, Icon]) => (
+        <span key={name} data-testid={`icon-${name}`}>
+          <Icon size={16} />
+        </span>
+      ))}
+      {CONSTANTS_ICON_NAMES.map((name) => (
+        <span key={name} data-testid={`constants-${name}`}>
+          <ConstantsIcon name={name} size={16} />
+        </span>
+      ))}
+    </section>
+  )
+}
+
 const FIXTURES: Record<string, React.ReactNode> = {
+  icons: <IconsFx />,
   subscription: <SubscriptionStatus />,
   "is-subscriber": <IsSubscriberFx />,
   "checkbox-indeterminate": <CheckboxIndeterminate />,
