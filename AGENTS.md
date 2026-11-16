@@ -8,7 +8,7 @@ skateboard-ui is the published React shell (`@stevederico/skateboard-ui`) that s
 ## Commands
 
 ```bash
-npm ci                       # root: typescript, tailwindcss, @types (pinned)
+npm ci                       # root: typescript, @types (pinned)
 npm run typecheck            # tsc --noEmit, strict
 npm run build                # tsc -> dist/, then scripts/copy-dist-assets.js
 npm run guardrails:install   # once: ESLint + TS parser into guardrails/ (nested, pinned)
@@ -88,6 +88,7 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 | Never `alert()`, `confirm()`, `prompt()`; use `ui/alert-dialog`, `ui/dialog` | `no-browser-dialogs` |
 | Every `<img>` has `alt` | `img-requires-alt` |
 | Conditional classes use `cn()`, never a template literal ternary | `no-classname-template-ternary` |
+| Every static class token in library code (`className`, `cn()`, `cva()`) is defined by `styles.css`. Marker classes (`group/x`, `peer/x`) are always fine; known no-op tokens are listed with a reason in `eslint.config.js` | `no-unknown-classes` |
 
 ### TypeScript
 
@@ -128,14 +129,16 @@ These do not run on `ui/`, whose class lists follow the upstream shadcn base-veg
 | Rule | Why not linted |
 |---|---|
 | Every dependency (root, `.harness/`, `guardrails/`) is pinned exactly, no `^` / `~`, at least 7 days old (`npm view <pkg> time`), with a committed lockfile; install with `npm ci` | JSON and registry data, not source. Check by hand before adding |
-| Never add a `dependencies` block to `package.json`; peers are `react`, `react-dom`, `tailwindcss`. Never add `react-router` back as a peer or devDependency | JSON. `peer-dependencies-only` and `no-react-router-import` cover the import side |
+| Never add a `dependencies` block to `package.json`; peers are `react`, `react-dom`. Never add `react-router` or `tailwindcss` back as a peer or devDependency | JSON. `peer-dependencies-only` and `no-react-router-import` cover the import side |
 | Never loosen `strict` in `tsconfig.json`; relative imports carry the `.js` extension (`.mjs` for the vendored `router/`) | `npm run typecheck` enforces both |
 | Never publish by hand. A release is a pushed version tag; `publish.yml` checks tag = `package.json` version, then `npm ci`, typecheck, build and the harness suite | CI workflow, not source |
 | Workflow actions are pinned to commit SHAs and npm to an exact version | YAML |
 | Bump `version` in `package.json` and `package-lock.json` together and add a `CHANGELOG.md` entry in the existing style (version line, then short two-space-indented items) | JSON and Markdown |
 | The tarball is `dist/`, `styles.css`, `fonts/`, `CHANGELOG.md`, `README.md`, `LICENSE-lucide`, `LICENSE-react-router` only. Never add `guardrails/`, `.harness/` or `scripts/` to `files` | JSON. Check with `npm pack --dry-run` |
 | A new public component needs an `exports` entry in `package.json` and a row in the README table | Cross-file (JSON plus Markdown) |
-| Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`), `router/` and `LICENSE-react-router` (`scripts/vendor-react-router.js`) | Needs a diff against generator output |
+| Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`), `router/` and `LICENSE-react-router` (`scripts/vendor-react-router.js`), |
+| Never add `tailwindcss`, `@tailwindcss/*` or any CSS framework to any `package.json` here (root, `.harness/`, `guardrails/`). `styles.css` is plain CSS, edited by hand: a component that uses a new class gets its rule added to `styles.css` (the plain-CSS equivalent, using the theme variables) in the same commit | JSON. `no-unknown-classes` covers the class side |
+| `scripts/tailwind-to-css.js` is a one-shot converter (it produced `styles.css` and `.harness/harness.css`). It runs Tailwind only from a temporary install passed with `--tailwind`; never make it a dependency | Process rule |
 | Security advisories for react-router (and cookie, set-cookie-parser) are watched by hand: check https://github.com/remix-run/react-router/security/advisories and re-run `scripts/vendor-react-router.js` when one applies | No dependency, so no `npm audit` or Dependabot sees it |
 | Never overwrite `ui/` from upstream. `scripts/pull-shadcn-base-vega.js` writes to a staging directory with a deviation ledger; adoption is a reviewed copy | Process rule |
 | New behavior gets a Playwright spec in `.harness/tests/` with a fixture that imports from `../dist/` | Needs to know what changed |

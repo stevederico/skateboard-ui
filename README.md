@@ -1,6 +1,6 @@
 # skateboard-ui
 
-React component library for rapid application development. Built with TypeScript, TailwindCSS v4, and Base UI-style primitives (ui/ follows the shadcn base-vega source).
+React component library for rapid application development. Built with TypeScript, plain CSS (no Tailwind needed), and Base UI-style primitives (ui/ follows the shadcn base-vega source).
 
 Requires **Node.js 24+** in the app repo (see `engines` in `package.json`).
 
@@ -227,17 +227,38 @@ Add this script to `index.html` **before** your app loads to prevent FOUC:
 
 ## Styling
 
+Since 5.18.0 skateboard-ui ships plain CSS and nobody runs Tailwind. `styles.css`
+holds the theme variables, the base layer, the animations and the CSS for
+skateboard-ui's own components. It was produced once with Tailwind and is now
+the source: edit it by hand.
+
+Each app owns one more plain CSS file for the classes its own `src` uses:
+
 ```css
+/* src/assets/styles.css */
 @import "@stevederico/skateboard-ui/styles.css";
 
-@source '../../node_modules/@stevederico/skateboard-ui';
+:root {
+  --color-app: var(--color-purple-500); /* brand */
+}
 
-@theme {
-  --color-app: var(--color-purple-500);
+@layer utilities {
+  .my-card { padding: calc(var(--spacing) * 4); }
 }
 ```
 
-Key variables: `--color-app` (brand), `--background`, `--foreground`, `--accent`, `--radius`.
+No `tailwindcss`, no `@tailwindcss/vite`, no `@theme`, `@apply` or `@source`.
+Key variables: `--color-app` (brand), `--background`, `--foreground`,
+`--accent`, `--radius`. An app's unlayered `:root` / `.dark` values win over the
+shipped theme layer.
+
+The skateboard template's `no-unknown-classes` lint rule reports a class that
+neither skateboard-ui's `styles.css` nor the app's CSS defines.
+
+To move an existing Tailwind app over, `scripts/tailwind-to-css.js` writes the
+app's plain CSS once. It runs Tailwind from a temporary install outside the app
+(see its header) and subtracts everything skateboard-ui's `styles.css` already
+has. The same script produced `styles.css` and `.harness/harness.css` here.
 
 ## Components
 
@@ -433,7 +454,6 @@ showManage('cus_abc123');
 
 - React 19.1+
 - react-dom 19.1+
-- tailwindcss 4.x (for `styles.css`)
 
 react-router is not a peer since 5.16.0: it ships inside the package as `@stevederico/skateboard-ui/router` (see [Router](#router)). npm 7+ installs missing peers automatically. There is no public DynamicIcon; vendored icons are imported by name from `@stevederico/skateboard-ui/icons`. The shell resolves `constants.json` icon strings privately. Navigate with `useSafeNavigate()` from `Utilities`.
 

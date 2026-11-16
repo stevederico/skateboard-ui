@@ -1,0 +1,41 @@
+@layer theme {
+  :root, :host {
+    --text-xl: 1.25rem;
+    --text-xl--line-height: calc(1.75 / 1.25);
+  }
+}
+
+@layer utilities {
+  .my-2 {
+    margin-block: calc(var(--spacing) * 2);
+  }
+
+  .h-48 {
+    height: calc(var(--spacing) * 48);
+  }
+
+  .w-32 {
+    width: calc(var(--spacing) * 32);
+  }
+
+  .w-44 {
+    width: calc(var(--spacing) * 44);
+  }
+
+  .w-64 {
+    width: calc(var(--spacing) * 64);
+  }
+
+  .w-80 {
+    width: calc(var(--spacing) * 80);
+  }
+
+  .gap-10 {
+    gap: calc(var(--spacing) * 10);
+  }
+
+  .text-xl {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
+}

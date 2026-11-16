@@ -37,3 +37,16 @@ source" notes) and component JSDoc about shadcn-compatible markup.
 
 - [ ] Apps still on `./shadcn/*` paths break on 5.17.0 until they rewrite them (README
   has the mapping and a grep).
+
+## Plain CSS, no Tailwind (5.18.0)
+
+Done: `styles.css` is plain CSS for skateboard-ui's own components plus the theme, produced
+once with `scripts/tailwind-to-css.js` and edited by hand from now on. tailwindcss left
+peerDependencies, devDependencies and the harness (which has its own `.harness/harness.css`).
+Lint rule `no-unknown-classes` checks every library class against `styles.css`.
+
+- [ ] Tokens listed as no-ops in `eslint.config.js` (`data-open:animate-in`, `slide-in-from-*`
+  variants, ...) never had CSS, so the open/close animations they describe never ran. Give
+  them CSS in `styles.css` if the animations are wanted (check overlay timing in the harness).
+- [ ] Apps that use `@apply` in their CSS: `scripts/tailwind-to-css.js` compiles it once to
+  plain CSS during their conversion.

@@ -32,6 +32,7 @@ import noRequire from './rules/no-require.js';
 import noSelfPackageImport from './rules/no-self-package-import.js';
 import noShadcnPaths from './rules/no-shadcn-paths.js';
 import noSpaceUtilities from './rules/no-space-utilities.js';
+import noUnknownClasses from './rules/no-unknown-classes.js';
 import noTransitionAll from './rules/no-transition-all.js';
 import peerDependenciesOnly from './rules/peer-dependencies-only.js';
 import preferSizeUtility from './rules/prefer-size-utility.js';
@@ -66,6 +67,7 @@ const LIBRARY_RULES = {
   'no-emoji-icons': noEmojiIcons,
   'no-inline-svg': noInlineSvg,
   'no-classname-template-ternary': noClassnameTemplateTernary,
+  'no-unknown-classes': noUnknownClasses,
 };
 
 /**

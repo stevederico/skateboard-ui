@@ -1,3 +1,14 @@
+5.18.0
+
+  Ship plain styles.css
+  Drop tailwindcss entirely
+  Add tailwind-to-css converter
+  Add no-unknown-classes rule
+  Harness runs without Tailwind
+  Add harness.css
+  Add styles harness checks
+  Note: apps drop tailwindcss and @tailwindcss/vite and own a plain CSS file for the classes their src uses (scripts/tailwind-to-css.js writes it once); @theme values move to :root
+
 5.17.0
 
   Move shadcn/lib to lib

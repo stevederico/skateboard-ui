@@ -60,6 +60,30 @@ export default [
     files: ['App.tsx', 'components/**/*.{ts,tsx}', 'hooks/**/*.{ts,tsx}'],
   },
   {
+    // Class tokens in ui/ that have never had CSS: Tailwind never generated variants of the
+    // plain animate-in/-out, fade-*, zoom-* and slide-* classes (so these were already no-ops
+    // under Tailwind), plus upstream hook classes nothing styles. Kept as-is for parity with
+    // the upstream ui/ source; giving them CSS would switch on open/close animations, which is
+    // a separate, visible change. Remove a token here when styles.css gains its rule.
+    name: 'skateboard-ui/no-op-classes',
+    files: LIBRARY,
+    rules: {
+      'skateboard-ui/no-unknown-classes': [
+        'error',
+        {
+          ignore: [
+            'data-open:animate-in', 'data-open:fade-in-0', 'data-open:zoom-in-95',
+            'data-closed:animate-out', 'data-closed:fade-out-0', 'data-closed:zoom-out-95',
+            'data-[side=bottom]:slide-in-from-top-2', 'data-[side=top]:slide-in-from-bottom-2',
+            'data-[side=left]:slide-in-from-right-2', 'data-[side=right]:slide-in-from-left-2',
+            'slide-in-from-bottom-52', 'slide-out-to-bottom-52',
+            'no-scrollbar', 'cn-calendar-caption-label', 'cn-calendar-dropdown-root',
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Vendored third-party helpers (class-variance-authority, clsx) keep their upstream types.
     name: 'skateboard-ui/vendored',
     files: ['lib/cva.ts', 'lib/clsx.ts'],
