@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { type VariantProps } from "../shadcn/lib/cva.js"
+import { type VariantProps } from "../lib/cva.js"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 import { toggleVariants } from "./toggle.js"
 import { useControllableState } from "./use-controllable-state.js"
 

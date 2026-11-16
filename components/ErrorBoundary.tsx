@@ -8,7 +8,7 @@ import { Badge } from '../ui/badge.js';
  * Top-level error boundary that catches render errors, unhandled promise
  * rejections, and global errors.
  *
- * Displays a shadcn Card fallback with a destructive Alert showing the
+ * Displays a ui/ Card fallback with a destructive Alert showing the
  * error message, plus "Try Again" and "Reload Page" buttons.
  *
  * @param {Object} props

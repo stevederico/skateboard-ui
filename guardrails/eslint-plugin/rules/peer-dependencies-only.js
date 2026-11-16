@@ -28,7 +28,7 @@ export default {
     messages: {
       notPeer:
         'Found an import of "{{source}}" (package "{{pkg}}") in library code. Why: skateboard-ui publishes no `dependencies`; only the peers react and react-dom are guaranteed to be in a consumer\'s node_modules, so any other bare import fails to resolve in apps, or installs a second copy that splits React context. ' +
-        'Fix: use a peer or a browser API. For a helper, vendor a minimal implementation in the repo the way the existing code does: shadcn/lib/clsx.ts and cva.ts (clsx, class-variance-authority), shadcn/lib/tailwind-merge.js (scripts/vendor-tailwind-merge.js), components/core/Command.tsx (cmdk), components/core/Calendar.tsx (react-day-picker), icons/index.tsx (lucide), router/ (react-router, scripts/vendor-react-router.js). ' +
+        'Fix: use a peer or a browser API. For a helper, vendor a minimal implementation in the repo the way the existing code does: lib/clsx.ts and cva.ts (clsx, class-variance-authority), lib/tailwind-merge.js (scripts/vendor-tailwind-merge.js), components/core/Command.tsx (cmdk), components/core/Calendar.tsx (react-day-picker), icons/index.tsx (lucide), router/ (react-router, scripts/vendor-react-router.js). ' +
         'Only if the package must be shared with the app as a separate install (like react), add it to "peerDependencies" in package.json and to PEERS in this rule in the same change.',
     },
   },

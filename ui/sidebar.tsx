@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { cva, type VariantProps } from "../shadcn/lib/cva.js"
+import { cva, type VariantProps } from "../lib/cva.js"
 
-import { useIsMobile } from "../shadcn/hooks/use-mobile.js"
-import { cn } from "../shadcn/lib/utils.js"
+import { useIsMobile } from "../hooks/use-mobile.js"
+import { cn } from "../lib/utils.js"
 import { Slot, resolveRender } from "./slot.js"
 import { Button } from "./button.js"
 import { Input } from "./input.js"

@@ -1,10 +1,10 @@
 import { Button } from "../../ui/button.js";
 import { Badge } from "../../ui/badge.js";
-import { cn } from "../../shadcn/lib/utils.js";
+import { cn } from "../../lib/utils.js";
 import type { ReactNode } from "react";
 
 /**
- * App header bar built on shadcn primitives (Button, Badge).
+ * App header bar built on ui/ primitives (Button, Badge).
  *
  * Renders page title and optional action button on the right.
  *

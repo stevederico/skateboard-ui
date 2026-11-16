@@ -30,6 +30,7 @@ import noRawColorClasses from './rules/no-raw-color-classes.js';
 import noReactRouterImport from './rules/no-react-router-import.js';
 import noRequire from './rules/no-require.js';
 import noSelfPackageImport from './rules/no-self-package-import.js';
+import noShadcnPaths from './rules/no-shadcn-paths.js';
 import noSpaceUtilities from './rules/no-space-utilities.js';
 import noTransitionAll from './rules/no-transition-all.js';
 import peerDependenciesOnly from './rules/peer-dependencies-only.js';
@@ -46,6 +47,7 @@ const BASE_RULES = {
   'icons-from-vendored-module': iconsFromVendoredModule,
   'no-deep-package-imports': noDeepPackageImports,
   'no-self-package-import': noSelfPackageImport,
+  'no-shadcn-paths': noShadcnPaths,
   'peer-dependencies-only': peerDependenciesOnly,
   'no-react-router-import': noReactRouterImport,
   'layer-boundaries': layerBoundaries,
@@ -55,7 +57,7 @@ const BASE_RULES = {
   'no-globals-package': noGlobalsPackage,
 };
 
-/** Rules for all library React code (App.tsx, index.ts, components/, hooks/, ui/, icons/, shadcn/). */
+/** Rules for all library React code (App.tsx, index.ts, components/, hooks/, ui/, icons/, lib/). */
 const LIBRARY_RULES = {
   'no-fetch-in-effect': noFetchInEffect,
   'no-class-components': noClassComponents,

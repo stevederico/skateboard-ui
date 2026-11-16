@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Copies non-compiled assets into dist/ after tsc:
-// - shadcn/lib/tailwind-merge.js (+ .d.ts)  — vendored prebuilt ESM, excluded from tsc
+// - lib/tailwind-merge.js (+ .d.ts)  — vendored prebuilt ESM, excluded from tsc
 // - router/  — vendored react-router ESM + types (scripts/vendor-react-router.js), not compiled by tsc
 import { cpSync, copyFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -10,8 +10,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
 const copies = [
-  ['shadcn/lib/tailwind-merge.js', false],
-  ['shadcn/lib/tailwind-merge.d.ts', false],
+  ['lib/tailwind-merge.js', false],
+  ['lib/tailwind-merge.d.ts', false],
   ['router', true],
 ];
 

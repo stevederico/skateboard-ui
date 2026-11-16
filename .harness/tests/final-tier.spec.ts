@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test"
 
 // Final-tier tests for the remaining in-house drop-ins (Command,
-// Calendar, Sidebar) plus the 4.0.0 linker: the legacy
-// dist/shadcn/ui shim import path and base-ui `render=` trigger compat.
+// Calendar, Sidebar) plus legacy compat: the ui/ Button under its
+// old row and base-ui `render=` trigger compat.
 // Checkbox is covered elsewhere. All markup lives in App.tsx under #s-final
 // and #s-legacy. Every test loads the demo at "/" first and asserts one
 // behavior, relying on Playwright auto-waiting (no fixed timeouts).
@@ -55,8 +55,7 @@ test("Sidebar renders its menu buttons with the active one marked", async ({ pag
 
 test("Legacy shim-path Button import renders as a styled button", async ({ page }) => {
   await page.goto("/")
-  // Public path `@stevederico/skateboard-ui/shadcn/ui/*` remaps to ui/ via package
-  // exports; harness exercises the same Button module.
+  // The ui/ Button module (apps import it as @stevederico/skateboard-ui/ui/button).
   const btn = page.getByRole("button", { name: "Legacy import path" })
   await expect(btn).toBeVisible()
   await expect(btn).toHaveAttribute("data-slot", "button")

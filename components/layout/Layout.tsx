@@ -4,14 +4,14 @@ import TabBar from './TabBar.js'
 import { SidebarProvider, SidebarInset } from "../../ui/sidebar.js"
 import Sidebar from "./Sidebar.js"
 import { getState } from '../core/Context.js';
-import { cn } from '../../shadcn/lib/utils.js';
+import { cn } from '../../lib/utils.js';
 
 /**
  * Page layout wrapper with sidebar and tab bar.
  *
  * Renders Sidebar (desktop) and TabBar (mobile) based on constants
  * configuration and programmatic visibility state. Uses SidebarInset
- * for proper shadcn sidebar layout with inset variant.
+ * for the ui/sidebar layout with inset variant.
  *
  * Set `constants.hideSidebarInsetRounding` to true to remove the
  * rounded corners on the main content area.

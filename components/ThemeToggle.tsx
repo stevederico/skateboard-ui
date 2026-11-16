@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from './core/ThemeProvider.js';
 import { Sun, Moon } from '../icons/index.js';
 import { Button } from '../ui/button.js';
-import { cn } from '../shadcn/lib/utils.js';
+import { cn } from '../lib/utils.js';
 
 /**
  * Dark/light mode toggle button.

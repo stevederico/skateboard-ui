@@ -10,7 +10,7 @@
 // Canonical set:
 //   • ui/*  — the base-ui primitive port (named exports). The first-class primitives.
 //   • components/*  — app-level components (default exports → named).
-//   • Skips shadcn/ui/*  — legacy duplicates of ui/* (same export names → collisions).
+//   • Only ui/* (the ./shadcn/ui/* alias was removed in 5.17.0).
 //   • Skips ui/use-*  — hooks, not components.
 //
 // Name collisions (Sidebar, Sheet) resolve to the app-level component: an explicit

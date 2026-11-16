@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 
 export interface SeparatorProps extends React.ComponentProps<"div"> {
   orientation?: "horizontal" | "vertical"

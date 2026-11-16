@@ -35,7 +35,7 @@ for (const m of barrel.matchAll(/export \{([^}]*)\} from '\.\/icons\/([^']+)\.js
 }
 
 // Icon names imported anywhere in the package source.
-const SRC_DIRS = ['App.tsx', 'index.ts', 'components', 'ui', 'hooks', 'shadcn'];
+const SRC_DIRS = ['App.tsx', 'index.ts', 'components', 'ui', 'hooks', 'lib'];
 const IMPORT_RE = /import\s*\{([^}]*)\}\s*from\s*["'](?:lucide-react|(?:\.\.?\/)+icons\/index\.js)["']/g;
 const names = new Set();
 function scan(p) {

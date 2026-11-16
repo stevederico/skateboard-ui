@@ -3,7 +3,7 @@ import { DayPicker, getDefaultClassNames } from "../components/core/Calendar.js"
 import type { DayPickerProps, CalendarDay, DayModifiers } from "../components/core/Calendar.js";
 import type { ButtonProps } from "./button.js";
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 import { Button, buttonVariants } from "./button.js"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from '../icons/index.js'
 

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 
 /**
  * Self-contained scroll area: a native-overflow viewport with the platform

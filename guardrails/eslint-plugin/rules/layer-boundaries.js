@@ -19,7 +19,7 @@ export default {
     type: 'problem',
     docs: {
       description:
-        'Respect layer boundaries: ui/ primitives never import components/ (except the headless Calendar and Command), core never imports ui/, layout/ or views/, icons/ and shadcn/ are leaves, nothing imports App.tsx or index.ts, library code never imports scripts/, .harness/, guardrails/, dist/ or Node builtins, and the harness imports only dist/.',
+        'Respect layer boundaries: ui/ primitives never import components/ (except the headless Calendar and Command), core never imports ui/, layout/ or views/, icons/ and lib/ are leaves, nothing imports App.tsx or index.ts, library code never imports scripts/, .harness/, guardrails/, dist/ or Node builtins, and the harness imports only dist/.',
       source: 'AGENTS.md > Layers (table in guardrails/eslint-plugin/layers.js)',
     },
     schema: [],
@@ -30,11 +30,11 @@ export default {
         'Found an import of the Node builtin "{{source}}" in {{from}} code. Why: every library layer is compiled into dist/ and bundled into the consumer\'s browser app, where Node builtins do not exist; the bundler stubs them and the call fails at runtime. ' +
         'Fix: use browser APIs (fetch, URL, crypto.subtle, TextEncoder); if the work is build-time or maintenance, put it in scripts/ and commit its output.',
       outsideLibrary:
-        'Found an import of "{{source}}" that resolves to {{target}}, which is not a library source folder. Why: tsconfig compiles only App.tsx, index.ts, ui/, components/, hooks/, icons/ and shadcn/ into dist/, so this file is not in the published package and the import fails for consumers. ' +
+        'Found an import of "{{source}}" that resolves to {{target}}, which is not a library source folder. Why: tsconfig compiles only App.tsx, index.ts, ui/, components/, hooks/, icons/ and lib/ are leaves, so this file is not in the published package and the import fails for consumers. ' +
         'Fix: move the value into a library folder (components/core/ for constants and helpers), or pass it in from the app through `constants` / props.',
       outsideRepo:
         'Found an import of "{{source}}" that climbs out of the repository. Why: other checkouts, CI and the npm tarball do not have that path, so the build only works on one machine. ' +
-        'Fix: copy the code into the layer that owns it (vendored, like shadcn/lib), or make it a peer dependency in package.json.',
+        'Fix: copy the code into the layer that owns it (vendored, like lib/), or make it a peer dependency in package.json.',
     },
   },
   create(context) {

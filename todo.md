@@ -26,3 +26,14 @@ Lint rule `no-react-router-import`; harness spec `router.spec.ts`.
   an advisory applies to 7.x.
 - [ ] Not vendored: react-router's `react-server` (RSC) entries. Add them only if an app
   ever uses RSC.
+
+## No more "shadcn" paths (5.17.0)
+
+Done: `shadcn/lib/*` moved to `lib/`, `shadcn/hooks/use-mobile.ts` to `hooks/`; the
+`./shadcn/ui/*`, `./shadcn/lib/utils` and `./shadcn/hooks/use-mobile` exports are gone
+(`./ui/*`, `./lib/utils`, `./hooks/use-mobile` replace them). Lint rule `no-shadcn-paths`.
+Kept on purpose: upstream references (`scripts/pull-shadcn-base-vega.js`, "base-vega
+source" notes) and component JSDoc about shadcn-compatible markup.
+
+- [ ] Apps still on `./shadcn/*` paths break on 5.17.0 until they rewrite them (README
+  has the mapping and a grep).

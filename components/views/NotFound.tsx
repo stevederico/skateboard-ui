@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cn } from '../../shadcn/lib/utils.js';
+import { cn } from '../../lib/utils.js';
 import { Card, CardHeader, CardTitle, CardDescription } from '../../ui/card.js';
 
 /**

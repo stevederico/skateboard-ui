@@ -14,7 +14,7 @@ runRuleTests('no-self-package-import', rule, {
       code: "import { getState } from '@stevederico/skateboard-ui/Context';",
       errors: [{ messageId: 'self', data: { source: '@stevederico/skateboard-ui/Context', example: 'import { getState } from "../core/Context.js";' } }],
     },
-    { code: "import { Button } from '@stevederico/skateboard-ui/shadcn/ui/button';", filename: 'ui/card.tsx', errors: [{ messageId: 'self' }] },
+    { code: "import { Button } from '@stevederico/skateboard-ui/ui/button';", filename: 'ui/card.tsx', errors: [{ messageId: 'self' }] },
     { code: "export * from '@stevederico/skateboard-ui';", filename: 'index.ts', errors: [{ messageId: 'self' }] },
     { code: "const m = await import('@stevederico/skateboard-ui/Utilities');", filename: 'hooks/useAuthGate.ts', errors: [{ messageId: 'self' }] },
   ],

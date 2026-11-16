@@ -26,10 +26,9 @@
     "components",
     "hooks",
     "icons",
-    "shadcn/hooks",
-    "shadcn/lib/utils.*",
-    "shadcn/lib/cva.*",
-    "shadcn/lib/clsx.*"
+    "lib/utils.*",
+    "lib/cva.*",
+    "lib/clsx.*"
   ],
   "exclude": [
     "dist",
@@ -37,6 +36,6 @@
     "scripts",
     "guardrails",
     "eslint.config.js",
-    "shadcn/lib/tailwind-merge.js"
+    "lib/tailwind-merge.js"
   ]
 }

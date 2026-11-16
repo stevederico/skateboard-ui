@@ -26,6 +26,8 @@ export default {
     if (!layer || !LIBRARY_LAYERS.has(layer.name)) return {};
     return moduleSourceVisitors((node, source) => {
       if (packageName(source) !== SELF) return;
+      // Removed ./shadcn/* paths get a more specific fix from no-shadcn-paths.
+      if (source.startsWith(`${SELF}/shadcn`)) return;
       context.report({
         node,
         messageId: 'self',

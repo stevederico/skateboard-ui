@@ -1,3 +1,15 @@
+5.17.0
+
+  Move shadcn/lib to lib
+  Move use-mobile to hooks
+  Export ./lib/utils
+  Export ./hooks/use-mobile
+  Remove ./shadcn exports
+  Add no-shadcn-paths rule
+  Rename shadcn layer lib
+  Add exports harness spec
+  Note: breaking for apps that import ./shadcn/ui/X, ./shadcn/lib/utils or ./shadcn/hooks/X; rewrite them to ./ui/X, ./lib/utils and ./hooks/X
+
 5.16.0
 
   Vendor react-router 7.18.5

@@ -1,6 +1,6 @@
 # skateboard-ui
 
-React component library for rapid application development. Built with TypeScript, TailwindCSS v4, and shadcn-style primitives.
+React component library for rapid application development. Built with TypeScript, TailwindCSS v4, and Base UI-style primitives (ui/ follows the shadcn base-vega source).
 
 Requires **Node.js 24+** in the app repo (see `engines` in `package.json`).
 
@@ -290,9 +290,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@stevederico/skateboar
 ```
 
 ```javascript
-import { cn } from '@stevederico/skateboard-ui/shadcn/lib/utils';
-import { useIsMobile } from '@stevederico/skateboard-ui/shadcn/hooks/use-mobile';
+import { cn } from '@stevederico/skateboard-ui/lib/utils';
+import { useIsMobile } from '@stevederico/skateboard-ui/hooks/use-mobile';
 ```
+
+5.17.0 removed the old `./shadcn/*` paths. Rewrite
+`@stevederico/skateboard-ui/shadcn/ui/X` to `/ui/X`, `/shadcn/lib/utils` to
+`/lib/utils` and `/shadcn/hooks/X` to `/hooks/X` (same exports). Find leftovers
+with `grep -rn "skateboard-ui/shadcn" src`.
 
 ### Icons
 

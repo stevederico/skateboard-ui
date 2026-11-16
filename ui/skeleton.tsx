@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (

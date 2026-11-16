@@ -34,8 +34,9 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 
 | Rule | Lint rule |
 |---|---|
-| Library code imports only its peers (`react`, `react-dom`) and relative files. The package has no `dependencies`; everything else is vendored (`shadcn/lib`, `components/core/Command.tsx`, `Calendar.tsx`, `icons/`, `router/`) | `peer-dependencies-only` |
+| Library code imports only its peers (`react`, `react-dom`) and relative files. The package has no `dependencies`; everything else is vendored (`lib/` (cn, cva, clsx, tailwind-merge), `components/core/Command.tsx`, `Calendar.tsx`, `icons/`, `router/`) | `peer-dependencies-only` |
 | Never import `react-router` (or `react-router-dom`, `react-router/dom`, `@react-router/*`). The router is vendored in `router/` and the package ships exactly one copy: library code imports `router/index.mjs` (or `router/dom-export.mjs`) by relative path, the harness imports `../dist/router/index.mjs`, apps import `@stevederico/skateboard-ui/router` | `no-react-router-import` |
+| Never import `@stevederico/skateboard-ui/shadcn/...` or the `shadcn/` folder (removed in 5.17.0): helpers are in `lib/` (`./lib/utils`), `useIsMobile` in `hooks/use-mobile.ts` (`./hooks/use-mobile`), primitives in `ui/` (`./ui/*`). The only remaining "shadcn" names are upstream references (`scripts/pull-shadcn-base-vega.js`, the base-vega source of `ui/`) | `no-shadcn-paths` |
 | Never import `@stevederico/skateboard-ui/...` from inside the package; use relative paths with the `.js` extension | `no-self-package-import` |
 | Never import through `node_modules/` or a package's `dist/`, `build/`, `esm/`, `cjs/` | `no-deep-package-imports` |
 | ES modules only, never `require()` or `module.exports` | `no-require` |
@@ -58,16 +59,16 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 | Layer | Path | May import |
 |---|---|---|
 | entry | `App.tsx`, `index.ts` | every library layer below |
-| views | `components/views/` | layout, widgets, core, hooks, ui, icons, shadcn, router |
-| widgets | `components/*.tsx` | core, hooks, ui, icons, shadcn, router |
-| layout | `components/layout/` | core, hooks, ui, icons, shadcn, router |
-| hooks | `hooks/` | core, shadcn, router |
-| core | `components/core/` | icons, shadcn, router |
-| ui | `ui/` | headless, icons, shadcn |
+| views | `components/views/` | layout, widgets, core, hooks, ui, icons, lib, router |
+| widgets | `components/*.tsx` | core, hooks, ui, icons, lib, router |
+| layout | `components/layout/` | core, hooks, ui, icons, lib, router |
+| hooks | `hooks/` (except `use-mobile.ts`) | core, lib, router |
+| core | `components/core/` | icons, lib, router |
+| ui | `ui/` | headless, icons, lib |
 | headless | `components/core/Calendar.tsx`, `Command.tsx` | nothing (leaf) |
 | icons | `icons/` | nothing (leaf) |
 | router | `router/` (vendored react-router, generated) | nothing (leaf; only `react`, `react-dom`) |
-| shadcn | `shadcn/` | nothing (leaf) |
+| lib | `lib/`, `hooks/use-mobile.ts` | nothing (leaf) |
 | tooling | `scripts/`, `.design-sync/` | itself only |
 | harness | `.harness/` | itself and `dist/` only |
 | guardrails | `guardrails/`, `eslint.config.js` | itself only |
@@ -134,7 +135,7 @@ These do not run on `ui/`, whose class lists follow the upstream shadcn base-veg
 | Bump `version` in `package.json` and `package-lock.json` together and add a `CHANGELOG.md` entry in the existing style (version line, then short two-space-indented items) | JSON and Markdown |
 | The tarball is `dist/`, `styles.css`, `fonts/`, `CHANGELOG.md`, `README.md`, `LICENSE-lucide`, `LICENSE-react-router` only. Never add `guardrails/`, `.harness/` or `scripts/` to `files` | JSON. Check with `npm pack --dry-run` |
 | A new public component needs an `exports` entry in `package.json` and a row in the README table | Cross-file (JSON plus Markdown) |
-| Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `shadcn/lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`), `router/` and `LICENSE-react-router` (`scripts/vendor-react-router.js`) | Needs a diff against generator output |
+| Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`), `router/` and `LICENSE-react-router` (`scripts/vendor-react-router.js`) | Needs a diff against generator output |
 | Security advisories for react-router (and cookie, set-cookie-parser) are watched by hand: check https://github.com/remix-run/react-router/security/advisories and re-run `scripts/vendor-react-router.js` when one applies | No dependency, so no `npm audit` or Dependabot sees it |
 | Never overwrite `ui/` from upstream. `scripts/pull-shadcn-base-vega.js` writes to a staging directory with a deviation ledger; adoption is a reviewed copy | Process rule |
 | New behavior gets a Playwright spec in `.harness/tests/` with a fixture that imports from `../dist/` | Needs to know what changed |

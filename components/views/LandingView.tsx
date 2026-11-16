@@ -6,7 +6,7 @@ import { Check, ArrowRight } from '../../icons/index.js';
 import { Button } from '../../ui/button.js';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../ui/card.js';
 import { Separator } from '../../ui/separator.js';
-import { cn } from '../../shadcn/lib/utils.js';
+import { cn } from '../../lib/utils.js';
 import type { SkateboardConstants } from '../core/Utilities.js';
 
 const CURRENT_YEAR = new Date().getFullYear();

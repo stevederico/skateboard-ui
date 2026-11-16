@@ -18,7 +18,7 @@ import {
 import { Settings } from '../../icons/index.js';
 
 /**
- * Desktop navigation sidebar using shadcn primitives.
+ * Desktop navigation sidebar using ui/ primitives.
  *
  * Renders app pages from constants.pages with ConstantsIcon icons,
  * tooltip support when collapsed, and settings pushed to the footer.

@@ -24,7 +24,7 @@ const brutalist = fs.readFileSync(path.join(dsDir, 'brutalist-theme.css'), 'utf8
 
 // Replace the package's broad `@source '../'` (scans every sibling repo) with a
 // scan of skateboard-ui's own source only — Tailwind v4 auto-ignores gitignored
-// paths (node_modules, dist) so this picks up components/, ui/, shadcn/, App.tsx.
+// paths (node_modules, dist) so this picks up components/, ui/, lib/, App.tsx.
 const rewrittenBase = baseCss.replace(/@source\s+['"][^'"]+['"]\s*;/g, `@source "${root}";`);
 
 const input = `${rewrittenBase}\n\n${brutalist}\n`;

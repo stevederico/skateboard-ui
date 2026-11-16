@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { cn } from "../../shadcn/lib/utils.js"
+import { cn } from "../../lib/utils.js"
 import { Button } from "../../ui/button.js"
 import { Input } from "../../ui/input.js"
 import { Label } from "../../ui/label.js"

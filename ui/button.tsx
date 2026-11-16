@@ -1,7 +1,7 @@
 import * as React from "react"
-import { cva, type VariantProps } from "../shadcn/lib/cva.js"
+import { cva, type VariantProps } from "../lib/cva.js"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 import { Slot, resolveRender } from "./slot.js"
 
 const buttonVariants = cva(

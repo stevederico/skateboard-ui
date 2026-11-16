@@ -10,7 +10,7 @@ import type {
   CommandSeparatorProps,
 } from "../components/core/Command.js"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 import {
   Dialog,
   DialogContent,

@@ -8,7 +8,7 @@ runRuleTests('peer-dependencies-only', rule, {
     { code: "import { createRoot } from 'react-dom/client';", filename: 'App.tsx' },
     { code: "import { createPortal } from 'react-dom';", filename: 'ui/portal.tsx' },
     "import { useNavigate } from '../../router/index.mjs';",
-    "import { cn } from '../../shadcn/lib/utils.js';",
+    "import { cn } from '../../lib/utils.js';",
     // Tooling and the harness have their own dependencies.
     { code: "import ts from 'typescript';", filename: 'scripts/pull-shadcn-base-vega.js' },
     { code: "import { test } from '@playwright/test';", filename: '.harness/tests/menus.spec.ts' },
@@ -21,7 +21,7 @@ runRuleTests('peer-dependencies-only', rule, {
     "import { getState } from '@stevederico/skateboard-ui/Context';",
   ],
   invalid: [
-    { code: "import { clsx } from 'clsx';", filename: 'shadcn/lib/utils.ts', errors: [{ messageId: 'notPeer', data: { source: 'clsx', pkg: 'clsx' } }] },
+    { code: "import { clsx } from 'clsx';", filename: 'lib/utils.ts', errors: [{ messageId: 'notPeer', data: { source: 'clsx', pkg: 'clsx' } }] },
     { code: "import { Command } from 'cmdk';", filename: 'ui/command.tsx', errors: [{ messageId: 'notPeer' }] },
     { code: "import { DayPicker } from 'react-day-picker';", filename: 'ui/calendar.tsx', errors: [{ messageId: 'notPeer' }] },
     { code: "import * as Dialog from '@radix-ui/react-dialog';", filename: 'ui/dialog.tsx', errors: [{ messageId: 'notPeer', data: { source: '@radix-ui/react-dialog', pkg: '@radix-ui/react-dialog' } }] },

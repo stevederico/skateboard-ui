@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "5.16.0",
+  "version": "5.17.0",
   "type": "module",
   "exports": {
     ".": {
@@ -148,25 +148,20 @@
       "import": "./dist/router/lib/types/internal.mjs",
       "default": "./dist/router/lib/types/internal.mjs"
     },
-    "./shadcn/ui/*": {
-      "types": "./dist/ui/*.d.ts",
-      "import": "./dist/ui/*.js",
-      "default": "./dist/ui/*.js"
-    },
     "./ui/*": {
       "types": "./dist/ui/*.d.ts",
       "import": "./dist/ui/*.js",
       "default": "./dist/ui/*.js"
     },
-    "./shadcn/lib/utils": {
-      "types": "./dist/shadcn/lib/utils.d.ts",
-      "import": "./dist/shadcn/lib/utils.js",
-      "default": "./dist/shadcn/lib/utils.js"
+    "./lib/utils": {
+      "types": "./dist/lib/utils.d.ts",
+      "import": "./dist/lib/utils.js",
+      "default": "./dist/lib/utils.js"
     },
-    "./shadcn/hooks/use-mobile": {
-      "types": "./dist/shadcn/hooks/use-mobile.d.ts",
-      "import": "./dist/shadcn/hooks/use-mobile.js",
-      "default": "./dist/shadcn/hooks/use-mobile.js"
+    "./hooks/use-mobile": {
+      "types": "./dist/hooks/use-mobile.d.ts",
+      "import": "./dist/hooks/use-mobile.js",
+      "default": "./dist/hooks/use-mobile.js"
     }
   },
   "scripts": {

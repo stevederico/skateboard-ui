@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 import { Slot, mergeRefs, resolveRender } from "./slot.js"
 import { useControllableState } from "./use-controllable-state.js"
 import { useDialogLabelling } from "./use-labelling.js"

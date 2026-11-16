@@ -1,6 +1,6 @@
-import { cva, type VariantProps } from "../shadcn/lib/cva.js"
+import { cva, type VariantProps } from "../lib/cva.js"
 
-import { cn } from "../shadcn/lib/utils.js"
+import { cn } from "../lib/utils.js"
 
 function Empty({ className, ...props }: React.ComponentProps<"div">) {
   return (
