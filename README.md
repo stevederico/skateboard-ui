@@ -255,11 +255,6 @@ shipped theme layer.
 The skateboard template's `no-unknown-classes` lint rule reports a class that
 neither skateboard-ui's `styles.css` nor the app's CSS defines.
 
-To move an existing Tailwind app over, `scripts/tailwind-to-css.js` writes the
-app's plain CSS once. It runs Tailwind from a temporary install outside the app
-(see its header) and subtracts everything skateboard-ui's `styles.css` already
-has. The same script produced `styles.css` and `.harness/harness.css` here.
-
 ## Components
 
 ### App components

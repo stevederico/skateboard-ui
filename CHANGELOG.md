@@ -1,3 +1,10 @@
+5.20.0
+
+  Remove pull-shadcn-base-vega script
+  Remove tailwind-to-css script
+  Update docs and tests
+  Note: no app change; the package never shipped scripts/. ui/ upstream changes are adopted as a reviewed copy, and styles.css stays hand-edited
+
 5.19.0
 
   Build with TypeScript 7.0.2

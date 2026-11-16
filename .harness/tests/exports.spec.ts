@@ -32,7 +32,7 @@ test("cn from dist/lib/utils merges conflicting Tailwind classes", async () => {
 })
 
 // 5.18.0: skateboard-ui ships plain, hand-edited CSS for its own components and theme
-// (produced once with scripts/tailwind-to-css.js), so apps and this harness run no Tailwind.
+// (produced once with a converter, removed in 5.20.0), so apps and this harness run no Tailwind.
 test("styles.css is plain CSS with the theme and no Tailwind directives", () => {
   const css = readFileSync(`${root}styles.css`, "utf8")
   for (const directive of ['@import "tailwindcss"', "@apply", "@theme", "@source", "@custom-variant", "@utility", "@plugin"]) {

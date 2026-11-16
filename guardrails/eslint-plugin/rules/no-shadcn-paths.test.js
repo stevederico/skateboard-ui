@@ -7,8 +7,8 @@ runRuleTests('no-shadcn-paths', rule, {
     { code: "import { cva } from '../lib/cva.js';", filename: 'ui/badge.tsx' },
     { code: "import { useIsMobile } from '../hooks/use-mobile.js';", filename: 'ui/sidebar.tsx' },
     { code: "import { cn } from '../dist/lib/utils.js';", filename: '.harness/App.tsx' },
-    // The upstream registry script keeps its name; it is not an import path.
-    { code: "const REGISTRY = 'https://ui.shadcn.com/r/styles/base-vega';", filename: 'scripts/pull-shadcn-base-vega.js' },
+    // An upstream registry URL is a string, not an import path.
+    { code: "const REGISTRY = 'https://ui.shadcn.com/r/styles/base-vega';", filename: 'scripts/vendor-lucide-icons.js' },
   ],
   invalid: [
     {

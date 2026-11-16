@@ -32,18 +32,23 @@ Lint rule `no-react-router-import`; harness spec `router.spec.ts`.
 Done: `shadcn/lib/*` moved to `lib/`, `shadcn/hooks/use-mobile.ts` to `hooks/`; the
 `./shadcn/ui/*`, `./shadcn/lib/utils` and `./shadcn/hooks/use-mobile` exports are gone
 (`./ui/*`, `./lib/utils`, `./hooks/use-mobile` replace them). Lint rule `no-shadcn-paths`.
-Kept on purpose: upstream references (`scripts/pull-shadcn-base-vega.js`, "base-vega
-source" notes) and component JSDoc about shadcn-compatible markup.
+Kept on purpose: upstream references ("base-vega source" notes) and component JSDoc about shadcn-compatible markup.
 
 - [ ] Apps still on `./shadcn/*` paths break on 5.17.0 until they rewrite them (README
   has the mapping and a grep).
+
+## One-shot scripts removed (5.20.0)
+
+Done: `scripts/pull-shadcn-base-vega.js` and `scripts/tailwind-to-css.js` are gone, with every
+mention in README, AGENTS.md, the guardrail tests and the harness. `lib/tailwind-merge.js`
+stays (`cn()` needs it). Upstream `ui/` changes are adopted as a reviewed copy by hand.
 
 ## TypeScript 7 build (5.19.0)
 
 Done: the root build and typecheck use typescript 7.0.2 (exact); guardrails/ stays on 5.9.3
 because @typescript-eslint/parser needs it. dist/ has the same files; three .d.ts differ only
 in form (Calendar quote style, ErrorBoundary union order, Command statics as export aliases,
-so reassigning `Command.Input` is now a type error). `scripts/tailwind-to-css.js` repeats the
+so reassigning `Command.Input` is now a type error). The CSS converter repeats the
 shell rules an app class depends on for cascade precedence; the skateboard template
 conversion (skateboard 5.20.0) came out pixel-identical in light and dark.
 
@@ -52,12 +57,12 @@ conversion (skateboard 5.20.0) came out pixel-identical in light and dark.
 ## Plain CSS, no Tailwind (5.18.0)
 
 Done: `styles.css` is plain CSS for skateboard-ui's own components plus the theme, produced
-once with `scripts/tailwind-to-css.js` and edited by hand from now on. tailwindcss left
+once with a converter (removed in 5.20.0) and edited by hand from now on. tailwindcss left
 peerDependencies, devDependencies and the harness (which has its own `.harness/harness.css`).
 Lint rule `no-unknown-classes` checks every library class against `styles.css`.
 
 - [ ] Tokens listed as no-ops in `eslint.config.js` (`data-open:animate-in`, `slide-in-from-*`
   variants, ...) never had CSS, so the open/close animations they describe never ran. Give
   them CSS in `styles.css` if the animations are wanted (check overlay timing in the harness).
-- [ ] Apps that use `@apply` in their CSS: `scripts/tailwind-to-css.js` compiles it once to
-  plain CSS during their conversion.
+- [ ] Apps that use `@apply` in their CSS get it compiled to plain CSS once, during their
+  conversion.

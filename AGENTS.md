@@ -36,7 +36,7 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 |---|---|
 | Library code imports only its peers (`react`, `react-dom`) and relative files. The package has no `dependencies`; everything else is vendored (`lib/` (cn, cva, clsx, tailwind-merge), `components/core/Command.tsx`, `Calendar.tsx`, `icons/`, `router/`) | `peer-dependencies-only` |
 | Never import `react-router` (or `react-router-dom`, `react-router/dom`, `@react-router/*`). The router is vendored in `router/` and the package ships exactly one copy: library code imports `router/index.mjs` (or `router/dom-export.mjs`) by relative path, the harness imports `../dist/router/index.mjs`, apps import `@stevederico/skateboard-ui/router` | `no-react-router-import` |
-| Never import `@stevederico/skateboard-ui/shadcn/...` or the `shadcn/` folder (removed in 5.17.0): helpers are in `lib/` (`./lib/utils`), `useIsMobile` in `hooks/use-mobile.ts` (`./hooks/use-mobile`), primitives in `ui/` (`./ui/*`). The only remaining "shadcn" names are upstream references (`scripts/pull-shadcn-base-vega.js`, the base-vega source of `ui/`) | `no-shadcn-paths` |
+| Never import `@stevederico/skateboard-ui/shadcn/...` or the `shadcn/` folder (removed in 5.17.0): helpers are in `lib/` (`./lib/utils`), `useIsMobile` in `hooks/use-mobile.ts` (`./hooks/use-mobile`), primitives in `ui/` (`./ui/*`). The only remaining "shadcn" names are upstream references (the base-vega source of `ui/`) | `no-shadcn-paths` |
 | Never import `@stevederico/skateboard-ui/...` from inside the package; use relative paths with the `.js` extension | `no-self-package-import` |
 | Never import through `node_modules/` or a package's `dist/`, `build/`, `esm/`, `cjs/` | `no-deep-package-imports` |
 | ES modules only, never `require()` or `module.exports` | `no-require` |
@@ -138,9 +138,9 @@ These do not run on `ui/`, whose class lists follow the upstream shadcn base-veg
 | A new public component needs an `exports` entry in `package.json` and a row in the README table | Cross-file (JSON plus Markdown) |
 | Never edit generated files: `icons/index.tsx` (`scripts/vendor-lucide-icons.js`), `lib/tailwind-merge.js` (`scripts/vendor-tailwind-merge.js`), `router/` and `LICENSE-react-router` (`scripts/vendor-react-router.js`), |
 | Never add `tailwindcss`, `@tailwindcss/*` or any CSS framework to any `package.json` here (root, `.harness/`, `guardrails/`). `styles.css` is plain CSS, edited by hand: a component that uses a new class gets its rule added to `styles.css` (the plain-CSS equivalent, using the theme variables) in the same commit | JSON. `no-unknown-classes` covers the class side |
-| `scripts/tailwind-to-css.js` is a one-shot converter (it produced `styles.css` and `.harness/harness.css`). It runs Tailwind only from a temporary install passed with `--tailwind`; never make it a dependency | Process rule |
+| No Tailwind tooling lives here (no converter, no build plugin): `styles.css` and `.harness/harness.css` are edited by hand | Process rule |
 | Security advisories for react-router (and cookie, set-cookie-parser) are watched by hand: check https://github.com/remix-run/react-router/security/advisories and re-run `scripts/vendor-react-router.js` when one applies | No dependency, so no `npm audit` or Dependabot sees it |
-| Never overwrite `ui/` from upstream. `scripts/pull-shadcn-base-vega.js` writes to a staging directory with a deviation ledger; adoption is a reviewed copy | Process rule |
+| Never overwrite `ui/` from upstream. An upstream change is adopted as a reviewed copy that keeps this repo's deviations (vendored icons, `lib/` imports, plain CSS classes) | Process rule |
 | New behavior gets a Playwright spec in `.harness/tests/` with a fixture that imports from `../dist/` | Needs to know what changed |
 | Skeletons for content waits, spinners for actions | Design judgment |
 | Escape closes overlays, focus is trapped and restored, menus are keyboard reachable | Runtime behavior; the harness specs cover it |

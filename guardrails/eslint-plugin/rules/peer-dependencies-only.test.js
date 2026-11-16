@@ -10,7 +10,7 @@ runRuleTests('peer-dependencies-only', rule, {
     "import { useNavigate } from '../../router/index.mjs';",
     "import { cn } from '../../lib/utils.js';",
     // Tooling and the harness have their own dependencies.
-    { code: "import ts from 'typescript';", filename: 'scripts/pull-shadcn-base-vega.js' },
+    { code: "import ts from 'typescript';", filename: 'scripts/vendor-lucide-icons.js' },
     { code: "import { test } from '@playwright/test';", filename: '.harness/tests/menus.spec.ts' },
     { code: "import { RuleTester } from 'eslint';", filename: 'guardrails/eslint-plugin/lib/ruleTester.js' },
     // Reported by their own rules instead.
