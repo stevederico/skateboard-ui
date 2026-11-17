@@ -5064,6 +5064,94 @@
     content-visibility: auto;
     contain-intrinsic-size: auto 200px;
   }
+
+  .bg-success {
+    background-color: var(--success);
+  }
+
+  .bg-success\/10 {
+    background-color: var(--success);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-success\/10 {
+      background-color: color-mix(in oklab, var(--success) 10%, transparent);
+    }
+  }
+
+  .text-success {
+    color: var(--success);
+  }
+
+  .border-success {
+    border-color: var(--success);
+  }
+
+  .bg-warning {
+    background-color: var(--warning);
+  }
+
+  .bg-warning\/10 {
+    background-color: var(--warning);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-warning\/10 {
+      background-color: color-mix(in oklab, var(--warning) 10%, transparent);
+    }
+  }
+
+  .text-warning {
+    color: var(--warning);
+  }
+
+  .border-warning {
+    border-color: var(--warning);
+  }
+
+  .bg-info {
+    background-color: var(--info);
+  }
+
+  .bg-info\/10 {
+    background-color: var(--info);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-info\/10 {
+      background-color: color-mix(in oklab, var(--info) 10%, transparent);
+    }
+  }
+
+  .text-info {
+    color: var(--info);
+  }
+
+  .border-info {
+    border-color: var(--info);
+  }
+
+  .bg-danger {
+    background-color: var(--danger);
+  }
+
+  .bg-danger\/10 {
+    background-color: var(--danger);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-danger\/10 {
+      background-color: color-mix(in oklab, var(--danger) 10%, transparent);
+    }
+  }
+
+  .text-danger {
+    color: var(--danger);
+  }
+
+  .border-danger {
+    border-color: var(--danger);
+  }
 }
 
 @keyframes enter {
@@ -5227,6 +5315,10 @@
   --accent-foreground: oklch(20.5% 0 0);
   --destructive: oklch(57.7% .245 27.325);
   --destructive-foreground: oklch(57.7% .245 27.325);
+  --success: oklch(69.6% .17 162.48);
+  --warning: oklch(79.5% .184 86.047);
+  --info: oklch(62.3% .214 259.815);
+  --danger: oklch(63.7% .237 25.331);
   --border: oklch(92.2% 0 0);
   --input: oklch(92.2% 0 0);
   --ring: oklch(70.8% 0 0);
@@ -5264,6 +5356,10 @@
   --accent-foreground: oklch(98.5% 0 0);
   --destructive: oklch(39.6% .141 25.723);
   --destructive-foreground: oklch(63.7% .237 25.331);
+  --success: oklch(69.6% .17 162.48);
+  --warning: oklch(79.5% .184 86.047);
+  --info: oklch(62.3% .214 259.815);
+  --danger: oklch(63.7% .237 25.331);
   --border: oklch(100% 0 0 / .1);
   --input: oklch(100% 0 0 / .15);
   --ring: oklch(55.6% 0 0);
@@ -5300,6 +5396,10 @@
     --accent-foreground: oklch(98.5% 0 0);
     --destructive: oklch(39.6% .141 25.723);
     --destructive-foreground: oklch(63.7% .237 25.331);
+    --success: oklch(69.6% .17 162.48);
+    --warning: oklch(79.5% .184 86.047);
+    --info: oklch(62.3% .214 259.815);
+    --danger: oklch(63.7% .237 25.331);
     --border: oklch(100% 0 0 / .1);
     --input: oklch(100% 0 0 / .15);
     --ring: oklch(55.6% 0 0);

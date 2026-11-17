@@ -110,7 +110,7 @@ These do not run on `ui/`, whose class lists follow the upstream shadcn base-veg
 
 | Rule | Lint rule |
 |---|---|
-| Semantic tokens only (`bg-background`, `text-foreground`, `border-border`, `bg-app`), never raw palette colors or hex | `no-raw-color-classes` |
+| Semantic tokens only (`bg-background`, `text-foreground`, `border-border`, `bg-app`, status `success` / `warning` / `info` / `danger`), never raw palette colors or hex | `no-raw-color-classes` |
 | Never manual `dark:` overrides | `no-dark-variant` |
 | Never `transition-all` | `no-transition-all` |
 | `gap-*`, never `space-x-*` / `space-y-*` | `no-space-utilities` |

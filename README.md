@@ -252,6 +252,11 @@ Key variables: `--color-app` (brand), `--background`, `--foreground`,
 `--accent`, `--radius`. An app's unlayered `:root` / `.dark` values win over the
 shipped theme layer.
 
+Status colors (5.26.0): `--success`, `--warning`, `--info` and `--danger`, each
+with `bg-*`, `bg-*/10`, `text-*` and `border-*` classes, in light and dark.
+Use `text-danger` for red text: dark `--destructive` is 39.6% lightness, meant
+for fills, too dark to read as text.
+
 The skateboard template's `no-unknown-classes` lint rule reports a class that
 neither skateboard-ui's `styles.css` nor the app's CSS defines.
 

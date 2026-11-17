@@ -1,3 +1,12 @@
+5.26.0
+
+  Add success token
+  Add warning token
+  Add info token
+  Add danger text color
+  Add status utilities
+  Add status color specs
+
 5.25.0
 
   Add invariant specs
