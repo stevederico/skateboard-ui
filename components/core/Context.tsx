@@ -40,19 +40,12 @@ export interface ContextValue {
 
 const context = createContext<ContextValue | undefined>(undefined);
 
-/**
- * Internal hook: read the skateboard context and fail loudly when the
- * provider is missing, instead of letting callers destructure undefined.
- *
- * @throws {Error} If called outside a ContextProvider
- */
 function useSkateboardContext(): ContextValue {
   const ctx = useContext(context);
   if (!ctx) throw new Error('skateboard-ui components must be rendered inside ContextProvider (createSkateboardApp does this automatically)');
   return ctx;
 }
 
-// Store dispatch reference for programmatic access outside components
 let _dispatch: React.Dispatch<Action> | null = null;
 
 /**
@@ -75,7 +68,6 @@ export function getDispatch(): React.Dispatch<Action> | null {
   return _dispatch;
 }
 
-// Check if localStorage is available
 function isLocalStorageAvailable(): boolean {
   try {
     const test = '__storage_test__';
@@ -88,7 +80,6 @@ function isLocalStorageAvailable(): boolean {
   }
 }
 
-// Safe localStorage operations for Context
 function safeLSSetItem(key: string, value: string): boolean {
   if (!isLocalStorageAvailable()) {
     console.warn(`Could not save to localStorage: ${key}`);
@@ -198,7 +189,6 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
         return { ...state, user: action.payload };
       }
       case 'CLEAR_USER': {
-        // Clean up user data (CSRF cookie is cleared by backend)
         safeLSRemoveItem(storageKey);
         return { ...state, user: null };
       }
@@ -218,9 +208,6 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
         return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
       }
       case 'AUTH_OVERLAY_SUCCESS': {
-        // Pure state transition only. The parked retries are invoked by
-        // AuthOverlay's event handlers, never here — React may double-invoke this
-        // reducer (StrictMode) or discard its result (concurrent renders).
         return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
       }
       default:
@@ -230,7 +217,6 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Store dispatch reference for programmatic access
   useEffect(() => {
     _dispatch = dispatch;
     return () => { _dispatch = null; };

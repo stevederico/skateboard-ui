@@ -31,11 +31,6 @@ function Slot({ children, className, style, ref, ...props }: SlotProps) {
   >
   const childProps = child.props as Record<string, unknown>
 
-  // Child props win on plain values, but event handlers (on*) are COMPOSED so
-  // the slot-injected behavior (open/close/etc.) runs alongside the child's own
-  // handler — matching Radix composeEventHandlers instead of clobbering it. The
-  // child's own handler runs FIRST; the forwarded slot handler runs ONLY IF the
-  // child hasn't called preventDefault, so a child can opt out of slot behavior.
   const merged: Record<string, unknown> = { ...props, ...childProps }
   for (const key of Object.keys(props)) {
     const slotHandler = (props as Record<string, unknown>)[key]
@@ -84,7 +79,6 @@ function resolveRender(
       "children" in renderProps
         ? renderProps.children
         : undefined
-    // != null, not truthiness: 0 and "" are renderable children to keep.
     if (ownChildren == null && children != null) {
       return {
         useSlot: true,

@@ -1,11 +1,3 @@
-/**
- * Join class values into a single space-separated string.
- *
- * Drop-in for the `clsx` npm package, supporting strings, numbers,
- * truthy arrays, and `{ className: condition }` objects. Falsy values
- * are skipped.
- */
-
 export type ClassValue =
   | string
   | number

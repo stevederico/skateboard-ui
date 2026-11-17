@@ -3,28 +3,14 @@ import TextView from './TextView.js';
 import { Spinner } from '../../ui/spinner.js';
 import type { LegalTexts } from '../core/Utilities.js';
 
-/** Which legal blob a route should render. */
 export type LegalField = keyof LegalTexts;
 
 export interface LegalRouteProps {
-  /** Field to read from the loaded (or eager) legal texts. */
   field: LegalField;
-  /** Eager text from constants — used when `loadLegal` is absent. */
   fallback?: string;
-  /** Optional lazy loader; preferred over embedding legal text in the main chunk. */
   loadLegal?: () => Promise<LegalTexts>;
 }
 
-/**
- * Route element for `/terms`, `/privacy`, `/eula`, and `/subs`.
- *
- * When `loadLegal` is provided the body is fetched on first visit under a
- * spinner; otherwise `fallback` (eager constants) is rendered immediately so
- * skateboard-ui 5.0 apps keep working unchanged.
- *
- * @param props - Field name plus optional loader / eager fallback
- * @returns TextView once the document is available
- */
 export default function LegalRoute({ field, fallback, loadLegal }: LegalRouteProps) {
   const [details, setDetails] = useState<string | null>(
     loadLegal ? null : (fallback ?? '')

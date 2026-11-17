@@ -2,35 +2,18 @@ import { moduleSourceVisitors, packageName } from '../lib/moduleSources.js';
 import { repoRelative, specifierTo } from '../lib/paths.js';
 import { LIBRARY_LAYERS, layerOf } from '../layers.js';
 
-/** The vendored router entry, as library code spells it (repo-relative). */
 export const ROUTER_MODULE = 'router/index.mjs';
 
-/** The public entry apps import. */
 export const PUBLIC_ROUTER = '@stevederico/skateboard-ui/router';
 
-/** Router distributions that would load a second router next to the vendored one. */
 const ROUTER_PACKAGES = new Set(['react-router', 'react-router-dom', '@remix-run/router']);
 
-/**
- * True for any react-router package specifier, including subpaths (`react-router/dom`)
- * and the `@react-router/*` scope.
- *
- * @param {string} source - Import specifier
- * @returns {boolean} Whether the specifier names a react-router package
- */
 export const isReactRouter = (source) => ROUTER_PACKAGES.has(packageName(source)) || source.startsWith('@react-router/');
 
-/**
- * The vendored file matching a react-router subpath.
- *
- * @param {string} source - Import specifier such as `react-router/dom`
- * @returns {string} Repo-relative vendored module
- */
 function vendoredFor(source) {
   return /^react-router(?:-dom)?\/dom$/.test(source) ? 'router/dom-export.mjs' : ROUTER_MODULE;
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

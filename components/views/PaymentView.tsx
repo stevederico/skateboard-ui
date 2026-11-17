@@ -4,13 +4,11 @@ import { getState } from '../core/Context.js';
 import { getCurrentUser, getAppKey } from '../core/Utilities.js'
 import { Spinner } from '../../ui/spinner.js';
 
-// Whitelist of allowed redirect paths to prevent open redirect vulnerabilities
 const ALLOWED_REDIRECT_PREFIXES = ['/app/', '/'];
 const DEFAULT_REDIRECT = '/app';
 
 function isAllowedRedirect(path: string): boolean {
   try {
-    // Resolve relative to current origin; reject anything that escapes it.
     const url = new URL(path, window.location.origin);
     if (url.origin !== window.location.origin) return false;
     return ALLOWED_REDIRECT_PREFIXES.some(prefix => url.pathname.startsWith(prefix));
@@ -49,15 +47,12 @@ export default function PaymentView() {
   }, [dispatch]);
 
   useEffect(() => {
-    // Get query parameters
     const success = searchParams.get('success') === 'true';
     const canceled = searchParams.get('canceled') === 'true';
     const portal = searchParams.get('portal') === 'return';
 
-    // Default redirect path
     let redirectPath = DEFAULT_REDIRECT;
 
-    // Handle different cases
     switch (true) {
       case success:
         redirectPath = localStorage.getItem(getAppKey('beforeCheckoutURL')) || redirectPath;
@@ -75,7 +70,6 @@ export default function PaymentView() {
         break;
     }
 
-    // Normalize redirectPath: Strip any full URL to just the pathname
     if (redirectPath.startsWith('http://') || redirectPath.startsWith('https://')) {
       try {
         const url = new URL(redirectPath);
@@ -85,26 +79,21 @@ export default function PaymentView() {
       }
     }
 
-    // Ensure it starts with a '/'
     if (!redirectPath.startsWith('/')) {
       redirectPath = `/${redirectPath}`;
     }
 
-    // Validate redirect path to prevent open redirect
     if (!isAllowedRedirect(redirectPath)) {
       redirectPath = DEFAULT_REDIRECT;
     }
 
-    // Clear the stored URLs
     localStorage.removeItem(getAppKey('beforeCheckoutURL'));
     localStorage.removeItem(getAppKey('beforeManageURL'));
 
-    // Redirect after a delay
     const timeoutId = setTimeout(() => {
       navigate(redirectPath, { replace: true });
     }, 1500);
 
-    // Cleanup timeout
     return () => clearTimeout(timeoutId);
   }, [navigate, searchParams, fetchUser]);
 

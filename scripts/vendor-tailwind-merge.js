@@ -1,17 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * Vendor tailwind-merge as a single ESM file.
- *
- * Fetches the prebuilt ESM bundle from the npm registry at a pinned version
- * and writes it to ./lib/tailwind-merge.js with attribution, plus
- * upstream's bundled type declarations to ./lib/tailwind-merge.d.ts.
- *
- * Re-run when bumping the pinned version to track a new Tailwind release.
- *
- * Usage: node scripts/vendor-tailwind-merge.js
- */
-
 import { execSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';

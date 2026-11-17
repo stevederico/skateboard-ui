@@ -1,3 +1,7 @@
+5.23.0
+
+  Remove code comments
+
 5.22.0
 
   Patch minimatch advisory

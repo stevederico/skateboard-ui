@@ -15,17 +15,6 @@ const PRIVACY_LINK = { label: 'Privacy', href: '/privacy' };
 const TERMS_LINK = { label: 'Terms', href: '/terms' };
 const EULA_LINK = { label: 'EULA', href: '/eula' };
 
-/**
- * Renders a constants icon value. Values that look like a Lucide name (ASCII
- * letters, digits, hyphens) resolve via ConstantsIcon; anything else (e.g. a
- * legacy emoji icon) renders as raw text so it never silently disappears.
- *
- * @param {Object} props
- * @param {string} props.name - Lucide icon name or emoji/text
- * @param {number} props.size - Pixel size (icon dimension or emoji font size)
- * @param {number} [props.strokeWidth] - Stroke width for Lucide icons
- * @returns {JSX.Element|null}
- */
 function ConstantIcon({ name, size, strokeWidth }: { name?: string; size: number; strokeWidth?: number }) {
   if (!name) return null;
   if (/^[a-z][a-z0-9-]*$/i.test(name)) return <ConstantsIcon name={name} size={size} strokeWidth={strokeWidth} />;
@@ -66,7 +55,6 @@ export default function LandingView() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
@@ -88,7 +76,6 @@ export default function LandingView() {
       </header>
 
       <main>
-        {/* Hero */}
         <section className="relative border-b border-border">
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-app/5 via-background to-background" />
           <div className="max-w-3xl mx-auto px-6 py-24 md:py-36 text-center">
@@ -108,7 +95,6 @@ export default function LandingView() {
           </div>
         </section>
 
-        {/* Features */}
         {items.length > 0 && (
           <section id="features" className="border-b border-border bg-muted/30">
             <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
@@ -134,7 +120,6 @@ export default function LandingView() {
           </section>
         )}
 
-        {/* Pricing */}
         {sp && (
           <section id="pricing" className="border-b border-border">
             <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
@@ -175,7 +160,6 @@ export default function LandingView() {
           </section>
         )}
 
-        {/* CTA */}
         <section className="border-b border-border">
           <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
             <Card className="bg-foreground text-background border-0 py-16 md:py-20">
@@ -192,7 +176,6 @@ export default function LandingView() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="bg-background">
         <div className="max-w-6xl mx-auto px-6 py-10">
           <div className="flex flex-wrap items-center justify-between gap-6">

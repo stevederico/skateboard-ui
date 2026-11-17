@@ -1,12 +1,6 @@
 const TEST_FUNCTIONS = new Set(['describe', 'it', 'test', 'suite']);
 const MODIFIERS = new Set(['only', 'skip', 'fixme']);
 
-/**
- * Dotted name of a callee built from identifiers: `it`, `test.only`, `test.describe.skip`.
- *
- * @param {any} callee - CallExpression callee
- * @returns {string[] | null} Name parts, or null when the callee is computed
- */
 function calleeParts(callee) {
   if (callee.type === 'Identifier') return [callee.name];
   if (callee.type === 'MemberExpression' && !callee.computed && callee.property.type === 'Identifier') {
@@ -16,13 +10,6 @@ function calleeParts(callee) {
   return null;
 }
 
-/**
- * True when a `.skip(...)` / `.fixme(...)` call is the conditional form that Playwright
- * evaluates at run time: `test.skip(browserName === 'webkit', 'reason')`.
- *
- * @param {any} node - CallExpression
- * @returns {boolean} Whether the first argument is a computed condition
- */
 function isConditional(node) {
   const [first] = node.arguments;
   if (!first) return false;
@@ -31,7 +18,6 @@ function isConditional(node) {
   return !isTitle && !isAlwaysTrue && first.type !== 'ArrowFunctionExpression' && first.type !== 'FunctionExpression';
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

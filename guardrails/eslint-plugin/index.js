@@ -1,12 +1,3 @@
-/**
- * skateboard-ui guardrails: a zero-dependency ESLint plugin that turns the written
- * "never / always" rules in AGENTS.md into machine checks. Every message says what was
- * found, why the repo forbids it (the root cause), and the exact fix, because the usual
- * reader is an agent that will act on it verbatim.
- *
- * The TypeScript parser is re-exported so the root eslint.config.js can use it without
- * any root dependency: the published package gains nothing.
- */
 import parser from '@typescript-eslint/parser';
 import banTsComment from './rules/ban-ts-comment.js';
 import iconsFromVendoredModule from './rules/icons-from-vendored-module.js';
@@ -37,10 +28,8 @@ import noTransitionAll from './rules/no-transition-all.js';
 import peerDependenciesOnly from './rules/peer-dependencies-only.js';
 import preferSizeUtility from './rules/prefer-size-utility.js';
 
-/** Plugin namespace: rules are referenced as `skateboard-ui/<rule>`. */
 const NAMESPACE = 'skateboard-ui';
 
-/** Rules for every linted file: TypeScript discipline, imports, layers, errors, tests. */
 const BASE_RULES = {
   'ban-ts-comment': banTsComment,
   'no-explicit-any': noExplicitAny,
@@ -58,7 +47,6 @@ const BASE_RULES = {
   'no-globals-package': noGlobalsPackage,
 };
 
-/** Rules for all library React code (App.tsx, index.ts, components/, hooks/, ui/, icons/, lib/). */
 const LIBRARY_RULES = {
   'no-fetch-in-effect': noFetchInEffect,
   'no-class-components': noClassComponents,
@@ -70,11 +58,6 @@ const LIBRARY_RULES = {
   'no-unknown-classes': noUnknownClasses,
 };
 
-/**
- * Styling rules for hand-written composition code (App.tsx, components/, hooks/). They do
- * not run on ui/, whose class lists follow the upstream shadcn base-vega source
- * (`dark:` variants, `transition-all`, `outline-none` on popup surfaces).
- */
 const COMPOSED_RULES = {
   'no-dark-variant': noDarkVariant,
   'no-raw-color-classes': noRawColorClasses,
@@ -84,42 +67,31 @@ const COMPOSED_RULES = {
   'prefer-size-utility': preferSizeUtility,
 };
 
-/** ESLint core rules that map 1:1 to written rules in AGENTS.md > TypeScript. */
 const CORE_RULES = {
   'no-var': 'error',
   'prefer-const': 'error',
   'object-shorthand': ['error', 'always'],
 };
 
-/**
- * Turn a rule map into `{ "skateboard-ui/<name>": "error" }`.
- *
- * @param {Record<string, unknown>} rules - Rule modules keyed by name
- * @returns {Record<string, 'error'>} Flat-config rule settings
- */
 const asErrors = (rules) => Object.fromEntries(Object.keys(rules).map((name) => [`${NAMESPACE}/${name}`, 'error']));
 
 const plugin = {
   meta: { name: 'eslint-plugin-skateboard-ui', version: '1.0.0', namespace: NAMESPACE },
   rules: { ...BASE_RULES, ...LIBRARY_RULES, ...COMPOSED_RULES },
-  /** @type {Record<string, import('eslint').Linter.Config>} */
   configs: {},
 };
 
 plugin.configs = {
-  /** Every linted JS/TS file. */
   base: {
     name: 'skateboard-ui/base',
     plugins: { [NAMESPACE]: plugin },
     rules: { ...CORE_RULES, ...asErrors(BASE_RULES) },
   },
-  /** Library React code. */
   library: {
     name: 'skateboard-ui/library',
     plugins: { [NAMESPACE]: plugin },
     rules: asErrors(LIBRARY_RULES),
   },
-  /** Hand-written composition code: App.tsx, components/, hooks/. */
   composed: {
     name: 'skateboard-ui/composed',
     plugins: { [NAMESPACE]: plugin },

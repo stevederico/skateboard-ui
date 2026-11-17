@@ -45,7 +45,6 @@ export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
 
   return (
     <SidebarRoot collapsible="icon" variant={variant} {...props}>
-      {/* Header: App icon + name */}
       {!constants.hideSidebarHeader && (
         <SidebarHeader className="p-2">
           <SidebarMenu>
@@ -73,7 +72,6 @@ export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
         </SidebarHeader>
       )}
 
-      {/* Main navigation from constants.pages */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -106,7 +104,6 @@ export default function Sidebar({ variant = "inset", ...props }: SidebarProps) {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer: Settings */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>

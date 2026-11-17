@@ -46,12 +46,8 @@ function Sheet({ open, defaultOpen = false, onOpenChange, children }: SheetProps
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
-  // Conditional labelling: only advertise aria-labelledby/aria-describedby when a
-  // Title/Description part is actually rendered, so the dialog never points at a
-  // missing element (a dangling IDREF that screen readers announce as broken).
   const { titleId, descriptionId, registerTitle, registerDescription, labelledBy, describedBy } =
     useDialogLabelling()
-  // Stable id wiring the trigger's aria-controls to the content's id.
   const contentId = React.useId()
   return (
     <SheetContext.Provider
@@ -136,8 +132,6 @@ function SheetClose({
   )
 }
 
-// `left-auto`/`right-auto`/etc. override the native <dialog> UA inset (left:0),
-// otherwise `right-0` + a width would still anchor to the left edge.
 const SIDE_POSITION: Record<SheetSide, string> = {
   right: "inset-y-0 right-0 left-auto h-full w-3/4 border-l sm:max-w-sm",
   left: "inset-y-0 left-0 right-auto h-full w-3/4 border-r sm:max-w-sm",
@@ -181,8 +175,6 @@ function SheetContent({
     else if (!mounted && node.open) node.close()
   }, [mounted])
 
-  // Reentrant, reference-counted scroll lock so stacked overlays don't unlock the
-  // body while another is still open (a plain per-instance effect would).
   useScrollLock(mounted)
 
   if (!mounted) return null
@@ -255,7 +247,6 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 function SheetTitle({ className, ...props }: React.ComponentProps<"h2">) {
   const { titleId, registerTitle } = useSheet()
-  // Register so the dialog only sets aria-labelledby while this title is mounted.
   React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
@@ -269,7 +260,6 @@ function SheetTitle({ className, ...props }: React.ComponentProps<"h2">) {
 
 function SheetDescription({ className, ...props }: React.ComponentProps<"p">) {
   const { descriptionId, registerDescription } = useSheet()
-  // Register so the dialog only sets aria-describedby while this description is mounted.
   React.useEffect(registerDescription, [registerDescription])
   return (
     <p

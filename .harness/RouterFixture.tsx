@@ -11,12 +11,6 @@ import {
 import { RouterProvider } from "../dist/router/dom-export.mjs"
 import { useSafeNavigate } from "../dist/components/core/Utilities.js"
 
-// 5.16.0 vendors react-router into dist/router, published as
-// @stevederico/skateboard-ui/router. This fixture is an app built only on that
-// entry (data router + RouterProvider from ./router/dom), served at /router/*.
-
-// Counts full page loads in this tab (sessionStorage survives a reload, a
-// window property would not): client-side navigation must leave it at 1.
 const BOOTS_KEY = "routerFixtureBoots"
 const boots = Number(sessionStorage.getItem(BOOTS_KEY) ?? "0") + 1
 sessionStorage.setItem(BOOTS_KEY, String(boots))

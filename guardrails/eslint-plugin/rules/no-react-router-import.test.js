@@ -9,7 +9,6 @@ runRuleTests('no-react-router-import', rule, {
     { code: "import type { Location } from '../../router/index.mjs';", filename: 'components/core/Utilities.ts' },
     { code: "import { BrowserRouter } from './router/index.mjs';", filename: 'App.tsx' },
     { code: "import { MemoryRouter } from '../dist/router/index.mjs';", filename: '.harness/Fixtures.tsx' },
-    // The vendor script names the package in strings and runs `npm pack`; it never imports it.
     { code: "const pkg = fetchPackage('react-router', RR, tmp);", filename: 'scripts/vendor-react-router.js' },
     "import { useEffect } from 'react';",
   ],

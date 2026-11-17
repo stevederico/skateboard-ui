@@ -6,7 +6,6 @@ runRuleTests('no-deep-package-imports', rule, {
     "import { createRoot } from 'react-dom/client';",
     "import { jsx } from 'react/jsx-runtime';",
     "import { Check } from '../../icons/index.js';",
-    // The harness imports the repo's own build output by relative path; that is the layer rule's business.
     { code: "import { Button } from '../dist/ui/button.js';", filename: '.harness/Fixtures.tsx' },
   ],
   invalid: [

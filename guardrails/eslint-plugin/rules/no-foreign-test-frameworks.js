@@ -1,6 +1,5 @@
 import { createBannedImportRule, packages } from '../lib/bannedImports.js';
 
-/** Test runners and their assertion/mocking companions that this repo does not use. */
 const RUNNERS = [
   'jest', '@jest/globals', 'mocha', 'chai', 'jasmine', 'jasmine-core', 'vitest', '@vitest/expect', '@vitest/spy', 'ava', 'tap', 'uvu',
   '@testing-library/react', '@testing-library/dom', '@testing-library/jest-dom', 'cypress',

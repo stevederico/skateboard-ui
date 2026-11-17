@@ -8,7 +8,6 @@ runRuleTests('no-focused-or-skipped-tests', rule, {
   valid: [
     { code: "test('opens the menu', async ({ page }) => { await page.goto('/'); });", filename },
     { code: "test.describe('menus', () => {});", filename },
-    // Playwright's conditional skip is evaluated at run time and carries a reason.
     { code: "test('x', async ({ browserName }) => { test.skip(browserName === 'webkit', 'no popover API'); });", filename },
     { code: "describe('layers', { skip: !HAS_REPO }, () => {});", filename: unit },
     { code: "it('works', (t) => { t.skip(); });", filename: unit },

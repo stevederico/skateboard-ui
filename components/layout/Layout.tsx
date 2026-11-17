@@ -40,7 +40,6 @@ export default function Layout({ children }: LayoutProps) {
   const { sidebarVisible, tabBarVisible } = state.ui;
   const constants = state.constants;
 
-  // Combine constants (static config) with context state (programmatic control)
   const showSidebar = !constants.hideSidebar && sidebarVisible;
   const showTabBar = !constants.hideTabBar && tabBarVisible;
 

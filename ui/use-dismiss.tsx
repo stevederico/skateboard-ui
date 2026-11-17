@@ -4,9 +4,6 @@ import * as React from "react"
 
 import { isInLayer } from "./layer-stack.js"
 
-// Shared stack of open dismissable layers (most-recently-opened last). Escape
-// only closes the topmost layer, so a popover opened inside a dialog doesn't
-// close both at once.
 const escapeStack: Array<() => void> = []
 
 /**
@@ -52,6 +49,5 @@ export function useDismiss(
       document.removeEventListener("keydown", onKeyDown, true)
       document.removeEventListener("pointerdown", onPointerDown, true)
     }
-    // Deps are [open] on purpose: onDismiss is read through a ref, and refs are RefObjects read at event time.
   }, [open])
 }

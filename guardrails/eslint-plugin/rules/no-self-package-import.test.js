@@ -4,7 +4,6 @@ import { runRuleTests } from '../lib/ruleTester.js';
 runRuleTests('no-self-package-import', rule, {
   valid: [
     "import { getState } from '../core/Context.js';",
-    // JSDoc examples keep the public name; only real imports are checked.
     "/**\n * @example\n * import Sheet from '@stevederico/skateboard-ui/Sheet';\n */\nexport default function Sheet() { return null; }",
     { code: "import { Button } from '@stevederico/skateboard-ui/ui/button';", filename: 'scripts/tool.js' },
     "import { useState } from 'react';",

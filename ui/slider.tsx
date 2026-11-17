@@ -20,13 +20,9 @@ export interface SliderProps
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
-// Snap a value to the step grid relative to `min`, then round away the
-// floating-point drift that `Math.round(x / step) * step` introduces (e.g.
-// 0.1 * 3 === 0.30000000000000004) so value/aria-valuenow stay clean.
 const snapToStep = (v: number, min: number, step: number) => {
   if (step <= 0) return v
   const snapped = min + Math.round((v - min) / step) * step
-  // Derive the decimal precision from the step (e.g. 0.1 -> 1, 0.25 -> 2).
   const decimals = (String(step).split(".")[1] ?? "").length
   return decimals > 0 ? Number(snapped.toFixed(decimals)) : snapped
 }
@@ -47,8 +43,6 @@ function Slider({
   orientation = "horizontal",
   disabled = false,
   name,
-  // Pull the accessible-name props off so they don't land on the outer wrapper
-  // div; the thumb (role="slider") is the element that needs them.
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
   ...props
@@ -62,10 +56,6 @@ function Slider({
   const activeThumb = React.useRef<number>(0)
   const vertical = orientation === "vertical"
 
-  // Track the latest values so pointer-move handlers (which close over the
-  // pointerdown-time render) read fresh state — otherwise, in controlled mode,
-  // a parent correction (e.g. min-gap push between thumbs) gets overwritten on
-  // the next move.
   const valuesRef = React.useRef(values)
   valuesRef.current = values
 
@@ -84,10 +74,6 @@ function Slider({
 
   const updateThumb = (index: number, next: number) => {
     const current = valuesRef.current
-    // Clamp the moving thumb against its immediate neighbors so values stay
-    // ordered. When neighbors share this thumb's value (overlap), only the
-    // actively-dragged thumb is allowed to move away — clamping against the
-    // neighbor on the side it's heading lets it pass instead of pinning it.
     const lower = index > 0 ? current[index - 1] : min
     const upper = index < current.length - 1 ? current[index + 1] : max
     const clamped = clamp(next, lower, upper)
@@ -99,9 +85,6 @@ function Slider({
     let bestDist = Infinity
     valuesRef.current.forEach((tv, i) => {
       const d = Math.abs(tv - v)
-      // On exact ties prefer the thumb whose move direction matches the
-      // pointer, so overlapping thumbs don't both resolve to the lowest index
-      // (which would leave the higher-index thumb unmovable).
       if (d < bestDist || (d === bestDist && v > tv)) {
         bestDist = d
         best = i
@@ -122,9 +105,6 @@ function Slider({
     const onMove = (ev: PointerEvent) => {
       updateThumb(activeThumb.current, valueFromPointer(ev.clientX, ev.clientY))
     }
-    // Single teardown for every drag-ending event so a cancelled or lost
-    // pointer (pointercancel/lostpointercapture) doesn't leak the move/up
-    // listeners and leave the drag stuck.
     const teardown = () => {
       if (target.hasPointerCapture(pointerId)) {
         target.releasePointerCapture(pointerId)
@@ -145,8 +125,6 @@ function Slider({
       if (disabled) return
       let next: number | null = null
       const cur = values[index]
-      // Round each step back onto the grid so repeated arrow presses don't
-      // accumulate float drift in value/aria-valuenow.
       if (e.key === "ArrowRight" || e.key === "ArrowUp")
         next = snapToStep(cur + step, min, step)
       else if (e.key === "ArrowLeft" || e.key === "ArrowDown")
@@ -197,8 +175,6 @@ function Slider({
             key={index}
             role="slider"
             tabIndex={disabled ? -1 : 0}
-            // The accessible-name props are forwarded here (not the wrapper) so the
-            // slider role actually gets a name; same label for all thumbs is fine.
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             aria-valuemin={min}
@@ -207,8 +183,6 @@ function Slider({
             aria-orientation={orientation}
             aria-disabled={disabled || undefined}
             data-slot="slider-thumb"
-            // The thumb is a <span>, so :disabled never matches — drive the
-            // disabled styles off data-disabled instead.
             data-disabled={disabled ? "" : undefined}
             onKeyDown={onThumbKeyDown(index)}
             className="absolute block size-4 shrink-0 -translate-x-1/2 cursor-pointer rounded-full border border-primary bg-white shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 data-vertical:translate-x-0 data-vertical:-translate-y-1/2"
@@ -221,8 +195,6 @@ function Slider({
           />
         ))}
       </div>
-      {/* Mirror RadioGroup: emit a hidden input per value so a wrapping <form>
-          actually submits the slider's value(s) under the given name. */}
       {name
         ? values.map((v, i) => (
             <input key={i} type="hidden" name={name} value={v} />

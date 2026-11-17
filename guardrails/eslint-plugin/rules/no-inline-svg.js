@@ -1,10 +1,8 @@
 import { jsxName } from '../lib/jsx.js';
 import { repoRelative } from '../lib/paths.js';
 
-/** The vendored icon module: the only place SVG markup is built. */
 const ICON_MODULE = /^icons\//;
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'suggestion',

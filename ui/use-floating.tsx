@@ -101,9 +101,6 @@ export function computePosition(
         ? "bottom"
         : "center"
 
-  // Space left for the popup on its final side, so it can clamp + scroll
-  // instead of overflowing the viewport. For left/right placements the popup
-  // spans the cross axis, so the usable height is the full viewport less padding.
   const availableHeight = Math.max(
     0,
     (vertical ? space[side] - sideOffset : viewport.height) - PAD
@@ -144,8 +141,6 @@ export function useFloating(
   }, [anchorRef, side, align, sideOffset, alignOffset])
 
   React.useLayoutEffect(() => {
-    // Drop the last position on close so a reopen stays visibility:hidden until
-    // it is re-measured, rather than flashing one frame at stale coordinates.
     if (!open) {
       setPos(null)
       return
@@ -153,11 +148,6 @@ export function useFloating(
     const ro = new ResizeObserver(update)
     window.addEventListener("scroll", update, true)
     window.addEventListener("resize", update)
-    // The floating node is portaled and may attach a frame late (the Portal
-    // defers rendering until its own effect runs). Retry each frame until the
-    // ref is set, then measure + observe — otherwise the first update() runs
-    // against a null ref, `pos` stays null, and the popup is stuck
-    // `visibility:hidden`.
     let raf = 0
     const attach = () => {
       if (!floatingRef.current) {

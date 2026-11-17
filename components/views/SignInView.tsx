@@ -56,7 +56,6 @@ export default function SignInView({
 
   const [errorMessage, setErrorMessage] = useState('')
 
-  // Focus the first input on mount
   useEffect(() => {
     if (!email && emailInputRef.current) {
       emailInputRef.current.focus();
@@ -78,7 +77,6 @@ export default function SignInView({
 
       if (response.ok) {
         const data = await response.json();
-        // Save CSRF token to localStorage for isAuthenticated() check
         const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
         const csrfToken = csrfCookie ? csrfCookie.split('=')[1] : data.csrfToken;
         if (csrfToken) {

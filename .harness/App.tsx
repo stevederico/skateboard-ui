@@ -113,9 +113,6 @@ import {
 } from "../dist/ui/select.js"
 import { Slider } from "../dist/ui/slider.js"
 import { ScrollArea } from "../dist/ui/scroll-area.js"
-// Legacy render= API: this row proves the ui/ Button module and the old
-// render= AlertDialog trigger API still work. (The `./shadcn/ui/*` alias of
-// ui/ was removed in 5.17.0; apps import `@stevederico/skateboard-ui/ui/*`.)
 import { Button as LegacyButton } from "../dist/ui/button.js"
 import {
   AlertDialog as LegacyAlertDialog,

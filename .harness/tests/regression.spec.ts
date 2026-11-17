@@ -1,16 +1,10 @@
 import { test, expect } from "@playwright/test"
 
-// Regression tests for the 15 bugs found in the multi-agent review. Each pins a
-// specific fix so a future refactor can't silently reintroduce it. Every test
-// loads its fixture in isolation (?fx=...) so a modal/focus-trapping fixture
-// can't contaminate the others.
-
 test("Slot composes the child's own onClick with the injected trigger handler", async ({
   page,
 }) => {
   await page.goto("/tests.html?fx=slot-compose")
   await page.getByRole("button", { name: /asChild \+ own onClick/ }).click()
-  // Both ran: the consumer counter incremented AND the dialog opened.
   await expect(page.getByTestId("consumer-clicks")).toHaveText("1")
   await expect(page.locator("dialog[data-slot=dialog-overlay]")).toHaveJSProperty(
     "open",
@@ -29,12 +23,10 @@ test("Escape closes only the topmost layer (popover inside dialog)", async ({
   await expect(popover).toBeVisible()
 
   await page.keyboard.press("Escape")
-  // First Escape closes the popover only; the dialog stays open.
   await expect(popover).toHaveCount(0)
   await expect(dialog).toHaveJSProperty("open", true)
 
   await page.keyboard.press("Escape")
-  // Second Escape closes the dialog.
   await expect(dialog).toHaveJSProperty("open", false)
 })
 
@@ -44,7 +36,6 @@ test("SelectValue shows the selected label on first render (before opening)", as
   await page.goto("/tests.html?fx=select-default")
   const value = page.locator("[data-slot=select-value]")
   await expect(value).toHaveText("Banana")
-  // And it is not styled/marked as a placeholder.
   await expect(value).not.toHaveAttribute("data-placeholder", /.*/)
 })
 
@@ -56,7 +47,6 @@ test("Tab values with spaces produce valid, resolvable ARIA id references", asyn
   const controls = await tab.getAttribute("aria-controls")
   expect(controls).toBeTruthy()
   expect(controls).not.toContain(" ")
-  // The referenced panel actually exists.
   await expect(page.locator(`[id="${controls}"]`)).toHaveCount(1)
 })
 
@@ -67,7 +57,7 @@ test("RadioGroup name posts the selected value via a hidden input", async ({
   await page.getByRole("button", { name: "Submit" }).click()
   await expect(page.getByTestId("radio-form-result")).toHaveText("pro")
 
-  await page.getByRole("radio").first().click() // select "free"
+  await page.getByRole("radio").first().click()
   await page.getByRole("button", { name: "Submit" }).click()
   await expect(page.getByTestId("radio-form-result")).toHaveText("free")
 })
@@ -83,16 +73,11 @@ test("Slider responds to keyboard (ArrowRight increments aria-valuenow)", async 
   await expect(thumb).toHaveAttribute("aria-valuenow", "41")
 })
 
-// --- 4.0.0 accessibility-regression fixes (keyboard a11y the in-house rewrite
-// dropped vs base-ui). Each pins one fix so it can't silently regress. ---
-
 test("Select typeahead focuses the option matching the typed character", async ({
   page,
 }) => {
   await page.goto("/tests.html?fx=select-default")
   await page.getByRole("combobox").click()
-  // Wait until the listbox has focused the selected option, then type "c" to
-  // jump to Cherry (typing before focus lands would hit the trigger, not the list).
   await expect(
     page.locator('[role="option"][data-value="banana"]')
   ).toBeFocused()
@@ -108,10 +93,8 @@ test("Popover moves focus into its content on open and restores it on Escape", a
   await page.goto("/tests.html?fx=popover-focus")
   const trigger = page.getByRole("button", { name: "Open popover" })
   await trigger.click()
-  // Focus moves into the popover (to its first focusable control).
   await expect(page.getByTestId("inside-button")).toBeFocused()
   await page.keyboard.press("Escape")
-  // Closing returns focus to the trigger.
   await expect(trigger).toBeFocused()
 })
 
@@ -119,7 +102,6 @@ test("Tabs: the first tab stays tabbable when no tab is selected", async ({
   page,
 }) => {
   await page.goto("/tests.html?fx=tabs-nodefault")
-  // Exactly one tab stop (WAI-ARIA): first tab tabbable, the rest removed.
   await expect(page.getByRole("tab", { name: "One" })).toHaveAttribute(
     "tabindex",
     "0"
@@ -147,11 +129,9 @@ test("Dialog wires aria-labelledby to its title and omits aria-describedby when 
   await page.getByRole("button", { name: /asChild/ }).click()
   const dlg = page.locator("dialog[data-slot=dialog-overlay]")
   await expect(dlg).toHaveJSProperty("open", true)
-  // Title is rendered → aria-labelledby points at it.
   await expect(dlg).toHaveAttribute("aria-labelledby", /.+/)
   const labelledby = await dlg.getAttribute("aria-labelledby")
   await expect(page.locator(`[id="${labelledby}"]`)).toHaveText("Composed")
-  // No DialogDescription rendered → no dangling aria-describedby.
   await expect(dlg).not.toHaveAttribute("aria-describedby", /.*/)
 })
 
@@ -192,7 +172,7 @@ test("Scroll lock is reentrant: closing an inner sheet keeps body locked under t
   await page.goto("/tests.html?fx=nested-lock")
   const bodyOverflow = () =>
     page.evaluate(() => getComputedStyle(document.body).overflow)
-  await expect.poll(bodyOverflow).toBe("hidden") // outer dialog locks
+  await expect.poll(bodyOverflow).toBe("hidden")
   await page.getByRole("button", { name: "Open sheet" }).click()
   await expect(page.locator("dialog[data-slot=sheet-content]")).toHaveJSProperty(
     "open",
@@ -200,11 +180,8 @@ test("Scroll lock is reentrant: closing an inner sheet keeps body locked under t
   )
   await page.getByRole("button", { name: "Close sheet" }).click()
   await expect(page.locator("dialog[data-slot=sheet-content]")).toHaveCount(0)
-  // Inner closed, outer still open → body must STAY locked.
   await expect.poll(bodyOverflow).toBe("hidden")
 })
-
-// --- 4.3.0 cleanup ---
 
 test("Checkbox exposes aria-checked=mixed for indeterminate and resolves on click", async ({
   page,
@@ -213,7 +190,6 @@ test("Checkbox exposes aria-checked=mixed for indeterminate and resolves on clic
   const box = page.getByRole("checkbox")
   await expect(box).toHaveAttribute("aria-checked", "mixed")
   await box.click()
-  // A click resolves indeterminate to a concrete checked state.
   await expect(box).toHaveAttribute("aria-checked", "true")
 })
 

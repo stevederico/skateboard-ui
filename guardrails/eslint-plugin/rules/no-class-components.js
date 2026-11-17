@@ -1,14 +1,7 @@
 const BASES = new Set(['Component', 'PureComponent', 'React.Component', 'React.PureComponent']);
 
-/** Lifecycle methods that only exist on classes: they are what makes an error boundary. */
 const ERROR_BOUNDARY_METHODS = new Set(['componentDidCatch', 'getDerivedStateFromError']);
 
-/**
- * Name of a class's superclass (`Component`, `React.Component`), or '' when not static.
- *
- * @param {any} node - Superclass expression
- * @returns {string} Dotted name
- */
 function superName(node) {
   if (!node) return '';
   if (node.type === 'Identifier') return node.name;
@@ -18,16 +11,9 @@ function superName(node) {
   return '';
 }
 
-/**
- * True when the class is an error boundary (React has no hook for catching render errors).
- *
- * @param {any} node - ClassDeclaration or ClassExpression
- * @returns {boolean} Whether the class defines an error-boundary lifecycle
- */
 const isErrorBoundary = (node) =>
   node.body.body.some((m) => m.type === 'MethodDefinition' && m.key.type === 'Identifier' && ERROR_BOUNDARY_METHODS.has(m.key.name));
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

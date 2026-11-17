@@ -1,30 +1,4 @@
 #!/usr/bin/env node
-// Vendors react-router into router/ (published as @stevederico/skateboard-ui/router).
-//
-// One command per react-router release:
-//   node scripts/vendor-react-router.js [react-router version] [cookie version] [set-cookie-parser version]
-//   e.g. node scripts/vendor-react-router.js 7.18.5 1.1.1 2.7.3
-//
-// What it does:
-//   1. `npm pack`s the three packages into a temp dir (no install, no lifecycle scripts)
-//      and checks each version is at least 7 days old and inside react-router's ranges.
-//   2. Copies react-router's ESM build, byte for byte, from dist/development/: every .mjs
-//      and .d.mts reachable from the entries apps use (`.` -> index, `./dom` ->
-//      dom-export, `./internal` -> lib/types/internal). dist/development is what
-//      react-router's own `exports` map hands to every `import`. Not copied: the CJS
-//      (.js/.d.ts) twins, dist/production (no `exports` condition selects it) and the
-//      `react-server` (RSC) entries, which need node:async_hooks and an RSC bundler.
-//   3. The one edit to react-router files: the bare specifiers "cookie" and
-//      "set-cookie-parser" in import statements point at ./vendor/*.mjs instead.
-//   4. cookie and set-cookie-parser ship CommonJS only. Apps serve skateboard-ui raw
-//      (excluded from Vite prebundling), so each is wrapped, body unchanged, in an ESM
-//      shim: router/vendor/<name>.mjs. Only the trailing sourceMappingURL comment drops.
-//   5. Writes LICENSE-react-router (MIT notices of all three) at the package root.
-//
-// Any other bare import in the copied code fails the run, so a new upstream dependency
-// is never shipped unresolved. Security advisories for react-router (and cookie,
-// set-cookie-parser) are not watched by any tool here: check
-// https://github.com/remix-run/react-router/security/advisories by hand and re-run.
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -35,19 +9,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(root, 'router');
 const [RR = '7.18.5', COOKIE = '1.1.1', SCP = '2.7.3'] = process.argv.slice(2);
 
-/** Bare specifiers the copied code may keep: peers of skateboard-ui. */
 const ALLOWED_BARE = new Set(['react', 'react-dom']);
-/** Bare specifiers rewritten to the vendored ESM shims. */
 const SHIMS = { cookie: 'vendor/cookie.mjs', 'set-cookie-parser': 'vendor/set-cookie-parser.mjs' };
 const ENTRIES = ['index.mjs', 'dom-export.mjs', 'lib/types/internal.mjs'];
 const MIN_AGE_DAYS = 7;
 
 const npm = (args) => execFileSync('npm', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] }).trim();
 
-/** Download and unpack one package; returns its directory. */
 function fetchPackage(name, version, into) {
   const raw = JSON.parse(npm(['view', name, 'time', '--json']));
-  const time = Array.isArray(raw) ? raw[0] : raw; // some npm versions wrap the result in an array
+  const time = Array.isArray(raw) ? raw[0] : raw;
   const published = new Date(time[version]);
   const ageDays = (Date.now() - published.getTime()) / 86_400_000;
   if (!(ageDays >= MIN_AGE_DAYS)) throw new Error(`${name}@${version} is ${ageDays.toFixed(1)} days old; the repo needs ${MIN_AGE_DAYS}+`);
@@ -58,7 +29,6 @@ function fetchPackage(name, version, into) {
   return dir;
 }
 
-/** Minimal caret-range check (react-router declares ^x.y.z for both deps). */
 function satisfiesCaret(version, range) {
   const m = range.match(/^\^(\d+)\.(\d+)\.(\d+)$/);
   if (!m) throw new Error(`unsupported range ${range}; check it by hand`);
@@ -67,7 +37,6 @@ function satisfiesCaret(version, range) {
   return a === x && (b > y || (b === y && c >= z));
 }
 
-/** Import/export specifiers of real statements (line-anchored, so JSDoc examples are skipped). */
 function specifiers(code) {
   const out = [];
   for (const m of code.matchAll(/^(?:import|export)\b[^;]*?\bfrom\s*(['"])([^'"\n]+)\1/gm)) out.push(m[2]);
@@ -91,7 +60,6 @@ try {
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(join(OUT, 'vendor'), { recursive: true });
 
-  // 1. react-router: walk relative imports from the entries (JS and types).
   const src = join(rrDir, 'dist', 'development');
   const queue = ENTRIES.flatMap((e) => [e, e.replace(/\.mjs$/, '.d.mts')]);
   const seen = new Set();
@@ -103,7 +71,6 @@ try {
     for (const spec of specifiers(code)) {
       if (spec.startsWith('.')) {
         const target = posix.normalize(posix.join(posix.dirname(rel), spec));
-        // Type chunks are imported as './x.mjs' but live in './x.d.mts'.
         queue.push(rel.endsWith('.d.mts') ? target.replace(/\.mjs$/, '.d.mts') : target);
       } else if (spec in SHIMS) {
         const to = posix.relative(posix.dirname(rel), SHIMS[spec]);
@@ -117,11 +84,10 @@ try {
     writeFileSync(join(OUT, rel), code);
   }
 
-  // 2. CommonJS deps -> ESM shims with the original body inside a module scope.
   const shim = async (name, version, license, mainRel, typesRel) => {
     const file = join(name === 'cookie' ? cookieDir : scpDir, mainRel);
     const body = readFileSync(file, 'utf8').replace(/^\/\/# sourceMappingURL=.*$/m, '').trimEnd();
-    const cjs = (await import(pathToFileURL(file).href)).default; // Node: default = module.exports
+    const cjs = (await import(pathToFileURL(file).href)).default;
     const names = Object.keys(cjs).filter((k) => /^[A-Za-z_$][\w$]*$/.test(k) && k !== 'default' && k !== '__esModule');
     const exportsLines = names.map((k) => `export const ${k} = __cjs.${k};`).join('\n');
     const copyright = license.split('\n').filter((l) => /^Copyright/.test(l)).join('\n * ');
@@ -150,7 +116,6 @@ ${exportsLines}
   await shim('cookie', COOKIE, licenseOf(cookieDir), cookiePkg.main, cookiePkg.types);
   await shim('set-cookie-parser', SCP, licenseOf(scpDir), scpPkg.main, null);
 
-  // 3. License notices.
   writeFileSync(
     join(root, 'LICENSE-react-router'),
     `skateboard-ui vendors react-router ${RR} into dist/router (generated by

@@ -49,8 +49,6 @@ function PaginationLink({
   onKeyDown,
   ...props
 }: PaginationLinkProps) {
-  // An <a> without href is not focusable or Enter/Space-activatable, so for
-  // SPA usage (onClick, no href) add button semantics + keyboard activation.
   const isRealLink = props.href != null
   return (
     <Button

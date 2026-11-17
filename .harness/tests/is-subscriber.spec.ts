@@ -1,8 +1,5 @@
 import { test, expect } from "@playwright/test"
 
-// isSubscriber() reads the status from POST /usage {"operation":"check"}:
-// backends have no GET /isSubscriber route.
-
 test("isSubscriber posts a usage check with the CSRF token and returns isSubscriber", async ({ page }) => {
   const calls: { method: string; path: string; body: string | null; csrf?: string; type?: string }[] = []
   await page.route("**/harness-api/**", async (route) => {

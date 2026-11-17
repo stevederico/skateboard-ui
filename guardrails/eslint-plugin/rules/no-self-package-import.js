@@ -2,10 +2,8 @@ import { moduleSourceVisitors, packageName } from '../lib/moduleSources.js';
 import { repoRelative, specifierTo } from '../lib/paths.js';
 import { LIBRARY_LAYERS, layerOf } from '../layers.js';
 
-/** This package's own name, as apps import it. */
 const SELF = '@stevederico/skateboard-ui';
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',
@@ -26,7 +24,6 @@ export default {
     if (!layer || !LIBRARY_LAYERS.has(layer.name)) return {};
     return moduleSourceVisitors((node, source) => {
       if (packageName(source) !== SELF) return;
-      // Removed ./shadcn/* paths get a more specific fix from no-shadcn-paths.
       if (source.startsWith(`${SELF}/shadcn`)) return;
       context.report({
         node,

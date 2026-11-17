@@ -1,16 +1,4 @@
 #!/usr/bin/env node
-// Generates icons/index.tsx: a vendored subset of lucide-react.
-//
-// Collects every icon name the package imports (from 'lucide-react' or from the
-// local icons module), copies each icon's SVG node data from an installed
-// lucide-react, and writes one named export per icon so bundlers tree-shake it.
-//
-// lucide-react is not a dependency. To regenerate:
-//   npm i --no-save lucide-react@0.546.0
-//   node scripts/vendor-lucide-icons.js
-//   npm uninstall --no-save lucide-react   (or delete node_modules/lucide-react)
-//
-// Optional arg: path to a lucide-react package directory.
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -24,7 +12,6 @@ if (!existsSync(join(pkgDir, 'package.json'))) {
 const version = JSON.parse(readFileSync(join(pkgDir, 'package.json'), 'utf8')).version;
 const esm = join(pkgDir, 'dist', 'esm');
 
-// export name -> icon file stem, from lucide-react's barrel.
 const nameToFile = new Map();
 const barrel = readFileSync(join(esm, 'lucide-react.js'), 'utf8');
 for (const m of barrel.matchAll(/export \{([^}]*)\} from '\.\/icons\/([^']+)\.js';/g)) {
@@ -34,7 +21,6 @@ for (const m of barrel.matchAll(/export \{([^}]*)\} from '\.\/icons\/([^']+)\.js
   }
 }
 
-// Icon names imported anywhere in the package source.
 const SRC_DIRS = ['App.tsx', 'index.ts', 'components', 'ui', 'hooks', 'lib'];
 const IMPORT_RE = /import\s*\{([^}]*)\}\s*from\s*["'](?:lucide-react|(?:\.\.?\/)+icons\/index\.js)["']/g;
 const names = new Set();
@@ -54,7 +40,6 @@ function scan(p) {
 }
 for (const d of SRC_DIRS) scan(join(root, d));
 
-// Icon names skateboard apps use that the package source does not import.
 const appNames = readFileSync(join(root, 'scripts', 'app-icon-names.txt'), 'utf8')
   .split('\n')
   .map((s) => s.trim())
@@ -64,7 +49,6 @@ for (const n of appNames) names.add(n);
 const toPascal = (s) => s.replace(/^([a-z])|[\s-_]+(\w)/g, (_, a, b) => (a ?? b).toUpperCase());
 const toKebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
-// Group names by icon file. Canonical export = PascalCase of the file stem.
 const byFile = new Map();
 for (const n of [...names].sort()) {
   const file = nameToFile.get(n);

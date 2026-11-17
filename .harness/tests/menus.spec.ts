@@ -1,12 +1,5 @@
 import { test, expect } from "@playwright/test"
 
-// Real-browser behavior tests for DropdownMenu and Select. These exercise the
-// floating/portal layout, roving focus, and open-state coordination that only
-// behave correctly in a real browser. Markup lives in App.tsx (#s-menu).
-// One behavior per test.
-
-// ---- DropdownMenu --------------------------------------------------------
-
 test("DropdownMenu opens with its items on trigger click", async ({ page }) => {
   await page.goto("/")
   await page.getByRole("button", { name: "Menu" }).click()
@@ -37,7 +30,6 @@ test("DropdownMenu ArrowDown moves focus to the next item", async ({ page }) => 
 test("DropdownMenu hovering an item focuses it", async ({ page }) => {
   await page.goto("/")
   await page.getByRole("button", { name: "Menu" }).click()
-  // Wait for the open-time auto-focus, or it can land after the hover.
   await expect(page.getByRole("menuitem", { name: "Edit" })).toBeFocused()
   const del = page.getByRole("menuitem", { name: "Delete" })
   await del.hover()
@@ -50,11 +42,8 @@ test("DropdownMenu checkbox item toggles aria-checked on click", async ({
   await page.goto("/")
   await page.getByRole("button", { name: "Menu" }).click()
   const item = page.getByRole("menuitemcheckbox", { name: "Show grid" })
-  // App seeds menuFlag=true, so it starts checked.
   await expect(item).toHaveAttribute("aria-checked", "true")
   await item.click()
-  // A checkbox item toggles in place and keeps the menu open (only plain items
-  // close it), so read the new state straight from the open menu.
   await expect(page.getByRole("button", { name: "Menu" })).toHaveAttribute(
     "aria-expanded",
     "true"
@@ -74,16 +63,12 @@ test("DropdownMenu closes on Escape pressed before focus moves into it", async (
   page,
 }) => {
   await page.goto("/")
-  // Click and press Escape within one frame, so focus is still on the trigger:
-  // the menu moves focus to its first item a frame later (requestAnimationFrame).
-  // A fast Escape must still close it.
   const open = await page.evaluate(async () => {
     const trigger = [...document.querySelectorAll("button")].find(
       (b) => b.textContent?.trim() === "Menu"
     )!
     trigger.focus()
     trigger.click()
-    // React flushes the click's update in a microtask; no frame runs before it.
     await Promise.resolve()
     const wasOpen = trigger.getAttribute("aria-expanded") === "true"
     trigger.dispatchEvent(
@@ -110,7 +95,6 @@ test("DropdownMenu Escape while the menu is closed is a no-op", async ({
   const errors: string[] = []
   page.on("pageerror", (err) => errors.push(err.message))
   page.on("console", (msg) => {
-    // Network misses (e.g. an offline avatar image) are not script errors.
     if (msg.type() !== "error" || msg.text().startsWith("Failed to load resource")) return
     errors.push(msg.text())
   })
@@ -123,8 +107,6 @@ test("DropdownMenu Escape while the menu is closed is a no-op", async ({
   await expect(trigger).toBeFocused()
   expect(errors).toEqual([])
 })
-
-// ---- DropdownMenu submenu (#s-menu "Share" > "Export") --------------------
 
 test("DropdownMenu submenu opens from its sub-trigger", async ({ page }) => {
   await page.goto("/")
@@ -178,8 +160,6 @@ test("DropdownMenu submenu closes on Escape and refocuses its trigger", async ({
   await expect(page.locator("[data-slot=dropdown-menu-content]")).toBeVisible()
   await expect(page.getByRole("menuitem", { name: "Export" })).toBeFocused()
 })
-
-// ---- Select --------------------------------------------------------------
 
 test("Select opens a listbox of options on trigger click", async ({ page }) => {
   await page.goto("/")

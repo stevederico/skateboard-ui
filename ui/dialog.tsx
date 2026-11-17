@@ -16,13 +16,9 @@ type DialogContextValue = {
   contentId: string
   titleId: string
   descriptionId: string
-  /** Call from the title element's effect; returns the unregister cleanup. */
   registerTitle: () => () => void
-  /** Call from the description element's effect; returns the unregister cleanup. */
   registerDescription: () => () => void
-  /** `aria-labelledby` value, undefined when no title is rendered. */
   labelledBy: string | undefined
-  /** `aria-describedby` value, undefined when no description is rendered. */
   describedBy: string | undefined
 }
 const DialogContext = React.createContext<DialogContextValue | null>(null)
@@ -50,10 +46,7 @@ function Dialog({ open, defaultOpen = false, onOpenChange, children }: DialogPro
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
-  // Track which labelling parts actually render so DialogContent can reference
-  // them only when present, avoiding a dangling aria-labelledby/-describedby IDREF.
   const labelling = useDialogLabelling()
-  // Stable id wiring the trigger's aria-controls to the content's id.
   const contentId = React.useId()
   return (
     <DialogContext.Provider value={{ open: isOpen, setOpen, contentId, ...labelling }}>
@@ -156,17 +149,11 @@ function DialogContent({
     else if (!open && node.open) node.close()
   }, [open])
 
-  // Reentrant, reference-counted scroll lock so stacked overlays don't clobber
-  // each other's overflow restore (an inner close would otherwise unlock scroll
-  // while an outer dialog is still open).
   useScrollLock(open)
 
   return (
     <dialog
       ref={ref}
-      // Conditional so the attribute is omitted when no title/description is
-      // rendered, instead of pointing at an id that doesn't exist (a dangling
-      // IDREF assistive tech may announce as a broken/empty label).
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}
       data-slot="dialog-overlay"
@@ -182,8 +169,6 @@ function DialogContent({
         pointerDownOnBackdrop.current = e.target === ref.current
       }}
       onClick={(e) => {
-        // Close only when the press both started and ended on the backdrop —
-        // a drag that began inside the content (e.g. text selection) must not.
         if (e.target === ref.current && pointerDownOnBackdrop.current) {
           setOpen(false)
         }
@@ -254,7 +239,6 @@ function DialogFooter({
 
 function DialogTitle({ className, ...props }: React.ComponentProps<"h2">) {
   const { titleId, registerTitle } = useDialog()
-  // Register presence so the container wires aria-labelledby only when a title exists.
   React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
@@ -268,7 +252,6 @@ function DialogTitle({ className, ...props }: React.ComponentProps<"h2">) {
 
 function DialogDescription({ className, ...props }: React.ComponentProps<"p">) {
   const { descriptionId, registerDescription } = useDialog()
-  // Register presence so the container wires aria-describedby only when a description exists.
   React.useEffect(registerDescription, [registerDescription])
   return (
     <p

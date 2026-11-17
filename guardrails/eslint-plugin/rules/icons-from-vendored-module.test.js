@@ -9,7 +9,6 @@ runRuleTests('icons-from-vendored-module', rule, {
     { code: "import { CheckIcon } from '../icons/index.js';", filename: 'ui/checkbox.tsx' },
     { code: "import type { LucideIcon } from '../../icons/index.js';", filename: 'components/core/constantsIcon.tsx' },
     { code: "import { forwardRef } from 'react';", filename: 'icons/index.tsx' },
-    // The generator names the package in strings and reads it with fs; it never imports it.
     { code: "const pkgDir = join(root, 'node_modules', 'lucide-react');", filename: 'scripts/vendor-lucide-icons.js' },
     { code: "import { Button } from '../dist/ui/button.js';", filename: '.harness/Fixtures.tsx' },
   ],

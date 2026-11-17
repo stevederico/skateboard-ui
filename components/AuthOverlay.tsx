@@ -35,24 +35,18 @@ export default function AuthOverlay() {
 
   const [mode, setMode] = useState<'signin' | 'signup'>('signup');
 
-  // Remember that this device has had an account
   useEffect(() => {
     if (state.user) {
       try { localStorage.setItem(HAD_ACCOUNT_KEY, '1'); } catch { /* storage blocked */ }
     }
   }, [state.user]);
 
-  // Most visitors are new: open on Sign Up, or Sign In if this device has signed in before
   useEffect(() => {
     if (visible) {
       setMode(hadAccount() ? 'signin' : 'signup');
     }
   }, [visible]);
 
-  // Invoke parked 401 retries (apiRequest, Utilities.js) here in event handlers —
-  // not in the reducer, which must stay pure. Each callback settles the awaiting
-  // apiRequest promise: 'success' retries the request, 'cancel' rejects it so a
-  // dismissed overlay never leaves a caller hanging.
   function runPendingCallbacks(outcome: AuthOverlayOutcome) {
     for (const cb of state.authOverlay.pendingCallbacks) {
       try { cb(outcome); } catch (e) { console.error('Auth callback error:', e); }

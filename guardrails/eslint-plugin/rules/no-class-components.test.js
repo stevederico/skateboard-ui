@@ -6,7 +6,6 @@ runRuleTests('no-class-components', rule, {
     'export default function SettingsView() { return <div />; }',
     'class Store extends Map {}',
     'class ApiError extends Error {}',
-    // components/ErrorBoundary.tsx: React offers no hook for this.
     'class ErrorBoundary extends React.Component { static getDerivedStateFromError() { return { hasError: true }; } render() { return this.props.children; } }',
     'class Boundary extends Component { componentDidCatch(error) { console.error(error); } render() { return null; } }',
   ],

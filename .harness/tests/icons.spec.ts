@@ -1,8 +1,5 @@
 import { test, expect } from "@playwright/test"
 
-// 5.15.0 vendors the lucide icons skateboard apps use, so apps can import them
-// from @stevederico/skateboard-ui/icons instead of lucide-react.
-
 test("app icons render as lucide markup and old aliases are the canonical icon", async ({ page }) => {
   await page.goto("/tests.html?fx=icons")
   await expect(page.getByTestId("alias-identity")).toHaveText("true")
@@ -31,7 +28,6 @@ test("ConstantsIcon resolves the newly vendored constants.json icon strings", as
       new RegExp(`\\blucide-${name}\\b`)
     )
   }
-  // Not in lucide-react 0.546.0 (see todo.md): renders nothing.
   for (const name of ["solar-panel", "workspace"]) {
     await expect(page.getByTestId(`constants-${name}`).locator("svg")).toHaveCount(0)
   }

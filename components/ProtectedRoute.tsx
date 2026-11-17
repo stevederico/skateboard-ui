@@ -36,18 +36,15 @@ const ProtectedRoute = () => {
             return;
         }
 
-        // Skip backend validation for noLogin apps
         if (constants.noLogin === true) {
             setStatus('valid');
             return;
         }
 
-        // Validate session with backend
         // eslint-disable-next-line skateboard-ui/no-fetch-in-effect -- route guard: the session check must run on mount, before any user event exists; a failure only clears stale storage
         apiRequest('/me')
             .then(() => setStatus('valid'))
             .catch(() => {
-                // Clear stale localStorage data
                 const csrfKey = getAppKey('csrf');
                 const userKey = getAppKey('user');
                 localStorage.removeItem(csrfKey);

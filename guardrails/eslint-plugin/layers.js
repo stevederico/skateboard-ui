@@ -1,37 +1,3 @@
-/**
- * Architectural layers of skateboard-ui and the import edges allowed between them.
- * This table is the single source for the `skateboard-ui/layer-boundaries` lint rule;
- * a dependency-cruiser config (or any other boundary checker) should mirror it 1:1:
- * one `forbidden` entry per pair that is NOT in ALLOWED_EDGES, plus EDGE_EXCEPTIONS.
- *
- * The table was derived from the real import graph at 5.13.0, so it describes how the
- * library is built, not how it might be built:
- *
- *   entry    App.tsx, index.ts            -> everything below
- *   views    components/views/            -> layout, widgets, core, hooks, ui, icons, lib, router
- *   widgets  components/*.tsx             -> core, hooks, ui, icons, lib, router
- *   layout   components/layout/           -> core, hooks, ui, icons, lib, router
- *   hooks    hooks/ (not use-mobile)      -> core, lib, router
- *   core     components/core/             -> icons, lib, router
- *   ui       ui/                          -> headless, icons, lib
- *   headless components/core/{Calendar,Command}.tsx   (leaf)
- *   icons    icons/                                   (leaf)
- *   router   router/  vendored react-router 7 ESM     (leaf; imports only react, react-dom)
- *   lib      lib/ + hooks/use-mobile.ts               (leaf)
- *
- * Paths are repo-relative with forward slashes. The first matching layer wins, so
- * `headless` must stay above `core`, `views` / `layout` / `core` above `widgets`, and `lib`
- * above `hooks` (it claims hooks/use-mobile.ts, a dependency-free hook ui/sidebar.tsx uses).
- */
-
-/**
- * @typedef {object} Layer
- * @property {string} name - Short layer id used in messages and ALLOWED_EDGES
- * @property {RegExp} pattern - Matches repo-relative paths in the layer
- * @property {string} description - What lives there (shown in lint messages)
- */
-
-/** @type {Layer[]} */
 export const LAYERS = [
   {
     name: 'entry',
@@ -70,11 +36,6 @@ export const LAYERS = [
   { name: 'dist', pattern: /^dist\//, description: 'dist/: tsc build output, the only code that is published' },
 ];
 
-/**
- * Allowed import edges: layer -> layers it may import from. Anything else is forbidden.
- *
- * @type {Record<string, string[]>}
- */
 export const ALLOWED_EDGES = {
   entry: ['entry', 'views', 'layout', 'widgets', 'core', 'hooks', 'ui', 'icons', 'lib', 'router'],
   views: ['views', 'layout', 'widgets', 'core', 'hooks', 'ui', 'icons', 'lib', 'router'],
@@ -93,12 +54,6 @@ export const ALLOWED_EDGES = {
   dist: ['dist'],
 };
 
-/**
- * Named, file-level exceptions to ALLOWED_EDGES. Each one is an edge the real code
- * needs today; add a new one only with a reason, never to silence a new violation.
- *
- * @type {Array<{ from: RegExp, to: RegExp, reason: string }>}
- */
 export const EDGE_EXCEPTIONS = [
   {
     from: /^components\/AuthOverlay\.tsx$/,
@@ -107,14 +62,8 @@ export const EDGE_EXCEPTIONS = [
   },
 ];
 
-/** Layers compiled by tsc into dist/ and run in the consumer's browser bundle. */
 export const LIBRARY_LAYERS = new Set(['entry', 'views', 'layout', 'widgets', 'hooks', 'core', 'headless', 'ui', 'icons', 'lib', 'router']);
 
-/**
- * Why each layer is off-limits and what to do instead, keyed by the TARGET layer.
- *
- * @type {Record<string, { why: string, fix: string }>}
- */
 export const TARGET_GUIDANCE = {
   entry: {
     why: 'App.tsx imports every view, layout and widget to build the router, so anything that imports it back creates a cycle and pulls the whole shell (and its createRoot call) into that module.',
@@ -182,35 +131,14 @@ export const TARGET_GUIDANCE = {
   },
 };
 
-/**
- * Find the layer a repo-relative path belongs to.
- *
- * @param {string} relPath - Repo-relative path with forward slashes
- * @returns {Layer | undefined} The first matching layer, or undefined (root files such as package.json)
- */
 export function layerOf(relPath) {
   return LAYERS.find((layer) => layer.pattern.test(relPath));
 }
 
-/**
- * True when a named exception permits this exact file-to-file edge.
- *
- * @param {string} fromPath - Repo-relative importing file
- * @param {string} toPath - Repo-relative imported path
- * @returns {boolean} Whether the edge is a listed exception
- */
 export function isException(fromPath, toPath) {
   return EDGE_EXCEPTIONS.some((e) => e.from.test(fromPath) && e.to.test(toPath));
 }
 
-/**
- * Guidance for a forbidden edge. Non-library layers importing library source get the
- * `library` entry (import dist/ or read with fs) instead of a per-layer explanation.
- *
- * @param {string} fromName - Importing layer name
- * @param {string} toName - Imported layer name
- * @returns {{ why: string, fix: string }} Root cause and fix
- */
 export function guidanceFor(fromName, toName) {
   if (!LIBRARY_LAYERS.has(fromName) && LIBRARY_LAYERS.has(toName)) return TARGET_GUIDANCE.library;
   return TARGET_GUIDANCE[toName];

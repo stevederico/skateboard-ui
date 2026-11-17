@@ -62,7 +62,6 @@ import {
 } from "../dist/icons/index.js"
 
 function SlotCompose() {
-  // Counts consumer-handler invocations to prove Slot composes (doesn't clobber).
   const [consumerClicks, setConsumerClicks] = React.useState(0)
   return (
     <section data-testid="fx-slot-compose">
@@ -163,8 +162,6 @@ function SliderFx() {
   )
 }
 
-// Popover whose content holds a focusable control — proves the popover moves
-// focus into its content on open and restores it to the trigger on close.
 function PopoverFocus() {
   return (
     <section data-testid="fx-popover-focus">
@@ -180,8 +177,6 @@ function PopoverFocus() {
   )
 }
 
-// Tabs with NO selected value — the first tab must stay in Tab order so the
-// tablist is reachable by keyboard (roving tab index fallback).
 function TabsNoDefault() {
   return (
     <section data-testid="fx-tabs-nodefault">
@@ -197,8 +192,6 @@ function TabsNoDefault() {
   )
 }
 
-// RadioGroup with NO selection — only the first radio may be tabbable (a single
-// tab stop), otherwise Tab would stop on every radio.
 function RadioNoDefault() {
   return (
     <section data-testid="fx-radio-nodefault">
@@ -212,8 +205,6 @@ function RadioNoDefault() {
 }
 
 
-// Popover with a Title + Description — proves the role="dialog" gets an
-// accessible name via aria-labelledby (and aria-describedby) only when present.
 function PopoverTitled() {
   return (
     <section data-testid="fx-popover-titled">
@@ -230,7 +221,6 @@ function PopoverTitled() {
   )
 }
 
-// DropdownMenu — proves selecting an item returns focus to the trigger.
 function DropdownFx() {
   return (
     <section data-testid="fx-dropdown">
@@ -247,8 +237,6 @@ function DropdownFx() {
   )
 }
 
-// Slider inside a form with a name + aria-label — proves form participation
-// (a hidden input posts the value) and that the thumb carries the accessible name.
 function SliderForm() {
   return (
     <section data-testid="fx-slider-form">
@@ -269,8 +257,6 @@ function SliderForm() {
   )
 }
 
-// Open dialog containing a sheet — proves the shared scroll lock is reentrant:
-// closing the inner sheet must NOT unlock body scroll while the dialog is open.
 function NestedLock() {
   return (
     <section data-testid="fx-nested-lock">
@@ -294,8 +280,6 @@ function NestedLock() {
   )
 }
 
-// Checkbox starting indeterminate — proves aria-checked="mixed" and that a click
-// resolves to a real checked state.
 function CheckboxIndeterminate() {
   return (
     <section data-testid="fx-checkbox-indeterminate">
@@ -304,9 +288,6 @@ function CheckboxIndeterminate() {
   )
 }
 
-// Subscription status from ?status= (omit for no subscription). Stores a signed-in
-// user with that status, then renders the real SettingsView plus a button that
-// runs showUpgradeSheet, so tests can check what a trial user sees.
 const SUB_CONSTANTS = { appName: "Harness Sub", companyEmail: "a@b.c", version: "1" }
 function SubscriptionStatus() {
   const status = new URLSearchParams(window.location.search).get("status")
@@ -337,9 +318,6 @@ function SubscriptionStatus() {
   )
 }
 
-// Runs isSubscriber() against a same-origin backend (/harness-api) that the
-// test intercepts with page.route, after setting a csrf_token cookie, and
-// shows the result. "pending" until the call resolves.
 const ISSUB_CONSTANTS = { appName: "Harness IsSub", backendURL: "/harness-api", devBackendURL: "/harness-api" }
 function IsSubscriberFx() {
   const [result, setResult] = React.useState("pending")
@@ -355,9 +333,6 @@ function IsSubscriberFx() {
   )
 }
 
-// Icons vendored in 5.15.0 for the apps: new names, old lucide aliases that
-// must be the same component as the canonical icon, and constants.json
-// strings resolved by ConstantsIcon.
 const ICON_FX = { AlertCircle, Loader2, MoreHorizontal, SquarePen, PenSquare, Twitter, Wrench }
 const CONSTANTS_ICON_NAMES = ["flag", "factory", "ev-charger", "git-pull-request", "corner-up-right", "arrow-right-left", "solar-panel", "workspace"]
 function IconsFx() {
@@ -400,11 +375,6 @@ const FIXTURES: Record<string, React.ReactNode> = {
   "nested-lock": <NestedLock />,
 }
 
-/**
- * Isolated, deterministic fixtures for behaviors the demo page doesn't cover
- * cleanly. Each test loads exactly one fixture via `?fx=<name>` so a modal/
- * focus-trapping fixture can't contaminate the others. Served at /tests.html.
- */
 export function Fixtures() {
   const name = new URLSearchParams(window.location.search).get("fx")
   return (

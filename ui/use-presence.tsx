@@ -29,10 +29,6 @@ export function usePresence<T extends HTMLElement = HTMLElement>(
     const finish = () => {
       if (!cancelled) setMounted(false)
     }
-    // Let the data-closed classes apply and animations register, then wait for
-    // the actual animations to finish (no short timeout racing them — that would
-    // cut off any exit animation longer than the timeout). A generous backstop
-    // only guards against animations that never settle.
     const raf = requestAnimationFrame(() => {
       const anims = node.getAnimations?.() ?? []
       if (anims.length === 0) {

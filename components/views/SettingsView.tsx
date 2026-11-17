@@ -44,8 +44,6 @@ export default function SettingsView() {
   const showAuth = (constants.noLogin === false || typeof constants.noLogin === 'undefined') && user;
 
   function signOutClicked() {
-    // Route through the canonical /signout flow (clears the server session and
-    // local user, then lands on the landing page) instead of a local-only clear.
     navigate('/signout');
   }
 
@@ -67,9 +65,7 @@ export default function SettingsView() {
         <ThemeToggle iconSize={20} />
       </Header>
 
-      {/* Main content */}
       <div className="flex flex-col items-center p-4 gap-4">
-        {/* Sign In prompt (shown when not authenticated and auth is enabled) */}
         {!user && constants.noLogin !== true && (
           <Card className="w-full max-w-lg">
             <CardHeader>
@@ -94,7 +90,6 @@ export default function SettingsView() {
           </Card>
         )}
 
-        {/* Account */}
         {showAuth && (
           <Card className="w-full max-w-lg">
             <CardHeader>
@@ -134,7 +129,6 @@ export default function SettingsView() {
           </Card>
         )}
 
-        {/* Support */}
         <Card className="w-full max-w-lg">
           <CardHeader>
             <CardTitle>Support</CardTitle>
@@ -151,7 +145,6 @@ export default function SettingsView() {
           </CardHeader>
         </Card>
 
-        {/* Billing */}
         {showAuth && (
           <Card className="w-full max-w-lg">
             <CardHeader>
@@ -190,7 +183,6 @@ export default function SettingsView() {
         )}
       </div>
 
-      {/* Footer */}
       <div className="mt-8 text-center pb-24 md:pb-8">
         <p className="text-xs text-muted-foreground">v{constants.version || '0.0.0'}</p>
       </div>

@@ -5,15 +5,8 @@ import { ALLOWED_EDGES, LIBRARY_LAYERS, guidanceFor, isException, layerOf } from
 
 const BUILTINS = new Set(builtinModules);
 
-/**
- * True for `node:fs`, `fs`, `fs/promises`, and other Node builtin specifiers.
- *
- * @param {string} source - Import specifier
- * @returns {boolean} Whether the specifier is a Node builtin
- */
 export const isNodeBuiltin = (source) => source.startsWith('node:') || BUILTINS.has(source) || BUILTINS.has(source.split('/')[0]);
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

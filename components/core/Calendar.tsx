@@ -1,32 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type * as React from 'react';
 
-/**
- * Drop-in replacement for the subset of react-day-picker that shadcn's
- * Calendar wrapper consumes. Matches the DOM structure (table > tr > td > button)
- * and slot-based classNames API so the shadcn CSS selectors keep working.
- *
- * Supports:
- *  - mode="single" and mode="range" (selected + onSelect)
- *  - month / defaultMonth + onMonthChange
- *  - showOutsideDays, weekStartsOn
- *  - captionLayout="label" or "dropdown"
- *  - formatters.formatMonthDropdown
- *  - disabled (Date, Date[], (date) => boolean, or { from, to })
- *  - components.{ Root, Chevron, DayButton, WeekNumber }
- *  - classNames slot overrides
- *  - Full keyboard nav: ←/→ ±1d, ↑/↓ ±7d, PageUp/Down ±1mo (Shift = year),
- *    Home/End start/end of week, Enter/Space select.
- *
- * Not supported (intentional — out of scope):
- *  - numberOfMonths > 1
- *  - mode="multiple"
- *  - Locales beyond toLocaleString defaults
- *  - showWeekNumber
- *  - hidden / fromDate / toDate (use disabled instead)
- *  - Custom modifiers/matchers beyond disabled
- */
-
 const SLOT_KEYS = [
   'root', 'months', 'month', 'nav', 'button_previous', 'button_next',
   'month_caption', 'dropdowns', 'dropdown_root', 'dropdown', 'caption_label',
@@ -35,31 +9,25 @@ const SLOT_KEYS = [
   'disabled', 'hidden'
 ] as const;
 
-/** Slot name accepted by the classNames prop. */
 export type CalendarSlot = (typeof SLOT_KEYS)[number];
 
-/** Map of slot name → class string for every classNames slot. */
 export type CalendarClassNames = Record<CalendarSlot, string>;
 
-/** Selected range for mode="range". */
 export interface DateRange {
   from?: Date;
   to?: Date;
 }
 
-/** Matchers accepted by the disabled prop. */
 export type DisabledMatcher =
   | Date
   | Date[]
   | ((date: Date) => boolean)
   | { from?: Date; to?: Date; before?: Date; after?: Date };
 
-/** Day wrapper passed to the DayButton component override. */
 export interface CalendarDay {
   date: Date;
 }
 
-/** Modifier flags passed to the DayButton component override. */
 export interface DayModifiers {
   selected: boolean;
   range_start: boolean;
@@ -71,7 +39,6 @@ export interface DayModifiers {
   focused: boolean | null;
 }
 
-/** Props for the Root component override. */
 export interface CalendarRootProps {
   className?: string;
   rootRef?: React.Ref<HTMLDivElement>;
@@ -79,14 +46,12 @@ export interface CalendarRootProps {
   [key: string]: any;
 }
 
-/** Props for the Chevron component override. */
 export interface CalendarChevronProps {
   className?: string;
   orientation?: 'left' | 'right' | 'down' | 'up';
   [key: string]: any;
 }
 
-/** Props for the DayButton component override. */
 export interface CalendarDayButtonProps {
   day: CalendarDay;
   modifiers: DayModifiers;
@@ -94,7 +59,6 @@ export interface CalendarDayButtonProps {
   [key: string]: any;
 }
 
-/** Sub-renderer overrides (components prop). */
 export interface CalendarComponents {
   Root?: React.ComponentType<CalendarRootProps>;
   Chevron?: React.ComponentType<CalendarChevronProps>;
@@ -102,22 +66,15 @@ export interface CalendarComponents {
   WeekNumber?: React.ComponentType<any>;
 }
 
-/** Formatter overrides (formatters prop). */
 export interface CalendarFormatters {
   formatMonthDropdown?: (month: Date) => string;
 }
 
-/**
- * Returns an object with empty strings for every classNames slot.
- * Lets consumers spread defaults safely without depending on internal class names.
- */
 export function getDefaultClassNames(): CalendarClassNames {
   const out = {} as CalendarClassNames;
   for (const k of SLOT_KEYS) out[k] = '';
   return out;
 }
-
-// ===== Date utilities =====
 
 const startOfDay = (d: Date) => {
   const x = new Date(d);
@@ -154,12 +111,6 @@ function isDisabled(date: Date, disabled: DisabledMatcher | undefined): boolean 
   return false;
 }
 
-// ===== Grid =====
-
-/**
- * Build a 6-row grid of Date objects covering the displayed month plus
- * leading/trailing outside-month days so every row has 7 cells.
- */
 function buildGrid(displayMonth: Date, weekStartsOn: number): Date[][] {
   const first = startOfMonth(displayMonth);
   const dayOfWeek = (first.getDay() - weekStartsOn + 7) % 7;
@@ -172,8 +123,6 @@ function buildGrid(displayMonth: Date, weekStartsOn: number): Date[][] {
   }
   return weeks;
 }
-
-// ===== Selection helpers =====
 
 function isSelectedSingle(date: Date, selected: Date | DateRange | undefined): boolean {
   return selected instanceof Date && sameDay(date, selected);
@@ -201,8 +150,6 @@ function rangeModifiers(date: Date, range: DateRange | undefined) {
   };
 }
 
-// ===== Default sub-renderers (overridable via components prop) =====
-
 function DefaultRoot({ className, rootRef, children, ...props }: CalendarRootProps) {
   return (
     <div ref={rootRef} className={className} {...props}>
@@ -212,7 +159,6 @@ function DefaultRoot({ className, rootRef, children, ...props }: CalendarRootPro
 }
 
 function DefaultChevron({ className, orientation }: CalendarChevronProps) {
-  // Inline SVG fallback if no override supplied
   const rotate = orientation === 'left' ? 180 : orientation === 'down' ? 90 : 0;
   return (
     // eslint-disable-next-line skateboard-ui/no-inline-svg -- headless layer is dependency-free and may not import icons/; ui/calendar.tsx overrides this fallback with a vendored icon
@@ -249,8 +195,6 @@ function DefaultDayButton({ day, modifiers, className, ...props }: CalendarDayBu
 function DefaultWeekNumber({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) {
   return <td {...props}>{children}</td>;
 }
-
-// ===== Caption (label vs dropdown) =====
 
 function CaptionLabel({ displayMonth, classNames, format, captionLayout, ChevronCmp }: {
   displayMonth: Date;
@@ -338,27 +282,6 @@ function CaptionDropdowns({
   );
 }
 
-// ===== Main DayPicker =====
-
-/**
- * Calendar root — renders nav + caption + day grid for a single month.
- *
- * @param {Object} props
- * @param {'single'|'range'} [props.mode='single']
- * @param {Date|{from?: Date, to?: Date}} [props.selected]
- * @param {(value: any) => void} [props.onSelect]
- * @param {Date} [props.month] - Controlled displayed month
- * @param {(month: Date) => void} [props.onMonthChange]
- * @param {Date} [props.defaultMonth=new Date()]
- * @param {boolean} [props.showOutsideDays=true]
- * @param {0|1|2|3|4|5|6} [props.weekStartsOn=0]
- * @param {'label'|'dropdown'} [props.captionLayout='label']
- * @param {Object} [props.formatters]
- * @param {Object} [props.components]
- * @param {Object} [props.classNames]
- * @param {string} [props.className]
- * @param {Date|Date[]|Function|{from,to}|{before:Date}|{after:Date}} [props.disabled]
- */
 export interface DayPickerProps {
   mode?: 'single' | 'range';
   selected?: Date | DateRange;
@@ -422,9 +345,6 @@ export function DayPicker({
   const today = useMemo(() => startOfDay(new Date()), []);
   const grid = useMemo(() => buildGrid(displayMonth, weekStartsOn), [displayMonth, weekStartsOn]);
 
-  // Fallback tabbable cell: keep the grid keyboard-reachable when no day is
-  // focused and "today" isn't in the displayed month. Prefer the selected day
-  // (when it falls in this month), else the first non-disabled day of the month.
   const fallbackTabbable = useMemo(() => {
     if (focusedDay) return null;
     const todayInMonth = isSameMonth(today, displayMonth);
@@ -440,7 +360,6 @@ export function DayPicker({
     return null;
   }, [focusedDay, today, displayMonth, selected, grid, disabled]);
 
-  // Selection handler
   const handleSelect = useCallback((date: Date) => {
     if (mode === 'single') {
       const isSame = selected instanceof Date && sameDay(selected, date);
@@ -459,7 +378,6 @@ export function DayPicker({
     }
   }, [mode, selected, onSelect]);
 
-  // Keyboard navigation
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (!focusedDay) return;
     let next: Date | null = null;
@@ -493,13 +411,12 @@ export function DayPicker({
     if (!isSameMonth(next, displayMonth)) setMonth(next);
   }, [focusedDay, displayMonth, weekStartsOn, disabled, handleSelect, setMonth]);
 
-  // Initialize focused day on first interaction with grid
   const handleDayFocus = (date: Date) => setFocusedDay(date);
 
   const weekdayLabels = useMemo(() => {
     const labels: string[] = [];
     for (let i = 0; i < 7; i++) {
-      const d = new Date(2024, 0, 7 + ((i + weekStartsOn) % 7)); // 2024-01-07 was a Sunday
+      const d = new Date(2024, 0, 7 + ((i + weekStartsOn) % 7));
       labels.push(d.toLocaleString('default', { weekday: 'short' }));
     }
     return labels;

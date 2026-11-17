@@ -7,7 +7,6 @@ runRuleTests('no-shadcn-paths', rule, {
     { code: "import { cva } from '../lib/cva.js';", filename: 'ui/badge.tsx' },
     { code: "import { useIsMobile } from '../hooks/use-mobile.js';", filename: 'ui/sidebar.tsx' },
     { code: "import { cn } from '../dist/lib/utils.js';", filename: '.harness/App.tsx' },
-    // An upstream registry URL is a string, not an import path.
     { code: "const REGISTRY = 'https://ui.shadcn.com/r/styles/base-vega';", filename: 'scripts/vendor-lucide-icons.js' },
   ],
   invalid: [

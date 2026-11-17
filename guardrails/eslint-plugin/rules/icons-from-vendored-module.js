@@ -2,21 +2,12 @@ import { moduleSourceVisitors, mergeVisitors, packageName } from '../lib/moduleS
 import { repoRelative, resolveSpecifier, specifierTo } from '../lib/paths.js';
 import { LIBRARY_LAYERS, layerOf } from '../layers.js';
 
-/** The one icon module, as imports must spell it (NodeNext needs the `.js` extension). */
 export const ICON_MODULE = 'icons/index.js';
 
-/** Lucide distributions. None is a dependency of this package since 5.13.0. */
 const LUCIDE_PACKAGES = new Set(['lucide-react', 'lucide', 'lucide-static', 'lucide-react-native']);
 
-/**
- * True for any lucide package specifier, including deep paths and the @lucide scope.
- *
- * @param {string} source - Import specifier
- * @returns {boolean} Whether the specifier names a lucide package
- */
 export const isLucide = (source) => LUCIDE_PACKAGES.has(packageName(source)) || source.startsWith('@lucide/');
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',
@@ -48,12 +39,6 @@ export default {
     const inIcons = fromLayer?.name === 'icons';
     const module = specifierTo(context, ICON_MODULE);
 
-    /**
-     * Names imported by the declaration that owns a specifier node, for the suggested fix.
-     *
-     * @param {any} node - Specifier (source) node
-     * @returns {string} Comma-separated names, or a placeholder
-     */
     function importedNames(node) {
       const names = (node.parent?.specifiers ?? [])
         .filter((s) => s.type === 'ImportSpecifier' || s.type === 'ExportSpecifier')
@@ -64,12 +49,6 @@ export default {
       return names.length ? names.join(', ') : 'IconName';
     }
 
-    /**
-     * True when the specifier resolves to the icon module.
-     *
-     * @param {string} source - Import specifier
-     * @returns {boolean} Whether the import targets icons/index
-     */
     const targetsIconModule = (source) => /^icons\/index(?:\.[jt]sx?)?$/.test(resolveSpecifier(context, source) ?? '');
 
     return mergeVisitors(

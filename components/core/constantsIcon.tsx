@@ -161,12 +161,6 @@ import {
 
 type LucideIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number | string; strokeWidth?: number | string }>;
 
-/**
- * Convert a kebab-case, snake_case, or space-separated string to PascalCase.
- *
- * @param {string} str - Input string
- * @returns {string} PascalCase version
- */
 function toPascalCase(str: string): string {
   return str
     .split(/[-_\s]+/)
@@ -174,12 +168,6 @@ function toPascalCase(str: string): string {
     .join('');
 }
 
-/**
- * Strip a legacy Tabler-style `Icon` prefix when present.
- *
- * @param {string} name - Icon name in any case format
- * @returns {string} PascalCase lucide export name
- */
 function toIconName(name: string): string {
   let stripped = name;
   if (stripped.startsWith('Icon') && stripped.length > 4 && stripped[4] === stripped[4].toUpperCase()) {
@@ -190,11 +178,6 @@ function toIconName(name: string): string {
     : stripped.charAt(0).toUpperCase() + stripped.slice(1);
 }
 
-/**
- * Curated Lucide icons used by the shell and by `constants.json` icon strings
- * across skateboard apps. Private to the shell — not a package export.
- * App code brings its own icons. Unknown names render nothing.
- */
 const ICON_REGISTRY: Record<string, LucideIcon> = {
   Anchor,
   Apple,
@@ -219,7 +202,6 @@ const ICON_REGISTRY: Record<string, LucideIcon> = {
   ChartLine,
   ChartNoAxesColumn,
   ChartNoAxesColumnIncreasing,
-  // Legacy kebab aliases that lucide renamed.
   BarChart2: ChartNoAxesColumn,
   BarChart3: ChartColumn,
   LineChart: ChartLine,
@@ -359,22 +341,6 @@ const ICON_REGISTRY: Record<string, LucideIcon> = {
   Zap,
 };
 
-/**
- * Render a Lucide icon by name string from the curated registry.
- *
- * Accepts kebab-case ("layout-dashboard"), PascalCase ("LayoutDashboard"),
- * or legacy prefixed ("IconLayoutDashboard") names. Icons outside the
- * registry are not rendered; apps import those icons themselves.
- *
- * @param {Object} props
- * @param {string} props.name - Icon name (e.g. "home", "arrow-right", "Settings")
- * @param {number} [props.size=24] - Icon size in pixels
- * @param {string} [props.color='currentColor'] - Icon stroke color
- * @param {number} [props.strokeWidth=2] - Stroke width
- * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element|null} Rendered icon or null if not found
- *
- */
 interface ConstantsIconProps {
   name: string;
   size?: number;

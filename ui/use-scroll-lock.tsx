@@ -2,10 +2,6 @@
 
 import * as React from "react"
 
-// Module-level reference count so stacked overlays share one lock: the first to
-// open saves and replaces `body` overflow, and only the last to close restores
-// it. Without this, an inner overlay's cleanup would unlock scroll while an
-// outer overlay is still open (or vice-versa).
 let lockCount = 0
 let previousOverflow = ""
 

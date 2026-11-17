@@ -1,21 +1,13 @@
 import { moduleSourceVisitors, packageName } from '../lib/moduleSources.js';
 
-/**
- * Classify a specifier that reaches past a package's public entry points.
- *
- * @param {string} source - Import specifier
- * @returns {'nodeModules' | 'dist' | null} Kind of deep import, or null when fine
- */
 function deepKind(source) {
   if (/(^|\/)node_modules\//.test(source)) return 'nodeModules';
   if (source.startsWith('.') || source.startsWith('/')) return null;
   const subpath = source.slice(packageName(source).length);
-  // `lib/` is left out on purpose: some packages document it as public (highlight.js/lib/core).
   if (/^\/(dist|build|esm|cjs)(\/|$)/.test(subpath)) return 'dist';
   return null;
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

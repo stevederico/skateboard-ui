@@ -1,18 +1,7 @@
 import { clsx, type ClassValue } from './clsx.js';
 
-/**
- * Build a class-variance function from a base string and a variants config.
- *
- * Drop-in for `class-variance-authority`'s `cva`. Returns a function that
- * accepts `{ variantKey, ..., class, className }` and returns the computed
- * class string for that combination, including any matching compoundVariants.
- * `class` and `className` props (if passed) are appended at the end so callers
- * can override.
- */
-
 type VariantShape = Record<string, Record<string, string>>;
 
-/** `'true' | 'false'` option names accept real booleans, like class-variance-authority. */
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
 type ConfigVariants<T extends VariantShape> = {
@@ -37,12 +26,6 @@ export type CvaProps<T extends VariantShape> = ConfigVariants<T> & {
   className?: ClassValue;
 };
 
-/**
- * Extract the variant props of a `cva`-produced function, e.g.
- * `VariantProps<typeof buttonVariants>`. Mirrors class-variance-authority:
- * each variant key maps to its option-name union plus `null | undefined`;
- * `class`/`className` are excluded.
- */
 export type VariantProps<Component extends (...args: any) => any> = Omit<
   Exclude<Parameters<Component>[0], undefined>,
   'class' | 'className'
@@ -55,7 +38,6 @@ export function cva<T extends VariantShape>(
   const { variants = {} as T, defaultVariants = {}, compoundVariants = [] } = config;
 
   return function build(props: CvaProps<T> = {}): string {
-    // Loose aliases: runtime behavior is identical to the untyped original.
     const p = props as Record<string, any>;
     const v = variants as Record<string, Record<string, string>>;
     const dv = defaultVariants as Record<string, any>;

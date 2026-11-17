@@ -18,7 +18,6 @@ interface TurnstileApi {
 
 let turnstileScript: Promise<void> | null = null;
 
-/** Load Cloudflare's Turnstile script once. */
 function loadTurnstile(): Promise<void> {
   if (!turnstileScript) {
     turnstileScript = new Promise((resolve, reject) => {
@@ -97,8 +96,6 @@ export default function SignUpView({
     return fix;
   }
 
-  // Optional Cloudflare Turnstile: the backend hands out a site key from
-  // GET /signup/options. No key, or no endpoint, means no widget.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -128,7 +125,6 @@ export default function SignUpView({
     };
   }, []);
 
-  // Focus the first input on mount
   useEffect(() => {
     if (!name && nameInputRef.current) {
       nameInputRef.current.focus();
@@ -138,7 +134,6 @@ export default function SignUpView({
   async function signUpClicked(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isSubmitting) return;
-    // Client-side password validation (matches backend: 6-72 chars)
     if (password.length < 6) {
       setErrorMessage('Password must be at least 6 characters');
       return;
@@ -159,7 +154,6 @@ export default function SignUpView({
 
       if (response.ok) {
         const data = await response.json();
-        // Save CSRF token to localStorage for isAuthenticated() check
         const csrfCookie = document.cookie.split('; ').find(row => row.startsWith('csrf_token='));
         const csrfToken = csrfCookie ? csrfCookie.split('=')[1] : data.csrfToken;
         if (csrfToken) {

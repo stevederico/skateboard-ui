@@ -1,16 +1,3 @@
-/**
- * True for the three public-API idioms where this library uses `any` on purpose:
- *
- * 1. `ComponentType<any>`: "a component with any props" (App.tsx overrides). React's
- *    props are contravariant, so `ComponentType<unknown>` rejects every real component.
- * 2. `[key: string]: any` in a props interface: pass-through props spread onto the root
- *    element (Header, Sidebar, TabBar, the views).
- * 3. A generic default, `<T = any>`: the caller picks the response type
- *    (`apiRequest<Deal[]>`), and an `unknown` default would break untyped callers.
- *
- * @param {any} node - TSAnyKeyword node
- * @returns {boolean} Whether the `any` is one of the allowed idioms
- */
 function isAllowedIdiom(node) {
   const { parent } = node;
   if (parent?.type === 'TSTypeParameter' && parent.default === node) return true;
@@ -24,7 +11,6 @@ function isAllowedIdiom(node) {
   return false;
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

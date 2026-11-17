@@ -9,8 +9,6 @@ import { useDialogLabelling } from "./use-labelling.js"
 import { usePresence } from "./use-presence.js"
 import { useScrollLock } from "./use-scroll-lock.js"
 
-// Drag thresholds and animation timing ported from vaul (MIT — Emil Kowalski).
-// https://github.com/emilkowalski/vaul/blob/main/src/constants.ts
 const VELOCITY_THRESHOLD = 0.4
 const CLOSE_THRESHOLD = 0.25
 const TRANSITION = "transform 500ms cubic-bezier(0.32, 0.72, 0, 1)"
@@ -19,10 +17,6 @@ function dampenValue(v: number): number {
   return 8 * (Math.log(v + 1) - 2)
 }
 
-// Ported from vaul/src/index.tsx `shouldDrag`. Skips drag when the pointer is
-// inside a scrollable child that isn't at scrollTop=0 (lets content scroll
-// naturally), on a <select>, on a [data-no-drag] subtree, or when text is
-// highlighted.
 function shouldDrag(el: HTMLElement | null, popup: HTMLElement): boolean {
   let element = el
   if (window.getSelection()?.toString()) return false
@@ -41,9 +35,6 @@ type DrawerContextValue = {
   contentId: string
   titleId: string
   descriptionId: string
-  // Stable register callbacks + resolved IDREF values from useDialogLabelling,
-  // so DrawerContent can omit aria-labelledby/aria-describedby when no
-  // Title/Description part is actually rendered (avoids a dangling IDREF).
   registerTitle: () => () => void
   registerDescription: () => () => void
   labelledBy: string | undefined
@@ -77,7 +68,6 @@ function Drawer({ open, defaultOpen = false, onOpenChange, children }: DrawerPro
   })
   const { titleId, descriptionId, registerTitle, registerDescription, labelledBy, describedBy } =
     useDialogLabelling()
-  // Stable id wiring the trigger's aria-controls to the content's id.
   const contentId = React.useId()
   return (
     <DrawerContext.Provider
@@ -192,10 +182,6 @@ function DrawerContent({
   const pointerDownOnBackdrop = React.useRef(false)
   const [mounted, presenceRef] = usePresence<HTMLDialogElement>(open)
   const dragState = React.useRef<DragState>({ dragging: false, startY: 0, height: 0, startTime: 0 })
-  // A drag-dismiss already slides the panel out via an inline transform, so the
-  // CSS `animate-out` slide must be suppressed for that path — otherwise its
-  // keyframes would override the transform and snap the panel back into view.
-  // Programmatic closes (backdrop, Escape, controlled) keep the CSS animation.
   const dismissingByDrag = React.useRef(false)
 
   React.useEffect(() => {
@@ -205,13 +191,8 @@ function DrawerContent({
     else if (!mounted && node.open) node.close()
   }, [mounted])
 
-  // Reentrant, reference-counted body scroll lock: when drawers stack with other
-  // overlays, the inline overflow effect would let an inner overlay's cleanup
-  // unlock scroll while an outer overlay is still open. useScrollLock shares one
-  // lock so only the last overlay to close restores the original overflow.
   useScrollLock(mounted)
 
-  // Clear any drag-leftover inline transform whenever we (re)open.
   React.useEffect(() => {
     if (open && ref.current) {
       ref.current.style.transition = ""
@@ -264,10 +245,8 @@ function DrawerContent({
     if (!state.dragging || !el) return
     const delta = event.clientY - state.startY
     if (delta >= 0) {
-      // Dragging down toward close — direct translate
       el.style.transform = `translate3d(0, ${delta}px, 0)`
     } else {
-      // Dragging up away from close — logarithmic rubber-band damping (vaul-style)
       el.style.transform = `translate3d(0, ${-dampenValue(-delta)}px, 0)`
     }
   }
@@ -306,9 +285,6 @@ function DrawerContent({
       {...props}
       ref={mergeRefs(ref, presenceRef)}
       id={contentId}
-      // Conditional IDREFs: only reference the title/description when those parts
-      // are actually rendered, otherwise omit the attribute (undefined) so we
-      // never point assistive tech at a missing element.
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}
       data-slot="drawer-content"
@@ -333,10 +309,6 @@ function DrawerContent({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
       className={cn(
-        // touch-none lets the pointer-drag own the vertical gesture instead of the
-        // browser claiming it for native scroll (which would fire pointercancel).
-        // top-auto/m-0/w-full/max-w-none clear the native <dialog> UA inset and
-        // sizing so the drawer pins to the bottom edge at full width.
         "fixed inset-x-0 top-auto bottom-0 z-50 m-0 flex max-h-[80vh] w-full max-w-none touch-none flex-col rounded-t-xl border-t border-border bg-background p-0 text-sm text-foreground outline-none backdrop:bg-black/10 backdrop:transition-opacity backdrop:duration-250 supports-backdrop-filter:backdrop:backdrop-blur-xs",
         open
           ? "animate-in fade-in-0 slide-in-from-bottom-52 duration-300"
@@ -374,8 +346,6 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 function DrawerTitle({ className, ...props }: React.ComponentProps<"h2">) {
   const { titleId, registerTitle } = useDrawer()
-  // Register on mount so the container knows a title exists and can wire
-  // aria-labelledby; the returned cleanup unregisters on unmount.
   React.useEffect(registerTitle, [registerTitle])
   return (
     <h2
@@ -389,8 +359,6 @@ function DrawerTitle({ className, ...props }: React.ComponentProps<"h2">) {
 
 function DrawerDescription({ className, ...props }: React.ComponentProps<"p">) {
   const { descriptionId, registerDescription } = useDrawer()
-  // Register on mount so the container knows a description exists and can wire
-  // aria-describedby; the returned cleanup unregisters on unmount.
   React.useEffect(registerDescription, [registerDescription])
   return (
     <p

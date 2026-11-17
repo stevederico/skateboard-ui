@@ -121,26 +121,17 @@ export interface ApiRequestOptions extends RequestInit {
     timeout?: number;
 }
 
-// Window extensions used internally. Kept as a local (non-exported) interface
-// and applied via casts so the published .d.ts never augments consumers'
-// global scope (no `declare global` — it would leak ImportMeta/Window types
-// into every consumer compilation).
 interface SkateboardWindow {
-    /** App constants stash — survives Vite module duplication. */
     __SKATEBOARD_CONSTANTS__?: SkateboardConstants | null;
-    /** Present inside native WebKit wrappers (iOS/macOS) — see isAppMode(). */
     webkit?: { messageHandlers?: Record<string, unknown> };
 }
 
-// Constants will be initialized by the app shell
-// Use window object to avoid module duplication issues with Vite
 let _constants: SkateboardConstants | null = null;
 if (typeof window !== 'undefined') {
     const win = window as unknown as SkateboardWindow;
     win.__SKATEBOARD_CONSTANTS__ = win.__SKATEBOARD_CONSTANTS__ || null;
 }
 
-// Check if localStorage is available (respects private mode, etc.)
 let _localStorageAvailable: boolean | null = null;
 function isLocalStorageAvailable(): boolean {
     if (_localStorageAvailable !== null) return _localStorageAvailable;
@@ -157,7 +148,6 @@ function isLocalStorageAvailable(): boolean {
     }
 }
 
-// Safe localStorage wrapper with error handling
 function safeSetItem(key: string, value: string): boolean {
     if (!isLocalStorageAvailable()) {
         console.warn(`Could not save to localStorage: ${key} (storage unavailable)`);
@@ -167,8 +157,6 @@ function safeSetItem(key: string, value: string): boolean {
         localStorage.setItem(key, value);
         return true;
     } catch (error) {
-        // DOMException (browser storage/abort errors) does not extend Error in
-        // the browser, so match either to read `.name` safely without a cast.
         if ((error instanceof DOMException || error instanceof Error) && error.name === 'QuotaExceededError') {
             console.error('localStorage quota exceeded - data not persisted');
         } else {
@@ -224,7 +212,6 @@ export function initializeUtilities(constants: SkateboardConstants): void {
     if (!constants) {
         throw new Error('initializeUtilities called with null/undefined constants');
     }
-    // Store in both module and window to handle module duplication
     _constants = constants;
     if (typeof window !== 'undefined') {
         (window as unknown as SkateboardWindow).__SKATEBOARD_CONSTANTS__ = constants;
@@ -241,7 +228,6 @@ export function initializeUtilities(constants: SkateboardConstants): void {
  * @throws {Error} If initializeUtilities() hasn't been called
  */
 export function getConstants(): SkateboardConstants {
-    // Check window object first (handles module duplication)
     if (typeof window !== 'undefined') {
         const stashed = (window as unknown as SkateboardWindow).__SKATEBOARD_CONSTANTS__;
         if (stashed) return stashed;
@@ -262,7 +248,6 @@ export function getConstants(): SkateboardConstants {
  * @returns {string|null} Cookie value or null
  */
 export function getCookie(name: string): string | null {
-    // For token cookies, use app-specific name
     let cookieName = name;
     if (name === 'token') {
         cookieName = getAppKey('token');
@@ -290,11 +275,9 @@ export function getCookie(name: string): string | null {
  * });
  */
 export function getCSRFToken(): string | null {
-    // Try cookie first (source of truth from backend)
     const csrfCookie = getCookie('csrf_token');
     if (csrfCookie) return csrfCookie;
 
-    // Fallback to localStorage (for backwards compatibility)
     return safeGetItem(getAppKey('csrf'));
 }
 
@@ -373,8 +356,6 @@ export function isAuthOverlayEnabled(): boolean {
  * // Prod: "https://api.myapp.com/api/signup"
  */
 export function getBackendURL(): string {
-    // Typed locally (no global ImportMeta augmentation) and guarded at runtime:
-    // outside Vite, import.meta.env is undefined — fall back to production URL.
     const env = (import.meta as { env?: { DEV?: boolean } }).env;
     return env?.DEV ? getConstants().devBackendURL : getConstants().backendURL;
 }
@@ -517,7 +498,7 @@ export async function showManage(stripeID: string): Promise<void> {
             const data = await response.json();
             if (data.url) {
                 safeSetItem(getAppKey("beforeManageURL"), window.location.href);
-                window.location.href = data.url; // Redirect to Stripe billing portal
+                window.location.href = data.url;
             } else {
                 console.error("No URL returned from server");
             }
@@ -568,9 +549,7 @@ export async function showCheckout(email: string | undefined, productIndex = 0):
         if (response.ok) {
             const data = await response.json();
             if (data.url) {
-                // Save the current URL in localStorage before redirecting
                 safeSetItem(getAppKey("beforeCheckoutURL"), window.location.href);
-                // Redirect to payment checkout
                 window.location.href = data.url;
                 return true;
             } else {
@@ -655,15 +634,14 @@ export async function trackUsage(action: string): Promise<UsageData> {
         if (!response.ok) {
             const data = await response.json();
             if (response.status === 429) {
-                // Usage limit reached
                 console.warn('Usage limit reached:', data.error);
-                return data; // Return the usage data even when limit reached
+                return data;
             }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        return data; // Return full usage data
+        return data;
     } catch (error) {
         console.error('Error tracking usage:', error);
         return { remaining: 0, total: 0, isSubscriber: false };
@@ -681,7 +659,6 @@ export async function trackUsage(action: string): Promise<UsageData> {
  * @returns {Promise<void>}
  */
 export async function showUpgradeSheet(upgradeSheetRef: RefObject<{ show: () => void } | null> | null | undefined): Promise<void> {
-    // Check subscription from user data in localStorage instead of API call
     const storedUser = safeGetItem(getAppKey('user'));
 
     let subscriber = false;
@@ -697,14 +674,12 @@ export async function showUpgradeSheet(upgradeSheetRef: RefObject<{ show: () => 
     }
 
     if (subscriber) {
-        return; // Don't show upgrade sheet for subscribers
+        return;
     }
 
-    // Show the upgrade sheet using the ref
     if (upgradeSheetRef?.current) {
         upgradeSheetRef.current.show();
     } else {
-        // Fallback to navigation if ref is not available
         window.location.href = '/app/stripe';
     }
 }
@@ -727,7 +702,6 @@ export function timestampToString(input: number | Date, format: string = "DOB"):
 
     let seconds = 0
 
-    // Convert Date object to timestamp in seconds
     if (input instanceof Date) {
         seconds = input.getTime() / 1000;
     } else if (typeof input === 'number') {
@@ -741,7 +715,6 @@ export function timestampToString(input: number | Date, format: string = "DOB"):
         return "BAD-INPUT";
     }
 
-    // Ensure ts is in milliseconds
     const date = new Date(seconds * 1000);
 
     switch (format) {
@@ -805,12 +778,11 @@ export function timestampToString(input: number | Date, format: string = "DOB"):
             } else if (isYesterday) {
                 return `Yesterday, ${date.toLocaleString(undefined, { hour: 'numeric', minute: 'numeric' })}`;
             } else {
-                const month = date.getMonth() + 1; // no leading zero
-                const day = date.getDate();        // no leading zero
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
                 let hours = date.getHours();
                 const ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12 || 12;
-                // pad minutes to always show two digits
                 const minutes = ('0' + date.getMinutes()).slice(-2);
                 return `${month}/${day}/${date.getFullYear()} ${hours}:${minutes} ${ampm}`;
             }
@@ -834,8 +806,6 @@ export function useAppSetup(location: Location): void {
     }, [location.pathname]);
 }
 
-// ===== API REQUEST UTILITIES =====
-
 /**
  * Unified API request utility
  * Handles credentials, CSRF tokens, 401 redirects, and error handling
@@ -850,9 +820,6 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
         (options.method || 'GET').toUpperCase()
     );
 
-    // Set up timeout (default 30 seconds). Always enforced — even when the caller
-    // passes its own signal — by linking both via AbortSignal.any, so a stalled
-    // backend can't hang a caller-cancellable request forever.
     const timeout = options.timeout || 30000;
     const timeoutController = new AbortController();
     const timeoutId = setTimeout(() => timeoutController.abort(), timeout);
@@ -873,27 +840,20 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
             }
         });
     } catch (error) {
-        // fetch() aborts throw a DOMException, which does not extend Error in
-        // the browser — match either so abort detection still works.
         if ((error instanceof DOMException || error instanceof Error) && error.name === 'AbortError') {
-            throw error; // Re-throw abort errors for useListData to handle
+            throw error;
         }
         throw new Error(`Network error: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
         clearTimeout(timeoutId);
     }
 
-    // Handle 401 (redirect to signout, or show auth overlay and retry)
     if (response.status === 401) {
         if (!isAuthOverlayEnabled()) {
             window.location.href = '/signout';
             throw new Error('Unauthorized');
         }
 
-        // In authOverlay mode: show sign-in overlay, retry the request after auth.
-        // The parked callback is invoked by AuthOverlay (not the reducer) with an
-        // outcome: 'success' retries, 'cancel' (overlay dismissed) rejects so the
-        // awaiting caller never hangs.
         const dispatch = getDispatch();
         if (dispatch) {
             return new Promise<T>((resolve, reject) => {
@@ -904,9 +864,6 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
                             reject(new Error('Authentication cancelled'));
                             return;
                         }
-                        // Drop the original abort signal: the caller that owned it
-                        // may have unmounted while the overlay was open (aborting it).
-                        // A fresh request gets its own timeout signal.
                         const { signal: _staleSignal, ...retryOptions } = options;
                         apiRequest(endpoint, retryOptions).then(resolve, reject);
                     }
@@ -917,21 +874,17 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
         throw new Error('Unauthorized');
     }
 
-    // Handle 403 CSRF token failures with auto-retry
     if (response.status === 403) {
         const errorBody = await response.json().catch(() => ({}));
 
-        // If CSRF-related error, try to refresh session and retry once
         if (errorBody.error && errorBody.error.includes('CSRF')) {
             console.warn('CSRF token validation failed, attempting recovery...');
 
-            // Fetch fresh user data (triggers CSRF token regeneration on backend)
             try {
                 await fetch(`${getBackendURL()}/me`, {
                     credentials: 'include'
                 });
 
-                // Retry original request with fresh token
                 const newCsrfToken = getCSRFToken();
                 return fetch(`${getBackendURL()}${endpoint}`, {
                     ...options,
@@ -957,12 +910,10 @@ export async function apiRequest<T = any>(endpoint: string, options: ApiRequestO
         throw new Error(`Forbidden: ${errorBody.error || response.statusText}`);
     }
 
-    // Handle other errors
     if (!response.ok) {
         throw new Error(`Request failed: ${response.status} ${response.statusText}`);
     }
 
-    // Parse JSON with error handling
     try {
         return await response.json();
     } catch (error) {
@@ -983,8 +934,6 @@ export async function apiRequestWithParams<T = any>(endpoint: string, params: Re
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
     return apiRequest(url, options);
 }
-
-// ===== CONSTANTS VALIDATION =====
 
 /**
  * Validate constants.json has all required fields with proper values
@@ -1014,10 +963,8 @@ export function validateConstants(constants: SkateboardConstants): SkateboardCon
         );
 
         if (type === 'string') {
-            // Must be non-empty string
             return !value || typeof value !== 'string' || value.trim().length === 0;
         } else if (type === 'array') {
-            // Must be non-empty array
             return !Array.isArray(value) || value.length === 0;
         }
         return !value;
@@ -1030,8 +977,6 @@ export function validateConstants(constants: SkateboardConstants): SkateboardCon
     return constants;
 }
 
-
-// ===== REACT HOOKS =====
 
 /** Options for {@link useListData}. */
 export interface ListDataOptions {
@@ -1060,7 +1005,6 @@ export function useListData<T = any>(
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Keep sortFn in a ref so an inline sort function doesn't retrigger the fetch effect every render
     const sortFnRef = useRef(sortFn);
     sortFnRef.current = sortFn;
 
@@ -1075,9 +1019,7 @@ export function useListData<T = any>(
             setData(sorted);
             setError(null);
         } catch (err) {
-            // Ignore abort errors (DOMException in the browser, not an Error)
             if ((err instanceof DOMException || err instanceof Error) && err.name === 'AbortError') return;
-            // A failed quiet refresh keeps showing the last good rows
             if (!quiet) setError(err instanceof Error ? err.message : String(err));
         } finally {
             if (!quiet) setLoading(false);
@@ -1103,11 +1045,6 @@ export function useListData<T = any>(
     return { data, loading, error, refetch: () => fetchData() };
 }
 
-// ===== UI VISIBILITY CONTROLS =====
-
-/**
- * Dispatch a sidebar visibility change. Not exported — apps use show/hide helpers.
- */
 function setSidebarVisible(visible: boolean): void {
     const dispatch = getDispatch();
     if (dispatch) {
@@ -1117,9 +1054,6 @@ function setSidebarVisible(visible: boolean): void {
     }
 }
 
-/**
- * Dispatch a tab bar visibility change. Not exported — apps use show/hide helpers.
- */
 function setTabBarVisible(visible: boolean): void {
     const dispatch = getDispatch();
     if (dispatch) {
@@ -1188,8 +1122,6 @@ export function setUIVisibility({ sidebar, tabBar }: { sidebar?: boolean; tabBar
  */
 export function useSafeNavigate(): (path: string, options?: { replace?: boolean; state?: unknown }) => void {
     const inRouter = useInRouterContext();
-    // Router presence is stable for a given component instance, so the
-    // conditional useNavigate call respects the rules of hooks at runtime.
     const navigate = inRouter ? useNavigate() : null;
 
     if (!navigate) {

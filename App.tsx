@@ -27,7 +27,6 @@ import AuthOverlay from './components/AuthOverlay.js';
 import type { ComponentType, ReactNode } from 'react';
 import type { SkateboardConstants, LegalTexts } from './components/core/Utilities.js';
 
-/** Re-export for consumers that type `loadLegal`. */
 export type { LegalTexts } from './components/core/Utilities.js';
 
 /** A route rendered under /app (config.appRoutes). */
@@ -64,20 +63,12 @@ export interface CreateSkateboardAppConfig {
   loadLegal?: () => Promise<LegalTexts>;
 }
 
-/**
- * Redirect component for auth routes when authOverlay mode is enabled.
- *
- * Dispatches SHOW_AUTH_OVERLAY on mount and redirects to the previous page
- * (from location state) or /app as fallback (which routes to the app's defaultRoute).
- */
 function AuthRedirect() {
   const { dispatch } = getState();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // Already authenticated (e.g. reached /signin via a stale link)? Skip the
-    // overlay — just send them into the app instead of prompting a signed-in user.
     if (!isAuthenticated()) {
       dispatch({ type: 'SHOW_AUTH_OVERLAY' });
     }
@@ -98,7 +89,6 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {}, 
 }) {
   const location = useLocation();
 
-  // document.title is set by useAppSetup (on navigation) — single source of truth.
   useAppSetup(location);
 
   const LayoutComponent = overrides.layout || Layout;
@@ -107,9 +97,6 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {}, 
   const SignOutComponent = overrides.signOut || SignOutView;
   const NotFoundComponent = overrides.notFound || NotFound;
 
-  // authOverlay is on by default (except noLogin apps); redirect /signin and
-  // /signup to show the overlay unless explicitly disabled with authOverlay:false.
-  // An explicit override always wins, so consumers can supply custom auth pages.
   const SignInComponent = overrides.signIn || (isAuthOverlayEnabled() ? AuthRedirect : SignInView);
   const SignUpComponent = overrides.signUp || (isAuthOverlayEnabled() ? AuthRedirect : SignUpView);
 
@@ -192,15 +179,10 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {}, 
  * });
  */
 export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRoutes[0]?.path || 'home', landingPage, wrapper: Wrapper, overrides, loadLegal }: CreateSkateboardAppConfig) {
-  // Validate constants before initialization
   validateConstants(constants);
 
-  // Initialize utilities with constants
   initializeUtilities(constants);
 
-  // A deploy replaces the hashed chunk files. A page opened before it asks
-  // for chunks that are gone ("Importing a module script failed"); reload
-  // once to pick up the new build instead of showing a broken route.
   window.addEventListener('vite:preloadError', (event) => {
     event.preventDefault();
     try {
@@ -213,8 +195,6 @@ export function createSkateboardApp({ constants, appRoutes, defaultRoute = appRo
     window.location.reload();
   });
 
-  // Prevent theme flash by setting dark class before React hydrates
-  // This runs synchronously before render, reading from localStorage or system preference
   const storageKey = 'theme';
   const storedTheme = localStorage.getItem(storageKey);
   const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;

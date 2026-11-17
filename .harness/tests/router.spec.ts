@@ -1,14 +1,9 @@
 import { test, expect } from "@playwright/test"
 import type { Page } from "@playwright/test"
 
-// 5.16.0 vendors react-router 7.18.5 into dist/router (the package's
-// ./router export). The fixture (RouterFixture.tsx, served at /router/*) is
-// built only on that copy plus the shell's own useSafeNavigate.
-
 const location = (page: Page) => page.getByTestId("location")
 const boots = (page: Page) => page.getByTestId("boots")
 
-// Page errors and console errors fail the test.
 const errors = new WeakMap<Page, string[]>()
 
 test.beforeEach(async ({ page }) => {
@@ -32,7 +27,6 @@ test("useNavigate and Link navigate client-side", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "User 42" })).toBeVisible()
   await page.getByRole("link", { name: "Search link" }).click()
   await expect(location(page)).toHaveText("/search?q=hello")
-  // No full page load happened.
   await expect(boots(page)).toHaveText("1")
 })
 
@@ -42,9 +36,7 @@ test("route params and a nested Outlet render through two levels", async ({ page
   await expect(page.getByTestId("post")).toHaveCount(0)
   await page.getByRole("link", { name: "Post 9" }).click()
   await expect(page).toHaveURL(/\/router\/users\/5\/posts\/9$/)
-  // Post renders inside User's Outlet, which renders inside Shell's Outlet.
   await expect(page.getByTestId("outlet").getByTestId("user-outlet").getByTestId("post")).toHaveText("Post 9 of user 5")
-  // Deep link straight to the nested route.
   await page.goto("/router/users/3/posts/11")
   await expect(page.getByTestId("post")).toHaveText("Post 11 of user 3")
 })
@@ -66,7 +58,6 @@ test("Navigate redirects and replaces the history entry", async ({ page }) => {
   await page.goto("/router/old")
   await expect(page).toHaveURL(/\/router\/users\/7$/)
   await expect(page.getByRole("heading", { name: "User 7" })).toBeVisible()
-  // replace: Back skips /old and lands on the page before it.
   await page.goBack()
   await expect(page).toHaveURL(/\/router\/users\/42$/)
   await expect(page.getByRole("heading", { name: "User 42" })).toBeVisible()
@@ -99,7 +90,5 @@ test("the shell's useSafeNavigate shares the app's router (one copy)", async ({ 
   await page.getByRole("button", { name: "Safe navigate to search" }).click()
   await expect(location(page)).toHaveText("/search?q=safe")
   await expect(page.getByTestId("q")).toHaveText("safe")
-  // A second router copy would make useInRouterContext() false in the shell, and
-  // useSafeNavigate would fall back to window.location (a full page load).
   await expect(boots(page)).toHaveText("1")
 })

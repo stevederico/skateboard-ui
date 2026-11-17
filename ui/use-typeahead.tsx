@@ -2,11 +2,8 @@
 
 import * as React from "react"
 
-// How long a typeahead buffer survives between keystrokes before resetting, per
-// the WAI-ARIA typeahead pattern (a short pause starts a fresh search).
 const RESET_MS = 500
 
-/** The visible, trimmed, lower-cased label of an item, used for prefix matching. */
 function labelOf(el: HTMLElement): string {
   return (el.textContent ?? "").trim().toLowerCase()
 }
@@ -39,8 +36,6 @@ export function useTypeahead() {
       activeIndex: number
     ): HTMLElement | null => {
       const key = event.key
-      // Single printable char only. Space is reserved for activation, and any
-      // modifier combo (Ctrl/Meta/Alt) is a command, not text.
       if (
         key.length !== 1 ||
         key === " " ||
@@ -59,16 +54,12 @@ export function useTypeahead() {
       bufferRef.current += key.toLowerCase()
       const buffer = bufferRef.current
 
-      // A repeated single character cycles through items starting with it rather
-      // than searching for the literal repetition (e.g. "aa" → next "a…" item).
       const allSame =
         buffer.length > 1 && [...buffer].every((c) => c === buffer[0])
       const query = allSame ? buffer[0] : buffer
 
       const n = items.length
       if (n === 0) return null
-      // Extending an in-progress match keeps resolving from the current item;
-      // a fresh search or a cycle advances past it.
       const start =
         allSame || prev === "" ? Math.max(0, activeIndex) + 1 : Math.max(0, activeIndex)
       for (let i = 0; i < n; i++) {

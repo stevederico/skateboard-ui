@@ -1,21 +1,11 @@
-/**
- * True for a callback that does nothing: `() => {}`, `function () {}`, `() => undefined`.
- * `() => null` is not a no-op: it is the repo's explicit "fall back to null" form, e.g.
- * `(await response.json().catch(() => null))` followed by a `failure?.error ||` default.
- *
- * @param {any} fn - Candidate callback
- * @returns {boolean} Whether the callback swallows its argument
- */
 function isNoopCallback(fn) {
   if (fn?.type !== 'ArrowFunctionExpression' && fn?.type !== 'FunctionExpression') return false;
   if (fn.body.type === 'BlockStatement') return fn.body.body.length === 0;
   return fn.body.type === 'Identifier' && fn.body.name === 'undefined';
 }
 
-/** A reason shorter than this is a placeholder (`// ignore`), not an explanation. */
 const MIN_REASON_LENGTH = 15;
 
-/** @type {import('eslint').Rule.RuleModule} */
 export default {
   meta: {
     type: 'problem',

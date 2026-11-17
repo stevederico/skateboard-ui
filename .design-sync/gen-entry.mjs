@@ -1,22 +1,4 @@
 #!/usr/bin/env node
-// Generate a comprehensive bundle entry for design-sync.
-//
-// Why: skateboard-ui's published `.` barrel (dist/index.js) re-exports only a few
-// utilities — the real components are exposed solely via package subpath exports
-// (`./ui/*`, `./Sidebar`, `./Header`, …). Pointed at the barrel the converter finds
-// ZERO components. This emits an entry that re-exports the full component surface so
-// every component lands in window.SkateboardUI.* and gets a card.
-//
-// Canonical set:
-//   • ui/*  — the base-ui primitive port (named exports). The first-class primitives.
-//   • components/*  — app-level components (default exports → named).
-//   • Only ui/* (the ./shadcn/ui/* alias was removed in 5.17.0).
-//   • Skips ui/use-*  — hooks, not components.
-//
-// Name collisions (Sidebar, Sheet) resolve to the app-level component: an explicit
-// named re-export shadows an `export *` star export per the ESM spec.
-//
-// Output: .design-sync/.cache/full-entry.mjs (gitignored; regenerated each build).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,7 +15,6 @@ const lines = [
   '// ── ui/* primitives (base-ui port) ──',
 ];
 
-// All ui/* component modules, minus hooks.
 const uiDir = path.join(root, 'dist', 'ui');
 const uiFiles = fs.readdirSync(uiDir)
   .filter((f) => f.endsWith('.js') && !f.startsWith('use-'))
@@ -41,10 +22,9 @@ const uiFiles = fs.readdirSync(uiDir)
 for (const f of uiFiles) lines.push(`export * from '../../dist/ui/${f}';`);
 
 lines.push('', '// ── app-level components (default exports) ──');
-// [exported name, dist path] — names taken from the package exports map.
 const defaults = [
   ['Header', 'components/layout/Header.js'],
-  ['Sidebar', 'components/layout/Sidebar.js'],        // shadows ui/sidebar Sidebar
+  ['Sidebar', 'components/layout/Sidebar.js'],
   ['Layout', 'components/layout/Layout.js'],
   ['TabBar', 'components/layout/TabBar.js'],
   ['LandingView', 'components/views/LandingView.js'],
@@ -56,7 +36,7 @@ const defaults = [
   ['SignOutView', 'components/views/SignOutView.js'],
   ['TextView', 'components/views/TextView.js'],
   ['ThemeToggle', 'components/ThemeToggle.js'],
-  ['Sheet', 'components/Sheet.js'],                   // shadows ui/sheet Sheet
+  ['Sheet', 'components/Sheet.js'],
   ['UpgradeSheet', 'components/UpgradeSheet.js'],
   ['AuthOverlay', 'components/AuthOverlay.js'],
   ['ErrorBoundary', 'components/ErrorBoundary.js'],

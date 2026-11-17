@@ -5,15 +5,6 @@ import { LAYERS, guidanceFor, layerOf } from '../layers.js';
 const view = 'components/views/SettingsView.tsx';
 const primitive = 'ui/button.tsx';
 
-/**
- * Invalid case for a forbidden edge, asserting the full message data so each case proves
- * which layers were detected and which guidance was chosen.
- *
- * @param {string} source - Import specifier
- * @param {string} filename - Repo-relative importing file
- * @param {string} to - Expected target layer name
- * @returns {object} RuleTester invalid case
- */
 function crossLayer(source, filename, to) {
   const from = layerOf(filename);
   const target = LAYERS.find((l) => l.name === to);
@@ -23,7 +14,6 @@ function crossLayer(source, filename, to) {
 
 runRuleTests('layer-boundaries', rule, {
   valid: [
-    // Real edges from the 5.13.0 import graph.
     { code: "import { Button } from '../../ui/button.js';", filename: view },
     { code: "import Header from '../layout/Header.js';", filename: view },
     { code: "import ThemeToggle from '../ThemeToggle.js';", filename: view },
@@ -59,7 +49,6 @@ runRuleTests('layer-boundaries', rule, {
     crossLayer('../views/SignInView.js', 'components/layout/Header.tsx', 'views'),
     crossLayer('../ThemeToggle.js', 'components/layout/Header.tsx', 'widgets'),
     crossLayer('./views/NotFound.js', 'components/ProtectedRoute.tsx', 'views'),
-    // The AuthOverlay exception covers only the sign-in and sign-up views.
     crossLayer('./views/SettingsView.js', 'components/AuthOverlay.tsx', 'views'),
     crossLayer('./layout/Header.js', 'components/Sheet.tsx', 'layout'),
     crossLayer('../core/Calendar.js', view, 'headless'),
@@ -73,7 +62,6 @@ runRuleTests('layer-boundaries', rule, {
     crossLayer('../.harness/Fixtures.js', primitive, 'harness'),
     crossLayer('../guardrails/eslint-plugin/layers.js', primitive, 'guardrails'),
     crossLayer('../../dist/ui/button.js', view, 'dist'),
-    // Non-library code gets the "import dist/ or read with fs" guidance.
     crossLayer('../ui/button.js', '.harness/Fixtures.tsx', 'ui'),
     crossLayer('../../components/core/Utilities.js', '.harness/tests/is-subscriber.spec.ts', 'core'),
     crossLayer('../icons/index.js', 'scripts/vendor-lucide-icons.js', 'icons'),

@@ -3,7 +3,6 @@ import { runRuleTests } from '../lib/ruleTester.js';
 
 runRuleTests('no-fetch-in-effect', rule, {
   valid: [
-    // CommandMenu: an effect that only subscribes to a DOM event.
     `useEffect(() => {
       function handleKeyDown(e) { if (e.key === 'k') setOpen((p) => !p); }
       document.addEventListener('keydown', handleKeyDown);
@@ -13,12 +12,10 @@ runRuleTests('no-fetch-in-effect', rule, {
     `async function handleSave() {
       try { await apiRequest('/deals', { method: 'POST', body: '{}' }); } catch (err) { console.error(err); }
     }`,
-    // A function that fetches but is only called from an event handler.
     `const load = async () => fetch('/x');
      useEffect(() => { document.title = 'Deals'; }, []);
      const handleClick = () => load();`,
     'useMemo(() => fetch, []);',
-    // The data-hook module is where the effect lives once, with abort and error handling.
     {
       code: "export function useListData(endpoint) {\n  const fetchData = async (signal) => { setData(await apiRequest(endpoint, { signal })); };\n  useEffect(() => { const c = new AbortController(); fetchData(c.signal); return () => c.abort(); }, [endpoint]);\n}",
       filename: 'components/core/Utilities.ts',
@@ -66,7 +63,6 @@ runRuleTests('no-fetch-in-effect', rule, {
       code: "useEffect(() => { ky.post('/api/deals', { json: deal }); }, [deal]);",
       errors: [{ messageId: 'fetchInEffect', data: { call: 'ky.post', hook: 'useEffect', via: '' } }],
     },
-    // Only `use*` hooks in Utilities.ts are exempt; a plain component there is not, nor a hook elsewhere.
     {
       code: "export function Widget() { useEffect(() => { fetch('/x'); }, []); return null; }",
       filename: 'components/core/Utilities.ts',
