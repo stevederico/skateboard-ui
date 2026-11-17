@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { HOOK_FIXTURES } from "./HookFixtures.js"
 import { QUERY_FIXTURES } from "./QueryFixtures.js"
+import { INVARIANT_FIXTURES } from "./InvariantFixtures.js"
 
 import { Button } from "../dist/ui/button.js"
 import {
@@ -378,6 +379,7 @@ const FIXTURES: Record<string, React.ReactNode> = {
   "nested-lock": <NestedLock />,
   ...QUERY_FIXTURES,
   ...HOOK_FIXTURES,
+  ...INVARIANT_FIXTURES,
 }
 
 export function Fixtures() {

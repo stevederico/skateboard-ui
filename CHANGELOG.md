@@ -1,3 +1,13 @@
+5.25.0
+
+  Add invariant specs
+  Extract authOverlayReducer
+  Test backdrop press
+  Test drawer dismiss
+  Test slider gap
+  Test late floating
+  Test empty avatar
+
 5.24.0
 
   Add useQuery hook

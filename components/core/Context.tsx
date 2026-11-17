@@ -68,6 +68,18 @@ export function getDispatch(): React.Dispatch<Action> | null {
   return _dispatch;
 }
 
+type AuthOverlayAction = Extract<Action, { type: 'SHOW_AUTH_OVERLAY' | 'HIDE_AUTH_OVERLAY' | 'AUTH_OVERLAY_SUCCESS' }>;
+
+export function authOverlayReducer(authOverlay: AppState['authOverlay'], action: AuthOverlayAction): AppState['authOverlay'] {
+  switch (action.type) {
+    case 'SHOW_AUTH_OVERLAY':
+      return { visible: true, pendingCallbacks: action.payload ? [...authOverlay.pendingCallbacks, action.payload] : authOverlay.pendingCallbacks };
+    case 'HIDE_AUTH_OVERLAY':
+    case 'AUTH_OVERLAY_SUCCESS':
+      return { visible: false, pendingCallbacks: [] };
+  }
+}
+
 function isLocalStorageAvailable(): boolean {
   try {
     const test = '__storage_test__';
@@ -201,14 +213,10 @@ export function ContextProvider({ children, constants }: ContextProviderProps) {
       case 'SET_UI_VISIBILITY': {
         return { ...state, ui: { ...state.ui, ...action.payload } };
       }
-      case 'SHOW_AUTH_OVERLAY': {
-        return { ...state, authOverlay: { visible: true, pendingCallbacks: action.payload ? [...state.authOverlay.pendingCallbacks, action.payload] : state.authOverlay.pendingCallbacks } };
-      }
-      case 'HIDE_AUTH_OVERLAY': {
-        return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
-      }
+      case 'SHOW_AUTH_OVERLAY':
+      case 'HIDE_AUTH_OVERLAY':
       case 'AUTH_OVERLAY_SUCCESS': {
-        return { ...state, authOverlay: { visible: false, pendingCallbacks: [] } };
+        return { ...state, authOverlay: authOverlayReducer(state.authOverlay, action) };
       }
       default:
         return state;
