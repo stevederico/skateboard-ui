@@ -1,5 +1,8 @@
 import * as React from "react"
 
+import { HOOK_FIXTURES } from "./HookFixtures.js"
+import { QUERY_FIXTURES } from "./QueryFixtures.js"
+
 import { Button } from "../dist/ui/button.js"
 import {
   Dialog,
@@ -373,6 +376,8 @@ const FIXTURES: Record<string, React.ReactNode> = {
   dropdown: <DropdownFx />,
   "slider-form": <SliderForm />,
   "nested-lock": <NestedLock />,
+  ...QUERY_FIXTURES,
+  ...HOOK_FIXTURES,
 }
 
 export function Fixtures() {

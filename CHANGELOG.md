@@ -1,3 +1,17 @@
+5.24.0
+
+  Add useQuery hook
+  Port useListData
+  Add useEventListener
+  Add useMediaQuery
+  Rebuild useIsMobile
+  Add useInterval, useTimeout
+  Add useStoredState
+  Add useMountEffect
+  Add Effects guide
+  Add hook harness specs
+  Note: useListData keeps its API; a key change no longer flips loading to false before the new request finishes, refetch aborts the request it replaces, and useIsMobile is correct on the first client render instead of false then true
+
 5.23.0
 
   Remove code comments

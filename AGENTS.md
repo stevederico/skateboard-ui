@@ -62,13 +62,13 @@ Every written "never / always" rule an agent keeps breaking becomes a machine ch
 | views | `components/views/` | layout, widgets, core, hooks, ui, icons, lib, router |
 | widgets | `components/*.tsx` | core, hooks, ui, icons, lib, router |
 | layout | `components/layout/` | core, hooks, ui, icons, lib, router |
-| hooks | `hooks/` (except `use-mobile.ts`) | core, lib, router |
+| hooks | `hooks/` camelCase files (`useAuthGate.ts`) | core, lib, router |
 | core | `components/core/` | icons, lib, router |
 | ui | `ui/` | headless, icons, lib |
 | headless | `components/core/Calendar.tsx`, `Command.tsx` | nothing (leaf) |
 | icons | `icons/` | nothing (leaf) |
 | router | `router/` (vendored react-router, generated) | nothing (leaf; only `react`, `react-dom`) |
-| lib | `lib/`, `hooks/use-mobile.ts` | nothing (leaf) |
+| lib | `lib/`, `hooks/use-*.ts` (dependency-free hooks: `use-mobile`, `use-media-query`, `use-event-listener`, `use-interval`, `use-timeout`, `use-stored-state`, `use-mount-effect`, internal `use-latest`) | nothing (leaf) |
 | tooling | `scripts/`, `.design-sync/` | itself only |
 | harness | `.harness/` | itself and `dist/` only |
 | guardrails | `guardrails/`, `eslint.config.js` | itself only |
@@ -145,3 +145,209 @@ These do not run on `ui/`, whose class lists follow the upstream shadcn base-veg
 | Skeletons for content waits, spinners for actions | Design judgment |
 | Escape closes overlays, focus is trapped and restored, menus are keyboard reachable | Runtime behavior; the harness specs cover it |
 | README, JSDoc and code stay in sync | Prose |
+
+## Effects
+
+Apps never call `useEffect`, `useLayoutEffect` or `useInsertionEffect`; the app lint message points here. Every legitimate use has a home below, and skateboard-ui is the one place effects live. Library code here may still use effects, but new code should use these hooks too.
+
+All hooks import from the package root (`@stevederico/skateboard-ui`) or their own path: `useQuery` and `useListData` from `/Utilities`; the rest from `/hooks/use-event-listener`, `/hooks/use-media-query`, `/hooks/use-mobile`, `/hooks/use-interval`, `/hooks/use-timeout`, `/hooks/use-stored-state`, `/hooks/use-mount-effect`.
+
+| You want to | Use | Not |
+|---|---|---|
+| Derive a value from props or state | Compute it in render (`useMemo` if it is slow); reset state on an id change with `key={id}` | An effect that calls `setState` |
+| React to a user event | Do it in the event handler | An effect that watches state the handler just set |
+| Fetch or poll data | `useQuery(key, fetcher?, { live, initial })`, `useListData` for lists | `fetch` in an effect |
+| Listen to window, document or element events, including keys | `useEventListener(target, type, handler)` | `addEventListener` in an effect |
+| Read a media query | `useMediaQuery(query)`, `useIsMobile()` | `matchMedia` or `resize` in an effect |
+| Run a timer | `useInterval(fn, ms \| null)`, `useTimeout(fn, ms \| null)` | `setInterval` in an effect |
+| Persist state in storage | `useStoredState(key, initial, { storage })` | An effect that writes `localStorage` |
+| Touch the DOM (focus, scroll, observers) | `autoFocus`, a ref callback that returns a cleanup, or the handler that caused it | An effect that reads a ref |
+| Set the page title | Render `<title>` | `document.title` in an effect |
+| One-time setup or tracking (widgets, impressions, unmount cleanup) | `useMountEffect(fn)`; to run it again, remount with `key` | An effect with `[]` |
+
+`useMountEffect` is the escape hatch. It must not read props it does not own: if the work depends on a prop, it belongs in a handler, `useQuery`, or a remount with `key`.
+
+### Derived state
+
+Before:
+
+```tsx
+const [draft, setDraft] = useState(name)
+useEffect(() => setDraft(name), [name])
+```
+
+After:
+
+```tsx
+<NameEditor key={name} name={name} />
+function NameEditor({ name }) {
+  const [draft, setDraft] = useState(name)
+  return <input value={draft} onChange={(e) => setDraft(e.target.value)} />
+}
+```
+
+### Reacting to an event
+
+Before:
+
+```tsx
+useEffect(() => { if (mode === 'edit') navigate('/edit') }, [mode])
+```
+
+After:
+
+```tsx
+function startEditing() {
+  setMode('edit')
+  navigate('/edit')
+}
+```
+
+### Fetch or poll
+
+Before:
+
+```tsx
+const [deal, setDeal] = useState(null)
+useEffect(() => {
+  if (!id) return
+  const c = new AbortController()
+  apiRequest(`/deals/${id}`, { signal: c.signal }).then(setDeal)
+  const t = setInterval(() => apiRequest(`/deals/${id}`).then(setDeal), 4000)
+  return () => { c.abort(); clearInterval(t) }
+}, [id])
+```
+
+After:
+
+```tsx
+const { data: deal, loading, error, refetch } = useQuery(id ? `/deals/${id}` : null, undefined, { live: 4000 })
+```
+
+A custom fetcher takes the abort signal: `useQuery(key, (signal) => apiRequest(key, { method: 'POST', body, signal }))`. The fetcher may change every render; only `key` and `live` start a new request.
+
+### Listeners and keys
+
+Before:
+
+```tsx
+useEffect(() => {
+  if (!open) return
+  const onKey = (e) => { if (e.key === 'Escape') onClose() }
+  window.addEventListener('keydown', onKey)
+  return () => window.removeEventListener('keydown', onKey)
+}, [open, onClose])
+```
+
+After:
+
+```tsx
+useEventListener(open ? window : null, 'keydown', (e) => { if (e.key === 'Escape') onClose() })
+```
+
+The handler is always the latest one, so there is no dependency list. `null` turns the listener off. The target may be `window`, `document`, an element, or a ref.
+
+### Media queries
+
+Before:
+
+```tsx
+const [dark, setDark] = useState(false)
+useEffect(() => {
+  const mql = matchMedia('(prefers-color-scheme: dark)')
+  setDark(mql.matches)
+  const onChange = () => setDark(mql.matches)
+  mql.addEventListener('change', onChange)
+  return () => mql.removeEventListener('change', onChange)
+}, [])
+```
+
+After:
+
+```tsx
+const dark = useMediaQuery('(prefers-color-scheme: dark)')
+```
+
+### Timers
+
+Before:
+
+```tsx
+useEffect(() => {
+  const t = setInterval(() => setNow(new Date()), 1000)
+  return () => clearInterval(t)
+}, [])
+```
+
+After:
+
+```tsx
+useInterval(() => setNow(new Date()), paused ? null : 1000)
+```
+
+`useTimeout(fn, ms)` runs `fn` once after `ms`; a new `ms` restarts it and `null` cancels it.
+
+### Storage
+
+Before:
+
+```tsx
+const [collapsed, setCollapsed] = useState(() => localStorage.getItem('collapsed') === 'true')
+useEffect(() => { localStorage.setItem('collapsed', String(collapsed)) }, [collapsed])
+```
+
+After:
+
+```tsx
+const [collapsed, setCollapsed] = useStoredState('collapsed', false)
+```
+
+Values are JSON. It reads once, writes in the setter, follows other tabs through the `storage` event, and keeps working in memory when storage throws. `{ storage: 'session' }` uses `sessionStorage`.
+
+### DOM
+
+Before:
+
+```tsx
+const ref = useRef(null)
+useEffect(() => {
+  const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width))
+  ro.observe(ref.current)
+  return () => ro.disconnect()
+}, [])
+```
+
+After:
+
+```tsx
+const measure = useCallback((node) => {
+  const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width))
+  ro.observe(node)
+  return () => ro.disconnect()
+}, [])
+<div ref={measure} />
+```
+
+Keep the ref callback stable (`useCallback` or a module function); an inline one detaches and reattaches on every render.
+
+Focus on open is `autoFocus`; scroll to the newest message from the send handler.
+
+### One-time setup or tracking
+
+Before:
+
+```tsx
+useEffect(() => {
+  track('match_shown')
+}, [])
+```
+
+After:
+
+```tsx
+useMountEffect(() => {
+  track('match_shown')
+})
+```
+
+It runs after the first render and its cleanup runs on unmount. In development StrictMode React mounts twice (setup, cleanup, setup), so return a cleanup for anything that must not leak.

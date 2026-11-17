@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInRouterContext, useNavigate } from '../../router/index.mjs';
 import { getDispatch } from './Context.js';
 import type { Location } from '../../router/index.mjs';
-import type { RefObject } from 'react';
+import type { Dispatch, RefObject, SetStateAction } from 'react';
+import { useLatest } from '../../hooks/use-latest.js';
 
 /** A navigation item rendered in the Sidebar and TabBar (constants.pages). */
 export interface ConstantsPage {
@@ -978,6 +979,103 @@ export function validateConstants(constants: SkateboardConstants): SkateboardCon
 }
 
 
+export interface QueryOptions<T> {
+    live?: boolean | number;
+    initial?: T;
+}
+
+export interface QueryResult<T> {
+    data: T;
+    loading: boolean;
+    error: string | null;
+    refetch: () => Promise<void>;
+    setData: Dispatch<SetStateAction<T>>;
+}
+
+type Fetcher<T> = (signal: AbortSignal) => Promise<T>;
+
+function isAbortError(err: unknown): boolean {
+    return (err instanceof DOMException || err instanceof Error) && err.name === 'AbortError';
+}
+
+function liveInterval(live: boolean | number | undefined): number {
+    if (live === true) return 60_000;
+    return typeof live === 'number' ? live : 0;
+}
+
+function subscribeLive(ms: number, refresh: () => void): () => void {
+    const tick = () => {
+        if (document.visibilityState === 'visible') refresh();
+    };
+    const timer = setInterval(tick, ms);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+        clearInterval(timer);
+        document.removeEventListener('visibilitychange', tick);
+    };
+}
+
+function useLoadingForKey(key: string | null): [boolean, Dispatch<SetStateAction<boolean>>] {
+    const [loading, setLoading] = useState(key !== null);
+    const [loadingKey, setLoadingKey] = useState(key);
+    if (loadingKey !== key) {
+        setLoadingKey(key);
+        setLoading(key !== null);
+        return [key !== null, setLoading];
+    }
+    return [loading, setLoading];
+}
+
+export function useQuery<T>(key: string | null, fetcher: Fetcher<T> | null | undefined, options: QueryOptions<T> & { initial: T }): QueryResult<T>;
+export function useQuery<T = unknown>(key: string | null, fetcher?: Fetcher<T> | null, options?: QueryOptions<T>): QueryResult<T | undefined>;
+export function useQuery<T>(key: string | null, fetcher?: Fetcher<T> | null, options: QueryOptions<T> = {}): QueryResult<T | undefined> {
+    const [data, setData] = useState<T | undefined>(options.initial);
+    const [loading, setLoading] = useLoadingForKey(key);
+    const [error, setError] = useState<string | null>(null);
+    const keyRef = useLatest(key);
+    const fetcherRef = useLatest(fetcher);
+    const controllerRef = useRef<AbortController | null>(null);
+    const liveMs = liveInterval(options.live);
+
+    const load = useCallback(async (quiet: boolean) => {
+        controllerRef.current?.abort();
+        const currentKey = keyRef.current;
+        const controller = new AbortController();
+        controllerRef.current = currentKey === null ? null : controller;
+        if (currentKey === null) return;
+        try {
+            const fetchFn = fetcherRef.current;
+            const result = await (fetchFn ? fetchFn(controller.signal) : apiRequest<T>(currentKey, { signal: controller.signal }));
+            if (controller.signal.aborted) return;
+            setData(result);
+            setError(null);
+        } catch (err) {
+            if (controller.signal.aborted) return;
+            if (!quiet && !isAbortError(err)) setError(err instanceof Error ? err.message : String(err));
+        }
+        if (controllerRef.current !== controller) return;
+        controllerRef.current = null;
+        setLoading(false);
+    }, [keyRef, fetcherRef, setLoading]);
+
+    useEffect(() => {
+        void load(false);
+        const stopLive = key === null || liveMs <= 0 ? null : subscribeLive(liveMs, () => void load(true));
+        return () => {
+            controllerRef.current?.abort();
+            controllerRef.current = null;
+            stopLive?.();
+        };
+    }, [key, liveMs, load]);
+
+    const refetch = useCallback(() => {
+        if (keyRef.current !== null) setLoading(true);
+        return load(false);
+    }, [keyRef, load, setLoading]);
+
+    return { data, loading, error, refetch, setData };
+}
+
 /** Options for {@link useListData}. */
 export interface ListDataOptions {
     /**
@@ -1001,48 +1099,17 @@ export function useListData<T = any>(
     sortFn: ((a: T, b: T) => number) | null = null,
     options: ListDataOptions = {},
 ) {
-    const [data, setData] = useState<T[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const sortFnRef = useRef(sortFn);
-    sortFnRef.current = sortFn;
-
-    const liveMs = options.live === true ? 60_000 : typeof options.live === 'number' ? options.live : 0;
-
-    const fetchData = async (signal?: AbortSignal, quiet = false) => {
-        if (!quiet) setLoading(true);
-        try {
+    const sortRef = useLatest(sortFn);
+    const { data, loading, error, refetch } = useQuery<T[]>(
+        endpoint,
+        async (signal) => {
             const result = await apiRequest<T[]>(endpoint, { signal });
-            const sort = sortFnRef.current;
-            const sorted = sort ? result.sort(sort) : result;
-            setData(sorted);
-            setError(null);
-        } catch (err) {
-            if ((err instanceof DOMException || err instanceof Error) && err.name === 'AbortError') return;
-            if (!quiet) setError(err instanceof Error ? err.message : String(err));
-        } finally {
-            if (!quiet) setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        const controller = new AbortController();
-        fetchData(controller.signal);
-        if (liveMs <= 0) return () => controller.abort();
-        const tick = () => {
-            if (document.visibilityState === 'visible') fetchData(controller.signal, true);
-        };
-        const timer = setInterval(tick, liveMs);
-        document.addEventListener('visibilitychange', tick);
-        return () => {
-            controller.abort();
-            clearInterval(timer);
-            document.removeEventListener('visibilitychange', tick);
-        };
-    }, [endpoint, liveMs]);
-
-    return { data, loading, error, refetch: () => fetchData() };
+            const sort = sortRef.current;
+            return sort ? result.sort(sort) : result;
+        },
+        { live: options.live, initial: [] },
+    );
+    return { data, loading, error, refetch };
 }
 
 function setSidebarVisible(visible: boolean): void {

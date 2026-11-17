@@ -1,7 +1,7 @@
 {
   "name": "@stevederico/skateboard-ui",
   "private": false,
-  "version": "5.23.0",
+  "version": "5.24.0",
   "type": "module",
   "exports": {
     ".": {
@@ -162,6 +162,36 @@
       "types": "./dist/hooks/use-mobile.d.ts",
       "import": "./dist/hooks/use-mobile.js",
       "default": "./dist/hooks/use-mobile.js"
+    },
+    "./hooks/use-media-query": {
+      "types": "./dist/hooks/use-media-query.d.ts",
+      "import": "./dist/hooks/use-media-query.js",
+      "default": "./dist/hooks/use-media-query.js"
+    },
+    "./hooks/use-event-listener": {
+      "types": "./dist/hooks/use-event-listener.d.ts",
+      "import": "./dist/hooks/use-event-listener.js",
+      "default": "./dist/hooks/use-event-listener.js"
+    },
+    "./hooks/use-interval": {
+      "types": "./dist/hooks/use-interval.d.ts",
+      "import": "./dist/hooks/use-interval.js",
+      "default": "./dist/hooks/use-interval.js"
+    },
+    "./hooks/use-timeout": {
+      "types": "./dist/hooks/use-timeout.d.ts",
+      "import": "./dist/hooks/use-timeout.js",
+      "default": "./dist/hooks/use-timeout.js"
+    },
+    "./hooks/use-stored-state": {
+      "types": "./dist/hooks/use-stored-state.d.ts",
+      "import": "./dist/hooks/use-stored-state.js",
+      "default": "./dist/hooks/use-stored-state.js"
+    },
+    "./hooks/use-mount-effect": {
+      "types": "./dist/hooks/use-mount-effect.d.ts",
+      "import": "./dist/hooks/use-mount-effect.js",
+      "default": "./dist/hooks/use-mount-effect.js"
     }
   },
   "scripts": {

@@ -291,6 +291,32 @@ neither skateboard-ui's `styles.css` nor the app's CSS defines.
 | useAuthGate | `@stevederico/skateboard-ui/useAuthGate` |
 | ProtectedRoute | `@stevederico/skateboard-ui/ProtectedRoute` |
 
+### Hooks
+
+These give every effect an app needs a home; apps do not call `useEffect`.
+See AGENTS.md > Effects for when to use each. All of them are also exported
+from the package root.
+
+| Hook | Import | Does |
+|------|--------|------|
+| useQuery | `@stevederico/skateboard-ui/Utilities` | `useQuery(key, fetcher?, { live, initial })` returns `{ data, loading, error, refetch, setData }`. Default fetcher is `apiRequest(key)`, a `null` key skips, a new key aborts the request in flight, `live` polls and refreshes on visibility |
+| useListData | `@stevederico/skateboard-ui/Utilities` | List wrapper around `useQuery` with an optional sort |
+| useEventListener | `@stevederico/skateboard-ui/hooks/use-event-listener` | `useEventListener(target, type, handler, options?)` on a window, document, element or ref; latest handler, `null` target turns it off |
+| useMediaQuery | `@stevederico/skateboard-ui/hooks/use-media-query` | `useMediaQuery(query)` returns whether the query matches |
+| useIsMobile | `@stevederico/skateboard-ui/hooks/use-mobile` | `useMediaQuery('(max-width: 767px)')` |
+| useInterval | `@stevederico/skateboard-ui/hooks/use-interval` | `useInterval(fn, ms)`; `null` pauses |
+| useTimeout | `@stevederico/skateboard-ui/hooks/use-timeout` | `useTimeout(fn, ms)`; `null` cancels |
+| useStoredState | `@stevederico/skateboard-ui/hooks/use-stored-state` | `useStoredState(key, initial, { storage: 'local' \| 'session' })` returns `[value, set]`, JSON in storage, synced across tabs, in memory when storage throws |
+| useMountEffect | `@stevederico/skateboard-ui/hooks/use-mount-effect` | `useMountEffect(fn)` runs once on mount, its cleanup on unmount |
+
+```javascript
+import { useQuery, useEventListener, useInterval } from '@stevederico/skateboard-ui';
+
+const { data: deal, loading } = useQuery(id ? `/deals/${id}` : null, undefined, { live: 4000 });
+useEventListener(open ? window : null, 'keydown', (e) => { if (e.key === 'Escape') close(); });
+useInterval(() => setNow(new Date()), 1000);
+```
+
 ### UI primitives
 
 Import from `@stevederico/skateboard-ui/ui/*`.
@@ -424,6 +450,7 @@ import {
   hideTabBar,
   timestampToString,
   useListData,
+  useQuery,
   isAppMode,
 } from '@stevederico/skateboard-ui/Utilities';
 ```
@@ -435,6 +462,7 @@ await apiRequest('/deals', { method: 'POST', body: JSON.stringify({ name: 'New D
 
 // Data fetching
 const { data, loading, error, refetch } = useListData('/deals');
+const { data: deal } = useQuery(id ? `/deals/${id}` : null);
 
 // Timestamps
 timestampToString(1706000000, 'ago');   // "2 hours ago"
