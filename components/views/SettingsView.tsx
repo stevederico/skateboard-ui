@@ -77,7 +77,7 @@ export default function SettingsView() {
                   size="sm"
                   onClick={() => {
                     if (isAuthOverlayEnabled()) {
-                      dispatch({ type: 'SHOW_AUTH_OVERLAY' });
+                      dispatch({ type: 'SHOW_AUTH_OVERLAY', mode: 'signin' });
                     } else {
                       navigate('/signin');
                     }
@@ -97,7 +97,7 @@ export default function SettingsView() {
                 <Avatar>
                   {/* eslint-disable-next-line skateboard-ui/no-raw-color-classes -- initials on the bg-app brand color; styles.css has no app-foreground token */}
                   <AvatarFallback className="bg-app text-white uppercase font-medium text-sm">
-                    {user.name?.split(' ').map(w => w[0]).join('') || "NA"}
+                    {user.name?.split(/\s+/).filter(Boolean).map(w => Array.from(w)[0]).join('') || "NA"}
                   </AvatarFallback>
                 </Avatar>
                 <div>

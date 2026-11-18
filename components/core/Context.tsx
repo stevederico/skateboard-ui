@@ -17,6 +17,7 @@ export interface AppState {
   authOverlay: {
     visible: boolean;
     pendingCallbacks: AuthOverlayCallback[];
+    mode?: 'signin' | 'signup';
   };
   constants: SkateboardConstants;
 }
@@ -28,7 +29,7 @@ export type Action =
   | { type: 'SET_SIDEBAR_VISIBLE'; payload: boolean }
   | { type: 'SET_TABBAR_VISIBLE'; payload: boolean }
   | { type: 'SET_UI_VISIBILITY'; payload: { sidebarVisible?: boolean; tabBarVisible?: boolean } }
-  | { type: 'SHOW_AUTH_OVERLAY'; payload?: AuthOverlayCallback }
+  | { type: 'SHOW_AUTH_OVERLAY'; payload?: AuthOverlayCallback; mode?: 'signin' | 'signup' }
   | { type: 'HIDE_AUTH_OVERLAY' }
   | { type: 'AUTH_OVERLAY_SUCCESS' };
 
@@ -73,7 +74,11 @@ type AuthOverlayAction = Extract<Action, { type: 'SHOW_AUTH_OVERLAY' | 'HIDE_AUT
 export function authOverlayReducer(authOverlay: AppState['authOverlay'], action: AuthOverlayAction): AppState['authOverlay'] {
   switch (action.type) {
     case 'SHOW_AUTH_OVERLAY':
-      return { visible: true, pendingCallbacks: action.payload ? [...authOverlay.pendingCallbacks, action.payload] : authOverlay.pendingCallbacks };
+      return {
+        visible: true,
+        pendingCallbacks: action.payload ? [...authOverlay.pendingCallbacks, action.payload] : authOverlay.pendingCallbacks,
+        ...(action.mode ? { mode: action.mode } : {}),
+      };
     case 'HIDE_AUTH_OVERLAY':
     case 'AUTH_OVERLAY_SUCCESS':
       return { visible: false, pendingCallbacks: [] };

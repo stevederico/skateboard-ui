@@ -63,20 +63,28 @@ export interface CreateSkateboardAppConfig {
   loadLegal?: () => Promise<LegalTexts>;
 }
 
-function AuthRedirect() {
+function AuthRedirect({ mode }: { mode: 'signin' | 'signup' }) {
   const { dispatch } = getState();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      dispatch({ type: 'SHOW_AUTH_OVERLAY' });
+      dispatch({ type: 'SHOW_AUTH_OVERLAY', mode });
     }
     const returnTo = location.state?.from || '/app';
     navigate(returnTo, { replace: true });
-  }, [dispatch, navigate, location.state]);
+  }, [dispatch, navigate, location.state, mode]);
 
   return null;
+}
+
+function SignInRedirect() {
+  return <AuthRedirect mode="signin" />;
+}
+
+function SignUpRedirect() {
+  return <AuthRedirect mode="signup" />;
 }
 
 function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {}, loadLegal }: {
@@ -97,8 +105,8 @@ function App({ constants, appRoutes, defaultRoute, landingPage, overrides = {}, 
   const SignOutComponent = overrides.signOut || SignOutView;
   const NotFoundComponent = overrides.notFound || NotFound;
 
-  const SignInComponent = overrides.signIn || (isAuthOverlayEnabled() ? AuthRedirect : SignInView);
-  const SignUpComponent = overrides.signUp || (isAuthOverlayEnabled() ? AuthRedirect : SignUpView);
+  const SignInComponent = overrides.signIn || (isAuthOverlayEnabled() ? SignInRedirect : SignInView);
+  const SignUpComponent = overrides.signUp || (isAuthOverlayEnabled() ? SignUpRedirect : SignUpView);
 
   return (
     <Routes>

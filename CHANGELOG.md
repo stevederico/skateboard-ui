@@ -1,3 +1,8 @@
+5.27.0
+
+  Auth dialog follows the route
+  Emoji-safe avatar initials
+
 5.26.0
 
   Add success token

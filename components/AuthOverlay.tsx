@@ -31,7 +31,7 @@ function hadAccount(): boolean {
 export default function AuthOverlay() {
   const { state, dispatch } = getState();
   const constants = state.constants;
-  const { visible } = state.authOverlay;
+  const { visible, mode: requestedMode } = state.authOverlay;
 
   const [mode, setMode] = useState<'signin' | 'signup'>('signup');
 
@@ -43,9 +43,9 @@ export default function AuthOverlay() {
 
   useEffect(() => {
     if (visible) {
-      setMode(hadAccount() ? 'signin' : 'signup');
+      setMode(requestedMode ?? (hadAccount() ? 'signin' : 'signup'));
     }
-  }, [visible]);
+  }, [visible, requestedMode]);
 
   function runPendingCallbacks(outcome: AuthOverlayOutcome) {
     for (const cb of state.authOverlay.pendingCallbacks) {

@@ -29,6 +29,16 @@ test("authOverlayReducer parks callbacks without calling them and clears them on
   expect(calls).toEqual([])
 })
 
+test("the auth overlay opens in the mode it is asked for, and forgets it on close", async () => {
+  const { authOverlayReducer } = await import("../../dist/components/core/Context.js")
+  const closed = { visible: false, pendingCallbacks: [] }
+  const signup = authOverlayReducer(closed, { type: "SHOW_AUTH_OVERLAY", mode: "signup" })
+  expect(signup.mode).toBe("signup")
+  expect(authOverlayReducer(closed, { type: "SHOW_AUTH_OVERLAY", mode: "signin" }).mode).toBe("signin")
+  expect(authOverlayReducer(closed, { type: "SHOW_AUTH_OVERLAY" }).mode).toBeUndefined()
+  expect(authOverlayReducer(signup, { type: "HIDE_AUTH_OVERLAY" }).mode).toBeUndefined()
+})
+
 test("AuthOverlay runs a parked callback once with cancel when dismissed", async ({ page }) => {
   await page.goto("/tests.html?fx=auth-overlay")
   const outcomes = () => page.evaluate(() => (window as HarnessWindow).__authOutcomes ?? [])
